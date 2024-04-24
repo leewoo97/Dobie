@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 @Repository
 @RequiredArgsConstructor
@@ -33,6 +34,14 @@ public class UserJsonRepository {
     }
 
     public void updatePassword(String password){
-
+        try{
+            File file = new File(System.getProperty("user.dir")+"/data/user.json");
+            JsonNode userInfoNode = mapper.readTree(file);
+            ((ObjectNode)userInfoNode).put("password", password);
+            mapper.writerWithDefaultPrettyPrinter()
+                    .writeValue(file, userInfoNode);
+        }catch (IOException e ){
+            e.printStackTrace();
+        }
     }
 }

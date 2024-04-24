@@ -1,4 +1,4 @@
 {
   "username" : "admin",
-  "password" : "test123@@!!"
+  "password" : "{\r\n    \"password\" : \"test\"\r\n}"
 }

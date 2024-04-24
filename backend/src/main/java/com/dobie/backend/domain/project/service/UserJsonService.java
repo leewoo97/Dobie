@@ -53,7 +53,6 @@ public class UserJsonService {
     }
 
     public void changePassword(String password) {
-
         userJsonRepository.updatePassword(password);
     }
 }
