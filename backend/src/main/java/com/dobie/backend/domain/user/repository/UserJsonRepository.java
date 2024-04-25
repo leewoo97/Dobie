@@ -1,20 +1,14 @@
-package com.dobie.backend.domain.project.repository;
+package com.dobie.backend.domain.user.repository;
 
-import com.dobie.backend.domain.project.entity.User;
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.dobie.backend.domain.user.dto.UserDto;
+import com.dobie.backend.domain.user.entity.User;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 
 @Repository
 @RequiredArgsConstructor
@@ -33,13 +27,14 @@ public class UserJsonRepository {
         return null;
     }
 
-    public void updatePassword(String password){
+    public void updateUserInfo(UserDto dto){
         try{
             File file = new File(System.getProperty("user.dir")+"/data/user.json");
-            JsonNode userInfoNode = mapper.readTree(file);
-            ((ObjectNode)userInfoNode).put("password", password);
+//            ObjectNode userInfoNode = (ObjectNode) mapper.readTree(file);
+            JsonNode userInfoJson = mapper.convertValue(dto, JsonNode.class);
+
             mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(file, userInfoNode);
+                    .writeValue(file, userInfoJson);
         }catch (IOException e ){
             e.printStackTrace();
         }

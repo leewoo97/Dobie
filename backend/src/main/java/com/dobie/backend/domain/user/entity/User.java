@@ -1,4 +1,4 @@
-package com.dobie.backend.domain.project.entity;
+package com.dobie.backend.domain.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

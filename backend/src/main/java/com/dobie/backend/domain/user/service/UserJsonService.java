@@ -1,21 +1,14 @@
-package com.dobie.backend.domain.project.service;
+package com.dobie.backend.domain.user.service;
 
-import com.dobie.backend.domain.project.dto.UserResponseDto;
-import com.dobie.backend.domain.project.entity.User;
-import com.dobie.backend.domain.project.repository.UserJsonRepository;
+import com.dobie.backend.domain.user.dto.UserDto;
+import com.dobie.backend.domain.user.entity.User;
+import com.dobie.backend.domain.user.repository.UserJsonRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.nio.file.Paths;
 
 @Service
 @RequiredArgsConstructor
@@ -43,16 +36,16 @@ public class UserJsonService {
         return null;
     }
 
-    public UserResponseDto getUserInfo() {
+    public UserDto getUserInfo() {
         User user = userJsonRepository.getUserInfo();
-        UserResponseDto dto = UserResponseDto.builder()
+        UserDto dto = UserDto.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .build();
         return dto;
     }
 
-    public void changePassword(String password) {
-        userJsonRepository.updatePassword(password);
+    public void changeUserInfo(UserDto dto) {
+        userJsonRepository.updateUserInfo(dto);
     }
 }
