@@ -59,6 +59,9 @@ dependencies {
 	//spring-boot
 	implementation platform('org.springframework.boot:spring-boot-dependencies:3.2.3')
 
+	// Java에서 외부 명령어 실행 라이브러리
+	implementation 'org.apache.commons:commons-exec:1.3'
+
 }
 
 tasks.named('test') {
