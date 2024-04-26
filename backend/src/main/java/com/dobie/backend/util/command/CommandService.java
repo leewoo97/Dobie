@@ -1,4 +1,4 @@
-package com.dobie.backend.domain.command;
+package com.dobie.backend.util.command;
 
 public interface CommandService {
 

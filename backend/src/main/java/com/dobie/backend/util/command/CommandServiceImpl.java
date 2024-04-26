@@ -1,4 +1,4 @@
-package com.dobie.backend.domain.command;
+package com.dobie.backend.util.command;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
