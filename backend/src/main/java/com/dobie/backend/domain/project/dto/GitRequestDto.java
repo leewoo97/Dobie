@@ -4,9 +4,11 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class ProjectCreateDto {
-    private String projectName;
+public class GitRequestDto {
+    private int gitType;
+    private String gitUrl;
+    private String accessToken;
 }

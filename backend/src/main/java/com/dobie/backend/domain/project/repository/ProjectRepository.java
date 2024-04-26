@@ -1,6 +1,6 @@
 package com.dobie.backend.domain.project.repository;
 
-import com.dobie.backend.domain.project.dto.ProjectCreateDto;
+import com.dobie.backend.domain.project.dto.ProjectRequestDto;
 import com.dobie.backend.domain.project.entity.Project;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
@@ -18,15 +18,14 @@ public class ProjectRepository {
     private int cnt_project = 1;
 
     private final ObjectMapper mapper;
-    public void createProject(ProjectCreateDto dto) {
+    public void createProject(ProjectRequestDto dto) {
         try{
             File file = new File(System.getProperty("user.dir")+"/data/project.json");
             Map<String, Project> projects = mapper.readValue(file, Map.class);
-            projects.put(String.valueOf(cnt_project), new Project(cnt_project, dto.getProjectName()));
+            projects.put(String.valueOf(cnt_project), new Project(cnt_project, dto));
             cnt_project++;
             mapper.writerWithDefaultPrettyPrinter()
                     .writeValue(file, projects);
-//            return mapper.readValue(file, User.class);
         }catch (IOException e ){
             e.printStackTrace();
         }
