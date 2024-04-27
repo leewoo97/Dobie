@@ -29,4 +29,11 @@ public class ProjectController {
 
         return new ResponseEntity<ProjectRequestDto>(dto, HttpStatus.OK);
     }
+
+    @PutMapping("/update/{projectId}")
+    public ResponseEntity<?> updateProject(@PathVariable int projectId, @RequestBody ProjectRequestDto dto){
+        projectService.updateProject(projectId, dto);
+
+        return new ResponseEntity<ProjectRequestDto>(dto, HttpStatus.OK);
+    }
 }

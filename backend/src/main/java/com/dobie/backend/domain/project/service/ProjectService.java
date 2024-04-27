@@ -31,4 +31,9 @@ public class ProjectService {
         });
         return list;
     }
+
+    public void updateProject(int projectId, ProjectRequestDto dto) {
+        Project project = new Project(projectId, dto);
+        projectRepository.updateProject(project);
+    }
 }

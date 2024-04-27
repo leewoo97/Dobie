@@ -44,4 +44,28 @@ public class ProjectRepository {
 
         return null;
     }
+
+    public void updateProject(Project project) {
+        try{
+            // 파일 읽기
+            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+
+            // mapper class 지정
+            MapType mapType =
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+
+            // project map 불러오기
+            Map<String, Project> projects = mapper.readValue(file, mapType);
+
+            // project 수정
+            projects.put(String.valueOf(project.getProjectId()), project);
+
+            // json 파일 작성
+            mapper.writerWithDefaultPrettyPrinter()
+                    .writeValue(file, projects);
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }
