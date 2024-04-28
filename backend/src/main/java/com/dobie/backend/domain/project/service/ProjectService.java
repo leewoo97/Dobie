@@ -36,4 +36,8 @@ public class ProjectService {
         Project project = new Project(projectId, dto);
         projectRepository.updateProject(project);
     }
+
+    public void deleteProject(int projectId) {
+        projectRepository.deleteProject(projectId);
+    }
 }

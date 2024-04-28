@@ -68,4 +68,28 @@ public class ProjectRepository {
             e.printStackTrace();
         }
     }
+
+    public void deleteProject(int projectId) {
+        try{
+            // 파일 읽기
+            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+
+            // mapper class 지정
+            MapType mapType =
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+
+            // project map 불러오기
+            Map<String, Project> projects = mapper.readValue(file, mapType);
+
+            // project 삭제
+            projects.remove(String.valueOf(projectId));
+
+            // json 파일 작성
+            mapper.writerWithDefaultPrettyPrinter()
+                    .writeValue(file, projects);
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }
