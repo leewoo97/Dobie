@@ -21,11 +21,19 @@ public class DockerfileController {
 
     @Operation(summary = "스프링 도커파일 생성", description = "프로젝트이름, 언어버전, 경로")
     @PostMapping("/spring")
-    public ResponseEntity<?> backendDockerfile(@RequestParam(name = "projectName") String projectName,
-                                               @RequestParam(name = "framework") String framework,
+    public ResponseEntity<?> springDockerfile(@RequestParam(name = "projectName") String projectName,
                                                @RequestParam(name = "version") String version,
                                                @RequestParam(name = "path") String path){
-        dockerfileService.createBackendDockerfile(projectName, version, path);
+        dockerfileService.createSpringDockerfile(projectName, version, path);
+        return new ResponseEntity<String>("성공", HttpStatus.OK);
+    }
+
+    @Operation(summary = "리액트 도커파일 생성", description = "프로젝트이름, 언어버전, 경로")
+    @PostMapping("/react")
+    public ResponseEntity<?> reactDockerfile(@RequestParam(name = "projectName") String projectName,
+                                               @RequestParam(name = "version") String version,
+                                               @RequestParam(name = "path") String path){
+        dockerfileService.createReactDockerfile(projectName, version, path);
         return new ResponseEntity<String>("성공", HttpStatus.OK);
     }
 }
