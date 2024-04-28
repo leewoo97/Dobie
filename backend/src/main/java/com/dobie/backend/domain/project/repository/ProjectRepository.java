@@ -1,6 +1,9 @@
 package com.dobie.backend.domain.project.repository;
 
 import com.dobie.backend.domain.project.dto.ProjectRequestDto;
+import com.dobie.backend.domain.project.entity.Backend;
+import com.dobie.backend.domain.project.entity.Database;
+import com.dobie.backend.domain.project.entity.Frontend;
 import com.dobie.backend.domain.project.entity.Project;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
@@ -39,7 +42,7 @@ public class ProjectRepository {
         }
     }
 
-    public Map<Integer, Project> getAllProjects() {
+    public Map<Integer, Project> selectProjects() {
         try{
             // 파일 읽기
             File file = new File(System.getProperty("user.dir")+"/data/project.json");
@@ -51,6 +54,109 @@ public class ProjectRepository {
             return mapper.readValue(file, mapType);
 
         }catch (IOException e ){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public Project searchProject(int projectId){
+        try{
+            // 파일 읽기
+            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+
+            // mapper class 지정
+            MapType mapType =
+                    mapper.getTypeFactory().constructMapType(Map.class, Integer.class, Project.class);
+
+            // projectMap 불러오기
+            Map<Integer, Project> projectMap = mapper.readValue(file, mapType);
+
+            return projectMap.get(projectId);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public Map<String, Backend> selectBackends(int projectId) {
+        try{
+            // 파일 읽기
+            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+
+            // mapper class 지정
+            MapType mapType =
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+
+            // project map 불러오기
+            Map<String, Project> projects = mapper.readValue(file, mapType);
+
+            return projects.get(String.valueOf(projectId)).getBackendMap();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public Backend searchBackend(int projectId, int serviceId) {
+        try{
+            // 파일 읽기
+            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+
+            // mapper class 지정
+            MapType mapType =
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+
+            // project map 불러오기
+            Map<String, Project> projects = mapper.readValue(file, mapType);
+
+            //
+            Map<String, Backend> backendMap = projects.get(String.valueOf(projectId)).getBackendMap();
+
+            return backendMap.get(String.valueOf(serviceId));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public Frontend searchFrontend(int projectId) {
+        try{
+            // 파일 읽기
+            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+
+            // mapper class 지정
+            MapType mapType =
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+
+            // project map 불러오기
+            Map<String, Project> projects = mapper.readValue(file, mapType);
+
+            return projects.get(String.valueOf(projectId)).getFrontend();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public Database searchDatabase(int projectId) {
+        try{
+            // 파일 읽기
+            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+
+            // mapper class 지정
+            MapType mapType =
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+
+            // project map 불러오기
+            Map<String, Project> projects = mapper.readValue(file, mapType);
+
+            return projects.get(String.valueOf(projectId)).getDatabase();
+        }catch (IOException e){
             e.printStackTrace();
         }
 
