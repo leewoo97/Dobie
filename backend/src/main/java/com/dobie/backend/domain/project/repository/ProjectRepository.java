@@ -38,7 +38,7 @@ public class ProjectRepository {
             mapper.writerWithDefaultPrettyPrinter()
                     .writeValue(file, projects);
         }catch (IOException e ){
-            e.printStackTrace();
+            e.getStackTrace();
         }
     }
 
@@ -54,7 +54,7 @@ public class ProjectRepository {
             return mapper.readValue(file, mapType);
 
         }catch (IOException e ){
-            e.printStackTrace();
+            e.getStackTrace();
         }
 
         return null;
@@ -74,7 +74,7 @@ public class ProjectRepository {
 
             return projectMap.get(projectId);
         } catch (IOException e){
-            e.printStackTrace();
+            e.getStackTrace();
         }
 
         return null;
@@ -94,7 +94,7 @@ public class ProjectRepository {
 
             return projects.get(String.valueOf(projectId)).getBackendMap();
         }catch (IOException e){
-            e.printStackTrace();
+            e.getStackTrace();
         }
 
         return null;
@@ -117,7 +117,7 @@ public class ProjectRepository {
 
             return backendMap.get(String.valueOf(serviceId));
         }catch (IOException e){
-            e.printStackTrace();
+            e.getStackTrace();
         }
 
         return null;
@@ -137,7 +137,7 @@ public class ProjectRepository {
 
             return projects.get(String.valueOf(projectId)).getFrontend();
         }catch (IOException e){
-            e.printStackTrace();
+            e.getStackTrace();
         }
 
         return null;
@@ -157,7 +157,7 @@ public class ProjectRepository {
 
             return projects.get(String.valueOf(projectId)).getDatabase();
         }catch (IOException e){
-            e.printStackTrace();
+            e.getStackTrace();
         }
 
         return null;
@@ -183,7 +183,7 @@ public class ProjectRepository {
                     .writeValue(file, projects);
 
         }catch (IOException e){
-            e.printStackTrace();
+            e.getStackTrace();
         }
     }
 }
