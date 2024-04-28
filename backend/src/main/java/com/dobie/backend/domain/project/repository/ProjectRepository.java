@@ -41,9 +41,13 @@ public class ProjectRepository {
 
     public Map<Integer, Project> getAllProjects() {
         try{
+            // 파일 읽기
             File file = new File(System.getProperty("user.dir")+"/data/project.json");
+
+            // mapper class 지정
             MapType mapType =
                     mapper.getTypeFactory().constructMapType(Map.class, Integer.class, Project.class);
+
             return mapper.readValue(file, mapType);
 
         }catch (IOException e ){
