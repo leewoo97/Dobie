@@ -19,8 +19,11 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
+    private int cnt_create = 1;
+
     public void createProject(ProjectRequestDto dto) {
-        projectRepository.createProject(dto);
+        Project project = new Project(cnt_create++, dto);
+        projectRepository.upsertProject(project);
     }
 
     public List<ProjectGetResponseDto> getAllProjects() {
@@ -34,7 +37,7 @@ public class ProjectService {
 
     public void updateProject(int projectId, ProjectRequestDto dto) {
         Project project = new Project(projectId, dto);
-        projectRepository.updateProject(project);
+        projectRepository.upsertProject(project);
     }
 
     public void deleteProject(int projectId) {

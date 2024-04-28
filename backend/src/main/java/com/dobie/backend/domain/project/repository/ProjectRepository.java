@@ -15,15 +15,23 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProjectRepository {
 
-    private int cnt_project = 1;
-
     private final ObjectMapper mapper;
-    public void createProject(ProjectRequestDto dto) {
+    public void upsertProject(Project project) {
         try{
+            // 파일 읽기
             File file = new File(System.getProperty("user.dir")+"/data/project.json");
-            Map<String, Project> projects = mapper.readValue(file, Map.class);
-            projects.put(String.valueOf(cnt_project), new Project(cnt_project, dto));
-            cnt_project++;
+
+            // mapper class 지정
+            MapType mapType =
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+
+            // project map 불러오기
+            Map<String, Project> projects = mapper.readValue(file, mapType);
+
+            // project 생성
+            projects.put(String.valueOf(project.getProjectId()), project);
+
+
             mapper.writerWithDefaultPrettyPrinter()
                     .writeValue(file, projects);
         }catch (IOException e ){
@@ -43,30 +51,6 @@ public class ProjectRepository {
         }
 
         return null;
-    }
-
-    public void updateProject(Project project) {
-        try{
-            // 파일 읽기
-            File file = new File(System.getProperty("user.dir")+"/data/project.json");
-
-            // mapper class 지정
-            MapType mapType =
-                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
-
-            // project map 불러오기
-            Map<String, Project> projects = mapper.readValue(file, mapType);
-
-            // project 수정
-            projects.put(String.valueOf(project.getProjectId()), project);
-
-            // json 파일 작성
-            mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(file, projects);
-
-        }catch (IOException e){
-            e.printStackTrace();
-        }
     }
 
     public void deleteProject(int projectId) {
