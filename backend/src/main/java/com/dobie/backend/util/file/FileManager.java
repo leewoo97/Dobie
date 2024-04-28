@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class fileManager {
+public class FileManager {
 
     public void saveFile(String path, String fileName, String contents) {
         try {

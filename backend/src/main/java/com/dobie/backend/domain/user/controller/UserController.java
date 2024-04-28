@@ -1,7 +1,7 @@
 package com.dobie.backend.domain.user.controller;
 
 import com.dobie.backend.domain.user.dto.UserDto;
-import com.dobie.backend.domain.user.service.UserJsonService;
+import com.dobie.backend.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
-public class UserJsonController {
+public class UserController {
 
-    private final UserJsonService userJsonService;
+    private final UserService userService;
 
-    @GetMapping("/get")
+    @GetMapping("")
     public ResponseEntity<?> getUserInfo() {
-        UserDto user = userJsonService.getUserInfo();
+        UserDto user = userService.getUserInfo();
         return new ResponseEntity<UserDto>(user, HttpStatus.OK);
     }
 
     @PostMapping("/update")
     public ResponseEntity<?> updateUserInfo(@RequestBody UserDto dto){
-        userJsonService.changeUserInfo(dto);
+        userService.changeUserInfo(dto);
         return new ResponseEntity<UserDto>(dto, HttpStatus.OK);
     }
 

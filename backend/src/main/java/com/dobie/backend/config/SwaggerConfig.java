@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,12 +34,20 @@ public class SwaggerConfig {
 
     // swagger 그룹 추가
     // 전체보기
-//    @Bean
-//    public GroupedOpenApi all() {
-//        return GroupedOpenApi.builder()
-//                .group("a. 전체")
-//                .pathsToMatch("/api/v1/**")
-//                .build();
-//    }
+    @Bean
+    public GroupedOpenApi all() {
+        return GroupedOpenApi.builder()
+                .group("a. 전체")
+                .pathsToMatch("/api/v1/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi dockerfile() {
+        return GroupedOpenApi.builder()
+                             .group("b. 도커파일")
+                             .pathsToMatch("/dockerfile/**")
+                             .build();
+    }
 
 }

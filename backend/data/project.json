@@ -1,0 +1,58 @@
+{
+  "1" : {
+    "projectId" : 1,
+    "projectName" : "test",
+    "git" : {
+      "gitType" : 1,
+      "gitUrl" : null,
+      "accessToken" : null
+    },
+    "backendMap" : { },
+    "frontend" : {
+      "serviceName" : null,
+      "language" : null,
+      "version" : null,
+      "framework" : null,
+      "path" : null,
+      "branch" : null,
+      "externalPort" : 0,
+      "internalPort" : 0,
+      "usingNginx" : false
+    },
+    "database" : {
+      "databaseType" : null,
+      "username" : null,
+      "password" : null,
+      "externalPort" : 0,
+      "internalPort" : 0
+    }
+  },
+  "2" : {
+    "projectId" : 2,
+    "projectName" : "test",
+    "git" : {
+      "gitType" : 1,
+      "gitUrl" : null,
+      "accessToken" : null
+    },
+    "backendMap" : { },
+    "frontend" : {
+      "serviceName" : null,
+      "language" : null,
+      "version" : null,
+      "framework" : null,
+      "path" : null,
+      "branch" : null,
+      "externalPort" : 0,
+      "internalPort" : 0,
+      "usingNginx" : false
+    },
+    "database" : {
+      "databaseType" : null,
+      "username" : null,
+      "password" : null,
+      "externalPort" : 0,
+      "internalPort" : 0
+    }
+  }
+}
