@@ -1,5 +1,6 @@
 package com.dobie.backend.domain.user.entity;
 
+import com.dobie.backend.domain.user.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,4 +15,9 @@ public class User {
 
     @JsonProperty
     private String password;
+
+    public User(UserDto dto) {
+        this.username = dto.getUsername();
+        this.password = dto.getPassword();
+    }
 }

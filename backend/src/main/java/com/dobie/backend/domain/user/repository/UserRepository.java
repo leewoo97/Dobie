@@ -1,8 +1,6 @@
 package com.dobie.backend.domain.user.repository;
 
-import com.dobie.backend.domain.user.dto.UserDto;
 import com.dobie.backend.domain.user.entity.User;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -12,7 +10,7 @@ import java.io.IOException;
 
 @Repository
 @RequiredArgsConstructor
-public class UserJsonRepository {
+public class UserRepository {
 
     private final ObjectMapper mapper;
 
@@ -27,14 +25,12 @@ public class UserJsonRepository {
         return null;
     }
 
-    public void updateUserInfo(UserDto dto){
+    public void updateUserInfo(User user){
         try{
             File file = new File(System.getProperty("user.dir")+"/data/user.json");
-//            ObjectNode userInfoNode = (ObjectNode) mapper.readTree(file);
-            JsonNode userInfoJson = mapper.convertValue(dto, JsonNode.class);
 
             mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(file, userInfoJson);
+                    .writeValue(file, user);
         }catch (IOException e ){
             e.printStackTrace();
         }
