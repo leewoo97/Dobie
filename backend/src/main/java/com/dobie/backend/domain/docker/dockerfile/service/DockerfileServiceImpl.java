@@ -9,7 +9,7 @@ public class DockerfileServiceImpl implements DockerfileService{
     FileManager fileManager = new FileManager();
 
     @Override
-    public void createSpringDockerfile(String projectName, String version, String path) {
+    public void createGradleDockerfile(String projectName, String version, String path) {
 
         StringBuilder sb = new StringBuilder();
         sb.append("FROM openjdk:").append(version).append("-slim\n");
@@ -21,6 +21,26 @@ public class DockerfileServiceImpl implements DockerfileService{
         sb.append("RUN --mount=type=cache,target=/root/.gradle ./gradlew clean build\n");
         sb.append("ARG JAR_FILE=build/libs/*.jar\n");
         sb.append("COPY ${JAR_FILE} app.jar\n");
+        sb.append("ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n");
+        String dockerfile = sb.toString();
+
+        // ec2 서버에서 깃클론하는 경로로 수정하기
+        String filePath = "~/home/" + projectName + path;
+        fileManager.saveFile(filePath, "Dockerfile", dockerfile);
+
+    }
+
+    @Override
+    public void createMavenDockerfile(String projectName, String version, String path) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("FROM openjdk:").append(version).append("-slim\n");
+        sb.append("RUN apt-get update && apt-get install -y maven\n");
+        sb.append("VOLUME /var/run/docker.sock\n");
+        sb.append("WORKDIR /app\n");
+        sb.append("COPY . /app\n");
+        sb.append("RUN mvn clean package -DskipTests\n");
+        sb.append("RUN cp target/*.jar app.jar\n");
         sb.append("ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n");
         String dockerfile = sb.toString();
 
@@ -46,6 +66,11 @@ public class DockerfileServiceImpl implements DockerfileService{
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "~/home/" + projectName + path;
         fileManager.saveFile(filePath, "Dockerfile", dockerfile);
+
+    }
+
+    @Override
+    public void createVueDockerfile(String projectName, String version, String path) {
 
     }
 
