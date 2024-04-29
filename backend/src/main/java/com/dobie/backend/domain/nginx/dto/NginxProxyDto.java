@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class NginxProxyDto {
     private String location;
-    private String proxyPass;
+    private String serviceName;
+    private String port;
 
 }
