@@ -2,7 +2,7 @@ package com.dobie.backend.domain.user.service;
 
 import com.dobie.backend.domain.user.dto.UserDto;
 import com.dobie.backend.domain.user.entity.User;
-import com.dobie.backend.domain.user.repository.UserJsonRepository;
+import com.dobie.backend.domain.user.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class UserJsonService {
+public class UserService {
 
     private final ObjectMapper mapper;
 
-    private final UserJsonRepository userJsonRepository;
+    private final UserRepository userRepository;
     public String getPrettyJsonString(JsonNode node) {
 
         try {
@@ -37,15 +37,15 @@ public class UserJsonService {
     }
 
     public UserDto getUserInfo() {
-        User user = userJsonRepository.getUserInfo();
-        UserDto dto = UserDto.builder()
+        User user = userRepository.getUserInfo();
+        return UserDto.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .build();
-        return dto;
     }
 
     public void changeUserInfo(UserDto dto) {
-        userJsonRepository.updateUserInfo(dto);
+        User user = new User(dto);
+        userRepository.updateUserInfo(user);
     }
 }

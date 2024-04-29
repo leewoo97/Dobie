@@ -29,4 +29,18 @@ public class ProjectController {
 
         return new ResponseEntity<ProjectRequestDto>(dto, HttpStatus.OK);
     }
+
+    @PutMapping("/update/{projectId}")
+    public ResponseEntity<?> updateProject(@PathVariable int projectId, @RequestBody ProjectRequestDto dto){
+        projectService.updateProject(projectId, dto);
+
+        return new ResponseEntity<ProjectRequestDto>(dto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{projectId}")
+    public  ResponseEntity<?> deleteProject(@PathVariable int projectId){
+        projectService.deleteProject(projectId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
