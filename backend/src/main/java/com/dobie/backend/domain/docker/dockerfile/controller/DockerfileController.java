@@ -24,7 +24,7 @@ public class DockerfileController {
     public ResponseEntity<?> springDockerfile(@RequestParam(name = "projectName") String projectName,
                                                @RequestParam(name = "version") String version,
                                                @RequestParam(name = "path") String path){
-        dockerfileService.createSpringDockerfile(projectName, version, path);
+        dockerfileService.createGradleDockerfile(projectName, version, path);
         return new ResponseEntity<String>("성공", HttpStatus.OK);
     }
 
