@@ -72,6 +72,23 @@ public class DockerfileServiceImpl implements DockerfileService{
     @Override
     public void createVueDockerfile(String projectName, String version, String path) {
 
+        StringBuilder sb = new StringBuilder();
+        sb.append("FROM node:").append(version).append("-alpine as build-stage\n");
+        sb.append("WORKDIR /app\n");
+        sb.append("COPY package*.json ./\n");
+        sb.append("RUN npm install\n");
+        sb.append("COPY . .\n");
+        sb.append("RUN npm run build\n");
+        sb.append("FROM node:20.11.0-alpine\n");
+        sb.append("WORKDIR /app\n");
+        sb.append("COPY --from=build-stage /app/dist /app\n");
+        sb.append("CMD [\"npx\", \"http-server\", \"-p\", \"5173\"]\n");
+        String dockerfile = sb.toString();
+
+        // ec2 서버에서 깃클론하는 경로로 수정하기
+        String filePath = "~/home/" + projectName + path;
+        fileManager.saveFile(filePath, "Dockerfile", dockerfile);
+
     }
 
 }
