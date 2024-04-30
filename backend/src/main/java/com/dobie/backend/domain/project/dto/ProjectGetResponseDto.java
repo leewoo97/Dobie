@@ -16,6 +16,9 @@ public class ProjectGetResponseDto {
     private int projectId;
     private String projectName;
 
+    private String projectDomain;
+    private boolean usingHttps;
+
     private GitGetResponseDto git;
     private Map<String, BackendGetResponseDto> backendMap;
     private FrontendGetResponseDto frontend;
@@ -24,6 +27,9 @@ public class ProjectGetResponseDto {
     public ProjectGetResponseDto(Project project){
         this.projectId = project.getProjectId();
         this.projectName = project.getProjectName();
+
+        this.projectDomain = project.getProjectDomain();
+        this.usingHttps = project.isUsingHttps();
 
         this.git = new GitGetResponseDto(project.getGit());
         this.backendMap = new HashMap<>();
