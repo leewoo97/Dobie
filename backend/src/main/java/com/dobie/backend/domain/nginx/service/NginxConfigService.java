@@ -1,17 +1,17 @@
 package com.dobie.backend.domain.nginx.service;
 
-import com.dobie.backend.domain.nginx.dto.NginxConfigGetResponseDto;
+import com.dobie.backend.domain.project.dto.NginxConfigDto;
 
 import java.io.IOException;
 
 public interface NginxConfigService {
-    String createReverseProxyNginxConfig(NginxConfigGetResponseDto nginxConfig);
+    void saveProxyNginxConfig(int projectId, String projectName);
 
-    String withHttpsConfig(NginxConfigGetResponseDto nginxConfig);
+    String withHttpsConfig(NginxConfigDto nginxConfig);
 
-    String withoutHttpsConfig(NginxConfigGetResponseDto nginxConfig);
+    String withoutHttpsConfig(NginxConfigDto nginxConfig);
 
-    void saveConfigFile(String path, String projectName) throws IOException;
+    void saveFrontNginxConfigFile(String path, String projectName) throws IOException;
 
     String createFrontNginxConfig();
 }
