@@ -1,0 +1,5 @@
+jwt:
+#  SECRET_KEY:값 넣어야 함!!
+  ACCESS_TIME: 900
+  REFRESH_TIME: 86400
+

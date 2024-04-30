@@ -1,6 +1,7 @@
 package com.dobie.backend.config;
 
 import com.dobie.backend.security.entrypoint.JwtAuthenticationEntryPoint;
+import com.dobie.backend.security.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,16 +18,18 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+//    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+//    private final TokenProvider tokenProvider;
 
-    @Bean
+    @Bean // PasswordEncoder는 BCryptPasswordEncoder를 사용
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+    @Bean//SecurityFilterChain에 Bean으로 등록하는 과정
     public SecurityFilterChain filterChain(HttpSecurity security) throws  Exception{
 
-        //csrf disable
+        // token을 사용하는 방식이기 때문에 csrf를 disable함
         security
                 .csrf((auth) -> auth.disable())
 //                .formLogin((auth) -> auth.disable()) // from 로그인 방식 disable
@@ -43,9 +46,9 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-config/**",
                                 "/swagger-resources/**"
-                                ).permitAll() //인증 없이 접근 허용
-//                        .requestMatchers("/admin").hasRole("ADMIN") //권한을 가진 사용자만 접근 허용
-//                        .anyRequest().authenticated()//로그인한 사용자만 접근 허용
+                                ).permitAll() // 문서 관련 경로는 인증 없이 접근 허용
+                        .requestMatchers("/admin/**").hasRole("ADMIN") //권한을 가진 사용자만 접근 허용
+                        .anyRequest().authenticated()//로그인한 사용자만 접근 허용
                 );
 
         //세션 설정
@@ -53,7 +56,8 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        security.exceptionHandling(handlingConfigurer -> {
+        security
+                .exceptionHandling(handlingConfigurer -> {
             handlingConfigurer.authenticationEntryPoint(jwtAuthenticationEntryPoint);
         });
 
