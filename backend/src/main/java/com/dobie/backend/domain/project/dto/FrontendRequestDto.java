@@ -18,6 +18,8 @@ public class FrontendRequestDto {
     private String path;
     private String branch;
 
+    private String location;
+
     private int externalPort;
     private int internalPort;
 

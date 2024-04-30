@@ -74,4 +74,33 @@ public class ProjectService {
     public void deleteProject(int projectId) {
         projectRepository.deleteProject(projectId);
     }
+
+    public NginxConfigDto getNginxConfigDto(int projectId){
+        // 프로젝트 찾기
+        Project project = projectRepository.searchProject(projectId);
+        
+        // NginxConfigDto 생성
+        NginxConfigDto dto = NginxConfigDto.builder()
+                .domain(project.getProjectDomain())
+                .usingHttps(project.isUsingHttps())
+                .sslCertificate("")
+                .sslCertificateKey("")
+                .build();
+        
+        // Proxy list 생성
+        List<NginxProxyDto> proxyList = new ArrayList<>();
+        
+        // backend -> proxy
+        project.getBackendMap().forEach((key, backend) -> {
+            proxyList.add(new NginxProxyDto(backend));
+        });
+        
+        // frontend -> proxy
+        proxyList.add(new NginxProxyDto(project.getFrontend()));
+        
+        // proxyList 저장
+        dto.setProxyList(proxyList);
+
+        return dto;
+    }
 }
