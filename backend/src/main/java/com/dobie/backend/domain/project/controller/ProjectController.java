@@ -43,4 +43,13 @@ public class ProjectController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/build/{projectId}")
+    public ResponseEntity<?> buildTotalProject(@PathVariable int projectId, @RequestBody ProjectRequestDto dto){
+//        projectService.buildTotalService(projectId, dto);
+        System.out.println("ㅎㅇㅎㅇ");
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
+
