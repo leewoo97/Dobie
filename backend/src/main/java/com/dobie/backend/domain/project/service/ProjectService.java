@@ -96,33 +96,41 @@ public class ProjectService {
         // git type 확인, gitLab인지 gitHub인지
         // 1이면 gitLab
         if (gitInfo.getGitType() == 1) {
-            // gitLab clone
-            commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
+            if (!commandService.checkIsCloned("/" + dto.getProjectName())) {
+                // gitLab clone
+                commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
+            }
         } else {
             // gitHub Clone
             commandService.gitClone(gitInfo.getGitUrl());
         }
 
+        System.out.println("깃 클론 끝");
+
         // dockerfile 생성
         // 백엔드
         Map<String, BackendRequestDto> backendInfo = dto.getBackendMap();
         backendInfo.forEach((key, value) -> {
-            if(value.getFramework() == "Spring"){
+            if (value.getFramework().equals("Spring")) {
                 dockerfileService.createGradleDockerfile(value.getServiceName(), value.getVersion(), value.getPath());
-            }else {
+            } else {
 
             }
         });
 
         // 프론트엔드
         FrontendRequestDto frontendInfo = dto.getFrontend();
-        if(frontendInfo.getFramework() == "React"){
-            dockerfileService.createReactDockerfile(frontendInfo.getServiceName(), frontendInfo.getVersion(), frontendInfo.getPath() );
+        if (frontendInfo.getFramework().equals("React")) {
+            dockerfileService.createReactDockerfile(frontendInfo.getServiceName(), frontendInfo.getVersion(), frontendInfo.getPath());
         }
+
+        System.out.println("dockerfile 생성 끝");
 
         // docker-compose 파일 생성
         ProjectGetResponseDto projectGetResponseDto = new ProjectGetResponseDto(project);
         dockerComposeService.createDockerComposeFile(projectGetResponseDto);
+
+        System.out.println("compose file 생성 끝");
     }
 
     // 프론트 개별 빌드
@@ -148,8 +156,8 @@ public class ProjectService {
         commandService.gitCheckout(frontendInfo.getPath(), frontendInfo.getBranch());
 
         // dockerfile
-        if(frontendInfo.getFramework() == "React"){
-            dockerfileService.createReactDockerfile(frontendInfo.getServiceName(), frontendInfo.getVersion(), frontendInfo.getPath() );
+        if (frontendInfo.getFramework() == "React") {
+            dockerfileService.createReactDockerfile(frontendInfo.getServiceName(), frontendInfo.getVersion(), frontendInfo.getPath());
         }
 
         // docker-compose
@@ -165,7 +173,7 @@ public class ProjectService {
         GitRequestDto gitInfo = dto.getGit();
         if (gitInfo.getGitType() == 1) {
             commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
-        }else {
+        } else {
             commandService.gitClone(gitInfo.getGitUrl());
         }
 
@@ -177,7 +185,7 @@ public class ProjectService {
 
             // dockerfile
             // home/projectName+path
-            if(value.getFramework() == "Spring"){
+            if (value.getFramework() == "Spring") {
                 dockerfileService.createGradleDockerfile(project.getProjectName(), value.getVersion(), value.getPath());
             }
         });
@@ -192,7 +200,7 @@ public class ProjectService {
         Project project = projectRepository.searchProject(projectId);
 
         // git clone 받으면 projectName으로 폴더가 생성되어 있을테니
-        String path = "/"+project.getProjectName();
+        String path = "/" + project.getProjectName();
         commandService.dockerComposeUp(path);
     }
 }
