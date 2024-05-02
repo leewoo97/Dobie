@@ -21,6 +21,8 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         dockercompose.append("version: \"3.8\"\n");
         dockercompose.append("services:\n");
 
+        System.out.println(projectGetResponseDto.getBackendMap());
+
         for (int i = 1; i <= projectGetResponseDto.getBackendMap().size(); i++) {
             BackendGetResponseDto backendGetResponseDto = projectGetResponseDto.getBackendMap().get(i);
             if (backendGetResponseDto.getFramework().equals("SpringBoot")) {

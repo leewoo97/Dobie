@@ -33,4 +33,19 @@ public class BackendGetResponseDto {
         this.externalPort = backend.getExternalPort();
         this.internalPort = backend.getInternalPort();
     }
+
+    @Override
+    public String toString() {
+        return "BackendGetResponseDto{" +
+                "serviceId=" + serviceId +
+                ", serviceName='" + serviceName + '\'' +
+                ", language='" + language + '\'' +
+                ", version='" + version + '\'' +
+                ", framework='" + framework + '\'' +
+                ", path='" + path + '\'' +
+                ", branch='" + branch + '\'' +
+                ", externalPort=" + externalPort +
+                ", internalPort=" + internalPort +
+                '}';
+    }
 }

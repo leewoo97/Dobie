@@ -33,4 +33,16 @@ public class ProjectGetResponseDto {
         this.frontend = new FrontendGetResponseDto(project.getFrontend());
         this.database = new DatabaseGetResponseDto(project.getDatabase());
     }
+
+    @Override
+    public String toString() {
+        return "ProjectGetResponseDto{" +
+                "projectId=" + projectId +
+                ", projectName='" + projectName + '\'' +
+                ", git=" + git +
+                ", backendMap=" + backendMap +
+                ", frontend=" + frontend +
+                ", database=" + database +
+                '}';
+    }
 }
