@@ -47,7 +47,6 @@ public class NginxConfigServiceImpl implements NginxConfigService{
         if (!new File(savePath).exists()) {
             new File(savePath).mkdirs(); //없으면 새로 만들기
         }
-
         //경로에 default.conf이름으로 파일 저장
         BufferedWriter writer = new BufferedWriter(new FileWriter((savePath+"/default.conf")));
         writer.write(createFrontNginxConfig()); //default.conf파일에 config 내용 저장
