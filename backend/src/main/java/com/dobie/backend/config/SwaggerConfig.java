@@ -23,11 +23,11 @@ public class SwaggerConfig {
                 .addServersItem(new Server().url("/"))
                 .addSecurityItem(new SecurityRequirement().addList("BearerAuth"))
                 .components(new Components()
-//                        .addSecuritySchemes("BearerAuth", new SecurityScheme()
-//                                .name("Authorization")
-//                                .type(SecurityScheme.Type.HTTP)
-//                                .scheme("Bearer")
-//                                .bearerFormat("JWT"))
+                        .addSecuritySchemes("BearerAuth", new SecurityScheme()
+                                .name("Authorization")
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("Bearer")
+                                .bearerFormat("JWT"))
                 );
     }
 
