@@ -14,40 +14,40 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     @Override
     public void createDockerComposeFile(ProjectGetResponseDto projectGetResponseDto) {
 
-//        boolean mysql = projectGetResponseDto.getDatabase() == null ? false : true;
-//        boolean redis = false;
-//
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("version: \"3.8\"\n");
-//        sb.append("services:\n");
-//
-//        for (int i = 1; i <= projectGetResponseDto.getBackendMap().size(); i++) {
-//            BackendGetResponseDto backendGetResponseDto = projectGetResponseDto.getBackendMap().get(i);
-//            if (backendGetResponseDto.getFramework().equals("SpringBoot")) {
-//                sb.append(createSpringDockerComposeFile(i, backendGetResponseDto.getPath(), backendGetResponseDto.getExternalPort(),
-//                                              backendGetResponseDto.getInternalPort(), mysql, redis,
-//                                              "databasename",
-//                                              projectGetResponseDto.getDatabase().getUsername(),
-//                                              projectGetResponseDto.getDatabase().getPassword()));
-//            } else if (backendGetResponseDto.getFramework().equals("Django")) {
-//
-//            }
-//        }
-//
-//        sb.append(createReactDockerComposeFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getFrontend().getExternalPort(), projectGetResponseDto.getFrontend().getInternalPort()));
+        boolean mysql = projectGetResponseDto.getDatabaseMap().containsKey("mysql");
+        boolean redis = projectGetResponseDto.getDatabaseMap().containsKey("redis");
+
+        StringBuilder dockercompose = new StringBuilder();
+        dockercompose.append("version: \"3.8\"\n");
+        dockercompose.append("services:\n");
+
+        for (int i = 1; i <= projectGetResponseDto.getBackendMap().size(); i++) {
+            BackendGetResponseDto backendGetResponseDto = projectGetResponseDto.getBackendMap().get(i);
+            if (backendGetResponseDto.getFramework().equals("SpringBoot")) {
+                dockercompose.append(createSpringDockerComposeFile(i, backendGetResponseDto.getPath(), backendGetResponseDto.getExternalPort(),
+                                              backendGetResponseDto.getInternalPort(), mysql, redis,
+                                              "databasename",
+                                              projectGetResponseDto.getDatabaseMap().get("mysql").getUsername(),
+                                              projectGetResponseDto.getDatabaseMap().get("mysql").getPassword()));
+            } else if (backendGetResponseDto.getFramework().equals("Django")) {
+
+            }
+        }
+
+        dockercompose.append(createReactDockerComposeFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getFrontend().getExternalPort(), projectGetResponseDto.getFrontend().getInternalPort()));
 
         // database 설정 추가
-//        for(int i = 1;i<=projectGetResponseDto.getDatabase().size();i++){
-//            DatabaseGetResponseDto databaseGetResponseDto = projectGetResponseDto.getDatabase().get(i);
-//            if(databaseGetResponseDto.getDatabaseType().equals("mysql")){
-//                sb.append(createMysqlDockerComposeFile(databaseGetResponseDto.getName(), databaseGetResponseDto.getUsername(), databaseGetResponseDto.getPassword(), databaseGetResponseDto.getExternalPort(), databaseGetResponseDto.getInternalPort()));
-//            } else if(databaseGetResponseDto.getDatabaseType().equals("redis")){
-//                sb.append(createRedisDockerComposeFile(databaseGetResponseDto.getExternalPort(), databaseGetResponseDto.getInternalPort()));
-//            }
-//        }
+        for(int i = 1;i<=projectGetResponseDto.getDatabaseMap().size();i++){
+            DatabaseGetResponseDto databaseGetResponseDto = projectGetResponseDto.getDatabaseMap().get(i);
+            if(databaseGetResponseDto.getDatabaseType().equals("mysql")){
+                dockercompose.append(createMysqlDockerComposeFile(databaseGetResponseDto.getDatabaseName(), databaseGetResponseDto.getUsername(), databaseGetResponseDto.getPassword(), databaseGetResponseDto.getExternalPort(), databaseGetResponseDto.getInternalPort()));
+            } else if(databaseGetResponseDto.getDatabaseType().equals("redis")){
+                dockercompose.append(createRedisDockerComposeFile(databaseGetResponseDto.getExternalPort(), databaseGetResponseDto.getInternalPort()));
+            }
+        }
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
-        String filePath = "~/" + projectGetResponseDto.getProjectName();
+        String filePath = "/" + projectGetResponseDto.getProjectName();
         fileManager.saveFile(filePath, "docker-compose.yml", dockercompose.toString());
 
     }
