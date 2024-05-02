@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,8 +20,8 @@ public class ProjectController {
 
     @GetMapping("/")
     public ResponseEntity<?> getAllProjects(){
-        List<ProjectGetResponseDto> list = projectService.getAllProjects();
-        return new ResponseEntity<List<ProjectGetResponseDto>>(list, HttpStatus.OK);
+        Map<String, ProjectGetResponseDto> map = projectService.getAllProjects();
+        return new ResponseEntity<Map<String, ProjectGetResponseDto>>(map, HttpStatus.OK);
     }
 
     @PostMapping("/create")
@@ -31,14 +32,14 @@ public class ProjectController {
     }
 
     @PutMapping("/update/{projectId}")
-    public ResponseEntity<?> updateProject(@PathVariable int projectId, @RequestBody ProjectRequestDto dto){
+    public ResponseEntity<?> updateProject(@PathVariable String projectId, @RequestBody ProjectRequestDto dto){
         projectService.updateProject(projectId, dto);
 
         return new ResponseEntity<ProjectRequestDto>(dto, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{projectId}")
-    public  ResponseEntity<?> deleteProject(@PathVariable int projectId){
+    public  ResponseEntity<?> deleteProject(@PathVariable String projectId){
         projectService.deleteProject(projectId);
 
         return new ResponseEntity<>(HttpStatus.OK);

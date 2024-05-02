@@ -50,14 +50,14 @@ public class ProjectRepository {
         }
     }
 
-    public Map<Integer, Project> selectProjects() {
+    public Map<String, Project> selectProjects() {
         try{
             // 파일 읽기
             File file = new File(FILE_PATH);
 
             // mapper class 지정
             MapType mapType =
-                    mapper.getTypeFactory().constructMapType(Map.class, Integer.class, Project.class);
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
 
             return mapper.readValue(file, mapType);
 
@@ -68,17 +68,17 @@ public class ProjectRepository {
         return null;
     }
 
-    public Project searchProject(int projectId){
+    public Project searchProject(String projectId){
         try{
             // 파일 읽기
             File file = new File(FILE_PATH);
 
             // mapper class 지정
             MapType mapType =
-                    mapper.getTypeFactory().constructMapType(Map.class, Integer.class, Project.class);
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
 
             // projectMap 불러오기
-            Map<Integer, Project> projectMap = mapper.readValue(file, mapType);
+            Map<String, Project> projectMap = mapper.readValue(file, mapType);
 
             return projectMap.get(projectId);
         } catch (IOException e){
@@ -88,7 +88,7 @@ public class ProjectRepository {
         return null;
     }
 
-    public Map<String, Backend> selectBackends(int projectId) {
+    public Map<String, Backend> selectBackends(String projectId) {
         try{
             // 파일 읽기
             File file = new File(FILE_PATH);
@@ -100,7 +100,7 @@ public class ProjectRepository {
             // project map 불러오기
             Map<String, Project> projects = mapper.readValue(file, mapType);
 
-            return projects.get(String.valueOf(projectId)).getBackendMap();
+            return projects.get(projectId).getBackendMap();
         }catch (IOException e){
             e.getStackTrace();
         }
@@ -108,7 +108,7 @@ public class ProjectRepository {
         return null;
     }
 
-    public Backend searchBackend(int projectId, int serviceId) {
+    public Backend searchBackend(String projectId, String serviceId) {
         try{
             // 파일 읽기
             File file = new File(FILE_PATH);
@@ -121,9 +121,9 @@ public class ProjectRepository {
             Map<String, Project> projects = mapper.readValue(file, mapType);
 
             //
-            Map<String, Backend> backendMap = projects.get(String.valueOf(projectId)).getBackendMap();
+            Map<String, Backend> backendMap = projects.get(projectId).getBackendMap();
 
-            return backendMap.get(String.valueOf(serviceId));
+            return backendMap.get(serviceId);
         }catch (IOException e){
             e.getStackTrace();
         }
@@ -131,7 +131,7 @@ public class ProjectRepository {
         return null;
     }
 
-    public Frontend searchFrontend(int projectId) {
+    public Frontend searchFrontend(String projectId) {
         try{
             // 파일 읽기
             File file = new File(FILE_PATH);
@@ -143,7 +143,7 @@ public class ProjectRepository {
             // project map 불러오기
             Map<String, Project> projects = mapper.readValue(file, mapType);
 
-            return projects.get(String.valueOf(projectId)).getFrontend();
+            return projects.get(projectId).getFrontend();
         }catch (IOException e){
             e.getStackTrace();
         }
@@ -151,7 +151,26 @@ public class ProjectRepository {
         return null;
     }
 
-    public Database searchDatabase(int projectId) {
+    public Map<String, Database> selectDatabases(String projectId){
+        try {
+            // 파일 읽기
+            File file = new File(FILE_PATH);
+
+            // mapper class 지정
+            MapType mapType =
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+
+            // project map 불러오기
+            Map<String, Project> projects = mapper.readValue(file, mapType);
+
+            return projects.get(projectId).getDatabaseMap();
+        }catch (IOException e){
+            e.getStackTrace();
+        }
+        return null;
+    }
+
+    public Database searchDatabase(String projectId, String databaseId) {
         try{
             // 파일 읽기
             File file = new File(FILE_PATH);
@@ -163,7 +182,8 @@ public class ProjectRepository {
             // project map 불러오기
             Map<String, Project> projects = mapper.readValue(file, mapType);
 
-            return projects.get(String.valueOf(projectId)).getDatabase();
+            return projects.get(projectId).getDatabaseMap()
+                    .get(databaseId);
         }catch (IOException e){
             e.getStackTrace();
         }
@@ -171,7 +191,7 @@ public class ProjectRepository {
         return null;
     }
 
-    public void deleteProject(int projectId) {
+    public void deleteProject(String projectId) {
         try{
             // 파일 읽기
             File file = new File(FILE_PATH);
@@ -184,7 +204,7 @@ public class ProjectRepository {
             Map<String, Project> projects = mapper.readValue(file, mapType);
 
             // project 삭제
-            projects.remove(String.valueOf(projectId));
+            projects.remove(projectId);
 
             // json 파일 작성
             mapper.writerWithDefaultPrettyPrinter()

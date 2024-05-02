@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,28 +19,26 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    private int cnt_create = 1;
-
     public void createProject(ProjectRequestDto dto) {
-        Project project = new Project(cnt_create++, dto);
+        Project project = new Project(UUID.randomUUID().toString(), dto);
         projectRepository.upsertProject(project);
     }
 
-    public List<ProjectGetResponseDto> getAllProjects() {
-        Map<Integer, Project> map = projectRepository.selectProjects();
-        List<ProjectGetResponseDto> list = new ArrayList<>();
+    public Map<String, ProjectGetResponseDto> getAllProjects() {
+        Map<String, Project> map = projectRepository.selectProjects();
+        Map<String, ProjectGetResponseDto> resultMap = new HashMap<>();
         map.forEach((key,value) ->{
-            list.add(new ProjectGetResponseDto(value));
+            resultMap.put(key, new ProjectGetResponseDto(value));
         });
-        return list;
+        return resultMap;
     }
 
-    public ProjectGetResponseDto getProject(int projectId){
+    public ProjectGetResponseDto getProject(String projectId){
         Project project = projectRepository.searchProject(projectId);
         return new ProjectGetResponseDto(project);
     }
 
-    public List<BackendGetResponseDto> getAllBackends(int projectId){
+    public List<BackendGetResponseDto> getAllBackends(String projectId){
         Map<String, Backend> backendMap = projectRepository.selectBackends(projectId);
         List<BackendGetResponseDto> list = new ArrayList<>();
         backendMap.forEach((key, value) ->{
@@ -51,27 +47,36 @@ public class ProjectService {
         return list;
     }
 
-    public BackendGetResponseDto getBackend(int projectId, int serviceId){
+    public BackendGetResponseDto getBackend(String projectId, String serviceId){
         Backend backend = projectRepository.searchBackend(projectId, serviceId);
         return new BackendGetResponseDto(backend);
     }
 
-    public FrontendGetResponseDto getFrontend(int projectId){
+    public FrontendGetResponseDto getFrontend(String projectId){
         Frontend frontend = projectRepository.searchFrontend(projectId);
         return new FrontendGetResponseDto(frontend);
     }
 
-    public DatabaseGetResponseDto getDatabase(int projectId){
-        Database database = projectRepository.searchDatabase(projectId);
+    public DatabaseGetResponseDto getDatabase(String projectId, String databaseId){
+        Database database = projectRepository.searchDatabase(projectId, databaseId);
         return new DatabaseGetResponseDto(database);
     }
 
-    public void updateProject(int projectId, ProjectRequestDto dto) {
+    public Map<String, DatabaseGetResponseDto> getAllDatabases(String projectId){
+        Map<String, Database> databaseMap = projectRepository.selectDatabases(projectId);
+        Map<String, DatabaseGetResponseDto> dtoMap = new HashMap<>();
+        databaseMap.forEach((key, value) -> {
+            dtoMap.put(key, new DatabaseGetResponseDto(value));
+        });
+        return dtoMap;
+    }
+
+    public void updateProject(String projectId, ProjectRequestDto dto) {
         Project project = new Project(projectId, dto);
         projectRepository.upsertProject(project);
     }
 
-    public void deleteProject(int projectId) {
+    public void deleteProject(String projectId) {
         projectRepository.deleteProject(projectId);
     }
 }

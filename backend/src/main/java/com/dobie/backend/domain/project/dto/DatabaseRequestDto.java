@@ -9,6 +9,10 @@ import lombok.*;
 @AllArgsConstructor
 public class DatabaseRequestDto {
     private String databaseType;
+    private String databaseName;
+
+    private String schemaPath;
+
     private String username;
     private String password;
 
