@@ -1,11 +1,15 @@
 package com.dobie.backend.domain.docker.dockercompose.service;
 
 import com.dobie.backend.domain.project.dto.BackendGetResponseDto;
+import com.dobie.backend.domain.project.dto.DatabaseGetResponseDto;
 import com.dobie.backend.domain.project.dto.ProjectGetResponseDto;
+import com.dobie.backend.util.file.FileManager;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DockerComposeServiceImpl implements DockerComposeService {
+
+    FileManager fileManager = new FileManager();
 
     @Override
     public void createDockerComposeFile(ProjectGetResponseDto projectGetResponseDto) {
@@ -33,6 +37,18 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 //        sb.append(createReactDockerComposeFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getFrontend().getExternalPort(), projectGetResponseDto.getFrontend().getInternalPort()));
 
         // database 설정 추가
+//        for(int i = 1;i<=projectGetResponseDto.getDatabase().size();i++){
+//            DatabaseGetResponseDto databaseGetResponseDto = projectGetResponseDto.getDatabase().get(i);
+//            if(databaseGetResponseDto.getDatabaseType().equals("mysql")){
+//                sb.append(createMysqlDockerComposeFile(databaseGetResponseDto.getName(), databaseGetResponseDto.getUsername(), databaseGetResponseDto.getPassword(), databaseGetResponseDto.getExternalPort(), databaseGetResponseDto.getInternalPort()));
+//            } else if(databaseGetResponseDto.getDatabaseType().equals("redis")){
+//                sb.append(createRedisDockerComposeFile(databaseGetResponseDto.getExternalPort(), databaseGetResponseDto.getInternalPort()));
+//            }
+//        }
+
+        // ec2 서버에서 깃클론하는 경로로 수정하기
+        String filePath = "~/" + projectGetResponseDto.getProjectName();
+        fileManager.saveFile(filePath, "docker-compose.yml", dockercompose.toString());
 
     }
 

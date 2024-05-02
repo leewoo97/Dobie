@@ -44,4 +44,18 @@ public class ProjectController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/build/{projectId}")
+    public ResponseEntity<?> buildTotalProject(@PathVariable int projectId, @RequestBody ProjectRequestDto dto){
+        projectService.buildTotalService(projectId, dto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("/build/{projectId}")
+    public ResponseEntity<?> getTotalBuild(@PathVariable int projectId){
+        System.out.println("연결확인용 컨트롤러");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
+
