@@ -2,7 +2,7 @@ import { build } from "../api/project/Project";
 
 export default function Test() {
   const handleTest = async () => {
-    const projectId = 1;
+    const projectId = "b87cb3f2-a074-4ac2-a5c4-d1c40389b278";
     const object = {
       projectName: "test",
       git: {
@@ -15,7 +15,7 @@ export default function Test() {
           serviceName: "backend",
           language: "java",
           version: "17",
-          framework: "Spring",
+          framework: "SpringBoot",
           path: "/backend",
           branch: "master",
           externalPort: 8089,
@@ -33,7 +33,7 @@ export default function Test() {
         internalPort: 3000,
         usingNginx: false,
       },
-      database: {},
+      databaseMap: {},
     };
 
     console.log("보내는거", projectId, object);

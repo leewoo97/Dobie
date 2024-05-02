@@ -1,2 +1,70 @@
 {
+  "6bacca17-cd4e-4c15-8a8d-329e0ead6d82" : {
+    "projectId" : "6bacca17-cd4e-4c15-8a8d-329e0ead6d82",
+    "projectName" : "test",
+    "git" : {
+      "gitType" : 1,
+      "gitUrl" : "https://lab.ssafy.com/o54711254/test.git",
+      "accessToken" : "dQgja5Wxxrc6xvQfTHGr"
+    },
+    "backendMap" : {
+      "1" : {
+        "serviceId" : "4999e52f-6539-4d9b-b573-1620622260f0",
+        "serviceName" : "backend",
+        "language" : "java",
+        "version" : "17",
+        "framework" : "Spring",
+        "path" : "/test/backend",
+        "branch" : "master",
+        "externalPort" : 8080,
+        "internalPort" : 8080
+      }
+    },
+    "frontend" : {
+      "serviceName" : "frontend",
+      "language" : "node",
+      "version" : "20.11",
+      "framework" : "react",
+      "path" : "/test/frontend",
+      "branch" : "/main",
+      "externalPort" : 3000,
+      "internalPort" : 3000,
+      "usingNginx" : false
+    },
+    "databaseMap" : { }
+  },
+  "b87cb3f2-a074-4ac2-a5c4-d1c40389b278" : {
+    "projectId" : "b87cb3f2-a074-4ac2-a5c4-d1c40389b278",
+    "projectName" : "test",
+    "git" : {
+      "gitType" : 1,
+      "gitUrl" : "https://lab.ssafy.com/o54711254/test.git",
+      "accessToken" : "dQgja5Wxxrc6xvQfTHGr"
+    },
+    "backendMap" : {
+      "1" : {
+        "serviceId" : "96391be4-55d8-4ae2-a359-4ab60aa73634",
+        "serviceName" : "backend",
+        "language" : "java",
+        "version" : "17",
+        "framework" : "Spring",
+        "path" : "/test/backend",
+        "branch" : "master",
+        "externalPort" : 8080,
+        "internalPort" : 8080
+      }
+    },
+    "frontend" : {
+      "serviceName" : "frontend",
+      "language" : "node",
+      "version" : "20.11",
+      "framework" : "react",
+      "path" : "/test/frontend",
+      "branch" : "/main",
+      "externalPort" : 3000,
+      "internalPort" : 3000,
+      "usingNginx" : false
+    },
+    "databaseMap" : { }
+  }
 }
