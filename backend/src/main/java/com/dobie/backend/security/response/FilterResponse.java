@@ -48,4 +48,11 @@ public class FilterResponse {
                 "액세스 토큰이 만료되었습니다. 새로운 액세스 토큰을 발급받으세요.", Optional.of("REFRESH_TOKEN"));
     }
 
+    //로그인 요청 메서드
+    public void sendLoginRequiredResponse(HttpServletResponse response) throws IOException {
+        log.warn("Service requires login.");
+        sendJsonResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "FAILED",
+                "해당 서비스는 로그인이 필요합니다. 로그인 해주십시오.", Optional.empty());
+    }
+
 }

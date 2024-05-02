@@ -21,7 +21,7 @@ public class TokenManager {
     private final int ACCESS_TOKEN_TIME; // 액세스 토큰 유효 시간
     @Getter
     private final int REFRESH_TOKEN_TIME; // 리프레시 토큰 유효 시간
-    private final String dobieisfree; // 시크릿 키(jwt 서명하는데 사용되는 비밀키)
+    private final String dobieisfreedobieisfreedobieisfree; // 시크릿 키(jwt 서명하는데 사용되는 비밀키)
     private Key key; // 암호화 키(JWT 서명을 생성하고 검증하는데 실제로 사용되는 암호화 키)
 
     //@Value는 application-jwt.yaml(설정파일)의 ACCESS_TIME,REFRESH_TIME,SECRET_KEY라는 지정된 값을 자바 코드 내(@Value 어노테이션이 쓰인 클래스)의 변수에 자동으로 주입하는 역할을 수행함
@@ -30,10 +30,12 @@ public class TokenManager {
                          @Value("${jwt.SECRET_KEY}") final String SECRET_KEY) {// 토큰 서명에 사용되는 비밀 키
         this.ACCESS_TOKEN_TIME = ACCESS_TOKEN_TIME;
         this.REFRESH_TOKEN_TIME = REFRESH_TOKEN_TIME;
-        this.dobieisfree = SECRET_KEY;
+        this.dobieisfreedobieisfreedobieisfree = SECRET_KEY;
+        byte[] keyBytes = Base64.getDecoder().decode(dobieisfreedobieisfreedobieisfree);
+        System.out.println("Key length in bytes: " + keyBytes.length);
+
         //키 생성: 인코딩된 dobieisfree(SECRET_KEY)를 Base64 디코딩하여, JWT 서명에 사용할 암호화키로 변환함
-        this.key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(this.dobieisfree));
-//        System.out.println(this.key);
+        this.key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(this.dobieisfreedobieisfreedobieisfree));
     }
     //TokenInfo 객체 생성(객체에 액세스 토큰과 리프레시 토큰이 포함되어 있음)
     public TokenInfo generateTokenInfo(String username) {
