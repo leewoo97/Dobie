@@ -6,7 +6,7 @@ public interface DockerComposeService {
 
     void createDockerComposeFile(ProjectGetResponseDto projectGetResponseDto);
 
-    String createSpringDockerComposeFile(int seq, String path, int externalPort, int internalPort, boolean mysql, boolean redis, String databaseName, String username, String password);
+    String createSpringDockerComposeFile(String seq, String path, int externalPort, int internalPort, boolean mysql, boolean redis, String databaseName, String username, String password);
 
     String createReactDockerComposeFile(String path, int externalPort, int internalPort);
 

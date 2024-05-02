@@ -23,10 +23,10 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
         System.out.println(projectGetResponseDto.getBackendMap());
 
-        for (int i = 1; i <= projectGetResponseDto.getBackendMap().size(); i++) {
-            BackendGetResponseDto backendGetResponseDto = projectGetResponseDto.getBackendMap().get(i);
+        for (String backendSeq : projectGetResponseDto.getBackendMap().keySet()) {
+            BackendGetResponseDto backendGetResponseDto = projectGetResponseDto.getBackendMap().get(backendSeq);
             if (backendGetResponseDto.getFramework().equals("SpringBoot")) {
-                dockercompose.append(createSpringDockerComposeFile(i, backendGetResponseDto.getPath(), backendGetResponseDto.getExternalPort(),
+                dockercompose.append(createSpringDockerComposeFile(backendSeq, backendGetResponseDto.getPath(), backendGetResponseDto.getExternalPort(),
                                               backendGetResponseDto.getInternalPort(), mysql, redis,
                                               "databasename",
                                               projectGetResponseDto.getDatabaseMap().get("mysql").getUsername(),
@@ -39,8 +39,8 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         dockercompose.append(createReactDockerComposeFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getFrontend().getExternalPort(), projectGetResponseDto.getFrontend().getInternalPort()));
 
         // database 설정 추가
-        for(int i = 1;i<=projectGetResponseDto.getDatabaseMap().size();i++){
-            DatabaseGetResponseDto databaseGetResponseDto = projectGetResponseDto.getDatabaseMap().get(i);
+        for(String databaseSeq : projectGetResponseDto.getDatabaseMap().keySet()){
+            DatabaseGetResponseDto databaseGetResponseDto = projectGetResponseDto.getDatabaseMap().get(databaseSeq);
             if(databaseGetResponseDto.getDatabaseType().equals("mysql")){
                 dockercompose.append(createMysqlDockerComposeFile(databaseGetResponseDto.getDatabaseName(), databaseGetResponseDto.getUsername(), databaseGetResponseDto.getPassword(), databaseGetResponseDto.getExternalPort(), databaseGetResponseDto.getInternalPort()));
             } else if(databaseGetResponseDto.getDatabaseType().equals("redis")){
@@ -55,7 +55,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     }
 
     @Override
-    public String createSpringDockerComposeFile(int seq, String path, int externalPort, int internalPort, boolean mysql,
+    public String createSpringDockerComposeFile(String seq, String path, int externalPort, int internalPort, boolean mysql,
                                                 boolean redis, String databaseName, String username, String password) {
 
         StringBuilder sb = new StringBuilder();
