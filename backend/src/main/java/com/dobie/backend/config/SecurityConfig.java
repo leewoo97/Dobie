@@ -2,6 +2,8 @@ package com.dobie.backend.config;
 
 import com.dobie.backend.security.entrypoint.JwtAuthenticationEntryPoint;
 import com.dobie.backend.security.filter.JwtAuthenticationFilter;
+import com.dobie.backend.security.filter.RefreshTokenRequestFilter;
+import com.dobie.backend.security.filter.TokenExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,13 +13,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor //Lombok라이브러리의 어노테이션. final또는 @NonNull이 붙은 모든 필드에 대해 생성자 자동 생성 -> 의존성 주입 편리하게 수행
 public class SecurityConfig {
 
+    private final RefreshTokenRequestFilter refreshTokenRequestFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final TokenExceptionFilter tokenExceptionFilter;
 //    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 //    private final TokenProvider tokenProvider;
 
@@ -55,6 +61,13 @@ public class SecurityConfig {
         security
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        security
+                .addFilterBefore(refreshTokenRequestFilter,
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(tokenExceptionFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
         security
                 .exceptionHandling(handlingConfigurer -> {

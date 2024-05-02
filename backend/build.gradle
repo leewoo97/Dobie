@@ -59,6 +59,8 @@ dependencies {
 	//spring-boot
 	implementation platform('org.springframework.boot:spring-boot-dependencies:3.2.3')
 
+
+
 }
 
 tasks.named('test') {

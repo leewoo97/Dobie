@@ -44,7 +44,7 @@ public class TokenManager {
                 .build(); //필요한 토큰들을 생성하고 이를 TokenInfo 객체에 담아 반환
     }
     // 액세스 토큰을 생성
-    private String createAccessToken(String username) {
+    public String createAccessToken(String username) {
         return Jwts.builder()
                 .setSubject(username)// 토큰의 주체로 username 설정
                 .setExpiration(new Date(
@@ -53,7 +53,7 @@ public class TokenManager {
                 .compact();// 생성된 JWT를 문자열로 압축
     }
     // 리프레시 토큰을 생성
-    private String createRefreshToken() {
+    public String createRefreshToken() {
         return Jwts.builder()
                 .setExpiration(new Date(
                         System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(REFRESH_TOKEN_TIME)))// 토큰의 만료 시간 설정

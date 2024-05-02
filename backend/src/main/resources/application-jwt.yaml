@@ -1,5 +1,5 @@
 jwt:
-#  SECRET_KEY:값 넣어야 함!!
+  SECRET_KEY: ZG9iaWVpc2ZyZWU=
   ACCESS_TIME: 900
   REFRESH_TIME: 86400
 

@@ -13,11 +13,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
 // HTTP 요청을 가로채 JWT의 유효성을 검사하고, 유효한 경우 사용자의 인증 정보를 SecurityContext에 설정하는 필터
@@ -59,7 +64,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         boolean accessTokenValid = (accessToken != null) && tokenManager.validateToken(accessToken);// 액세스 토큰의 유효성 검사
         boolean refreshTokenValid = (refreshToken != null) && tokenManager.validateToken(refreshToken);// 리프레시 토큰의 유효성 검사
 
-        String
+        String username = tokenManager.extractUsername(accessToken);
+
         //accessToken, refreshToken 모두 유효하지 않을 때, 클라이언트에게 다시 로그인하도록 요청 응답 보냄
         if (!accessTokenValid && !refreshTokenValid) {
             log.warn("access_token_valid={}, refresh_token_valid={}, action={}, status={}",
@@ -68,8 +74,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         //accessToken이 만료되었지만 refreshToken은 유효한 경우, 클라이언트에게 새로운 accessToken을 발급받을 수 있도록 유도하는 응답을 보냄
         else if (!accessTokenValid) {
-            log.info("access_token_valid={}, refresh_token_valid={}, action={},status={}",
-                    false, true, "ISSUE_NEW_TOKEN","ACCESS_TOKEN_EXPIRED");
+            log.info("access_token_valid={}, refresh_token_valid={}, action={}, username={}, status={}",
+                    false, true, "ISSUE_NEW_TOKEN",username,"ACCESS_TOKEN_EXPIRED");
             filterResponse.sendTokenRefreshRequest(response);
         }
         //accessToken이 유효하여 인증에 성공한 경우 (refreshToken의 유효성은 이 시나리오에서는 직접적인 영향을 주지 않음)
@@ -78,9 +84,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String action = refreshTokenValid ? "CONTINUE_WITH_REQUEST" : "CONTINUE_WITH_EXPIRED_REFRESH";
             String status = refreshTokenValid ? "BOTH_TOKENS_VALID" : "REFRESH_TOKEN_EXPIRED";
             log.info("access_token_valid={}, refresh_token_valid" +
-                            "={}, action={}, status={}",
-                    true, refreshTokenValid, action, status);
-            setAuthentication(request); //액세스 토큰이 유효하면 보안 컨텍스트에 인증 정보를 설정함
+                            "={}, action={}, username={}, status={}",
+                    true, refreshTokenValid, action, username, status);
+            setAuthentication(username, request); //액세스 토큰이 유효하면 보안 컨텍스트에 인증 정보를 설정함
             filterChain.doFilter(request, response);//요청을 다음 필터 체인으로 전달
         }
     }
@@ -89,7 +95,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return filterPaths.values().stream()
                 .anyMatch(pattern -> pathMatcher.match(pattern, path));
     }
-
-
+    //사용자가 인증된 상태임을 시스템에 등록함
+    private void setAuthentication(String username, HttpServletRequest request) {
+        // 이메일 주소를 기반으로 UsernamePasswordAuthenticationToken 생성
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(
+                        username, // 주체
+                        "", // 자격증명, 비밀번호 등의 민감 정보는 여기에 포함하지 않음
+                        Collections.singleton(new SimpleGrantedAuthority("ADMIN")) // 사용자 권한 설정
+                );
+        // 요청 세부 정보를 인증 객체에 설정
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        // SecurityContext에 인증 객체를 저장하여, 이 후 요청에서 사용자가 인증된 상태임을 확인할 수 있음
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
 
 }
