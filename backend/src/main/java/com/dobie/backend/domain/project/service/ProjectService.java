@@ -93,7 +93,7 @@ public class ProjectService {
 
     // 전체 프로젝트(main 브랜치에서 한번에 관리) 빌드 메서드
     // 사실상 dockerfile이랑 compose file 넣어놓는 용도
-    public void buildTotalService(int projectId, ProjectRequestDto dto) {
+    public void buildTotalService(String projectId, ProjectRequestDto dto) {
         Project project = projectRepository.searchProject(projectId);
 
         // git clone
@@ -138,7 +138,7 @@ public class ProjectService {
     }
 
     // 프론트 개별 빌드
-    void buildFrontService(int projectId, ProjectRequestDto dto) {
+    void buildFrontService(String projectId, ProjectRequestDto dto) {
 
         Project project = projectRepository.searchProject(projectId);
 
@@ -170,7 +170,7 @@ public class ProjectService {
     }
 
     // 백엔드 개별 빌드
-    void buildBackService(int projectId, ProjectRequestDto dto) {
+    void buildBackService(String projectId, ProjectRequestDto dto) {
 
         Project project = projectRepository.searchProject(projectId);
 
@@ -200,7 +200,7 @@ public class ProjectService {
     }
 
     // 프로젝트 통째로 실행한다 했을때
-    void runProject(int projectId) {
+    void runProject(String projectId) {
         Project project = projectRepository.searchProject(projectId);
 
         // git clone 받으면 projectName으로 폴더가 생성되어 있을테니
