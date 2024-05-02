@@ -15,5 +15,5 @@ public class ProjectRequestDto {
     private GitRequestDto git;
     private Map<String, BackendRequestDto> backendMap;
     private FrontendRequestDto frontend;
-    private DatabaseRequestDto database;
+    private Map<String, DatabaseRequestDto> databaseMap;
 }

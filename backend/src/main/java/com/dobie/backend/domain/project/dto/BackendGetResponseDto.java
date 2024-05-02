@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BackendGetResponseDto {
-    private int serviceId;
+    private String serviceId;
     private String serviceName;
 
     private String language;

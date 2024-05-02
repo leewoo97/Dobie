@@ -9,7 +9,13 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DatabaseGetResponseDto {
+    private String databaseId;
+
     private String databaseType;
+    private String databaseName;
+
+    private String schemaPath;
+
     private String username;
     private String password;
 
@@ -17,6 +23,8 @@ public class DatabaseGetResponseDto {
     private int internalPort;
     public DatabaseGetResponseDto(Database database) {
         this.databaseType = database.getDatabaseType();
+        this.databaseName = database.getDatabaseName();
+        this.schemaPath = database.getSchemaPath();
         this.username = database.getUsername();
         this.password = database.getPassword();
         this.externalPort = database.getExternalPort();
