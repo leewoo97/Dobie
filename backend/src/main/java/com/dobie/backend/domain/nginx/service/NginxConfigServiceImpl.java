@@ -92,6 +92,7 @@ public class NginxConfigServiceImpl implements NginxConfigService{
             sb.append("        proxy_set_header X-Forwarded-Proto $scheme;\n");
             sb.append("        proxy_set_header X-Forwarded-Host $server_name;\n");
             sb.append("        proxy_set_header X-Forwarded-Port $server_port;\n");
+            sb.append("        client_max_body_size 100M;\n");
             sb.append("\n");
             sb.append("        proxy_read_timeout 300;\n");// 프록시 읽기 시간 제한 설정
             sb.append("    }\n");
@@ -121,6 +122,7 @@ public class NginxConfigServiceImpl implements NginxConfigService{
             sb.append("        proxy_set_header X-Forwarded-Proto $scheme;\n");
             sb.append("        proxy_set_header X-Forwarded-Host $server_name;\n");
             sb.append("        proxy_set_header X-Forwarded-Port $server_port;\n");
+            sb.append("        client_max_body_size 100M;\n");
             sb.append("\n");
             sb.append("        proxy_read_timeout 300;\n");
             sb.append("    }\n");
