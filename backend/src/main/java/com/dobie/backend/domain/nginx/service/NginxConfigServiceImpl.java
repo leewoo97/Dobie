@@ -60,7 +60,18 @@ public class NginxConfigServiceImpl implements NginxConfigService{
         // HTTP를 HTTPS로 리디렉션하는 서버 블록
         sb.append("server {\n");
         sb.append("    listen 80;\n"); //80번 포트로 요청이 들어왔을때
+        sb.append("    listen [::]:80;\n");
+        sb.append("\n");
         sb.append("    server_name "+nginxConfig.getDomain()+";\n");
+        sb.append("    index index.html index.htm index.nginx-debian.html;\n");
+        sb.append("\n");
+
+        sb.append("    location /.well-known/acme-challenge/ {\n");
+        sb.append("        allow all;\n");
+        sb.append("        root /usr/share/nginx/html;\n");
+        sb.append("    }\n");
+        sb.append("\n");
+
         sb.append("    location / {\n");
         sb.append("        return 301 https://$host$request_uri;\n"); //443포트로 보내기(https적용할 수 있도록)
         sb.append("    }\n");
@@ -70,7 +81,9 @@ public class NginxConfigServiceImpl implements NginxConfigService{
         // HTTPS를 처리하는 서버 블록
         sb.append("server {\n");
         sb.append("    listen 443 ssl;\n"); // 443번 포트로 HTTPS 요청이 들어왔을 때, SSL을 사용한다는 의미
+        sb.append("    listen [::]:443 ssl;\n");
         sb.append("    server_name "+nginxConfig.getDomain()+";\n"); // 사용할 도메인 설정
+        sb.append("    index index.html index.htm index.nginx-debian.html;\n");
         sb.append("\n");
         sb.append("    ssl_certificate "+nginxConfig.getSslCertificate()+"\n"); // SSL 인증서 설정
         sb.append("    ssl_certificate_key "+nginxConfig.getSslCertificateKey()+"\n"); // SSL 인증서 키 설정
@@ -107,7 +120,10 @@ public class NginxConfigServiceImpl implements NginxConfigService{
         StringBuilder sb = new StringBuilder();
         sb.append("server {\n");
         sb.append("    listen 80;\n");
+        sb.append("    listen [::]:80;\n");
+        sb.append("\n");
         sb.append("    server_name "+nginxConfig.getDomain()+";\n");
+        sb.append("    index index.html index.htm index.nginx-debian.html;\n");
         sb.append("\n");
         for(NginxProxyDto proxyConfig : nginxConfig.getProxyList()){
             sb.append("    location ").append(proxyConfig.getLocation()).append(" {\n");
