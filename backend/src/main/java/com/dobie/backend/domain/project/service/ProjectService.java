@@ -96,10 +96,8 @@ public class ProjectService {
         // git type 확인, gitLab인지 gitHub인지
         // 1이면 gitLab
         if (gitInfo.getGitType() == 1) {
-            if (!commandService.checkIsCloned("/" + dto.getProjectName())) {
                 // gitLab clone
                 commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
-            }
         } else {
             // gitHub Clone
             commandService.gitClone(gitInfo.getGitUrl());
@@ -121,6 +119,7 @@ public class ProjectService {
         // 프론트엔드
         FrontendRequestDto frontendInfo = dto.getFrontend();
         if (frontendInfo.getFramework().equals("React")) {
+            System.out.println("여기는 들어가나");
             dockerfileService.createReactDockerfile(frontendInfo.getServiceName(), frontendInfo.getVersion(), frontendInfo.getPath());
         }
 
