@@ -1,12 +1,12 @@
 package com.dobie.backend.security.jwt;
 
-import com.dobie.backend.security.jwt.repository.RefreshToken;
+import com.dobie.backend.security.jwt.dto.TokenInfo;
+import com.dobie.backend.security.jwt.entity.RefreshToken;
 import com.dobie.backend.security.jwt.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import com.dobie.backend.security.jwt.TokenManager;
 
 // 토큰의 저장 및 관리와 관련된 비즈니스 로직을 처리하는 클래스
 // ex.데이터베이스에 토큰을 저장/삭제, 토큰의 정보를 조회하는 작업 수행

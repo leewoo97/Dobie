@@ -38,7 +38,7 @@ public class SwaggerConfig {
     public GroupedOpenApi all() {
         return GroupedOpenApi.builder()
                 .group("a. 전체")
-                .pathsToMatch("/api/v1/**")
+                .pathsToMatch("/api/**")
                 .build();
     }
 

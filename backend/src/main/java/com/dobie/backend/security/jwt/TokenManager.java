@@ -1,5 +1,6 @@
 package com.dobie.backend.security.jwt;
 
+import com.dobie.backend.security.jwt.dto.TokenInfo;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;

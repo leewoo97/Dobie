@@ -1,4 +1,4 @@
-package com.dobie.backend.security.jwt;
+package com.dobie.backend.domain.user.dto;
 
 import lombok.*;
 
@@ -6,10 +6,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TokenInfo {
+public class LoginResponseDto {
 
-    private String username;
-    private String accessToken;
     private String refreshToken;
-
+    private UserDto userDto;
 }

@@ -1,14 +1,25 @@
 package com.dobie.backend.domain.user.service;
 
+import com.dobie.backend.domain.user.dto.LoginResponseDto;
 import com.dobie.backend.domain.user.dto.UserDto;
 import com.dobie.backend.domain.user.entity.User;
 import com.dobie.backend.domain.user.repository.UserRepository;
+import com.dobie.backend.security.jwt.TokenManager;
+import com.dobie.backend.security.jwt.TokenService;
+import com.dobie.backend.security.jwt.dto.TokenInfo;
+import com.dobie.backend.security.jwt.repository.RefreshTokenRepository;
+import com.dobie.backend.util.CookieUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import org.springframework.security.core.AuthenticationException;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +29,11 @@ public class UserService {
     private final ObjectMapper mapper;
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final TokenManager tokenManager;
+    private final TokenService tokenService;
+    private final CookieUtil cookieUtil;
     public String getPrettyJsonString(JsonNode node) {
 
         try {
@@ -47,5 +63,36 @@ public class UserService {
     public void changeUserInfo(UserDto dto) {
         User user = new User(dto);
         userRepository.updateUserInfo(user);
+    }
+
+    public LoginResponseDto login(UserDto dto, HttpServletResponse response){
+        User user = userRepository.getUserInfo();
+        if(passwordEncoder.matches(dto.getPassword(), user.getPassword())){
+            log.info("Password matched for user: {}", user.getUsername());
+            removeOldRefreshToken(dto, user); //리프레시토큰 삭제
+
+            TokenInfo tokenInfo = tokenManager.generateTokenInfo(user.getUsername());
+            tokenService.saveToken(tokenInfo);
+            cookieUtil.addCookie("RefreshToken", tokenInfo.getRefreshToken(), tokenManager.getREFRESH_TOKEN_TIME(), response);
+
+            UserDto userDto = UserDto.builder()
+                    .username(user.getUsername())
+                    .password(user.getPassword())
+                    .build();
+            return LoginResponseDto.builder()
+                    .refreshToken(tokenInfo.getAccessToken())
+                    .userDto(userDto)
+                    .build();
+        }else {
+            log.info("Login failed for user: {}", dto.getUsername());
+            throw new BadCredentialsException("Invalid username or password");
+        }
+
+    }
+
+    private void removeOldRefreshToken(UserDto dto, User user){
+        refreshTokenRepository.findByRefreshToken(user.getUsername())
+                .ifPresent(refreshTokenRepository::delete);
+        log.info("event=DeleteExistingRefreshToken, username={}", dto.getUsername());
     }
 }

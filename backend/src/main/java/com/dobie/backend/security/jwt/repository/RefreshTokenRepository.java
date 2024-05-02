@@ -1,8 +1,8 @@
 package com.dobie.backend.security.jwt.repository;
 
+import com.dobie.backend.security.jwt.entity.RefreshToken;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;

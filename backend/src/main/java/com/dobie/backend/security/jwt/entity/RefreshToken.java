@@ -1,4 +1,4 @@
-package com.dobie.backend.security.jwt.repository;
+package com.dobie.backend.security.jwt.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
