@@ -53,13 +53,13 @@ public class ProjectController {
     }
 
     @PostMapping("/run/{projectId}")
-    public ResponseEntity<?> runProject(@PathVariable int projectId){
+    public ResponseEntity<?> runProject(@PathVariable String projectId){
         projectService.runProject(projectId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
     @GetMapping("/build/{projectId}")
-    public ResponseEntity<?> getTotalBuild(@PathVariable int projectId){
+    public ResponseEntity<?> getTotalBuild(@PathVariable String projectId){
         System.out.println("연결확인용 컨트롤러");
         return new ResponseEntity<>(HttpStatus.OK);
     }

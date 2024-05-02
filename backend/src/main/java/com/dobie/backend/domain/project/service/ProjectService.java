@@ -200,7 +200,7 @@ public class ProjectService {
     }
 
     // 프로젝트 통째로 실행한다 했을때
-    void runProject(String projectId) {
+    public void runProject(String projectId) {
         Project project = projectRepository.searchProject(projectId);
 
         // git clone 받으면 projectName으로 폴더가 생성되어 있을테니
