@@ -131,7 +131,7 @@ public class ProjectService {
         System.out.println("dockerfile 생성 끝");
 
         // docker-compose 파일 생성
-        ProjectGetResponseDto projectGetResponseDto = new ProjectGetResponseDto(project);
+        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
         dockerComposeService.createDockerComposeFile(projectGetResponseDto);
 
         System.out.println("compose file 생성 끝");

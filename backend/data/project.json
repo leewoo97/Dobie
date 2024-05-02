@@ -1,0 +1,70 @@
+{
+  "1" : {
+    "projectId" : 1,
+    "projectName" : "test",
+    "git" : {
+      "gitType" : 1,
+      "gitUrl" : "https://lab.ssafy.com/o54711254/test.git",
+      "accessToken" : "dQgja5Wxxrc6xvQfTHGr"
+    },
+    "backendMap" : {
+      "1" : {
+        "serviceId" : 1,
+        "serviceName" : "backend",
+        "language" : "java",
+        "version" : "17",
+        "framework" : "Spring",
+        "path" : "/test/backend",
+        "branch" : "master",
+        "externalPort" : 8080,
+        "internalPort" : 8080
+      }
+    },
+    "frontend" : {
+      "serviceName" : "frontend",
+      "language" : "node",
+      "version" : "20.11",
+      "framework" : "react",
+      "path" : "/test/frontend",
+      "branch" : "/main",
+      "externalPort" : 3000,
+      "internalPort" : 3000,
+      "usingNginx" : false
+    },
+    "database" : {
+      "databaseType" : null,
+      "username" : null,
+      "password" : null,
+      "externalPort" : 0,
+      "internalPort" : 0
+    }
+  },
+  "2" : {
+    "projectId" : 2,
+    "projectName" : "test",
+    "git" : {
+      "gitType" : 1,
+      "gitUrl" : null,
+      "accessToken" : null
+    },
+    "backendMap" : { },
+    "frontend" : {
+      "serviceName" : null,
+      "language" : null,
+      "version" : null,
+      "framework" : null,
+      "path" : null,
+      "branch" : null,
+      "externalPort" : 0,
+      "internalPort" : 0,
+      "usingNginx" : false
+    },
+    "database" : {
+      "databaseType" : null,
+      "username" : null,
+      "password" : null,
+      "externalPort" : 0,
+      "internalPort" : 0
+    }
+  }
+}

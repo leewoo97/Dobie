@@ -51,6 +51,12 @@ public class ProjectController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/run/{projectId}")
+    public ResponseEntity<?> runProject(@PathVariable int projectId){
+        projectService.runProject(projectId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     
     @GetMapping("/build/{projectId}")
     public ResponseEntity<?> getTotalBuild(@PathVariable int projectId){

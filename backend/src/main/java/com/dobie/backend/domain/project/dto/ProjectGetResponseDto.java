@@ -36,4 +36,16 @@ public class ProjectGetResponseDto {
             databaseMap.put(key, new DatabaseGetResponseDto(value));
         });
     }
+
+    @Override
+    public String toString() {
+        return "ProjectGetResponseDto{" +
+                "projectId=" + projectId +
+                ", projectName='" + projectName + '\'' +
+                ", git=" + git +
+                ", backendMap=" + backendMap +
+                ", frontend=" + frontend +
+                ", database=" + database +
+                '}';
+    }
 }
