@@ -10,27 +10,27 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     @Override
     public void createDockerComposeFile(ProjectGetResponseDto projectGetResponseDto) {
 
-        boolean mysql = projectGetResponseDto.getDatabase() == null ? false : true;
-        boolean redis = false;
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("version: \"3.8\"\n");
-        sb.append("services:\n");
-
-        for (int i = 1; i <= projectGetResponseDto.getBackendMap().size(); i++) {
-            BackendGetResponseDto backendGetResponseDto = projectGetResponseDto.getBackendMap().get(i);
-            if (backendGetResponseDto.getFramework().equals("SpringBoot")) {
-                sb.append(createSpringDockerComposeFile(i, backendGetResponseDto.getPath(), backendGetResponseDto.getExternalPort(),
-                                              backendGetResponseDto.getInternalPort(), mysql, redis,
-                                              "databasename",
-                                              projectGetResponseDto.getDatabase().getUsername(),
-                                              projectGetResponseDto.getDatabase().getPassword()));
-            } else if (backendGetResponseDto.getFramework().equals("Django")) {
-
-            }
-        }
-
-        sb.append(createReactDockerComposeFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getFrontend().getExternalPort(), projectGetResponseDto.getFrontend().getInternalPort()));
+//        boolean mysql = projectGetResponseDto.getDatabase() == null ? false : true;
+//        boolean redis = false;
+//
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("version: \"3.8\"\n");
+//        sb.append("services:\n");
+//
+//        for (int i = 1; i <= projectGetResponseDto.getBackendMap().size(); i++) {
+//            BackendGetResponseDto backendGetResponseDto = projectGetResponseDto.getBackendMap().get(i);
+//            if (backendGetResponseDto.getFramework().equals("SpringBoot")) {
+//                sb.append(createSpringDockerComposeFile(i, backendGetResponseDto.getPath(), backendGetResponseDto.getExternalPort(),
+//                                              backendGetResponseDto.getInternalPort(), mysql, redis,
+//                                              "databasename",
+//                                              projectGetResponseDto.getDatabase().getUsername(),
+//                                              projectGetResponseDto.getDatabase().getPassword()));
+//            } else if (backendGetResponseDto.getFramework().equals("Django")) {
+//
+//            }
+//        }
+//
+//        sb.append(createReactDockerComposeFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getFrontend().getExternalPort(), projectGetResponseDto.getFrontend().getInternalPort()));
 
         // database 설정 추가
 
