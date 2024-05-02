@@ -1,11 +1,9 @@
-FROM openjdk:17-slim
+FROM azul/zulu-openjdk:17
 
-# Docker 클라이언트 설치
-RUN apt-get update && apt-get install -y docker.io
+ARG JAR_FILE=build/libs/*.jar
 
-# Docker 소켓 마운트
-VOLUME /var/run/docker.sock
+WORKDIR /usr/app/
 
-ARG JAR_FILE=build/libs/backend-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java", "-jar", "./app.jar"]
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
