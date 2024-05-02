@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    include:
+      - filter
+      - jwt
+  application:
+    name: backend
+
+  security:
+    user:
+      name: user
+      password: 1234
+
+
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure:
+            security: ERROR
+        data:
+          repository:
+            config:
+              RepositoryConfigurationExtensionSupport: ERROR
+
+

@@ -1,0 +1,15 @@
+filter-path:
+    paths:
+      member: "/api/v1/member/signup"
+      memberSocial: "/api/v1/member/social-login"
+      memberLogin: "/api/v1/member/login/"
+
+      apiDocs: "/api-docs/**"
+      v2ApiDocs: "/v2/api-docs/**"
+      v3ApiDocs: "/v3/api-docs/**"
+      webjars: "/webjars/**"
+      swagger: "/swagger/**"
+      swaggerUi: "/swagger-ui/**"
+      swaggerConfig: "/swagger-config/**"
+      swaggerResources: "/swagger-resources/**"
+      favicon: "/favicon.ico"
