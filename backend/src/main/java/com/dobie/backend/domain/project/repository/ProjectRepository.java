@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 
 @Repository
@@ -19,10 +21,16 @@ import java.util.Map;
 public class ProjectRepository {
 
     private final ObjectMapper mapper;
+
+    private static final String BASE_PATH = new File("").getAbsolutePath();
+    private static final String RESOURCE_PATH = "/src/main/resources";
+    private static final String FILE_NAME = "/data/project.json";
+    private static final String FILE_PATH =
+            Files.exists(Paths.get(BASE_PATH + RESOURCE_PATH + FILE_NAME)) ? BASE_PATH + RESOURCE_PATH + FILE_NAME : BASE_PATH + FILE_NAME;
     public void upsertProject(Project project) {
         try{
             // 파일 읽기
-            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+            File file = new File(FILE_PATH);
 
             // mapper class 지정
             MapType mapType =
@@ -45,7 +53,7 @@ public class ProjectRepository {
     public Map<Integer, Project> selectProjects() {
         try{
             // 파일 읽기
-            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+            File file = new File(FILE_PATH);
 
             // mapper class 지정
             MapType mapType =
@@ -63,7 +71,7 @@ public class ProjectRepository {
     public Project searchProject(int projectId){
         try{
             // 파일 읽기
-            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+            File file = new File(FILE_PATH);
 
             // mapper class 지정
             MapType mapType =
@@ -83,7 +91,7 @@ public class ProjectRepository {
     public Map<String, Backend> selectBackends(int projectId) {
         try{
             // 파일 읽기
-            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+            File file = new File(FILE_PATH);
 
             // mapper class 지정
             MapType mapType =
@@ -103,7 +111,7 @@ public class ProjectRepository {
     public Backend searchBackend(int projectId, int serviceId) {
         try{
             // 파일 읽기
-            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+            File file = new File(FILE_PATH);
 
             // mapper class 지정
             MapType mapType =
@@ -126,7 +134,7 @@ public class ProjectRepository {
     public Frontend searchFrontend(int projectId) {
         try{
             // 파일 읽기
-            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+            File file = new File(FILE_PATH);
 
             // mapper class 지정
             MapType mapType =
@@ -146,7 +154,7 @@ public class ProjectRepository {
     public Database searchDatabase(int projectId) {
         try{
             // 파일 읽기
-            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+            File file = new File(FILE_PATH);
 
             // mapper class 지정
             MapType mapType =
@@ -166,7 +174,7 @@ public class ProjectRepository {
     public void deleteProject(int projectId) {
         try{
             // 파일 읽기
-            File file = new File(System.getProperty("user.dir")+"/data/project.json");
+            File file = new File(FILE_PATH);
 
             // mapper class 지정
             MapType mapType =
