@@ -35,13 +35,18 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         for (String backendSeq : projectGetResponseDto.getBackendMap().keySet()) {
             BackendGetResponseDto backendGetResponseDto = projectGetResponseDto.getBackendMap().get(backendSeq);
             if (backendGetResponseDto.getFramework().equals("SpringBoot")) {
+                String databaseName = null;
+                String username = null;
+                String password = null;
+                if (mysql != null) {
+                    databaseName = mysql.getDatabaseName();
+                    username = mysql.getUsername();
+                    password = mysql.getPassword();
+                }
                 dockercompose.append(createSpringDockerComposeFile(backendSeq, backendGetResponseDto.getPath(),
                                                                    backendGetResponseDto.getExternalPort(),
-                                                                   backendGetResponseDto.getInternalPort(), mysql!=null, redis!=null,
-                                                                   "databasename",
-                                                                   projectGetResponseDto.getDatabaseMap().get("1").getUsername(),
-                                                                   projectGetResponseDto.getDatabaseMap().get("1")
-                                                                                        .getPassword()));
+                                                                   backendGetResponseDto.getInternalPort(), mysql != null,
+                                                                   redis != null, databaseName, username, password));
             } else if (backendGetResponseDto.getFramework().equals("Django")) {
 
             }
@@ -63,8 +68,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                 createRedisDockerComposeFile(redis.getExternalPort(), redis.getInternalPort()));
         }
 
-
-        if(mysql != null){
+        if (mysql != null) {
             dockercompose.append("volumes:\n");
             dockercompose.append("  mysql-data:\n");
         }
