@@ -2,6 +2,7 @@ package com.dobie.backend.domain.project.service;
 
 import com.dobie.backend.domain.docker.dockercompose.service.DockerComposeService;
 import com.dobie.backend.domain.docker.dockerfile.service.DockerfileService;
+import com.dobie.backend.domain.nginx.service.NginxConfigService;
 import com.dobie.backend.domain.project.dto.*;
 import com.dobie.backend.domain.project.entity.Backend;
 import com.dobie.backend.domain.project.entity.Database;
@@ -24,10 +25,12 @@ public class ProjectService {
     private final CommandService commandService;
     private final DockerfileService dockerfileService;
     private final DockerComposeService dockerComposeService;
+    private final NginxConfigService nginxConfigService;
 
     public void createProject(ProjectRequestDto dto) {
         Project project = new Project(UUID.randomUUID().toString(), dto);
         projectRepository.upsertProject(project);
+        nginxConfigService.saveProxyNginxConfig(project.getProjectId(), project.getProjectName());
     }
 
     public Map<String, ProjectGetResponseDto> getAllProjects() {
