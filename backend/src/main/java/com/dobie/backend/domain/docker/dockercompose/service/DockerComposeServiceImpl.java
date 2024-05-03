@@ -21,22 +21,22 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         dockercompose.append("version: \"3.8\"\n");
         dockercompose.append("services:\n");
 
-        System.out.println(projectGetResponseDto.getBackendMap());
-
         for (String backendSeq : projectGetResponseDto.getBackendMap().keySet()) {
             BackendGetResponseDto backendGetResponseDto = projectGetResponseDto.getBackendMap().get(backendSeq);
             if (backendGetResponseDto.getFramework().equals("SpringBoot")) {
                 dockercompose.append(createSpringDockerComposeFile(backendSeq, backendGetResponseDto.getPath(), backendGetResponseDto.getExternalPort(),
                                               backendGetResponseDto.getInternalPort(), mysql, redis,
                                               "databasename",
-                                              projectGetResponseDto.getDatabaseMap().get("mysql").getUsername(),
-                                              projectGetResponseDto.getDatabaseMap().get("mysql").getPassword()));
+                                              projectGetResponseDto.getDatabaseMap().get("1").getUsername(),
+                                              projectGetResponseDto.getDatabaseMap().get("1").getPassword()));
             } else if (backendGetResponseDto.getFramework().equals("Django")) {
 
             }
         }
 
         dockercompose.append(createReactDockerComposeFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getFrontend().getExternalPort(), projectGetResponseDto.getFrontend().getInternalPort()));
+
+        System.out.println("db" + projectGetResponseDto.getDatabaseMap());
 
         // database 설정 추가
         for(String databaseSeq : projectGetResponseDto.getDatabaseMap().keySet()){
@@ -63,7 +63,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         sb.append("    build:\n");
         sb.append("      context: .").append(path).append("\n");
         sb.append("    ports:\n");
-        sb.append("      - \"\n").append(externalPort).append(":").append(internalPort).append("\"\n");
+        sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
         sb.append("    volumes:\n");
         sb.append("      - /var/run/docker.sock:/var/run/docker.sock\n");
 
