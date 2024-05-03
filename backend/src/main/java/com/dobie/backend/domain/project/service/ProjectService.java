@@ -94,7 +94,7 @@ public class ProjectService {
     // 전체 프로젝트(main 브랜치에서 한번에 관리) 빌드 메서드
     // 사실상 dockerfile이랑 compose file 넣어놓는 용도
     public void buildTotalService(String projectId, ProjectRequestDto dto) {
-        Project project = projectRepository.searchProject(projectId);
+        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
 
         // git clone
         GitRequestDto gitInfo = dto.getGit();
@@ -115,7 +115,7 @@ public class ProjectService {
         Map<String, BackendRequestDto> backendInfo = dto.getBackendMap();
         backendInfo.forEach((key, value) -> {
             if (value.getFramework().equals("Spring")) {
-                dockerfileService.createGradleDockerfile(value.getServiceName(), value.getVersion(), value.getPath());
+                dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
             } else {
 
             }
@@ -124,14 +124,10 @@ public class ProjectService {
         // 프론트엔드
         FrontendRequestDto frontendInfo = dto.getFrontend();
         if (frontendInfo.getFramework().equals("React")) {
-            System.out.println("여기는 들어가나");
-            dockerfileService.createReactDockerfile(frontendInfo.getServiceName(), frontendInfo.getVersion(), frontendInfo.getPath());
+            dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
         }
 
-        System.out.println("dockerfile 생성 끝");
-
         // docker-compose 파일 생성
-        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
         dockerComposeService.createDockerComposeFile(projectGetResponseDto);
 
         System.out.println("compose file 생성 끝");

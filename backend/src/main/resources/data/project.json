@@ -1,6 +1,6 @@
 {
-  "ce514704-5523-4c3e-9df2-0789d5704028" : {
-    "projectId" : "ce514704-5523-4c3e-9df2-0789d5704028",
+  "0a23d4d0-968b-4222-a393-403ae92718dc" : {
+    "projectId" : "0a23d4d0-968b-4222-a393-403ae92718dc",
     "projectName" : "test",
     "git" : {
       "gitType" : 1,
@@ -9,12 +9,12 @@
     },
     "backendMap" : {
       "1" : {
-        "serviceId" : "6152ce7b-0883-4113-8b0b-d598a1b31c87",
+        "serviceId" : "6ab2b101-4b1a-46d8-adf9-8fc78cb2b532",
         "serviceName" : "backend",
         "language" : "java",
         "version" : "17",
         "framework" : "SpringBoot",
-        "path" : "/test/backend",
+        "path" : "/backend",
         "branch" : "master",
         "externalPort" : 8089,
         "internalPort" : 8080
@@ -33,7 +33,7 @@
     },
     "databaseMap" : {
       "1" : {
-        "databaseId" : "02f8bedc-b4f3-4289-b123-4fd1861c957a",
+        "databaseId" : "b76a16e9-c60a-49a3-9e30-2aa41b2be71e",
         "databaseType" : "mysql",
         "databaseName" : "test_db",
         "schemaPath" : "/path/to/mysql/schema.sql",
