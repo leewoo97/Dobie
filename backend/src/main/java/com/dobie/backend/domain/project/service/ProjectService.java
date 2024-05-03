@@ -114,7 +114,7 @@ public class ProjectService {
         // 백엔드
         Map<String, BackendRequestDto> backendInfo = dto.getBackendMap();
         backendInfo.forEach((key, value) -> {
-            if (value.getFramework().equals("Spring")) {
+            if (value.getFramework().equals("SpringBoot")) {
                 dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
             } else {
 
