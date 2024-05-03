@@ -18,10 +18,14 @@ public class DockerfileServiceImpl implements DockerfileService{
         sb.append("WORKDIR /app\n");
         sb.append("COPY . /app\n");
         sb.append("RUN chmod +x ./gradlew\n");
-        sb.append("RUN --mount=type=cache,target=/root/.gradle ./gradlew clean build\n");
-        sb.append("ARG JAR_FILE=build/libs/*.jar\n");
-        sb.append("COPY ${JAR_FILE} app.jar\n");
+        sb.append("RUN ./gradlew clean bootJar -x test\n");
+        sb.append("RUN cp $(ls -t build/libs/*.jar | head -n 1) app.jar\n");
         sb.append("ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n");
+
+//        sb.append("RUN --mount=type=cache,target=/root/.gradle ./gradlew clean build\n");
+//        sb.append("ARG JAR_FILE=build/libs/*.jar\n");
+//        sb.append("COPY ${JAR_FILE} app.jar\n");
+//        sb.append("ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n");
         String dockerfile = sb.toString();
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
