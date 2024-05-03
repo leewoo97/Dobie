@@ -18,7 +18,7 @@ public class ProjectController {
 
     private final ProjectService  projectService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> getAllProjects(){
         Map<String, ProjectGetResponseDto> map = projectService.getAllProjects();
         return new ResponseEntity<Map<String, ProjectGetResponseDto>>(map, HttpStatus.OK);
