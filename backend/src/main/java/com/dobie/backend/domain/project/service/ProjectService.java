@@ -30,7 +30,6 @@ public class ProjectService {
     public void createProject(ProjectRequestDto dto) {
         Project project = new Project(UUID.randomUUID().toString(), dto);
         projectRepository.upsertProject(project);
-        nginxConfigService.saveProxyNginxConfig(project.getProjectId(), project.getProjectName());
     }
 
     public Map<String, ProjectGetResponseDto> getAllProjects() {
@@ -89,35 +88,7 @@ public class ProjectService {
         projectRepository.deleteProject(projectId);
     }
 
-
-    public NginxConfigDto getNginxConfigDto(String projectId) {
-        // 프로젝트 찾기
-        Project project = projectRepository.searchProject(projectId);
-
-        // NginxConfigDto 생성
-        NginxConfigDto dto = NginxConfigDto.builder()
-                .domain(project.getProjectDomain())
-                .usingHttps(project.isUsingHttps())
-                .sslCertificate("")
-                .sslCertificateKey("")
-                .build();
-
-        // Proxy list 생성
-        List<NginxProxyDto> proxyList = new ArrayList<>();
-
-        // backend -> proxy
-        project.getBackendMap().forEach((key, backend) -> {
-            proxyList.add(new NginxProxyDto(backend));
-        });
-
-        // frontend -> proxy
-        proxyList.add(new NginxProxyDto(project.getFrontend()));
-
-        // proxyList 저장
-        dto.setProxyList(proxyList);
-
-        return dto;
-    }
+    
     /*
      * 프로젝트 실행 관련 메서드들
      * */
@@ -163,6 +134,11 @@ public class ProjectService {
         dockerComposeService.createDockerComposeFile(projectGetResponseDto);
 
         System.out.println("compose file 생성 끝");
+
+        //nginx config 파일생성
+        nginxConfigService.saveProxyNginxConfig(projectId);
+
+        System.out.println("nginx config file 생성 끝");
     }
 
     // 프론트 개별 빌드
