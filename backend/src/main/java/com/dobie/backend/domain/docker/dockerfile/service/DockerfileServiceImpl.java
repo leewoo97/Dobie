@@ -29,8 +29,7 @@ public class DockerfileServiceImpl implements DockerfileService{
         String dockerfile = sb.toString();
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
-//        String filePath = "/" + projectName + path;
-        String filePath = "./test"+path;
+        String filePath = "./" + projectName + path;
         fileManager.saveFile(filePath, "Dockerfile", dockerfile);
 
     }
@@ -69,8 +68,7 @@ public class DockerfileServiceImpl implements DockerfileService{
         String dockerfile = sb.toString();
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
-//        String filePath = "/" + projectName + path;
-        String filePath = "./test" + path;
+        String filePath = "./" + projectName + path;
         fileManager.saveFile(filePath, "Dockerfile", dockerfile);
 
     }
