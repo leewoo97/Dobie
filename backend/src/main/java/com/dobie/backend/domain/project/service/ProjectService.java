@@ -87,10 +87,10 @@ public class ProjectService {
     }
 
 
-    public NginxConfigDto getNginxConfigDto(String projectId){
+    public NginxConfigDto getNginxConfigDto(String projectId) {
         // 프로젝트 찾기
         Project project = projectRepository.searchProject(projectId);
-        
+
         // NginxConfigDto 생성
         NginxConfigDto dto = NginxConfigDto.builder()
                 .domain(project.getProjectDomain())
@@ -98,23 +98,23 @@ public class ProjectService {
                 .sslCertificate("")
                 .sslCertificateKey("")
                 .build();
-        
+
         // Proxy list 생성
         List<NginxProxyDto> proxyList = new ArrayList<>();
-        
+
         // backend -> proxy
         project.getBackendMap().forEach((key, backend) -> {
             proxyList.add(new NginxProxyDto(backend));
         });
-        
+
         // frontend -> proxy
         proxyList.add(new NginxProxyDto(project.getFrontend()));
-        
+
         // proxyList 저장
         dto.setProxyList(proxyList);
 
         return dto;
-
+    }
     /*
      * 프로젝트 실행 관련 메서드들
      * */
