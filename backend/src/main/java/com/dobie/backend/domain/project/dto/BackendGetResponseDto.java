@@ -19,6 +19,8 @@ public class BackendGetResponseDto {
     private String path;
     private String branch;
 
+    private String location;
+
     private int externalPort;
     private int internalPort;
 
@@ -30,6 +32,7 @@ public class BackendGetResponseDto {
         this.framework = backend.getFramework();
         this.path = backend.getPath();
         this.branch = backend.getBranch();
+        this.location = backend.getLocation();
         this.externalPort = backend.getExternalPort();
         this.internalPort = backend.getInternalPort();
     }

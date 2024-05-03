@@ -16,6 +16,9 @@ public class Project {
     private String projectId;
     private String projectName;
 
+    private String projectDomain;
+    private boolean usingHttps;
+
     private Git git;
     private Map<String, Backend> backendMap;
     private Frontend frontend;
@@ -24,6 +27,10 @@ public class Project {
     public Project(String projectId, ProjectRequestDto dto){
         this.projectId = projectId;
         this.projectName = dto.getProjectName();
+
+        this.projectDomain = dto.getProjectDomain();
+        this.usingHttps = dto.isUsingHttps();
+
         this.git = new Git(dto.getGit());
         this.backendMap = new HashMap<>();
         dto.getBackendMap().forEach((key, value) -> {

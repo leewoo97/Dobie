@@ -12,6 +12,9 @@ import java.util.Map;
 public class ProjectRequestDto {
     private String projectName;
 
+    private String projectDomain;
+    private boolean usingHttps;
+
     private GitRequestDto git;
     private Map<String, BackendRequestDto> backendMap;
     private FrontendRequestDto frontend;

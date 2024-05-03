@@ -19,6 +19,8 @@ public class Backend {
     private String path;
     private String branch;
 
+    private String location;
+
     private int externalPort;
     private int internalPort;
 
@@ -30,6 +32,7 @@ public class Backend {
         this.framework = dto.getFramework();
         this.path = dto.getPath();
         this.branch = dto.getBranch();
+        this.location = dto.getLocation();
         this.externalPort = dto.getExternalPort();
         this.internalPort = dto.getInternalPort();
     }

@@ -18,6 +18,8 @@ public class FrontendGetResponseDto {
     private String path;
     private String branch;
 
+    private String location;
+
     private int externalPort;
     private int internalPort;
 
@@ -29,6 +31,7 @@ public class FrontendGetResponseDto {
         this.framework = frontend.getFramework();
         this.path = frontend.getPath();
         this.branch = frontend.getBranch();
+        this.location = frontend.getLocation();
         this.externalPort = frontend.getExternalPort();
         this.internalPort = frontend.getInternalPort();
         this.usingNginx = frontend.isUsingNginx();

@@ -86,6 +86,35 @@ public class ProjectService {
         projectRepository.deleteProject(projectId);
     }
 
+
+    public NginxConfigDto getNginxConfigDto(String projectId){
+        // 프로젝트 찾기
+        Project project = projectRepository.searchProject(projectId);
+        
+        // NginxConfigDto 생성
+        NginxConfigDto dto = NginxConfigDto.builder()
+                .domain(project.getProjectDomain())
+                .usingHttps(project.isUsingHttps())
+                .sslCertificate("")
+                .sslCertificateKey("")
+                .build();
+        
+        // Proxy list 생성
+        List<NginxProxyDto> proxyList = new ArrayList<>();
+        
+        // backend -> proxy
+        project.getBackendMap().forEach((key, backend) -> {
+            proxyList.add(new NginxProxyDto(backend));
+        });
+        
+        // frontend -> proxy
+        proxyList.add(new NginxProxyDto(project.getFrontend()));
+        
+        // proxyList 저장
+        dto.setProxyList(proxyList);
+
+        return dto;
+
     /*
      * 프로젝트 실행 관련 메서드들
      * */
@@ -202,6 +231,7 @@ public class ProjectService {
         // git clone 받으면 projectName으로 폴더가 생성되어 있을테니
         String path = "./" + project.getProjectName();
         commandService.dockerComposeUp(path);
+
     }
 }
 
