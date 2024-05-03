@@ -60,7 +60,7 @@ public class ProjectRepository {
         return null;
     }
 
-    public Project searchProject(int projectId){
+    public Project searchProject(String projectId){
         try{
             // 파일 읽기
             File file = new File(System.getProperty("user.dir")+"/data/project.json");

@@ -36,8 +36,8 @@ public class ProjectService {
         });
         return list;
     }
-
-    public ProjectGetResponseDto getProject(int projectId){
+ 
+    public ProjectGetResponseDto getProject(String projectId){
         Project project = projectRepository.searchProject(projectId);
         return new ProjectGetResponseDto(project);
     }
@@ -75,7 +75,7 @@ public class ProjectService {
         projectRepository.deleteProject(projectId);
     }
 
-    public NginxConfigDto getNginxConfigDto(int projectId){
+    public NginxConfigDto getNginxConfigDto(String projectId){
         // 프로젝트 찾기
         Project project = projectRepository.searchProject(projectId);
         
