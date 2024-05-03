@@ -5,7 +5,7 @@ import com.dobie.backend.domain.project.dto.NginxConfigDto;
 import java.io.IOException;
 
 public interface NginxConfigService {
-    void saveProxyNginxConfig(int projectId, String projectName);
+    void saveProxyNginxConfig(String projectId, String projectName);
 
     String withHttpsConfig(NginxConfigDto nginxConfig);
 

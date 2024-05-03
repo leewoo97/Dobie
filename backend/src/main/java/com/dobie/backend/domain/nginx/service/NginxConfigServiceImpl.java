@@ -24,7 +24,7 @@ public class NginxConfigServiceImpl implements NginxConfigService{
 
     //리버스프록시 nginx config 파일 생성 후 /nginx에 [projectName].conf 이름으로 저장
     @Override
-    public void saveProxyNginxConfig(int projectId, String projectName) {
+    public void saveProxyNginxConfig(String projectId, String projectName) {
         NginxConfigDto nginxConfig = projectService.getNginxConfigDto(projectId); //projectId로 nginxConfigDto 찾아오기
         StringBuilder sb = new StringBuilder(); //config내용 저장할 StringBuilder
 
@@ -42,11 +42,17 @@ public class NginxConfigServiceImpl implements NginxConfigService{
     //프론트 nginx config 파일 생성 후 /[projectName]/[frontendPath]/conf/conf.d 파일에 default.conf이름으로 저장
     @Override
     public void saveFrontNginxConfigFile(String path, String projectName) throws IOException {
-        String savePath = "/" + projectName + path + "/conf/conf.d"; //파일 저장할 경로 생성
+        String frontPath = "/" + projectName + path; //파일 저장할 경로 생성
         //해당 파일 경로 이미 있는지 확인
+        if (!new File(frontPath).exists()) {
+            log.info(frontPath+" :잘못된 경로입니다.");
+            return;
+        }
+        String savePath = "/" + projectName + path + "/conf/conf.d"; //파일 저장할 경로 생성
         if (!new File(savePath).exists()) {
             new File(savePath).mkdirs(); //없으면 새로 만들기
         }
+
         //경로에 default.conf이름으로 파일 저장
         BufferedWriter writer = new BufferedWriter(new FileWriter((savePath+"/default.conf")));
         writer.write(createFrontNginxConfig()); //default.conf파일에 config 내용 저장
