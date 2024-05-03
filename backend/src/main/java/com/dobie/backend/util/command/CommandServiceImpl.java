@@ -53,10 +53,10 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
-    public void gitCloneGitLab(String repositoryURL, String username, String password) {
+    public void gitCloneGitLab(String repositoryURL, String accessToken) {
         StringBuilder sb = new StringBuilder();
-        // URL에 사용자 이름과 액세스 토큰을 포함
-        String authUrl = repositoryURL.replace("https://", "https://" + username + ":" + password + "@");
+        // URL에 액세스 토큰을 포함하여 인증 정보 제공
+        String authUrl = repositoryURL.replace("https://", "https://oauth2:" + accessToken + "@");
         sb.append("git clone ").append(authUrl);
         CommandLine commandLine = CommandLine.parse(sb.toString());
 
@@ -73,7 +73,6 @@ public class CommandServiceImpl implements CommandService {
             System.out.println("git clone 명령어 실행 중 에러 발생: " + e.getMessage());
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -148,6 +147,24 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
+    public void dockerComposeUp(String path) {
+        sb = new StringBuilder();
+        sb.append("docker compose up --build ");
+
+        CommandLine commandLine = CommandLine.parse(sb.toString());
+        executor.setStreamHandler(streamHandler);
+        try {
+            executor.setWorkingDirectory(new File(path));
+            executor.execute(commandLine);
+            String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
+            System.out.println("실행 성공: " + result);
+        } catch (Exception e) {
+            System.out.println("실행 중 에러 발생: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void dockerComposeDown() {
         sb = new StringBuilder();
         sb.append("docker compose down");
@@ -163,5 +180,4 @@ public class CommandServiceImpl implements CommandService {
         }
     }
 }
-
 

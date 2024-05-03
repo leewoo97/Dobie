@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Backend {
-    private int serviceId;
+    private String serviceId;
     private String serviceName;
 
     private String language;
@@ -24,7 +24,7 @@ public class Backend {
     private int externalPort;
     private int internalPort;
 
-    public Backend(int serviceId, BackendRequestDto dto){
+    public Backend(String serviceId, BackendRequestDto dto){
         this.serviceId = serviceId;
         this.serviceName = dto.getServiceName();
         this.language = dto.getLanguage();

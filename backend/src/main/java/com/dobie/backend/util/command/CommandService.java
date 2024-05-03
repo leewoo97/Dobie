@@ -6,7 +6,7 @@ public interface CommandService {
 
     void gitClone(String repositoryURL);
 
-    void gitCloneGitLab(String repositoryURL, String username, String password);
+    void gitCloneGitLab(String repositoryURL, String accessToken);
 
     void gitCheckout(String path, String branchName);
 
@@ -16,6 +16,9 @@ public interface CommandService {
 
     void run(String path, int port1, int port2);
 
+    void dockerComposeUp(String path);
+
     void dockerComposeDown();
 
 }
+

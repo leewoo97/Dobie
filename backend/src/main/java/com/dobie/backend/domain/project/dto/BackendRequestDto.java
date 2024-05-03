@@ -21,4 +21,18 @@ public class BackendRequestDto {
 
     private int externalPort;
     private int internalPort;
+
+    @Override
+    public String toString() {
+        return "BackendRequestDto{" +
+                "serviceName='" + serviceName + '\'' +
+                ", language='" + language + '\'' +
+                ", version='" + version + '\'' +
+                ", framework='" + framework + '\'' +
+                ", path='" + path + '\'' +
+                ", branch='" + branch + '\'' +
+                ", externalPort=" + externalPort +
+                ", internalPort=" + internalPort +
+                '}';
+    }
 }

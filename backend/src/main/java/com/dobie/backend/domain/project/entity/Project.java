@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Project {
-    private int projectId;
+    private String projectId;
     private String projectName;
 
     private String projectDomain;
@@ -21,9 +22,9 @@ public class Project {
     private Git git;
     private Map<String, Backend> backendMap;
     private Frontend frontend;
-    private Database database;
+    private Map<String, Database> databaseMap;
 
-    public Project(int projectId, ProjectRequestDto dto){
+    public Project(String projectId, ProjectRequestDto dto){
         this.projectId = projectId;
         this.projectName = dto.getProjectName();
 
@@ -33,9 +34,13 @@ public class Project {
         this.git = new Git(dto.getGit());
         this.backendMap = new HashMap<>();
         dto.getBackendMap().forEach((key, value) -> {
-            this.backendMap.put(key, new Backend(Integer.parseInt(key), value));
+            this.backendMap.put(key, new Backend(UUID.randomUUID().toString(), value));
         });
         this.frontend = new Frontend(dto.getFrontend());
-        this.database = new Database(dto.getDatabase());
+        this.databaseMap = new HashMap<>();
+        dto.getDatabaseMap().forEach((key,value) -> {
+            this.databaseMap.put(key, new Database(UUID.randomUUID().toString(), value));
+        });
+
     }
 }

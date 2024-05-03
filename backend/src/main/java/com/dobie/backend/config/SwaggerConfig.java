@@ -62,9 +62,9 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi dockerfile() {
         return GroupedOpenApi.builder()
-                .group("d. 도커파일")
-                .pathsToMatch("/dockerfile/**")
-                .build();
+                             .group("d. 도커파일")
+                             .pathsToMatch("/dockerfile/**")
+                             .build();
     }
 
 }

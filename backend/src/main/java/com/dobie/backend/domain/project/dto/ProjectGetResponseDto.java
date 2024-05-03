@@ -13,7 +13,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 public class ProjectGetResponseDto {
-    private int projectId;
+    private String projectId;
     private String projectName;
 
     private String projectDomain;
@@ -22,7 +22,7 @@ public class ProjectGetResponseDto {
     private GitGetResponseDto git;
     private Map<String, BackendGetResponseDto> backendMap;
     private FrontendGetResponseDto frontend;
-    private DatabaseGetResponseDto database;
+    private Map<String, DatabaseGetResponseDto> databaseMap;
 
     public ProjectGetResponseDto(Project project){
         this.projectId = project.getProjectId();
@@ -37,6 +37,10 @@ public class ProjectGetResponseDto {
             backendMap.put(key, new BackendGetResponseDto(value));
         });
         this.frontend = new FrontendGetResponseDto(project.getFrontend());
-        this.database = new DatabaseGetResponseDto(project.getDatabase());
+        this.databaseMap = new HashMap<>();
+        project.getDatabaseMap().forEach((key,value) -> {
+            databaseMap.put(key, new DatabaseGetResponseDto(value));
+        });
     }
+    
 }

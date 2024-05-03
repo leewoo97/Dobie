@@ -1,0 +1,19 @@
+version: "3.8" # Docker Compose 파일 버전
+
+services:
+  frontend:
+    container_name: front
+    build:
+      context: ./frontend # 프론트엔드 Dockerfile 위치
+    ports:
+      - "3000:3000" # 포트 매핑 설정
+
+  backend:
+    container_name: back
+    build:
+      context: ./backend # 백엔드 Dockerfile 위치
+    ports:
+      - "8080:8080" # 포트 매핑 설정
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Docker 소켓 마운트
+      - /usr/app/data:/data
