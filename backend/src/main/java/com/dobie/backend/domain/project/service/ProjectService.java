@@ -204,7 +204,7 @@ public class ProjectService {
         Project project = projectRepository.searchProject(projectId);
 
         // git clone 받으면 projectName으로 폴더가 생성되어 있을테니
-        String path = "/" + project.getProjectName();
+        String path = "./" + project.getProjectName();
         commandService.dockerComposeUp(path);
     }
 }
