@@ -24,11 +24,11 @@ public class SwaggerConfig {
                 .addServersItem(new Server().url("/"))
                 .addSecurityItem(new SecurityRequirement().addList("BearerAuth"))
                 .components(new Components()
-//                        .addSecuritySchemes("BearerAuth", new SecurityScheme()
-//                                .name("Authorization")
-//                                .type(SecurityScheme.Type.HTTP)
-//                                .scheme("Bearer")
-//                                .bearerFormat("JWT"))
+                        .addSecuritySchemes("BearerAuth", new SecurityScheme()
+                                .name("Authorization")
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("Bearer")
+                                .bearerFormat("JWT"))
                 );
     }
 
@@ -55,6 +55,7 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
                 .group("c. 프로젝트")
                 .pathsToMatch("/api/project/**")
+                .pathsToMatch("/api/**")
                 .build();
     }
 
