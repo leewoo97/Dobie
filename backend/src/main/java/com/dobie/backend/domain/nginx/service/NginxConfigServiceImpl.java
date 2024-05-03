@@ -2,7 +2,8 @@ package com.dobie.backend.domain.nginx.service;
 
 import com.dobie.backend.domain.project.dto.NginxConfigDto;
 import com.dobie.backend.domain.project.dto.NginxProxyDto;
-import com.dobie.backend.domain.project.service.ProjectService;
+import com.dobie.backend.domain.project.entity.Project;
+import com.dobie.backend.domain.project.repository.ProjectRepository;
 import com.dobie.backend.util.file.FileManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,19 +14,22 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Log4j2
 public class NginxConfigServiceImpl implements NginxConfigService{
 
-    private final ProjectService projectService;
+
+    private final ProjectRepository projectRepository;
     FileManager fileManager = new FileManager();
 
     //리버스프록시 nginx config 파일 생성 후 /nginx에 [projectName].conf 이름으로 저장
     @Override
-    public void saveProxyNginxConfig(String projectId, String projectName) {
-        NginxConfigDto nginxConfig = projectService.getNginxConfigDto(projectId); //projectId로 nginxConfigDto 찾아오기
+    public void saveProxyNginxConfig(String projectId) {
+        NginxConfigDto nginxConfig = getNginxConfigDto(projectId); //projectId로 nginxConfigDto 찾아오기
         StringBuilder sb = new StringBuilder(); //config내용 저장할 StringBuilder
 
         //https사용 유무 확인
@@ -35,7 +39,7 @@ public class NginxConfigServiceImpl implements NginxConfigService{
             sb.append(withoutHttpsConfig(nginxConfig)); //https 미사용시 config파일 생성
         }
 
-        String fileName = projectName + ".conf"; //파일이름 [projectName].conf로 만들어주기
+        String fileName = projectId + ".conf"; //파일이름 [projectName].conf로 만들어주기
         fileManager.saveFile("/nginx",fileName,sb.toString()); //fileManager활용해서 /nginx경로에 저장하기
     }
 
@@ -173,5 +177,34 @@ public class NginxConfigServiceImpl implements NginxConfigService{
                 .append("    }\n");
         sb.append("}\n");
         return sb.toString();
+    }
+
+    public NginxConfigDto getNginxConfigDto(String projectId) {
+        // 프로젝트 찾기
+        Project project = projectRepository.searchProject(projectId);
+
+        // NginxConfigDto 생성
+        NginxConfigDto dto = NginxConfigDto.builder()
+                .domain(project.getProjectDomain())
+                .usingHttps(project.isUsingHttps())
+                .sslCertificate("")
+                .sslCertificateKey("")
+                .build();
+
+        // Proxy list 생성
+        List<NginxProxyDto> proxyList = new ArrayList<>();
+
+        // backend -> proxy
+        project.getBackendMap().forEach((key, backend) -> {
+            proxyList.add(new NginxProxyDto(backend));
+        });
+
+        // frontend -> proxy
+        proxyList.add(new NginxProxyDto(project.getFrontend()));
+
+        // proxyList 저장
+        dto.setProxyList(proxyList);
+
+        return dto;
     }
 }
