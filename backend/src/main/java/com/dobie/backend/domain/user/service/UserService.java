@@ -21,80 +21,17 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.security.core.AuthenticationException;
 
-@Service
-@RequiredArgsConstructor
-@Log4j2
-public class UserService {
 
-    private final ObjectMapper mapper;
+public interface UserService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final TokenManager tokenManager;
-    private final TokenService tokenService;
-    private final CookieUtil cookieUtil;
-    public String getPrettyJsonString(JsonNode node) {
+    public String getPrettyJsonString(JsonNode node);
 
-        try {
-            // 이쁘게 print하기 위해 writerWithDefaultPrettyPrinter 추가
-            // 이쁜 print 가 필요없다면 mapper.writeValueAsString(node); 사용해도 됨
-            String prettyJson = mapper
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(node);
+    public UserDto getUserInfo();
 
-            log.info("pretty Print Result...\n{}",prettyJson);
+    public void changeUserInfo(UserDto dto);
 
-            return prettyJson;
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    public LoginResponseDto login(UserDto dto, HttpServletResponse response);
 
-    public UserDto getUserInfo() {
-        User user = userRepository.getUserInfo();
-        return UserDto.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .build();
-    }
-
-    public void changeUserInfo(UserDto dto) {
-        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-        User user = new User(dto);
-        userRepository.updateUserInfo(user);
-    }
-
-    public LoginResponseDto login(UserDto dto, HttpServletResponse response){
-        User user = userRepository.getUserInfo();
-        if(passwordEncoder.matches(dto.getPassword(), user.getPassword())){
-            log.info("Password matched for user: {}", user.getUsername());
-            removeOldRefreshToken(dto, user); //리프레시토큰 삭제
-
-            TokenInfo tokenInfo = tokenManager.generateTokenInfo(user.getUsername());
-            tokenService.saveToken(tokenInfo);
-            cookieUtil.addCookie("RefreshToken", tokenInfo.getRefreshToken(), tokenManager.getREFRESH_TOKEN_TIME(), response);
-
-            UserDto userDto = UserDto.builder()
-                    .username(user.getUsername())
-                    .password(user.getPassword())
-                    .build();
-            return LoginResponseDto.builder()
-                    .refreshToken(tokenInfo.getRefreshToken())
-                    .accessToken(tokenInfo.getAccessToken())
-                    .userDto(userDto)
-                    .build();
-        }else {
-            log.info("Login failed for user: {}", dto.getUsername());
-            throw new BadCredentialsException("Invalid username or password");
-        }
-
-    }
-
-    private void removeOldRefreshToken(UserDto dto, User user){
-        refreshTokenRepository.findByRefreshToken(user.getUsername())
-                .ifPresent(refreshTokenRepository::delete);
-        log.info("event=DeleteExistingRefreshToken, username={}", dto.getUsername());
+    private void removeOldRefreshToken(UserDto dto, User user) {
     }
 }
