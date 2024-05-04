@@ -34,6 +34,8 @@ public class UserServiceImpl implements UserService {
     private final TokenManager tokenManager;
     private final TokenService tokenService;
     private final CookieUtil cookieUtil;
+
+    @Override
     public String getPrettyJsonString(JsonNode node) {
 
         try {
@@ -52,6 +54,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
     public UserDto getUserInfo() {
         User user = userRepository.getUserInfo();
         return UserDto.builder()
@@ -60,12 +63,14 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Override
     public void changeUserInfo(UserDto dto) {
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         User user = new User(dto);
         userRepository.updateUserInfo(user);
     }
 
+    @Override
     public LoginResponseDto login(UserDto dto, HttpServletResponse response){
         User user = userRepository.getUserInfo();
         if(passwordEncoder.matches(dto.getPassword(), user.getPassword())){
@@ -92,7 +97,8 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private void removeOldRefreshToken(UserDto dto, User user){
+    @Override
+    public void removeOldRefreshToken(UserDto dto, User user){
         refreshTokenRepository.findByRefreshToken(user.getUsername())
                 .ifPresent(refreshTokenRepository::delete);
         log.info("event=DeleteExistingRefreshToken, username={}", dto.getUsername());

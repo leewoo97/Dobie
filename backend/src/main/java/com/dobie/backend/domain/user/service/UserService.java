@@ -24,14 +24,13 @@ import org.springframework.security.core.AuthenticationException;
 
 public interface UserService {
 
-    public String getPrettyJsonString(JsonNode node);
+    String getPrettyJsonString(JsonNode node);
 
-    public UserDto getUserInfo();
+    UserDto getUserInfo();
 
-    public void changeUserInfo(UserDto dto);
+    void changeUserInfo(UserDto dto);
 
-    public LoginResponseDto login(UserDto dto, HttpServletResponse response);
+    LoginResponseDto login(UserDto dto, HttpServletResponse response);
 
-    private void removeOldRefreshToken(UserDto dto, User user) {
-    }
+    void removeOldRefreshToken(UserDto dto, User user);
 }
