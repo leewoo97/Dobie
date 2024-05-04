@@ -96,11 +96,11 @@ public class ProjectService {
 
     // 전체 프로젝트(main 브랜치에서 한번에 관리) 빌드 메서드
     // 사실상 dockerfile이랑 compose file 넣어놓는 용도
-    public void buildTotalService(String projectId, ProjectRequestDto dto) {
+    public void buildTotalService(String projectId) {
         ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
 
         // git clone
-        GitRequestDto gitInfo = dto.getGit();
+        GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
         // git type 확인, gitLab인지 gitHub인지
         // 1이면 gitLab
         if (gitInfo.getGitType() == 1) {
@@ -115,7 +115,7 @@ public class ProjectService {
 
         // dockerfile 생성
         // 백엔드
-        Map<String, BackendRequestDto> backendInfo = dto.getBackendMap();
+        Map<String, BackendGetResponseDto> backendInfo = projectGetResponseDto.getBackendMap();
         backendInfo.forEach((key, value) -> {
             if (value.getFramework().equals("SpringBoot")) {
                 dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
@@ -125,7 +125,7 @@ public class ProjectService {
         });
 
         // 프론트엔드
-        FrontendRequestDto frontendInfo = dto.getFrontend();
+        FrontendGetResponseDto frontendInfo = projectGetResponseDto.getFrontend();
         if (frontendInfo.getFramework().equals("React")) {
             dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
         }

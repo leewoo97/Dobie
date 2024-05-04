@@ -47,7 +47,7 @@ public class ProjectController {
 
     @PostMapping("/build/{projectId}")
     public ResponseEntity<?> buildTotalProject(@PathVariable String projectId, @RequestBody ProjectRequestDto dto){
-        projectService.buildTotalService(projectId, dto);
+        projectService.buildTotalService(projectId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
