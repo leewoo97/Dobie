@@ -3,6 +3,7 @@ package com.dobie.backend.security.jwt.repository;
 import com.dobie.backend.security.jwt.entity.RefreshToken;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
@@ -12,10 +13,10 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 @Repository
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class RefreshTokenRepository {
-    private ObjectMapper objectMapper = new ObjectMapper();
-//    private ObjectMapper objectMapper;
+//    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     private static final String BASE_PATH = new File("").getAbsolutePath();
     private static final String RESOURCE_PATH = "/src/main/resources";
