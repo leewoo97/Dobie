@@ -9,6 +9,7 @@ import com.dobie.backend.domain.project.entity.Database;
 import com.dobie.backend.domain.project.entity.Frontend;
 import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
+import com.dobie.backend.exception.exception.build.GitInfoNotFoundException;
 import com.dobie.backend.util.command.CommandService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -101,6 +102,11 @@ public class ProjectService {
 
         // git clone
         GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
+
+        if(gitInfo == null){
+            throw new GitInfoNotFoundException();
+        }
+
         // git type 확인, gitLab인지 gitHub인지
         // 1이면 gitLab
         if (gitInfo.getGitType() == 1) {
@@ -110,8 +116,6 @@ public class ProjectService {
             // gitHub Clone
             commandService.gitClone(gitInfo.getGitUrl());
         }
-
-        System.out.println("깃 클론 끝");
 
         // dockerfile 생성
         // 백엔드
@@ -132,15 +136,22 @@ public class ProjectService {
 
         // docker-compose 파일 생성
         dockerComposeService.createDockerComposeFile(projectGetResponseDto);
-
-        System.out.println("compose file 생성 끝");
-
+        
         //nginx config 파일생성
         nginxConfigService.saveProxyNginxConfig(projectId);
 
         System.out.println("nginx config file 생성 끝");
     }
 
+    // 프로젝트 통째로 실행한다 했을때
+    public void runProject(String projectId) {
+        Project project = projectRepository.searchProject(projectId);
+
+        // git clone 받으면 projectName으로 폴더가 생성되어 있을테니
+        String path = "./" + project.getProjectName();
+        commandService.dockerComposeUp(path);
+
+    }
 //    // 프론트 개별 빌드
 //    void buildFrontService(String projectId, ProjectRequestDto dto) {
 //
@@ -203,14 +214,5 @@ public class ProjectService {
 //        dockerComposeService.createDockerComposeFile(projectGetResponseDto);
 //    }
 
-    // 프로젝트 통째로 실행한다 했을때
-    public void runProject(String projectId) {
-        Project project = projectRepository.searchProject(projectId);
-
-        // git clone 받으면 projectName으로 폴더가 생성되어 있을테니
-        String path = "./" + project.getProjectName();
-        commandService.dockerComposeUp(path);
-
-    }
 }
 

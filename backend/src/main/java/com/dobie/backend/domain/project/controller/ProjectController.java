@@ -28,6 +28,9 @@ public class ProjectController {
     @GetMapping("")
     public ResponseEntity<?> getAllProjects() {
         Map<String, ProjectGetResponseDto> map = projectService.getAllProjects();
+        if(map.isEmpty()){
+            return response.success(ResponseCode.PROJECT_LIST_NOT_FOUND);
+        }
         return response.success(ResponseCode.PROJECT_LIST_FETCHED, map);
     }
 

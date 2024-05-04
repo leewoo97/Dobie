@@ -6,7 +6,10 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum ErrorCode {;
+public enum ErrorCode {
+
+    /* 빌드 */
+    GIT_INFO_NOT_FOUND(HttpStatus.NOT_FOUND, "git url 정보가 없습니다."),;
 
 
     private final HttpStatus status;
