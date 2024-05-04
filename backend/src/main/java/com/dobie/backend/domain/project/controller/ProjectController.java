@@ -2,17 +2,15 @@ package com.dobie.backend.domain.project.controller;
 
 import com.dobie.backend.domain.project.dto.ProjectRequestDto;
 import com.dobie.backend.domain.project.dto.ProjectGetResponseDto;
-import com.dobie.backend.domain.project.service.ProjectService;
+import com.dobie.backend.domain.project.service.ProjectServiceImpl;
 import com.dobie.backend.exception.format.code.ApiResponse;
 import com.dobie.backend.exception.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Tag(name = "Project 컨트롤러", description = "Project Controller API")
@@ -22,7 +20,7 @@ import java.util.Map;
 public class ProjectController {
 
     private final ApiResponse response;
-    private final ProjectService projectService;
+    private final ProjectServiceImpl projectService;
 
     @Operation(summary = "전체 프로젝트", description = "전체 프로젝트")
     @GetMapping("")
