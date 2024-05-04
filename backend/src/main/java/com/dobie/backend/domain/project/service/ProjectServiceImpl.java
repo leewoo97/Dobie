@@ -9,7 +9,7 @@ import com.dobie.backend.domain.project.entity.Database;
 import com.dobie.backend.domain.project.entity.Frontend;
 import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
-import com.dobie.backend.exception.exception.build.GitInfoNotFoundException;
+import com.dobie.backend.exception.exception.build.*;
 import com.dobie.backend.util.command.CommandService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,7 +20,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class ProjectServiceImpl implements ProjectService{
+public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final CommandService commandService;
@@ -38,20 +38,20 @@ public class ProjectServiceImpl implements ProjectService{
     public Map<String, ProjectGetResponseDto> getAllProjects() {
         Map<String, Project> map = projectRepository.selectProjects();
         Map<String, ProjectGetResponseDto> resultMap = new HashMap<>();
-        map.forEach((key,value) ->{
+        map.forEach((key, value) -> {
             resultMap.put(key, new ProjectGetResponseDto(value));
         });
         return resultMap;
     }
 
     @Override
-    public ProjectGetResponseDto getProject(String projectId){
+    public ProjectGetResponseDto getProject(String projectId) {
         Project project = projectRepository.searchProject(projectId);
         return new ProjectGetResponseDto(project);
     }
 
     @Override
-    public List<BackendGetResponseDto> getAllBackends(String projectId){
+    public List<BackendGetResponseDto> getAllBackends(String projectId) {
         Map<String, Backend> backendMap = projectRepository.selectBackends(projectId);
         List<BackendGetResponseDto> list = new ArrayList<>();
         backendMap.forEach((key, value) -> {
@@ -61,25 +61,25 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     @Override
-    public BackendGetResponseDto getBackend(String projectId, String serviceId){
+    public BackendGetResponseDto getBackend(String projectId, String serviceId) {
         Backend backend = projectRepository.searchBackend(projectId, serviceId);
         return new BackendGetResponseDto(backend);
     }
 
     @Override
-    public FrontendGetResponseDto getFrontend(String projectId){
+    public FrontendGetResponseDto getFrontend(String projectId) {
         Frontend frontend = projectRepository.searchFrontend(projectId);
         return new FrontendGetResponseDto(frontend);
     }
 
     @Override
-    public DatabaseGetResponseDto getDatabase(String projectId, String databaseId){
+    public DatabaseGetResponseDto getDatabase(String projectId, String databaseId) {
         Database database = projectRepository.searchDatabase(projectId, databaseId);
         return new DatabaseGetResponseDto(database);
     }
 
     @Override
-    public Map<String, DatabaseGetResponseDto> getAllDatabases(String projectId){
+    public Map<String, DatabaseGetResponseDto> getAllDatabases(String projectId) {
         Map<String, Database> databaseMap = projectRepository.selectDatabases(projectId);
         Map<String, DatabaseGetResponseDto> dtoMap = new HashMap<>();
         databaseMap.forEach((key, value) -> {
@@ -99,7 +99,7 @@ public class ProjectServiceImpl implements ProjectService{
         projectRepository.deleteProject(projectId);
     }
 
-    
+
     /*
      * 프로젝트 실행 관련 메서드들
      * */
@@ -112,48 +112,71 @@ public class ProjectServiceImpl implements ProjectService{
         ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
 
         // git clone
-        GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
+        try {
+            GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
 
-        if(gitInfo == null){
-            throw new GitInfoNotFoundException();
-        }
+            if (gitInfo == null) {
+                throw new GitInfoNotFoundException();
+            }
 
-        // git type 확인, gitLab인지 gitHub인지
-        // 1이면 gitLab
-        if (gitInfo.getGitType() == 1) {
+            // git type 확인, gitLab인지 gitHub인지
+            // 1이면 gitLab
+            if (gitInfo.getGitType() == 1) {
                 // gitLab clone
                 commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
-        } else {
-            // gitHub Clone
-            commandService.gitClone(gitInfo.getGitUrl());
+            } else {
+                // gitHub Clone
+                commandService.gitClone(gitInfo.getGitUrl());
+            }
+        } catch (GitCloneFailedException e) {
+            System.out.println("Error: " + e.getErrorCode().getMessage());
+            throw new GitCloneFailedException();
         }
 
         // dockerfile 생성
         // 백엔드
-        Map<String, BackendGetResponseDto> backendInfo = projectGetResponseDto.getBackendMap();
-        backendInfo.forEach((key, value) -> {
-            if (value.getFramework().equals("SpringBoot")) {
-                dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
-            } else {
+        try {
+            Map<String, BackendGetResponseDto> backendInfo = projectGetResponseDto.getBackendMap();
+            backendInfo.forEach((key, value) -> {
+                if (value.getFramework().equals("SpringBoot")) {
+                    dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
+                } else {
 
-            }
-        });
+                }
+            });
+        } catch (BackendBuildFailedException e) {
+            System.out.println("Error: " + e.getErrorCode().getMessage());
+            throw new BackendBuildFailedException();
+        }
 
         // 프론트엔드
-        FrontendGetResponseDto frontendInfo = projectGetResponseDto.getFrontend();
-        if (frontendInfo.getFramework().equals("React")) {
-            dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
-        } else if (frontendInfo.getFramework().equals("Vue")) {
-            dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
+        try {
+            FrontendGetResponseDto frontendInfo = projectGetResponseDto.getFrontend();
+            if (frontendInfo.getFramework().equals("React")) {
+                dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
+            } else if (frontendInfo.getFramework().equals("Vue")) {
+                dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
+            }
+        } catch (FrontendBuildFailedException e) {
+            System.out.println("Error: " + e.getErrorCode().getMessage());
+            throw new FrontendBuildFailedException();
         }
 
         // docker-compose 파일 생성
+        try{
         dockerComposeService.createDockerComposeFile(projectGetResponseDto);
-        
-        //nginx config 파일생성
-        nginxConfigService.saveProxyNginxConfig(projectId);
+        }catch (DockerComposeCreateFailedException e){
+            System.out.println("Error: " + e.getErrorCode().getMessage());
+            throw new DockerComposeCreateFailedException();
+        }
 
-        System.out.println("nginx config file 생성 끝");
+        //nginx config 파일생성
+        try{
+        nginxConfigService.saveProxyNginxConfig(projectId);
+        }catch (NginxCreateFailedException e){
+            System.out.println("Error: " + e.getErrorCode().getMessage());
+            throw new NginxCreateFailedException();
+        }
     }
 
     // 프로젝트 통째로 실행한다 했을때
