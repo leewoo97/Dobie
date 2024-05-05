@@ -161,6 +161,8 @@ public class CommandServiceImpl implements CommandService {
             System.out.println("compose up success : " + result);
         } catch (Exception e) {
             e.getStackTrace();
+            String result = outputStream.toString().trim();
+            System.out.println(result);
             throw new ProjectStartFailedException(e.getMessage());
         }
     }
