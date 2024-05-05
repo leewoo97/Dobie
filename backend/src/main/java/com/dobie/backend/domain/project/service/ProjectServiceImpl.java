@@ -10,6 +10,8 @@ import com.dobie.backend.domain.project.entity.Frontend;
 import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
 import com.dobie.backend.exception.exception.build.*;
+import com.dobie.backend.exception.exception.git.GitCloneFailedException;
+import com.dobie.backend.exception.exception.git.GitInfoNotFoundException;
 import com.dobie.backend.util.command.CommandService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

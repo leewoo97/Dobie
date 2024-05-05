@@ -1,4 +1,4 @@
-package com.dobie.backend.exception.exception.build;
+package com.dobie.backend.exception.exception.git;
 
 import com.dobie.backend.exception.format.response.ErrorCode;
 import lombok.Getter;
