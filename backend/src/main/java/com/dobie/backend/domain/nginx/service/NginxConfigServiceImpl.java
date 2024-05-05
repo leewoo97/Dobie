@@ -52,7 +52,7 @@ public class NginxConfigServiceImpl implements NginxConfigService{
         //해당 파일 경로 이미 있는지 확인
         if (!new File(frontPath).exists()) {
             log.info(frontPath+" :잘못된 파일 경로입니다.");
-            throw new ProjectPathNotFoundException(ErrorCode.PROJECT_PATH_NOT_FOUND); //예외처리 (수정 필요할듯)
+            throw new ProjectPathNotFoundException(); //예외처리 (수정 필요할듯)
         }
         String savePath = "/" + projectName + path + "/conf/conf.d"; //파일 저장할 경로 생성
         if (!new File(savePath).exists()) {

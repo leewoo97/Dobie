@@ -7,7 +7,7 @@ import lombok.Getter;
 public class ProjectPathNotFoundException extends RuntimeException{
     private final ErrorCode errorCode;
 
-    public ProjectPathNotFoundException(ErrorCode projectPathNotFound){
+    public ProjectPathNotFoundException(){
         this.errorCode = ErrorCode.PROJECT_PATH_NOT_FOUND;
     }
 }
