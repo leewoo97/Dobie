@@ -89,10 +89,7 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim();
             System.out.println("git checkout success : " + result);
         } catch (Exception e) {
-            GitCheckoutFailedException gitCheckoutFailedException = new GitCheckoutFailedException();
-            System.out.println(gitCheckoutFailedException.getMessage());
-            System.out.println("Error : " + e.getMessage());
-            throw gitCheckoutFailedException;
+            throw new GitCheckoutFailedException(e.getMessage());
         }
     }
 
@@ -108,10 +105,7 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim();
             System.out.println("git pull success : " + result);
         } catch (Exception e) {
-            GitPullFailedException gitPullFailedException = new GitPullFailedException();
-            System.out.println(gitPullFailedException.getMessage());
-            System.out.println("Error message: " + e.getMessage());
-            throw gitPullFailedException;
+            throw new GitPullFailedException(e.getMessage());
         }
     }
 
@@ -166,10 +160,7 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
             System.out.println("compose up success : " + result);
         } catch (Exception e) {
-            ProjectStartFailedException projectStartFailedException = new ProjectStartFailedException();
-            System.out.println(projectStartFailedException.getMessage());
-            System.out.println("Error : " + e.getMessage());
-            throw projectStartFailedException;
+            throw new ProjectStartFailedException(e.getMessage());
         }
     }
 
@@ -185,10 +176,7 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
             System.out.println("compose down success : " + result);
         } catch (Exception e) {
-            ProjectStopFailedException projectStopFailedException = new ProjectStopFailedException();
-            System.out.println(projectStopFailedException.getMessage());
-            System.out.println("Error : " + e.getMessage());
-            throw projectStopFailedException;
+            throw new ProjectStopFailedException(e.getMessage());
         }
     }
 }

@@ -6,8 +6,10 @@ import lombok.Getter;
 @Getter
 public class DockerComposeCreateFailedException extends RuntimeException{
     private final ErrorCode errorCode;
+    private final String errorMessage;
 
-    public DockerComposeCreateFailedException(){
+    public DockerComposeCreateFailedException(String errorMessage){
         this.errorCode = ErrorCode.DOCKER_COMPOSE_CREATE_FAILED;
+        this.errorMessage = errorMessage;
     }
 }

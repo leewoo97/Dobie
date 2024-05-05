@@ -9,8 +9,10 @@ import com.dobie.backend.domain.project.entity.Database;
 import com.dobie.backend.domain.project.entity.Frontend;
 import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
-import com.dobie.backend.exception.exception.build.*;
-import com.dobie.backend.exception.exception.git.GitCloneFailedException;
+import com.dobie.backend.exception.exception.build.BackendBuildFailedException;
+import com.dobie.backend.exception.exception.build.DockerComposeCreateFailedException;
+import com.dobie.backend.exception.exception.build.FrontendBuildFailedException;
+import com.dobie.backend.exception.exception.build.NginxCreateFailedException;
 import com.dobie.backend.exception.exception.git.GitInfoNotFoundException;
 import com.dobie.backend.util.command.CommandService;
 import lombok.RequiredArgsConstructor;
@@ -141,9 +143,8 @@ public class ProjectServiceImpl implements ProjectService {
                     dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
                 }
             });
-        } catch (BackendBuildFailedException e) {
-            System.out.println("Error: " + e.getErrorCode().getMessage());
-            throw new BackendBuildFailedException();
+        } catch (Exception e) {
+            throw new BackendBuildFailedException(e.getMessage());
         }
 
         // 프론트엔드
@@ -154,25 +155,22 @@ public class ProjectServiceImpl implements ProjectService {
             } else if (frontendInfo.getFramework().equals("Vue")) {
                 dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
             }
-        } catch (FrontendBuildFailedException e) {
-            System.out.println("Error: " + e.getErrorCode().getMessage());
-            throw new FrontendBuildFailedException();
+        } catch (Exception e) {
+            throw new FrontendBuildFailedException(e.getMessage());
         }
 
         // docker-compose 파일 생성
         try {
             dockerComposeService.createDockerComposeFile(projectGetResponseDto);
-        } catch (DockerComposeCreateFailedException e) {
-            System.out.println("Error: " + e.getErrorCode().getMessage());
-            throw new DockerComposeCreateFailedException();
+        } catch (Exception e) {
+            throw new DockerComposeCreateFailedException(e.getMessage());
         }
 
         //nginx config 파일생성
         try {
             nginxConfigService.saveProxyNginxConfig(projectId);
-        } catch (NginxCreateFailedException e) {
-            System.out.println("Error: " + e.getErrorCode().getMessage());
-            throw new NginxCreateFailedException();
+        } catch (Exception e) {
+            throw new NginxCreateFailedException(e.getMessage());
         }
     }
 

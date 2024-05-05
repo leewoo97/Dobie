@@ -6,8 +6,10 @@ import lombok.Getter;
 @Getter
 public class ProjectStopFailedException extends RuntimeException {
     private final ErrorCode errorCode;
+    private final String errorMessage;
 
-    public ProjectStopFailedException() {
+    public ProjectStopFailedException(String errorMessage) {
         this.errorCode = ErrorCode.PROJECT_STOP_FAILED;
+        this.errorMessage = errorMessage;
     }
 }

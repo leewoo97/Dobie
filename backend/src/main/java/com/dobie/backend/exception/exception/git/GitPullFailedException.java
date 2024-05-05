@@ -6,8 +6,10 @@ import lombok.Getter;
 @Getter
 public class GitPullFailedException extends RuntimeException {
     private final ErrorCode errorCode;
+    private final String errorMessage;
 
-    public GitPullFailedException(){
+    public GitPullFailedException(String errorMessage){
         this.errorCode = ErrorCode.GIT_PULL_FAILED;
+        this.errorMessage = errorMessage;
     }
 }
