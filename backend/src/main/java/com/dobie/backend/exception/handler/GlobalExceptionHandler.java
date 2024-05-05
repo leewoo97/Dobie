@@ -26,35 +26,35 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final ApiResponse response;
 
     /* 빌드 */
-    @ExceptionHandler(GitCloneFailedException.class)
+    @ExceptionHandler(BackendBuildFailedException.class)
     protected ResponseEntity<?> handle(BackendBuildFailedException e) {
         log.error("BackendBuildFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
         return response.error(e.getErrorCode());
     }
 
-    @ExceptionHandler(GitCloneFailedException.class)
+    @ExceptionHandler(DockerComposeCreateFailedException.class)
     protected ResponseEntity<?> handle(DockerComposeCreateFailedException e) {
         log.error("DockerComposeCreateFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
         return response.error(e.getErrorCode());
     }
 
-    @ExceptionHandler(GitCloneFailedException.class)
+    @ExceptionHandler(FrontendBuildFailedException.class)
     protected ResponseEntity<?> handle(FrontendBuildFailedException e) {
         log.error("FrontendBuildFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
         return response.error(e.getErrorCode());
     }
 
-    @ExceptionHandler(GitCloneFailedException.class)
+    @ExceptionHandler(NginxCreateFailedException.class)
     protected ResponseEntity<?> handle(NginxCreateFailedException e) {
         log.error("NginxCreateFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
         return response.error(e.getErrorCode());
     }
 
-    @ExceptionHandler(GitCloneFailedException.class)
+    @ExceptionHandler(ProjectStartFailedException.class)
     protected ResponseEntity<?> handle(ProjectStartFailedException e) {
         log.error("ProjectStartFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /* Git */
-    @ExceptionHandler(GitCloneFailedException.class)
+    @ExceptionHandler(GitCheckoutFailedException.class)
     protected ResponseEntity<?> handle(GitCheckoutFailedException e) {
         log.error("GitCheckoutFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
