@@ -4,8 +4,12 @@ import com.dobie.backend.domain.project.dto.NginxConfigDto;
 import com.dobie.backend.domain.project.dto.NginxProxyDto;
 import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
+import com.dobie.backend.exception.format.response.ErrorCode;
+import com.dobie.backend.exception.exception.build.ProjectPathNotFoundException;
+
 import com.dobie.backend.exception.exception.build.NginxCreateFailedException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
+
 import com.dobie.backend.util.file.FileManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -55,8 +59,8 @@ public class NginxConfigServiceImpl implements NginxConfigService {
         String frontPath = "/" + projectName + path; //파일 저장할 경로 생성
         //해당 파일 경로 이미 있는지 확인
         if (!new File(frontPath).exists()) {
-            log.info(frontPath + " :잘못된 경로입니다.");
-            return;
+            log.info(frontPath+" :잘못된 파일 경로입니다.");
+            throw new ProjectPathNotFoundException(); //예외처리
         }
         String savePath = "/" + projectName + path + "/conf/conf.d"; //파일 저장할 경로 생성
         if (!new File(savePath).exists()) {

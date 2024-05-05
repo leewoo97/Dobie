@@ -1,5 +1,6 @@
 package com.dobie.backend.exception.handler;
 
+import com.dobie.backend.exception.exception.build.ProjectPathNotFoundException;
 import com.dobie.backend.exception.exception.Environment.BuildGradleNotFoundException;
 import com.dobie.backend.exception.exception.Environment.FilePathNotExistException;
 import com.dobie.backend.exception.exception.Environment.PackageJsonNotFoundException;
@@ -10,6 +11,7 @@ import com.dobie.backend.exception.exception.git.GitCheckoutFailedException;
 import com.dobie.backend.exception.exception.git.GitCloneFailedException;
 import com.dobie.backend.exception.exception.git.GitInfoNotFoundException;
 import com.dobie.backend.exception.exception.git.GitPullFailedException;
+
 import com.dobie.backend.exception.format.code.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -119,6 +121,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(FilePathNotExistException.class)
     protected ResponseEntity<?> handle(FilePathNotExistException e) {
         log.error("FilePathNotExistException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(ProjectPathNotFoundException.class)
+    protected ResponseEntity<?> handle(ProjectPathNotFoundException e) {
+        log.error("ProjectPathNotFoundException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 
