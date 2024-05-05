@@ -2,6 +2,7 @@ package com.dobie.backend.domain.docker.dockerfile.service;
 
 import com.dobie.backend.exception.exception.Environment.BuildGradleNotFoundException;
 import com.dobie.backend.exception.exception.Environment.FilePathNotExistException;
+import com.dobie.backend.exception.exception.Environment.PackageJsonNotFoundException;
 import com.dobie.backend.exception.exception.Environment.PomXmlNotFoundException;
 import com.dobie.backend.util.file.FileManager;
 import lombok.extern.log4j.Log4j2;
@@ -79,6 +80,7 @@ public class DockerfileServiceImpl implements DockerfileService{
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
+        checkBuildPackageJson(filePath);
         fileManager.saveFile(filePath, "Dockerfile", dockerfile);
 
     }
@@ -101,6 +103,7 @@ public class DockerfileServiceImpl implements DockerfileService{
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
+        checkBuildPackageJson(filePath);
         fileManager.saveFile(filePath, "Dockerfile", dockerfile);
 
     }
@@ -144,6 +147,29 @@ public class DockerfileServiceImpl implements DockerfileService{
             if(!correctPath){
 //                System.out.println("파일 경로에 pom.xml이 존재하지않습니다.");
                 throw new PomXmlNotFoundException();
+            }
+        }else {
+//            System.out.println("파일 경로 자체가 잘못되었음.");
+            throw new FilePathNotExistException();
+        }
+    }
+
+    @Override
+    public void checkBuildPackageJson(String filepath) {
+        File directory = new File(filepath); // 디렉토리 경로 지정
+        File[] filesList = directory.listFiles(); // 디렉토리의 모든 파일 및 폴더 목록 얻기
+        boolean correctPath = false;
+        if (filesList != null) {
+            for (File file : filesList) {
+                if (file.getName().equals("package.json")) {
+//                    System.out.println("Name: " + file.getName()); // 파일 또는 디렉토리 이름 출력
+                    correctPath = true;
+                    break;
+                }
+            }
+            if(!correctPath){
+//                System.out.println("파일 경로에 pom.xml이 존재하지않습니다.");
+                throw new PackageJsonNotFoundException();
             }
         }else {
 //            System.out.println("파일 경로 자체가 잘못되었음.");

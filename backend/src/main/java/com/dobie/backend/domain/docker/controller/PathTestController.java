@@ -33,5 +33,13 @@ public class PathTestController {
         return response.success(ResponseCode.DOCKER_FILE_INSTALL_SUCCESS);
     }
 
+    @Operation(summary = "도커파일 설치를 위한 package.json경로 확인", description = "도커파일 설치를 위한 package.json경로 확인")
+    @PostMapping("/packagepath")
+    public ResponseEntity<?> searchPackage(@RequestParam(name = "path") String path) {
+        dockerfileService.checkBuildPackageJson(path);
+
+        return response.success(ResponseCode.DOCKER_FILE_INSTALL_SUCCESS);
+    }
+
 
 }

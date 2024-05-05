@@ -14,4 +14,6 @@ public interface DockerfileService {
     void checkBuildGradle(String filepath);
 
     void checkBuildPom(String filepath);
+
+    void checkBuildPackageJson(String filepath);
 }

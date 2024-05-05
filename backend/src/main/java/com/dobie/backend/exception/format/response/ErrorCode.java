@@ -26,6 +26,7 @@ public enum ErrorCode {
     /* 도커 파일 환경 변수 */
     BUILD_GRADLE_NOT_FOUND(HttpStatus.NOT_FOUND, "build.gradle이 해당 경로에 존재하지않습니다."),
     POM_XML_NOT_FOUND(HttpStatus.NOT_FOUND, "pom.xml이 해당 경로에 존재하지않습니다."),
+    PACKAGE_JSON_NOT_FOUND(HttpStatus.NOT_FOUND, "package.json이 해당 경로에 존재하지않습니다."),
     FILE_PATH_NOT_EXIST(HttpStatus.NOT_FOUND, "존재하지 않는 경로입니다."),
     ;
     private final HttpStatus status;
