@@ -114,25 +114,20 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
 
         // git clone
-        try {
-            GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
+        GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
 
-            if (gitInfo == null) {
-                throw new GitInfoNotFoundException();
-            }
+        if (gitInfo == null) {
+            throw new GitInfoNotFoundException();
+        }
 
-            // git type 확인, gitLab인지 gitHub인지
-            // 1이면 gitLab
-            if (gitInfo.getGitType() == 1) {
-                // gitLab clone
-                commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
-            } else {
-                // gitHub Clone
-                commandService.gitClone(gitInfo.getGitUrl());
-            }
-        } catch (GitCloneFailedException e) {
-            System.out.println("Error: " + e.getErrorCode().getMessage());
-            throw new GitCloneFailedException();
+        // git type 확인, gitLab인지 gitHub인지
+        // 1이면 gitLab
+        if (gitInfo.getGitType() == 1) {
+            // gitLab clone
+            commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
+        } else {
+            // gitHub Clone
+            commandService.gitClone(gitInfo.getGitUrl());
         }
 
         // dockerfile 생성

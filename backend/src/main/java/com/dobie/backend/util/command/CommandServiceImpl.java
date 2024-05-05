@@ -52,10 +52,7 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
             System.out.println("git clone success : " + result);
         } catch (Exception e) {
-            GitCloneFailedException gitCloneFailedException = new GitCloneFailedException();
-            System.out.println(gitCloneFailedException.getMessage());
-            System.out.println("Error : " + e.getMessage());
-            throw gitCloneFailedException;
+            throw new GitCloneFailedException(e.getMessage());
         }
     }
 
@@ -77,10 +74,7 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
             System.out.println("git clone success : " + result);
         } catch (Exception e) {
-            GitCloneFailedException gitCloneFailedException = new GitCloneFailedException();
-            System.out.println(gitCloneFailedException.getMessage());
-            System.out.println("Error : " + e.getMessage());
-            throw gitCloneFailedException;
+            throw new GitCloneFailedException(e.getMessage());
         }
     }
 
