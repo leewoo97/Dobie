@@ -5,6 +5,7 @@ import com.dobie.backend.exception.exception.Environment.FilePathNotExistExcepti
 import com.dobie.backend.exception.exception.Environment.PackageJsonNotFoundException;
 import com.dobie.backend.exception.exception.Environment.PomXmlNotFoundException;
 import com.dobie.backend.exception.exception.build.*;
+import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.exception.exception.git.GitCheckoutFailedException;
 import com.dobie.backend.exception.exception.git.GitCloneFailedException;
 import com.dobie.backend.exception.exception.git.GitInfoNotFoundException;
@@ -84,6 +85,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(GitPullFailedException.class)
     protected ResponseEntity<?> handle(GitPullFailedException e) {
         log.error("GitPullFailedException = {}", e.getErrorCode().getMessage());
+        log.error("Error Message = {}", e.getErrorMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    /* 파일 */
+    @ExceptionHandler(SaveFileFailedException.class)
+    protected ResponseEntity<?> handle(SaveFileFailedException e) {
+        log.error("SaveFileFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
         return response.error(e.getErrorCode());
     }

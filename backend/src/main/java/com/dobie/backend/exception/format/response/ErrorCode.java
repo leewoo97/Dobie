@@ -22,6 +22,9 @@ public enum ErrorCode {
     PROJECT_START_FAILED(HttpStatus.BAD_REQUEST, "프로젝트를 실행하는데 실패했습니다."),
     PROJECT_STOP_FAILED(HttpStatus.BAD_REQUEST, "프로젝트를 정지하는데 실패했습니다."),
 
+    /* 파일 생성 */
+    SAVE_FILE_FAILED(HttpStatus.BAD_REQUEST, "파일 생성에 실패했습니다."),
+
 
     /* 도커 파일 환경 변수 */
     BUILD_GRADLE_NOT_FOUND(HttpStatus.NOT_FOUND, "build.gradle이 해당 경로에 존재하지않습니다."),

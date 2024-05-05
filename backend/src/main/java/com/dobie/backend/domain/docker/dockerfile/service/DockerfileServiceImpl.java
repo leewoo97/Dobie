@@ -4,6 +4,9 @@ import com.dobie.backend.exception.exception.Environment.BuildGradleNotFoundExce
 import com.dobie.backend.exception.exception.Environment.FilePathNotExistException;
 import com.dobie.backend.exception.exception.Environment.PackageJsonNotFoundException;
 import com.dobie.backend.exception.exception.Environment.PomXmlNotFoundException;
+import com.dobie.backend.exception.exception.build.BackendBuildFailedException;
+import com.dobie.backend.exception.exception.build.FrontendBuildFailedException;
+import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.util.file.FileManager;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -12,7 +15,7 @@ import java.io.File;
 
 @Service
 @Log4j2
-public class DockerfileServiceImpl implements DockerfileService{
+public class DockerfileServiceImpl implements DockerfileService {
 
     FileManager fileManager = new FileManager();
 
@@ -40,7 +43,12 @@ public class DockerfileServiceImpl implements DockerfileService{
         String filePath = "./" + projectName + path;
         // 경로에 build.Gradle이 존재X 또는 경로 자체가 잘못되었다면 오류 발생
         checkBuildGradle(filePath);
-        fileManager.saveFile(filePath, "Dockerfile", dockerfile);
+        try {
+            fileManager.saveFile(filePath, "Dockerfile", dockerfile);
+        } catch (SaveFileFailedException e) {
+            throw new BackendBuildFailedException(e.getErrorMessage());
+        }
+
 
     }
 
@@ -61,7 +69,11 @@ public class DockerfileServiceImpl implements DockerfileService{
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
         checkBuildPom(filePath);
-        fileManager.saveFile(filePath, "Dockerfile", dockerfile);
+        try {
+            fileManager.saveFile(filePath, "Dockerfile", dockerfile);
+        } catch (SaveFileFailedException e) {
+            throw new BackendBuildFailedException(e.getErrorMessage());
+        }
 
     }
 
@@ -81,8 +93,11 @@ public class DockerfileServiceImpl implements DockerfileService{
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
         checkBuildPackageJson(filePath);
-        fileManager.saveFile(filePath, "Dockerfile", dockerfile);
-
+        try {
+            fileManager.saveFile(filePath, "Dockerfile", dockerfile);
+        } catch (SaveFileFailedException e) {
+            throw new FrontendBuildFailedException(e.getErrorMessage());
+        }
     }
 
     @Override
@@ -104,8 +119,11 @@ public class DockerfileServiceImpl implements DockerfileService{
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
         checkBuildPackageJson(filePath);
-        fileManager.saveFile(filePath, "Dockerfile", dockerfile);
-
+        try {
+            fileManager.saveFile(filePath, "Dockerfile", dockerfile);
+        } catch (SaveFileFailedException e) {
+            throw new FrontendBuildFailedException(e.getErrorMessage());
+        }
     }
 
     @Override
@@ -121,11 +139,11 @@ public class DockerfileServiceImpl implements DockerfileService{
                     break;
                 }
             }
-            if(!correctPath){
+            if (!correctPath) {
 //                System.out.println("파일 경로에 bulid.gradle이 존재하지않습니다.");
                 throw new BuildGradleNotFoundException();
             }
-        }else {
+        } else {
 //            System.out.println("파일 경로 자체가 잘못되었음.");
             throw new FilePathNotExistException();
         }
@@ -144,11 +162,11 @@ public class DockerfileServiceImpl implements DockerfileService{
                     break;
                 }
             }
-            if(!correctPath){
+            if (!correctPath) {
 //                System.out.println("파일 경로에 pom.xml이 존재하지않습니다.");
                 throw new PomXmlNotFoundException();
             }
-        }else {
+        } else {
 //            System.out.println("파일 경로 자체가 잘못되었음.");
             throw new FilePathNotExistException();
         }
@@ -167,11 +185,11 @@ public class DockerfileServiceImpl implements DockerfileService{
                     break;
                 }
             }
-            if(!correctPath){
+            if (!correctPath) {
 //                System.out.println("파일 경로에 pom.xml이 존재하지않습니다.");
                 throw new PackageJsonNotFoundException();
             }
-        }else {
+        } else {
 //            System.out.println("파일 경로 자체가 잘못되었음.");
             throw new FilePathNotExistException();
         }

@@ -3,9 +3,13 @@ package com.dobie.backend.domain.docker.dockercompose.service;
 import com.dobie.backend.domain.project.dto.BackendGetResponseDto;
 import com.dobie.backend.domain.project.dto.DatabaseGetResponseDto;
 import com.dobie.backend.domain.project.dto.ProjectGetResponseDto;
+import com.dobie.backend.exception.exception.build.DockerComposeCreateFailedException;
+import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.util.file.FileManager;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -44,28 +48,28 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                     password = mysql.getPassword();
                 }
                 dockercompose.append(createSpringDockerComposeFile(backendSeq, backendGetResponseDto.getPath(),
-                                                                   backendGetResponseDto.getExternalPort(),
-                                                                   backendGetResponseDto.getInternalPort(), mysql != null,
-                                                                   redis != null, databaseName, username, password));
+                        backendGetResponseDto.getExternalPort(),
+                        backendGetResponseDto.getInternalPort(), mysql != null,
+                        redis != null, databaseName, username, password));
             } else if (backendGetResponseDto.getFramework().equals("Django")) {
 
             }
         }
 
         dockercompose.append(createReactDockerComposeFile(projectGetResponseDto.getFrontend().getPath(),
-                                                          projectGetResponseDto.getFrontend().getExternalPort(),
-                                                          projectGetResponseDto.getFrontend().getInternalPort()));
+                projectGetResponseDto.getFrontend().getExternalPort(),
+                projectGetResponseDto.getFrontend().getInternalPort()));
 
         // database 설정 추가
         if (mysql != null) {
             dockercompose.append(
-                createMysqlDockerComposeFile(mysql.getDatabaseName(), mysql.getUsername(),
-                                             mysql.getPassword(), mysql.getExternalPort(),
-                                             mysql.getInternalPort()));
+                    createMysqlDockerComposeFile(mysql.getDatabaseName(), mysql.getUsername(),
+                            mysql.getPassword(), mysql.getExternalPort(),
+                            mysql.getInternalPort()));
         }
         if (redis != null) {
             dockercompose.append(
-                createRedisDockerComposeFile(redis.getExternalPort(), redis.getInternalPort()));
+                    createRedisDockerComposeFile(redis.getExternalPort(), redis.getInternalPort()));
         }
 
         if (mysql != null) {
@@ -75,8 +79,11 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectGetResponseDto.getProjectName();
-        fileManager.saveFile(filePath, "docker-compose.yml", dockercompose.toString());
-
+        try {
+            fileManager.saveFile(filePath, "docker-compose.yml", dockercompose.toString());
+        } catch (SaveFileFailedException e) {
+            throw new DockerComposeCreateFailedException(e.getErrorMessage());
+        }
     }
 
     @Override
@@ -106,7 +113,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         if (mysql || redis) {
             if (mysql) {
                 sb.append("      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/").append(databaseName)
-                  .append("?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC\n");
+                        .append("?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC\n");
                 sb.append("      SPRING_DATASOURCE_USERNAME: ").append(username).append("\n");
                 sb.append("      SPRING_DATASOURCE_PASSWORD: ").append(password).append("\n");
                 sb.append("      SPRING_JPA_HIBERNATE_DDL_AUTO: update\n");

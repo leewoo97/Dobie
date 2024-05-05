@@ -125,53 +125,42 @@ public class ProjectServiceImpl implements ProjectService {
         // git type 확인, gitLab인지 gitHub인지
         // 1이면 gitLab
         if (gitInfo.getGitType() == 1) {
-            // gitLab clone
-            commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
+            if (!commandService.checkIsCloned("./" + projectGetResponseDto.getProjectName())) {
+                // gitLab clone
+                commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
+            }
         } else {
-            // gitHub Clone
-            commandService.gitClone(gitInfo.getGitUrl());
+            if (!commandService.checkIsCloned("./" + projectGetResponseDto.getProjectName())) {
+                // gitHub Clone
+                commandService.gitClone(gitInfo.getGitUrl());
+            }
         }
 
         // dockerfile 생성
         // 백엔드
-        try {
-            Map<String, BackendGetResponseDto> backendInfo = projectGetResponseDto.getBackendMap();
-            backendInfo.forEach((key, value) -> {
-                if (value.getFramework().equals("SpringBoot(Gradle)")) {
-                    dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
-                } else if (value.getFramework().equals("SpringBoot(Maven)")) {
-                    dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
-                }
-            });
-        } catch (Exception e) {
-            throw new BackendBuildFailedException(e.getMessage());
-        }
+        Map<String, BackendGetResponseDto> backendInfo = projectGetResponseDto.getBackendMap();
+        backendInfo.forEach((key, value) -> {
+            if (value.getFramework().equals("SpringBoot(Gradle)")) {
+                dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
+            } else if (value.getFramework().equals("SpringBoot(Maven)")) {
+                dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
+            }
+        });
+
 
         // 프론트엔드
-        try {
-            FrontendGetResponseDto frontendInfo = projectGetResponseDto.getFrontend();
-            if (frontendInfo.getFramework().equals("React")) {
-                dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
-            } else if (frontendInfo.getFramework().equals("Vue")) {
-                dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
-            }
-        } catch (Exception e) {
-            throw new FrontendBuildFailedException(e.getMessage());
+        FrontendGetResponseDto frontendInfo = projectGetResponseDto.getFrontend();
+        if (frontendInfo.getFramework().equals("React")) {
+            dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
+        } else if (frontendInfo.getFramework().equals("Vue")) {
+            dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
         }
 
         // docker-compose 파일 생성
-        try {
-            dockerComposeService.createDockerComposeFile(projectGetResponseDto);
-        } catch (Exception e) {
-            throw new DockerComposeCreateFailedException(e.getMessage());
-        }
+        dockerComposeService.createDockerComposeFile(projectGetResponseDto);
 
         //nginx config 파일생성
-        try {
-            nginxConfigService.saveProxyNginxConfig(projectId);
-        } catch (Exception e) {
-            throw new NginxCreateFailedException(e.getMessage());
-        }
+        nginxConfigService.saveProxyNginxConfig(projectId);
     }
 
     // 프로젝트 통째로 실행한다 했을때
