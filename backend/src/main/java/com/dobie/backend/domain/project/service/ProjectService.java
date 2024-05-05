@@ -2,6 +2,7 @@ package com.dobie.backend.domain.project.service;
 
 import com.dobie.backend.domain.project.dto.*;
 
+import java.io.IOException;
 import java.util.*;
 
 public interface ProjectService {
