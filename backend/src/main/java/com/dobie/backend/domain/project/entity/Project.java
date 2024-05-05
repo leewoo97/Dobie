@@ -34,12 +34,14 @@ public class Project {
         this.git = new Git(dto.getGit());
         this.backendMap = new HashMap<>();
         dto.getBackendMap().forEach((key, value) -> {
-            this.backendMap.put(key, new Backend(UUID.randomUUID().toString(), value));
+            String uuid = UUID.randomUUID().toString();
+            this.backendMap.put(uuid, new Backend(uuid, value));
         });
         this.frontend = new Frontend(dto.getFrontend());
         this.databaseMap = new HashMap<>();
         dto.getDatabaseMap().forEach((key,value) -> {
-            this.databaseMap.put(key, new Database(UUID.randomUUID().toString(), value));
+            String uuid = UUID.randomUUID().toString();
+            this.databaseMap.put(uuid, new Database(uuid, value));
         });
 
     }
