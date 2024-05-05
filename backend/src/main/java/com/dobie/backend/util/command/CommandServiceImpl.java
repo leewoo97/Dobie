@@ -1,5 +1,10 @@
 package com.dobie.backend.util.command;
 
+import com.dobie.backend.exception.exception.git.GitCheckoutFailedException;
+import com.dobie.backend.exception.exception.git.GitCloneFailedException;
+import com.dobie.backend.exception.exception.git.GitPullFailedException;
+import com.dobie.backend.exception.exception.build.ProjectStartFailedException;
+import com.dobie.backend.exception.exception.build.ProjectStopFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
@@ -45,10 +50,9 @@ public class CommandServiceImpl implements CommandService {
         try {
             executor.execute(commandLine);
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
-            System.out.println("git clone 성공: " + result);
+            System.out.println("git clone success : " + result);
         } catch (Exception e) {
-            System.out.println("glt clone 명령어 실행 중 에러 발생: " + e.getMessage());
-            e.printStackTrace();
+            throw new GitCloneFailedException(e.getMessage());
         }
     }
 
@@ -68,10 +72,9 @@ public class CommandServiceImpl implements CommandService {
         try {
             executor.execute(commandLine);
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
-            System.out.println("git clone 성공: " + result);
+            System.out.println("git clone success : " + result);
         } catch (Exception e) {
-            System.out.println("git clone 명령어 실행 중 에러 발생: " + e.getMessage());
-            e.printStackTrace();
+            throw new GitCloneFailedException(e.getMessage());
         }
     }
 
@@ -84,10 +87,9 @@ public class CommandServiceImpl implements CommandService {
         try {
             executor.execute(commandLine);
             String result = outputStream.toString().trim();
-            System.out.println("git checkout 성공: " + result);
+            System.out.println("git checkout success : " + result);
         } catch (Exception e) {
-            System.out.println("git checkout 명령어 실행 중 에러 발생: " + e.getMessage());
-            e.printStackTrace();
+            throw new GitCheckoutFailedException(e.getMessage());
         }
     }
 
@@ -101,10 +103,9 @@ public class CommandServiceImpl implements CommandService {
         try {
             executor.execute(commandLine);
             String result = outputStream.toString().trim();
-            System.out.println("git pull 성공: " + result);
+            System.out.println("git pull success : " + result);
         } catch (Exception e) {
-            System.out.println("git pull 명령어 실행 중 에러 발생: " + e.getMessage());
-            e.printStackTrace();
+            throw new GitPullFailedException(e.getMessage());
         }
     }
 
@@ -157,26 +158,25 @@ public class CommandServiceImpl implements CommandService {
             executor.setWorkingDirectory(new File(path));
             executor.execute(commandLine);
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
-            System.out.println("실행 성공: " + result);
+            System.out.println("compose up success : " + result);
         } catch (Exception e) {
-            System.out.println("실행 중 에러 발생: " + e.getMessage());
-            e.printStackTrace();
+            throw new ProjectStartFailedException(e.getMessage());
         }
     }
 
     @Override
-    public void dockerComposeDown() {
+    public void dockerComposeDown(String path) {
         sb = new StringBuilder();
         sb.append("docker compose down");
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
+            executor.setWorkingDirectory(new File(path));
             executor.execute(commandLine);
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
-            System.out.println("compose down 성공: " + result);
+            System.out.println("compose down success : " + result);
         } catch (Exception e) {
-            System.out.println("compose down 중 에러 발생: " + e.getMessage());
-            e.printStackTrace();
+            throw new ProjectStopFailedException(e.getMessage());
         }
     }
 }

@@ -9,7 +9,11 @@ import com.dobie.backend.domain.project.entity.Database;
 import com.dobie.backend.domain.project.entity.Frontend;
 import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
-import com.dobie.backend.exception.exception.build.*;
+import com.dobie.backend.exception.exception.build.BackendBuildFailedException;
+import com.dobie.backend.exception.exception.build.DockerComposeCreateFailedException;
+import com.dobie.backend.exception.exception.build.FrontendBuildFailedException;
+import com.dobie.backend.exception.exception.build.NginxCreateFailedException;
+import com.dobie.backend.exception.exception.git.GitInfoNotFoundException;
 import com.dobie.backend.util.command.CommandService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -112,82 +116,69 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
 
         // git clone
-        try {
-            GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
+        GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
 
-            if (gitInfo == null) {
-                throw new GitInfoNotFoundException();
-            }
+        if (gitInfo == null) {
+            throw new GitInfoNotFoundException();
+        }
 
-            // git type 확인, gitLab인지 gitHub인지
-            // 1이면 gitLab
-            if (gitInfo.getGitType() == 1) {
+        // git type 확인, gitLab인지 gitHub인지
+        // 1이면 gitLab
+        if (gitInfo.getGitType() == 1) {
+            if (!commandService.checkIsCloned("./" + projectGetResponseDto.getProjectName())) {
                 // gitLab clone
                 commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
-            } else {
+            }
+        } else {
+            if (!commandService.checkIsCloned("./" + projectGetResponseDto.getProjectName())) {
                 // gitHub Clone
                 commandService.gitClone(gitInfo.getGitUrl());
             }
-        } catch (GitCloneFailedException e) {
-            System.out.println("Error: " + e.getErrorCode().getMessage());
-            throw new GitCloneFailedException();
         }
 
         // dockerfile 생성
         // 백엔드
-        try {
-            Map<String, BackendGetResponseDto> backendInfo = projectGetResponseDto.getBackendMap();
-            backendInfo.forEach((key, value) -> {
-                if (value.getFramework().equals("SpringBoot(Gradle)")) {
-                    dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
-                } else if(value.getFramework().equals("SpringBoot(Maven)")){
-                    dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
-                }
-            });
-        } catch (BackendBuildFailedException e) {
-            System.out.println("Error: " + e.getErrorCode().getMessage());
-            throw new BackendBuildFailedException();
-        }
+        Map<String, BackendGetResponseDto> backendInfo = projectGetResponseDto.getBackendMap();
+        backendInfo.forEach((key, value) -> {
+            if (value.getFramework().equals("SpringBoot(Gradle)")) {
+                dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
+            } else if (value.getFramework().equals("SpringBoot(Maven)")) {
+                dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
+            }
+        });
+
 
         // 프론트엔드
-        try {
-            FrontendGetResponseDto frontendInfo = projectGetResponseDto.getFrontend();
-            if (frontendInfo.getFramework().equals("React")) {
-                dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
-            } else if (frontendInfo.getFramework().equals("Vue")) {
-                dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
-            }
-        } catch (FrontendBuildFailedException e) {
-            System.out.println("Error: " + e.getErrorCode().getMessage());
-            throw new FrontendBuildFailedException();
+        FrontendGetResponseDto frontendInfo = projectGetResponseDto.getFrontend();
+        if (frontendInfo.getFramework().equals("React")) {
+            dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
+        } else if (frontendInfo.getFramework().equals("Vue")) {
+            dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
         }
 
         // docker-compose 파일 생성
-        try{
         dockerComposeService.createDockerComposeFile(projectGetResponseDto);
-        }catch (DockerComposeCreateFailedException e){
-            System.out.println("Error: " + e.getErrorCode().getMessage());
-            throw new DockerComposeCreateFailedException();
-        }
 
         //nginx config 파일생성
-        try{
         nginxConfigService.saveProxyNginxConfig(projectId);
-        }catch (NginxCreateFailedException e){
-            System.out.println("Error: " + e.getErrorCode().getMessage());
-            throw new NginxCreateFailedException();
-        }
     }
 
     // 프로젝트 통째로 실행한다 했을때
     @Override
     public void runProject(String projectId) {
-        Project project = projectRepository.searchProject(projectId);
+        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
 
         // git clone 받으면 projectName으로 폴더가 생성되어 있을테니
-        String path = "./" + project.getProjectName();
+        String path = "./" + projectGetResponseDto.getProjectName();
         commandService.dockerComposeUp(path);
 
+    }
+
+    @Override
+    public void stopProject(String projectId) {
+        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
+        String path = "./" + projectGetResponseDto.getProjectName();
+        commandService.dockerComposeDown(path);
     }
 //    // 프론트 개별 빌드
 //    void buildFrontService(String projectId, ProjectRequestDto dto) {

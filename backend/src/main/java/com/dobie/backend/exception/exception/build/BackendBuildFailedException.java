@@ -6,8 +6,10 @@ import lombok.Getter;
 @Getter
 public class BackendBuildFailedException extends RuntimeException{
     private final ErrorCode errorCode;
+    private final String errorMessage;
 
-    public BackendBuildFailedException(){
+    public BackendBuildFailedException(String errorMessage){
         this.errorCode = ErrorCode.BACKEND_BUILD_FAILED;
+        this.errorMessage = errorMessage;
     }
 }

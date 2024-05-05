@@ -2,7 +2,7 @@ package com.dobie.backend.domain.project.controller;
 
 import com.dobie.backend.domain.project.dto.ProjectRequestDto;
 import com.dobie.backend.domain.project.dto.ProjectGetResponseDto;
-import com.dobie.backend.domain.project.service.ProjectServiceImpl;
+import com.dobie.backend.domain.project.service.ProjectService;
 import com.dobie.backend.exception.format.code.ApiResponse;
 import com.dobie.backend.exception.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class ProjectController {
 
     private final ApiResponse response;
-    private final ProjectServiceImpl projectService;
+    private final ProjectService projectService;
 
     @Operation(summary = "전체 프로젝트", description = "전체 프로젝트")
     @GetMapping("")
@@ -69,6 +69,13 @@ public class ProjectController {
     public ResponseEntity<?> runProject(@PathVariable String projectId) {
         projectService.runProject(projectId);
         return response.success(ResponseCode.PROJECT_RUN_SUCCESS);
+    }
+
+    @Operation(summary = "프로젝트 정지", description = "실행중인 프로젝트를 정지")
+    @PostMapping("/stop/{projectId}")
+    public ResponseEntity<?> stopProject(@PathVariable String projectId) {
+        projectService.stopProject(projectId);
+        return response.success(ResponseCode.PROJECT_STOP_SUCCESS);
     }
 }
 

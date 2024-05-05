@@ -6,8 +6,10 @@ import lombok.Getter;
 @Getter
 public class NginxCreateFailedException extends RuntimeException{
     private final ErrorCode errorCode;
+    private final String errorMessage;
 
-    public NginxCreateFailedException(){
+    public NginxCreateFailedException(String errorMessage){
         this.errorCode = ErrorCode.NGINX_CREATE_FAILED;
+        this.errorMessage = errorMessage;
     }
 }

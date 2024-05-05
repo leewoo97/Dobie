@@ -1,16 +1,6 @@
 package com.dobie.backend.domain.project.service;
 
-import com.dobie.backend.domain.docker.dockercompose.service.DockerComposeService;
-import com.dobie.backend.domain.docker.dockerfile.service.DockerfileService;
-import com.dobie.backend.domain.nginx.service.NginxConfigService;
 import com.dobie.backend.domain.project.dto.*;
-import com.dobie.backend.domain.project.entity.Backend;
-import com.dobie.backend.domain.project.entity.Database;
-import com.dobie.backend.domain.project.entity.Frontend;
-import com.dobie.backend.domain.project.entity.Project;
-import com.dobie.backend.domain.project.repository.ProjectRepository;
-import com.dobie.backend.exception.exception.build.GitInfoNotFoundException;
-import com.dobie.backend.util.command.CommandService;
 
 import java.util.*;
 
@@ -40,6 +30,8 @@ public interface ProjectService {
     void buildTotalService(String projectId);
 
     void runProject(String projectId);
+
+    void stopProject(String projectId);
 
 //    void buildFrontService(String projectId, ProjectRequestDto dto)
 

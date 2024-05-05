@@ -9,4 +9,11 @@ public interface DockerfileService {
     void createReactDockerfile(String projectName,String version, String path);
 
     void createVueDockerfile(String projectName, String version, String path);
+
+    /* 경로 확인 메소드 */
+    void checkBuildGradle(String filepath);
+
+    void checkBuildPom(String filepath);
+
+    void checkBuildPackageJson(String filepath);
 }

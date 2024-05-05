@@ -18,7 +18,7 @@ public interface CommandService {
 
     void dockerComposeUp(String path);
 
-    void dockerComposeDown();
+    void dockerComposeDown(String path);
 
 }
 

@@ -6,6 +6,10 @@ import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
 import com.dobie.backend.exception.format.response.ErrorCode;
 import com.dobie.backend.exception.exception.build.ProjectPathNotFoundException;
+
+import com.dobie.backend.exception.exception.build.NginxCreateFailedException;
+import com.dobie.backend.exception.exception.file.SaveFileFailedException;
+
 import com.dobie.backend.util.file.FileManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,7 +26,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class NginxConfigServiceImpl implements NginxConfigService{
+public class NginxConfigServiceImpl implements NginxConfigService {
 
 
     private final ProjectRepository projectRepository;
@@ -35,14 +39,18 @@ public class NginxConfigServiceImpl implements NginxConfigService{
         StringBuilder sb = new StringBuilder(); //config내용 저장할 StringBuilder
 
         //https사용 유무 확인
-        if(nginxConfig.isUsingHttps()){
+        if (nginxConfig.isUsingHttps()) {
             sb.append(withHttpsConfig(nginxConfig)); //https 사용시 config파일 생성
-        }else{
+        } else {
             sb.append(withoutHttpsConfig(nginxConfig)); //https 미사용시 config파일 생성
         }
 
         String fileName = projectId + ".conf"; //파일이름 [projectName].conf로 만들어주기
-        fileManager.saveFile("/nginx",fileName,sb.toString()); //fileManager활용해서 /nginx경로에 저장하기
+        try {
+            fileManager.saveFile("/nginx", fileName, sb.toString()); //fileManager활용해서 /nginx경로에 저장하기
+        } catch (SaveFileFailedException e) {
+            throw new NginxCreateFailedException(e.getErrorMessage());
+        }
     }
 
     //프론트 nginx config 파일 생성 후 /[projectName]/[frontendPath]/conf/conf.d 파일에 default.conf이름으로 저장
@@ -52,7 +60,7 @@ public class NginxConfigServiceImpl implements NginxConfigService{
         //해당 파일 경로 이미 있는지 확인
         if (!new File(frontPath).exists()) {
             log.info(frontPath+" :잘못된 파일 경로입니다.");
-            throw new ProjectPathNotFoundException(); //예외처리 (수정 필요할듯)
+            throw new ProjectPathNotFoundException(); //예외처리
         }
         String savePath = "/" + projectName + path + "/conf/conf.d"; //파일 저장할 경로 생성
         if (!new File(savePath).exists()) {
@@ -60,21 +68,21 @@ public class NginxConfigServiceImpl implements NginxConfigService{
         }
 
         //경로에 default.conf이름으로 파일 저장
-        BufferedWriter writer = new BufferedWriter(new FileWriter((savePath+"/default.conf")));
+        BufferedWriter writer = new BufferedWriter(new FileWriter((savePath + "/default.conf")));
         writer.write(createFrontNginxConfig()); //default.conf파일에 config 내용 저장
         writer.close();
     }
 
     //https 사용하는 nginx config 생성
     @Override
-    public String withHttpsConfig(NginxConfigDto nginxConfig){
+    public String withHttpsConfig(NginxConfigDto nginxConfig) {
         StringBuilder sb = new StringBuilder();
         // HTTP를 HTTPS로 리디렉션하는 서버 블록
         sb.append("server {\n");
         sb.append("    listen 80;\n"); //80번 포트로 요청이 들어왔을때
         sb.append("    listen [::]:80;\n");
         sb.append("\n");
-        sb.append("    server_name "+nginxConfig.getDomain()+";\n");
+        sb.append("    server_name " + nginxConfig.getDomain() + ";\n");
         sb.append("    index index.html index.htm index.nginx-debian.html;\n");
         sb.append("\n");
 
@@ -94,16 +102,16 @@ public class NginxConfigServiceImpl implements NginxConfigService{
         sb.append("server {\n");
         sb.append("    listen 443 ssl;\n"); // 443번 포트로 HTTPS 요청이 들어왔을 때, SSL을 사용한다는 의미
         sb.append("    listen [::]:443 ssl;\n");
-        sb.append("    server_name "+nginxConfig.getDomain()+";\n"); // 사용할 도메인 설정
+        sb.append("    server_name " + nginxConfig.getDomain() + ";\n"); // 사용할 도메인 설정
         sb.append("    index index.html index.htm index.nginx-debian.html;\n");
         sb.append("\n");
-        sb.append("    ssl_certificate "+nginxConfig.getSslCertificate()+"\n"); // SSL 인증서 설정
-        sb.append("    ssl_certificate_key "+nginxConfig.getSslCertificateKey()+"\n"); // SSL 인증서 키 설정
+        sb.append("    ssl_certificate " + nginxConfig.getSslCertificate() + "\n"); // SSL 인증서 설정
+        sb.append("    ssl_certificate_key " + nginxConfig.getSslCertificateKey() + "\n"); // SSL 인증서 키 설정
         //보안 강화 추가
         sb.append("\n");
 
         //locations 리스트 for문 통해서 config 작성
-        for(NginxProxyDto proxyConfig : nginxConfig.getProxyList()){
+        for (NginxProxyDto proxyConfig : nginxConfig.getProxyList()) {
             sb.append("    location ").append(proxyConfig.getLocation()).append(" {\n"); //location 경로설정 (ex. location /api {)
             sb.append("        proxy_pass ").append(proxyConfig.getServiceName()).append(":").append(proxyConfig.getPort()).append(";\n"); //위의 경로로 요청이 왔을때 연결할 경로(ex. https://www.catale.8080)
             sb.append("        proxy_http_version 1.1;\n"); // HTTP 프로토콜 버전 설정
@@ -128,16 +136,16 @@ public class NginxConfigServiceImpl implements NginxConfigService{
 
     //https 사용안하는 nginx config 생성
     @Override
-    public String withoutHttpsConfig(NginxConfigDto nginxConfig){
+    public String withoutHttpsConfig(NginxConfigDto nginxConfig) {
         StringBuilder sb = new StringBuilder();
         sb.append("server {\n");
         sb.append("    listen 80;\n");
         sb.append("    listen [::]:80;\n");
         sb.append("\n");
-        sb.append("    server_name "+nginxConfig.getDomain()+";\n");
+        sb.append("    server_name " + nginxConfig.getDomain() + ";\n");
         sb.append("    index index.html index.htm index.nginx-debian.html;\n");
         sb.append("\n");
-        for(NginxProxyDto proxyConfig : nginxConfig.getProxyList()){
+        for (NginxProxyDto proxyConfig : nginxConfig.getProxyList()) {
             sb.append("    location ").append(proxyConfig.getLocation()).append(" {\n");
             sb.append("        proxy_pass ").append(proxyConfig.getServiceName()).append(":").append(proxyConfig.getPort()).append(";\n");
             sb.append("        proxy_http_version 1.1;\n");
@@ -161,7 +169,7 @@ public class NginxConfigServiceImpl implements NginxConfigService{
 
     //프론트 nginx config 생성
     @Override
-    public String createFrontNginxConfig(){
+    public String createFrontNginxConfig() {
         StringBuilder sb = new StringBuilder();
         sb.append("server {\n");
         sb.append("    listen 80;\n"); // 80번 포트로 들어오는 요청 수신
