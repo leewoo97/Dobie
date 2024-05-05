@@ -19,8 +19,16 @@ public class PathTestController {
 
     @Operation(summary = "도커파일 설치를 위한 Gradle경로 확인", description = "도커파일 설치를 위한 Gradle경로 확인")
     @PostMapping("/gradlepath")
-    public ResponseEntity<?> createProject(@RequestParam(name = "path") String path) {
+    public ResponseEntity<?> searchGradle(@RequestParam(name = "path") String path) {
         dockerfileService.checkBuildGradle(path);
+
+        return response.success(ResponseCode.DOCKER_FILE_INSTALL_SUCCESS);
+    }
+
+    @Operation(summary = "도커파일 설치를 위한 pom.xml경로 확인", description = "도커파일 설치를 위한 pom.xml경로 확인")
+    @PostMapping("/pompath")
+    public ResponseEntity<?> searchPom(@RequestParam(name = "path") String path) {
+        dockerfileService.checkBuildPom(path);
 
         return response.success(ResponseCode.DOCKER_FILE_INSTALL_SUCCESS);
     }

@@ -10,5 +10,8 @@ public interface DockerfileService {
 
     void createVueDockerfile(String projectName, String version, String path);
 
-    void checkBuildGradle(String path);
+    /* 경로 확인 메소드 */
+    void checkBuildGradle(String filepath);
+
+    void checkBuildPom(String filepath);
 }
