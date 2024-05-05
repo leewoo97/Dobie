@@ -140,7 +140,7 @@ public class ProjectServiceImpl implements ProjectService {
             backendInfo.forEach((key, value) -> {
                 if (value.getFramework().equals("SpringBoot(Gradle)")) {
                     dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
-                } else if(value.getFramework().equals("SpringBoot(Maven)")){
+                } else if (value.getFramework().equals("SpringBoot(Maven)")) {
                     dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
                 }
             });
@@ -163,17 +163,17 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         // docker-compose 파일 생성
-        try{
-        dockerComposeService.createDockerComposeFile(projectGetResponseDto);
-        }catch (DockerComposeCreateFailedException e){
+        try {
+            dockerComposeService.createDockerComposeFile(projectGetResponseDto);
+        } catch (DockerComposeCreateFailedException e) {
             System.out.println("Error: " + e.getErrorCode().getMessage());
             throw new DockerComposeCreateFailedException();
         }
 
         //nginx config 파일생성
-        try{
-        nginxConfigService.saveProxyNginxConfig(projectId);
-        }catch (NginxCreateFailedException e){
+        try {
+            nginxConfigService.saveProxyNginxConfig(projectId);
+        } catch (NginxCreateFailedException e) {
             System.out.println("Error: " + e.getErrorCode().getMessage());
             throw new NginxCreateFailedException();
         }
@@ -182,12 +182,19 @@ public class ProjectServiceImpl implements ProjectService {
     // 프로젝트 통째로 실행한다 했을때
     @Override
     public void runProject(String projectId) {
-        Project project = projectRepository.searchProject(projectId);
+        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
 
         // git clone 받으면 projectName으로 폴더가 생성되어 있을테니
-        String path = "./" + project.getProjectName();
+        String path = "./" + projectGetResponseDto.getProjectName();
         commandService.dockerComposeUp(path);
 
+    }
+
+    @Override
+    public void stopProject(String projectId) {
+        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
+        String path = "./" + projectGetResponseDto.getProjectName();
+        commandService.dockerComposeDown(path);
     }
 //    // 프론트 개별 빌드
 //    void buildFrontService(String projectId, ProjectRequestDto dto) {

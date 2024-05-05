@@ -15,6 +15,7 @@ public enum ErrorCode {
     FRONTEND_BUILD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "프론트엔드 프로젝트 Dockerfile 생성에 실패했습니다."),
     DOCKER_COMPOSE_CREATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Docker compose file 생성에 실패했습니다."),
     NGINX_CREATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Nginx config file 생성에 실패했습니다."),
+    PROJECT_STOP_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "프로젝트를 정지하는데 실패했습니다.")
     ;
 
 

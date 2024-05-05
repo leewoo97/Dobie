@@ -41,6 +41,8 @@ public interface ProjectService {
 
     void runProject(String projectId);
 
+    void stopProject(String projectId);
+
 //    void buildFrontService(String projectId, ProjectRequestDto dto)
 
 //    void buildBackService(String projectId, ProjectRequestDto dto)

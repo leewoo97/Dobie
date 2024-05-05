@@ -1,5 +1,6 @@
 package com.dobie.backend.util.command;
 
+import com.dobie.backend.exception.exception.build.ProjectStopFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
@@ -165,18 +166,21 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
-    public void dockerComposeDown() {
+    public void dockerComposeDown(String path) {
         sb = new StringBuilder();
         sb.append("docker compose down");
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
+            executor.setWorkingDirectory(new File(path));
             executor.execute(commandLine);
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
-            System.out.println("compose down 성공: " + result);
+            System.out.println("compose down success : " + result);
         } catch (Exception e) {
-            System.out.println("compose down 중 에러 발생: " + e.getMessage());
-            e.printStackTrace();
+            ProjectStopFailedException projectStopFailedException = new ProjectStopFailedException();
+            System.out.println(projectStopFailedException.getMessage());
+            System.out.println("Error : " + e.getMessage());
+            throw new ProjectStopFailedException();
         }
     }
 }
