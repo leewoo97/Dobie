@@ -1,9 +1,15 @@
 package com.dobie.backend.domain.docker.dockerfile.service;
 
+import com.dobie.backend.exception.exception.Environment.BuildGradleNotFoundException;
+import com.dobie.backend.exception.exception.Environment.FilePathNotExistException;
 import com.dobie.backend.util.file.FileManager;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+
 @Service
+@Log4j2
 public class DockerfileServiceImpl implements DockerfileService{
 
     FileManager fileManager = new FileManager();
@@ -30,6 +36,8 @@ public class DockerfileServiceImpl implements DockerfileService{
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
+        // 경로에 build.Gradle이 존재X 또는 경로 자체가 잘못되었다면 오류 발생
+        checkBuildGradle(filePath);
         fileManager.saveFile(filePath, "Dockerfile", dockerfile);
 
     }
@@ -95,4 +103,26 @@ public class DockerfileServiceImpl implements DockerfileService{
 
     }
 
+    @Override
+    public void checkBuildGradle(String filepath) {
+        File directory = new File(filepath); // 디렉토리 경로 지정
+        File[] filesList = directory.listFiles(); // 디렉토리의 모든 파일 및 폴더 목록 얻기
+        boolean correctPath = false;
+        if (filesList != null) {
+            for (File file : filesList) {
+                if (file.getName().equals("build.gradle")) {
+//                    System.out.println("Name: " + file.getName()); // 파일 또는 디렉토리 이름 출력
+                    correctPath = true;
+                    break;
+                }
+            }
+            if(!correctPath){
+//                System.out.println("파일 경로에 bulid.gradle이 존재하지않습니다.");
+                throw new BuildGradleNotFoundException();
+            }
+        }else {
+//            System.out.println("파일 경로 자체가 잘못되었음.");
+            throw new FilePathNotExistException();
+        }
+    }
 }

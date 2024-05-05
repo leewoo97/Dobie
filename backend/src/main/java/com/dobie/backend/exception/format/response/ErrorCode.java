@@ -15,9 +15,12 @@ public enum ErrorCode {
     FRONTEND_BUILD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "프론트엔드 프로젝트 Dockerfile 생성에 실패했습니다."),
     DOCKER_COMPOSE_CREATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Docker compose file 생성에 실패했습니다."),
     NGINX_CREATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Nginx config file 생성에 실패했습니다."),
+
+
+    /* 도커 파일 환경 변수 */
+    BUILD_GRADLE_NOT_FOUND(HttpStatus.NOT_FOUND, "build.gradle이 해당 경로에 존재하지않습니다."),
+    FILE_PATH_NOT_EXIST(HttpStatus.NOT_FOUND, "존재하지 않는 경로입니다."),
     ;
-
-
     private final HttpStatus status;
     private final String message;
 
