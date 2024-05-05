@@ -9,16 +9,15 @@ import com.dobie.backend.domain.project.entity.Database;
 import com.dobie.backend.domain.project.entity.Frontend;
 import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
-import com.dobie.backend.exception.exception.build.BackendBuildFailedException;
-import com.dobie.backend.exception.exception.build.DockerComposeCreateFailedException;
-import com.dobie.backend.exception.exception.build.FrontendBuildFailedException;
-import com.dobie.backend.exception.exception.build.NginxCreateFailedException;
+import com.dobie.backend.exception.exception.build.*;
+import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.exception.exception.git.GitInfoNotFoundException;
 import com.dobie.backend.util.command.CommandService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -159,8 +158,18 @@ public class ProjectServiceImpl implements ProjectService {
         // docker-compose 파일 생성
         dockerComposeService.createDockerComposeFile(projectGetResponseDto);
 
-        //nginx config 파일생성
+        //nginx proxy config 파일생성
         nginxConfigService.saveProxyNginxConfig(projectId);
+
+        try {
+            //frontend nginx config 파일 저장
+            nginxConfigService.saveFrontNginxConfigFile(projectGetResponseDto.getFrontend().getPath(),projectGetResponseDto.getProjectName());
+        }catch (IOException e){
+            log.error(e.getMessage());
+            throw new SaveFileFailedException("front nginx config 파일 저장에 실패했습니다."); //예외처리
+        }
+
+
     }
 
     // 프로젝트 통째로 실행한다 했을때
