@@ -67,4 +67,12 @@ public class SwaggerConfig {
                              .build();
     }
 
+    @Bean
+    public GroupedOpenApi pathtest() {
+        return GroupedOpenApi.builder()
+                .group("e. 경로 확인")
+                .pathsToMatch("/api/pathtest/**")
+                .build();
+    }
+
 }
