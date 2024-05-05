@@ -18,6 +18,9 @@ public enum ResponseCode {
     PROJECT_RUN_SUCCESS(HttpStatus.OK, "프로젝트가 성공적으로 실행되었습니다."),
     PROJECT_STOP_SUCCESS(HttpStatus.OK, "프로젝트가 성공적으로 정지되었습니다."),
 
+
+    /* 도커파일(Dockerfile) */
+    DOCKER_FILE_INSTALL_SUCCESS(HttpStatus.OK, "도커파일이 성공적으로 설치되었습니다."),
     ;
 
     private final HttpStatus status;

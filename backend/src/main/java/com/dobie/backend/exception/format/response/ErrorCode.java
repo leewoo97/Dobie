@@ -21,9 +21,12 @@ public enum ErrorCode {
     NGINX_CREATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Nginx config file 생성에 실패했습니다."),
     PROJECT_START_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "프로젝트를 실행하는데 실패했습니다."),
     PROJECT_STOP_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "프로젝트를 정지하는데 실패했습니다."),
+
+
+    /* 도커 파일 환경 변수 */
+    BUILD_GRADLE_NOT_FOUND(HttpStatus.NOT_FOUND, "build.gradle이 해당 경로에 존재하지않습니다."),
+    FILE_PATH_NOT_EXIST(HttpStatus.NOT_FOUND, "존재하지 않는 경로입니다."),
     ;
-
-
     private final HttpStatus status;
     private final String message;
 
