@@ -1,0 +1,64 @@
+html, body {
+    height: 100%;   /* 전체 높이를 브라우저 창에 맞춤 */
+    margin: 0;      /* 기본 마진 제거 */
+    padding: 0;
+    display: flex;      /* Flexbox 레이아웃 활성화 */
+    justify-content: center; /* 가로 방향 중앙 정렬 */
+    align-items: center; /* 세로 방향 중앙 정렬 */
+    flex-direction: column; /* 자식 요소들을 수직 방향으로 정렬 */
+}
+
+body {
+    background: linear-gradient(150deg, #93BFCF 20%, #6096B4 80%);  
+}
+
+.content{
+    /* background-color: red; */
+    margin: 0 auto;
+    display: inline-flex;
+}
+
+.mascot {
+    /* background-color: green; */
+    display: flex;
+    align-items: center;
+    align-items: flex-start;
+    margin: 0 auto;
+}
+
+.dobie {
+    /* background-color: black; */
+    color: white;
+    font-size: 100px;
+    font-weight: 750;
+    margin-left: 10px;
+}
+
+.eng {
+    /* background-color: pink; */
+    color: white;
+    font-size: 20px;
+}
+
+.kor {
+    /* background-color: yellow; */
+    color: white;
+    font-size: 40px;
+    font-weight: 600;
+}
+
+.line1 {
+    margin-left: 50px;
+}
+
+.line2 {
+    margin-left: 100px;
+}
+
+.line3 {
+    margin-left: 150px;
+}
+
+.line4 {
+    margin-left: 200px;
+}
