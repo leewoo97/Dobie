@@ -13,13 +13,11 @@ body {
 }
 
 .content{
-    /* background-color: red; */
     margin: 0 auto;
     display: inline-flex;
 }
 
 .mascot {
-    /* background-color: green; */
     display: flex;
     align-items: center;
     align-items: flex-start;
@@ -27,7 +25,6 @@ body {
 }
 
 .dobie {
-    /* background-color: black; */
     color: white;
     font-size: 100px;
     font-weight: 750;
@@ -35,13 +32,11 @@ body {
 }
 
 .eng {
-    /* background-color: pink; */
     color: white;
     font-size: 20px;
 }
 
 .kor {
-    /* background-color: yellow; */
     color: white;
     font-size: 40px;
     font-weight: 600;
