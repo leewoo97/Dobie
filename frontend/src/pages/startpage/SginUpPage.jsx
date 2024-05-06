@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Container from "../../components/common/Container";
-import styles from "./LoginPage.module.css";
+import styles from "./SginUpPage.module.css";
 import mascot from "../../assets/mascot.png";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../stores/userStore";
 import toast, { Toaster } from "react-hot-toast";
 
-import { login } from "../../api/Member";
+import { signup } from "../../api/Member";
 import axios from "axios";
 
-export default function LoginPage() {
+export default function SginUpPage() {
   const navigate = useNavigate();
 
   const { user, setUser } = useUserStore();
@@ -17,46 +17,53 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    confirmPassword: "",
   });
 
-  // 입력 값에 따라 formData 상태를 업데이트
-  const handleChange = (e) => {
+  /* 값을 입력함과 동시에 form 데이터 동시에 갱신 */
+  function handleChange(e) {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value, // 현재 변경된 입력 필드를 기존 상태에 덮어쓰기
     }));
-  };
+    console.log(formData);
+  }
 
   const handleSubmit = async (e) => {
     try {
-      const response = await login(formData);
-      console.log(response);
-      if (response.status === 200) {
-        console.log("200ok");
-        localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("tokenTimestamp", Date.now());
-        await setUser({
-          username: response.data.userDto.username,
-          password: response.data.userDto.password,
-        });
-        navigate(`../main`);
-        toast.success(`로그인 성공 !`, {
+      console.log("누르기");
+      if (formData.password != formData.confirmPassword) {
+        toast.error(`비밀번호가 일치하지 않습니다.`, {
           position: "top-center",
         });
+        console.log("비밀번호 불일치");
+        return;
       } else {
-        // 이메일, 비밀번호 불일치
-        toast.error(`${response.message}`, {
-          position: "top-center",
-        });
+        console.log("비밀번호 일치");
+
+        const data = await signup(formData);
+        console.log(data);
+        if (data.status === 200) {
+          toast.success(`회원가입 성공 !`, {
+            position: "top-center",
+          });
+          setFormData({
+            username: "",
+            password: "",
+            confirmPassword: "",
+          });
+          navigate(`/login`);
+        } else {
+          console.log(data);
+          toast.error(`${data.message}`, {
+            position: "top-center",
+          });
+        }
       }
     } catch (error) {
-      // 전송 오류 발생 시
-      // 서버에러. 에러페이지로 이동
-      console.error("로그인 에러:", error);
-      toast.error(`로그인 실패 `, {
-        position: "top-center",
-      });
+      // 오류 메시지 토스트로 표시
+      console.error("회원가입 에러: ", error);
     }
   };
 
@@ -74,7 +81,7 @@ export default function LoginPage() {
           value={formData.username}
           onChange={handleChange}
           placeholder="username"
-        />
+        ></input>
         <input
           type="password"
           name="password"
@@ -82,9 +89,16 @@ export default function LoginPage() {
           onChange={handleChange}
           placeholder="password"
         ></input>
+        <input
+          type="password"
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          placeholder="confirm password"
+        ></input>
         <div className={styles.button}>
           <div className={styles.login} onClick={() => handleSubmit()}>
-            로그인
+            회원가입
           </div>
         </div>
       </div>
