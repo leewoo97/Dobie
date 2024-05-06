@@ -79,16 +79,17 @@ public class ProjectController {
 
     @Operation(summary = "프로젝트 실행", description = "dockerfile, compose 파일 바탕으로 프로젝트 빌드 후 실행")
     @PostMapping("/run/{projectId}")
-    public ResponseEntity<?> runProject(@PathVariable String projectId) {
+    public CompletableFuture<ResponseEntity<?>> runProject(@PathVariable String projectId) {
         CompletableFuture<Boolean> future = projectService.runProject(projectId);
         return future.thenApply(success -> {
             if (success) {
-                return response.success(ResponseCode.PROJECT_RUN_SUCCESS);
+                return ResponseEntity.ok().body(ResponseCode.PROJECT_RUN_SUCCESS.getMessage());
             } else {
                 throw new ProjectStartFailedException("Project Run Failed");
             }
-        }).join();
+        });
     }
+
 
 
     @Operation(summary = "프로젝트 일괄 정지", description = "실행중인 프로젝트를 정지")
