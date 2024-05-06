@@ -27,12 +27,10 @@ export default function SginUpPage() {
       ...prevFormData,
       [name]: value, // 현재 변경된 입력 필드를 기존 상태에 덮어쓰기
     }));
-    console.log(formData);
   }
 
   const handleSubmit = async (e) => {
     try {
-      console.log("누르기");
       if (formData.password != formData.confirmPassword) {
         toast.error(`비밀번호가 일치하지 않습니다.`, {
           position: "top-center",
@@ -42,18 +40,23 @@ export default function SginUpPage() {
       } else {
         console.log("비밀번호 일치");
 
-        const data = await signup(formData);
+        const user = {
+          username: formData.username,
+          password: formData.password,
+        };
+
+        const data = await signup(user);
         console.log(data);
         if (data.status === 200) {
-          toast.success(`회원가입 성공 !`, {
-            position: "top-center",
-          });
           setFormData({
             username: "",
             password: "",
             confirmPassword: "",
           });
           navigate(`/login`);
+          toast.success(`회원가입 성공 !`, {
+            position: "top-center",
+          });
         } else {
           console.log(data);
           toast.error(`${data.message}`, {
@@ -69,7 +72,6 @@ export default function SginUpPage() {
 
   return (
     <Container>
-      <Toaster position="top-center" />
       <div className={styles.content}>
         <div className={styles.title}>
           <img src={mascot} alt="" width="120px" decoding="async" />

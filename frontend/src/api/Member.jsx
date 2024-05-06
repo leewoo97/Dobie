@@ -26,3 +26,14 @@ export async function signup(user) {
     throw error;
   }
 }
+
+//회원가입 여부 확인
+export async function getUser() {
+  try {
+    const response = await axios.get(url);
+    return response;
+  } catch (error) {
+    // console.log("회원가입 실패: " + error);
+    throw error;
+  }
+}
