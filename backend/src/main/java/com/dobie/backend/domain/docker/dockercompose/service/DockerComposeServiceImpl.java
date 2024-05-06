@@ -96,7 +96,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         //Framework가 SpringBoot(gradle)이면 gradle, SpringBoot(maven)이면 maven
         if(frameWork.equals("SpringBoot(gradle)")) {
             sb.append("  SpringBoot(gradle)").append(seq).append(":\n");
-            sb.append("    container_name:").append(serviceId).append("\n");
+            sb.append("    container_name: ").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
             sb.append("    ports:\n");
@@ -137,7 +137,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         }
         else if(frameWork.equals("SpringBoot(maven)")){
             sb.append("  SpringBoot(maven)").append(seq).append(":\n");
-            sb.append("    container_name:").append(serviceId).append("\n");
+            sb.append("    container_name: ").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
             sb.append("    ports:\n");
@@ -187,7 +187,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         if(frameWork.equals("React")) {
             StringBuilder sb = new StringBuilder();
             sb.append("  React:\n");
-            sb.append("    container_name:").append(serviceId).append("\n");
+            sb.append("    container_name: ").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
             sb.append("    ports:\n");
@@ -197,7 +197,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         }else if(frameWork.equals("Vue")){
             StringBuilder sb = new StringBuilder();
             sb.append("  Vue:\n");
-            sb.append("    container_name:").append(serviceId).append("\n");
+            sb.append("    container_name: ").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
             sb.append("    ports:\n");
@@ -216,7 +216,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
         StringBuilder sb = new StringBuilder();
         sb.append("  mysql:\n");
-        sb.append("    container_name:").append(databaseId).append("\n");
+        sb.append("    container_name: ").append(databaseId).append("\n");
         sb.append("    image: mysql:8.0\n");
         sb.append("    environment:\n");
         sb.append("      MYSQL_ROOT_PASSWORD: 1234\n");
@@ -237,7 +237,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
         StringBuilder sb = new StringBuilder();
         sb.append("  redis:\n");
-        sb.append("    container_name:").append(databaseId).append("\n");
+        sb.append("    container_name: ").append(databaseId).append("\n");
         sb.append("    image: redis:latest\n");
         sb.append("    ports:\n");
         sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");

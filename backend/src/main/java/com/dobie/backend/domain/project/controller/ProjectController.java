@@ -109,10 +109,10 @@ public class ProjectController {
         return response.success(ResponseCode.PROJECT_STOP_SUCCESS);
     }
 
-//    @Operation(summary = "서비스 개별 정지", description = "프로젝트 내 서비스 개별 정지")
-//    @PostMapping("/stop/{projectId}/{serviceId}")
-//    public ResponseEntity<?> stopServiceInProject(@PathVariable String projectId, @RequestParam String containerName) {
-//        projectService.stopService(containerName);
-//    }
+    @Operation(summary = "서비스 개별 정지", description = "프로젝트 내 서비스 개별 정지")
+    @PostMapping("/stop/service")
+    public ResponseEntity<?> stopServiceInProject(@RequestParam String containerName) {
+        projectService.stopService(containerName);
+    }
 }
 

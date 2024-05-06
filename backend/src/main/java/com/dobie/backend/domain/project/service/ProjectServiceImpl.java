@@ -214,12 +214,10 @@ public class ProjectServiceImpl implements ProjectService {
             }
         });
     }
-//    @Override
-//    public void stopService(String projectId) {
-//        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
-//        String containerName = "temp";
-//        commandService.dockerStop(containerName);
-//    }
+    @Override
+    public void stopService(String containerName) {
+        commandService.dockerStop(containerName);
+    }
 
 //    // 프론트 개별 빌드
 //    void buildFrontService(String projectId, ProjectRequestDto dto) {
