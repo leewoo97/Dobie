@@ -2,8 +2,8 @@ package com.dobie.backend.domain.project.service;
 
 import com.dobie.backend.domain.project.dto.*;
 
-import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public interface ProjectService {
 
@@ -30,9 +30,11 @@ public interface ProjectService {
 
     void buildTotalService(String projectId);
 
-    void runProject(String projectId);
+    CompletableFuture<Void> runProject(String projectId);
 
     void stopProject(String projectId);
+
+//    void stopService(String projectId);
 
 //    void buildFrontService(String projectId, ProjectRequestDto dto)
 

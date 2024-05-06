@@ -20,5 +20,7 @@ public interface CommandService {
 
     void dockerComposeDown(String path);
 
+    void dockerStop(String containerName);
+
 }
 
