@@ -186,7 +186,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     public String createReactDockerComposeFile(String frameWork, String serviceId, String path, int externalPort, int internalPort) {
         if(frameWork.equals("React")) {
             StringBuilder sb = new StringBuilder();
-            sb.append("  React:\n");
+            sb.append("  react:\n");
             sb.append("    container_name: ").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
