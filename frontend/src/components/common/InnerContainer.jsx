@@ -7,7 +7,7 @@ export default function InnerContainer(){
 
     return(
         <div className={s(styles.container)}>
-            <NavLeft/>
+            <NavLeft num={1}/>
                {/* 컴포넌트들 넣기 */}
                <div>
                 <p>오른쪽</p>

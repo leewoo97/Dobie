@@ -3,18 +3,25 @@
     background-color: #D9E1E8;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-around;
     align-items: flex-start;
-    padding-top: 7%;
 }
 .list {
-    font-size: calc(0.6vw + 1rem);
+   
     text-align: left;
     margin: 0 auto;
-    color: #93BFCF;
+    
 }
 .text {
     margin-bottom: 50%;
+    font-size: calc(0.6vw + 1rem);
+    color: #93BFCF;
+}
+.text2 {
+    margin-bottom: 50%;
+    font-size: calc(0.6vw + 1rem);
+    color: #6096B4;
+    font-weight: bold;
 }
 .img {
     width: 70%;
