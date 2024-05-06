@@ -243,6 +243,7 @@ public class DockerfileServiceImpl implements DockerfileService {
                 String innerPort = splitPorts(ports,"inner");
                 String outerPort = splitPorts(ports,"outer");
                 String names = parts[6];
+//                String frameWork = splitName(names);
                 containers.add(new DockerContainerDto(containerId, image, command, created, status, currentStatus, ports, innerPort, outerPort, names));
             }
         }
@@ -250,6 +251,13 @@ public class DockerfileServiceImpl implements DockerfileService {
         return containers;
     }
 
+
+//----------------------------------------------------------------------------------------------------
+
+//    public String splitName(String names){
+//        String[] temp = name.split("-");
+//        return temp[temp.length-2];
+//    }
     public String checkStatus(String status){
         if(status.contains("Up")){
             return "Running";
@@ -259,7 +267,6 @@ public class DockerfileServiceImpl implements DockerfileService {
             throw new CurrentStatusNotFoundException();
         }
     }
-
     public String splitPorts(String ports,String type){
         if(type.equals("inner")) {
             // ':'을 기준으로 문자열을 나눕니다.

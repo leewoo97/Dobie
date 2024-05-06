@@ -6,9 +6,10 @@ public interface DockerComposeService {
 
     void createDockerComposeFile(ProjectGetResponseDto projectGetResponseDto);
 
-    String createSpringDockerComposeFile(String seq, String path, int externalPort, int internalPort, boolean mysql, boolean redis, String databaseName, String username, String password);
+    String createSpringDockerComposeFile(String frameWork, String seq, String serviceId, String path, int externalPort, int internalPort, boolean mysql,
+                                         boolean redis, String databaseName, String username, String password);
 
-    String createReactDockerComposeFile(String path, int externalPort, int internalPort);
+    String createReactDockerComposeFile(String frameWork, String path, int externalPort, int internalPort);
 
     String createMysqlDockerComposeFile(String databaseName, String username, String password, int externalPort, int internalPort);
 

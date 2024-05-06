@@ -103,6 +103,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    /* 도커 컴포즈 파일 오류 */
+    @ExceptionHandler(BackendFrameWorkNotFoundException.class)
+    protected ResponseEntity<?> handle(BackendFrameWorkNotFoundException e) {
+        log.error("BackendFrameWorkNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+    @ExceptionHandler(FrontendFrameWorkNotFoundException.class)
+    protected ResponseEntity<?> handle(FrontendFrameWorkNotFoundException e) {
+        log.error("FrontendFrameWorkNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
     /* 경로 확인 */
     @ExceptionHandler(BuildGradleNotFoundException.class)
     protected ResponseEntity<?> handle(BuildGradleNotFoundException e) {
