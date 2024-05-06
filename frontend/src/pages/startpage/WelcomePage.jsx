@@ -22,9 +22,9 @@ export default function WelcomePage() {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.mascot}>
-            <img src={mascot} alt="" width="160px" decoding="async" />
+            <img src={mascot} alt="" width="200px" decoding="async" />
           </div>
-          <div>
+          <div className={styles.text}>
             <div className={styles.dobie}>Dobie</div>
             <div className={styles.eng}>
               <div className={styles.line1}>Docker newbie</div>

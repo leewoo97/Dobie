@@ -2,24 +2,22 @@
   height: 100%;
   margin: auto auto;
   display: flex;
-  /* 설정 */
-  position: relative;
 }
 
 .content {
-  height: 450px;
+  /* height: 450px; */
   margin: 0 auto;
   display: inline-flex;
-  position: absolute;
-  top: 25%;
-  left: 30%;
 }
 
 .mascot {
   display: flex;
   align-items: center;
-  align-items: flex-start;
   margin: 0 auto;
+}
+
+.text{
+  margin: auto 0;
 }
 
 .dobie {
