@@ -40,7 +40,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
         for (String backendSeq : projectGetResponseDto.getBackendMap().keySet()) {
             BackendGetResponseDto backendGetResponseDto = projectGetResponseDto.getBackendMap().get(backendSeq);
-            if (backendGetResponseDto.getFramework().equals("SpringBoot(Gradle)") || backendGetResponseDto.getFramework().equals("SpringBoot(Maven)")) {
+            if (backendGetResponseDto.getFramework().equals("SpringBoot(gradle)") || backendGetResponseDto.getFramework().equals("SpringBoot(Maven)")) {
                 String databaseName = null;
                 String username = null;
                 String password = null;
