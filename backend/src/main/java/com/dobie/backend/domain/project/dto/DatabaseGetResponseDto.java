@@ -22,6 +22,7 @@ public class DatabaseGetResponseDto {
     private int externalPort;
     private int internalPort;
     public DatabaseGetResponseDto(Database database) {
+        this.databaseId = database.getDatabaseId();
         this.databaseType = database.getDatabaseType();
         this.databaseName = database.getDatabaseName();
         this.schemaPath = database.getSchemaPath();
