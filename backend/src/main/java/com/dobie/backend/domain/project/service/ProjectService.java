@@ -1,6 +1,7 @@
 package com.dobie.backend.domain.project.service;
 
 import com.dobie.backend.domain.project.dto.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -30,7 +31,7 @@ public interface ProjectService {
 
     void buildTotalService(String projectId);
 
-    CompletableFuture<Void> runProject(String projectId);
+    CompletableFuture<ResponseEntity<?>> runProject(String projectId);
 
     void stopProject(String projectId);
 

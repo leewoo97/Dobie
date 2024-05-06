@@ -15,6 +15,7 @@ import com.dobie.backend.exception.exception.git.GitInfoNotFoundException;
 import com.dobie.backend.util.command.CommandService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -177,20 +178,23 @@ public class ProjectServiceImpl implements ProjectService {
 
     // 프로젝트 통째로 실행한다 했을때
     @Override
-    public CompletableFuture<Void> runProject(String projectId) {
-        return CompletableFuture.runAsync(() -> {
+    public CompletableFuture<ResponseEntity<?>> runProject(String projectId) {
+        return CompletableFuture.supplyAsync(() -> {
             try {
                 ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
-                // git clone 받으면 projectName으로 폴더가 생성되어 있을테니
                 String path = "./" + projectGetResponseDto.getProjectName();
                 commandService.dockerComposeUp(path);
 
+                // 여기서 10초 대기
                 Thread.sleep(10000);
 
-                if(!verifyComposeUpSuccess(path)){
-                    throw new ProjectStartFailedException("compose up failed");
+                // 상태 검증
+                if (!verifyComposeUpSuccess(path)) {
+                    throw new ProjectStartFailedException("Docker compose up failed");
                 }
-            }catch (Exception e){
+                // 모든 작업이 성공적으로 완료되었을 때의 응답
+                return ResponseEntity.ok("프로젝트가 성공적으로 실행되었습니다.");
+            } catch (Exception e) {
                 throw new ProjectStartFailedException(e.getMessage());
             }
         });
