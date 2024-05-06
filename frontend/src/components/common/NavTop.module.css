@@ -1,3 +1,21 @@
 .nav{
     margin: 0 auto;
+    width: 100%;
+    position: fixed;
+    top: 0;
 }
+
+.title {
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #6096B4;
+  }
+  
+  .dobie {
+    color: white;
+    font-size: 60px;
+    font-weight: 900;
+    margin-left: 10px;
+  }
