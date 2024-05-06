@@ -5,17 +5,47 @@ import styles from "./WelcomePage.module.css";
 
 import { useNavigate } from "react-router-dom";
 
+import { getUser } from "../../api/Member";
+
 export default function WelcomePage() {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //     const timer = setTimeout(() => {
-  //         navigate('/login');  // "/login"은 LoginPage 경로입니다.
-  //     }, 2000);  // 2000 밀리초 후에 실행
+  useEffect(() => {
+    try {
+      getUserInfo(); //useEffect안에서 await처리 안돼서 함수로 빼서 실행
+    } catch (error) {
+      console.error("유저정보 조회 실패 에러: ", error);
+    }
+  }, [navigate]); // navigate가 변경될 때마다 useEffect를 다시 실행하지 않도록
 
-  //     // 컴포넌트 언마운트 시 타이머 클리어
-  //     return () => clearTimeout(timer);
-  // }, [navigate]);  // navigate가 변경될 때마다 useEffect를 다시 실행하지 않도록
+  const getUserInfo = async (e) => {
+    try {
+      console.log("유저 정보찾기");
+      const response = await getUser(); //userInfo API연결
+
+      //response에 username이 null이면 회원가입 창(/sginup)으로 이동
+      if (response.data.username === null) {
+        const timer = setTimeout(() => {
+          navigate("/sginup");
+        }, 2000); // 2000 밀리초 후에 실행
+
+        // 컴포넌트 언마운트 시 타이머 클리어
+        return () => clearTimeout(timer);
+      }
+
+      //response에 username이 null이 아니면 로그인 창(/login)으로 이동
+      else {
+        const timer = setTimeout(() => {
+          navigate("/login");
+        }, 2000); // 2000 밀리초 후에 실행
+
+        // 컴포넌트 언마운트 시 타이머 클리어
+        return () => clearTimeout(timer);
+      }
+    } catch (error) {
+      console.error("유저정보 조회 실패 에러: ", error);
+    }
+  };
 
   return (
     <Container>
@@ -35,6 +65,9 @@ export default function WelcomePage() {
               <div className={styles.line4}>자유로워지자</div>
             </div>
           </div>
+          {/* <div className={styles.login} onClick={() => handleSubmit()}>
+            회원가입
+          </div> */}
         </div>
       </div>
     </Container>
