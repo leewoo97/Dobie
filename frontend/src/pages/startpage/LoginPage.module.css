@@ -1,9 +1,11 @@
 .content {
   margin: auto auto;
   width: 450px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .title {
