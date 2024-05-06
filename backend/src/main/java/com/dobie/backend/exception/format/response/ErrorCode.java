@@ -26,12 +26,17 @@ public enum ErrorCode {
     /* 파일 생성 */
     SAVE_FILE_FAILED(HttpStatus.BAD_REQUEST, "파일 생성에 실패했습니다."),
 
+    /* 도커 컴포즈 파일 환경 변수 */
+    BACKEND_FRAME_WORK_NOT_FOUND(HttpStatus.NOT_FOUND, "백엔드 Framework가 제대로 지정되지 않았습니다."),
+    FRONTEND_FRAME_WORK_NOT_FOUND(HttpStatus.NOT_FOUND, "프론트엔드 Framework가 제대로 지정되지 않았습니다."),
 
     /* 도커 파일 환경 변수 */
     BUILD_GRADLE_NOT_FOUND(HttpStatus.NOT_FOUND, "build.gradle이 해당 경로에 존재하지않습니다."),
     POM_XML_NOT_FOUND(HttpStatus.NOT_FOUND, "pom.xml이 해당 경로에 존재하지않습니다."),
     PACKAGE_JSON_NOT_FOUND(HttpStatus.NOT_FOUND, "package.json이 해당 경로에 존재하지않습니다."),
     FILE_PATH_NOT_EXIST(HttpStatus.NOT_FOUND, "존재하지 않는 경로입니다."),
+    CURRENT_STATUS_NOT_FOUND(HttpStatus.NOT_FOUND, "현재 상태를 조회할 수 없습니다."),
+    PORT_NUMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "외부 또는 내부 포트번호가 존재하지않습니다."),
 
     /* nginx 파일 생성 */
     PROJECT_PATH_NOT_FOUND(HttpStatus.NOT_FOUND, "frontend 파일 경로 찾기를 실패했습니다."),
