@@ -5,9 +5,9 @@ import Container from "../../components/common/Container";
 
 export default function RunPage(){
     return(
-        <Container>
+        <>
             <NavTop/>
             <InnerContainer/>
-        </Container>
+        </>
     );
 }

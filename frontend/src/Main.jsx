@@ -25,7 +25,7 @@ function Main() {
           </Route>
           <Route path="manage">
             <Route index element={<RunPage />} />
-            <Route path="backend" element={<ProjectPage />} />
+            <Route path="project" element={<ProjectPage />} />
             <Route path="backend" element={<BackendPage />} />
             <Route path="frontend" element={<FrontendPage />} />
             <Route path="database" element={<DatabasePage />} />
