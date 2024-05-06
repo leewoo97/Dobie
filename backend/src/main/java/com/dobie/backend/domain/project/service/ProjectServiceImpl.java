@@ -21,7 +21,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -177,26 +176,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     // 프로젝트 통째로 실행한다 했을때
     @Override
-    public CompletableFuture<Boolean> runProject(String projectId) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
-                String path = "./" + projectGetResponseDto.getProjectName();
-                commandService.dockerComposeUp(path);
+    public void runProject(String projectId) {
+        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
+        String path = "./" + projectGetResponseDto.getProjectName();
+        commandService.dockerComposeUp(path);
 
-                // 여기서 10초 대기
-                Thread.sleep(10000);
-
-                // 상태 검증
-                if (!verifyComposeUpSuccess(path)) {
-                    return false;
-                }
-                // 모든 작업이 성공적으로 완료되었을 때의 응답
-                return true;
-            } catch (Exception e) {
-                throw new ProjectStartFailedException(e.getMessage());
-            }
-        });
     }
 
     @Override
@@ -206,7 +190,8 @@ public class ProjectServiceImpl implements ProjectService {
         commandService.dockerComposeDown(path);
     }
 
-    private boolean verifyComposeUpSuccess(String path) {
+    @Override
+    public boolean verifyComposeUpSuccess(String path) {
         try {
             String command = "docker compose -f " + path + "/docker-compose.yml ps";
             Process process = Runtime.getRuntime().exec(command);

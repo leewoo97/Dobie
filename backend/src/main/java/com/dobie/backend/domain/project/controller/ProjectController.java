@@ -30,7 +30,7 @@ public class ProjectController {
     @GetMapping("")
     public ResponseEntity<?> getAllProjects() {
         Map<String, ProjectGetResponseDto> map = projectService.getAllProjects();
-        if(map.isEmpty()){
+        if (map.isEmpty()) {
             return response.success(ResponseCode.PROJECT_LIST_NOT_FOUND);
         }
         return response.success(ResponseCode.PROJECT_LIST_FETCHED, map);
@@ -79,17 +79,20 @@ public class ProjectController {
 
     @Operation(summary = "프로젝트 실행", description = "dockerfile, compose 파일 바탕으로 프로젝트 빌드 후 실행")
     @PostMapping("/run/{projectId}")
-    public CompletableFuture<ResponseEntity<?>> runProject(@PathVariable String projectId) {
-        CompletableFuture<Boolean> future = projectService.runProject(projectId);
-        return future.thenApply(success -> {
-            if (success) {
-                return ResponseEntity.ok().body(ResponseCode.PROJECT_RUN_SUCCESS.getMessage());
-            } else {
-                throw new ProjectStartFailedException("Project Run Failed");
+    public ResponseEntity<?> runProject(@PathVariable String projectId) {
+        try {
+            projectService.runProject(projectId);
+            Thread.sleep(10000);
+            if (projectService.verifyComposeUpSuccess(projectId)) {
+                return response.success(ResponseCode.PROJECT_RUN_SUCCESS);
+            }else{
+                throw new ProjectStartFailedException("Run Failed");
             }
-        });
-    }
+        } catch (Exception e) {
+            throw new ProjectStartFailedException(e.getMessage());
+        }
 
+    }
 
 
     @Operation(summary = "프로젝트 일괄 정지", description = "실행중인 프로젝트를 정지")
