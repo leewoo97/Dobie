@@ -1,5 +1,6 @@
 package com.dobie.backend.util.command;
 
+import com.dobie.backend.exception.exception.build.ServiceStopFailedException;
 import com.dobie.backend.exception.exception.git.GitCheckoutFailedException;
 import com.dobie.backend.exception.exception.git.GitCloneFailedException;
 import com.dobie.backend.exception.exception.git.GitPullFailedException;
@@ -180,6 +181,21 @@ public class CommandServiceImpl implements CommandService {
             System.out.println("compose down success : " + result);
         } catch (Exception e) {
             throw new ProjectStopFailedException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void dockerStop(String containerName) {
+        sb = new StringBuilder();
+        sb.append("docker stop ").append(containerName);
+        CommandLine commandLine = CommandLine.parse(sb.toString());
+        executor.setStreamHandler(streamHandler);
+        try{
+            executor.execute(commandLine);
+            String result = outputStream.toString().trim();
+            System.out.println("docker stop success : " + result);
+        }catch (Exception e){
+            throw new ServiceStopFailedException(e.getMessage());
         }
     }
 }

@@ -17,8 +17,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -163,8 +166,8 @@ public class ProjectServiceImpl implements ProjectService {
 
         try {
             //frontend nginx config 파일 저장
-            nginxConfigService.saveFrontNginxConfigFile(projectGetResponseDto.getFrontend().getPath(),projectGetResponseDto.getProjectName());
-        }catch (IOException e){
+            nginxConfigService.saveFrontNginxConfigFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getProjectName());
+        } catch (IOException e) {
             log.error(e.getMessage());
             throw new SaveFileFailedException("front nginx config 파일 저장에 실패했습니다."); //예외처리
         }
@@ -174,13 +177,26 @@ public class ProjectServiceImpl implements ProjectService {
 
     // 프로젝트 통째로 실행한다 했을때
     @Override
-    public void runProject(String projectId) {
-        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
+    public CompletableFuture<Boolean> runProject(String projectId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
+                String path = "./" + projectGetResponseDto.getProjectName();
+                commandService.dockerComposeUp(path);
 
-        // git clone 받으면 projectName으로 폴더가 생성되어 있을테니
-        String path = "./" + projectGetResponseDto.getProjectName();
-        commandService.dockerComposeUp(path);
+                // 여기서 10초 대기
+                Thread.sleep(10000);
 
+                // 상태 검증
+                if (!verifyComposeUpSuccess(path)) {
+                    return false;
+                }
+                // 모든 작업이 성공적으로 완료되었을 때의 응답
+                return true;
+            } catch (Exception e) {
+                throw new ProjectStartFailedException(e.getMessage());
+            }
+        });
     }
 
     @Override
@@ -189,6 +205,32 @@ public class ProjectServiceImpl implements ProjectService {
         String path = "./" + projectGetResponseDto.getProjectName();
         commandService.dockerComposeDown(path);
     }
+
+    private boolean verifyComposeUpSuccess(String path) {
+        try {
+            String command = "docker compose -f " + path + "/docker-compose.yml ps";
+            Process process = Runtime.getRuntime().exec(command);
+            BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.contains("Up")) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            throw new ProjectStartFailedException(e.getMessage());
+        }
+    }
+
+//    @Override
+//    public void stopService(String projectId) {
+//        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
+//        String containerName = "temp";
+//        commandService.dockerStop(containerName);
+//    }
+
 //    // 프론트 개별 빌드
 //    void buildFrontService(String projectId, ProjectRequestDto dto) {
 //
