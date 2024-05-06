@@ -3,16 +3,19 @@ package com.dobie.backend.domain.project.controller;
 import com.dobie.backend.domain.project.dto.ProjectRequestDto;
 import com.dobie.backend.domain.project.dto.ProjectGetResponseDto;
 import com.dobie.backend.domain.project.service.ProjectService;
+import com.dobie.backend.exception.exception.build.ProjectStartFailedException;
 import com.dobie.backend.exception.format.code.ApiResponse;
 import com.dobie.backend.exception.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Tag(name = "Project 컨트롤러", description = "Project Controller API")
 @RestController
@@ -77,9 +80,16 @@ public class ProjectController {
     @Operation(summary = "프로젝트 실행", description = "dockerfile, compose 파일 바탕으로 프로젝트 빌드 후 실행")
     @PostMapping("/run/{projectId}")
     public ResponseEntity<?> runProject(@PathVariable String projectId) {
-        projectService.runProject(projectId);
-        return response.success(ResponseCode.PROJECT_RUN_SUCCESS);
+        CompletableFuture<Boolean> future = projectService.runProject(projectId);
+        return future.thenApply(success -> {
+            if (success) {
+                return response.success(ResponseCode.PROJECT_RUN_SUCCESS);
+            } else {
+                throw new ProjectStartFailedException("Project Run Failed");
+            }
+        }).join();
     }
+
 
     @Operation(summary = "프로젝트 일괄 정지", description = "실행중인 프로젝트를 정지")
     @PostMapping("/stop/{projectId}")
