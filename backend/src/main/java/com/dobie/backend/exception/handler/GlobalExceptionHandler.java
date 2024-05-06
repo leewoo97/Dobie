@@ -121,6 +121,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    @ExceptionHandler(CurrentStatusNotFoundException.class)
+    protected ResponseEntity<?> handle(CurrentStatusNotFoundException e) {
+        log.error("CurrentStatusNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
     @ExceptionHandler(PortNumberNotFoundException.class)
     protected ResponseEntity<?> handle(PortNumberNotFoundException e) {
         log.error("PortNumberNotFoundException = {}", e.getErrorCode().getMessage());

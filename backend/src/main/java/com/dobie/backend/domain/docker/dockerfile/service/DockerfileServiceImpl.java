@@ -7,11 +7,6 @@ import com.dobie.backend.exception.exception.build.FrontendBuildFailedException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.util.file.FileManager;
 
-import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.model.Container;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientImpl;
-import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -22,7 +17,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 @Service
 @Log4j2
@@ -244,15 +238,26 @@ public class DockerfileServiceImpl implements DockerfileService {
                 String command = parts[2];
                 String created = parts[3];
                 String status = parts[4];
+                String currentStatus = checkStatus(status);
                 String ports = parts[5];
                 String innerPort = splitPorts(ports,"inner");
                 String outerPort = splitPorts(ports,"outer");
                 String names = parts[6];
-                containers.add(new DockerContainerDto(containerId, image, command, created, status, ports, innerPort, outerPort, names));
+                containers.add(new DockerContainerDto(containerId, image, command, created, status, currentStatus, ports, innerPort, outerPort, names));
             }
         }
 
         return containers;
+    }
+
+    public String checkStatus(String status){
+        if(status.contains("Up")){
+            return "Running";
+        }else if(status.contains("Exit")){
+            return "Stopped";
+        }else{
+            throw new CurrentStatusNotFoundException();
+        }
     }
 
     public String splitPorts(String ports,String type){
