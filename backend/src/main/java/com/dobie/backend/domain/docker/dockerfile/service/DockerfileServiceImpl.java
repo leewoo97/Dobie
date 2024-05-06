@@ -1,5 +1,6 @@
 package com.dobie.backend.domain.docker.dockerfile.service;
 
+import com.dobie.backend.domain.docker.dockerfile.dto.DockerContainerDto;
 import com.dobie.backend.exception.exception.Environment.BuildGradleNotFoundException;
 import com.dobie.backend.exception.exception.Environment.FilePathNotExistException;
 import com.dobie.backend.exception.exception.Environment.PackageJsonNotFoundException;
@@ -8,10 +9,23 @@ import com.dobie.backend.exception.exception.build.BackendBuildFailedException;
 import com.dobie.backend.exception.exception.build.FrontendBuildFailedException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.util.file.FileManager;
+
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DockerClientImpl;
+import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 @Service
 @Log4j2
@@ -194,4 +208,69 @@ public class DockerfileServiceImpl implements DockerfileService {
             throw new FilePathNotExistException();
         }
     }
+
+    @Override
+    public void dockerContainerLister() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("docker ps");
+        CommandLine commandLine = CommandLine.parse(sb.toString());
+
+        DefaultExecutor executor = new DefaultExecutor();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+        executor.setStreamHandler(streamHandler);
+
+        try {
+            executor.execute(commandLine);
+            String dockerOutput = outputStream.toString();
+            System.out.println("docker ps 결과: \n" + dockerOutput);
+            List<DockerContainerDto> containers = parseDockerPsOutput(dockerOutput);
+            containers.forEach(System.out::println);
+        } catch (Exception e) {
+            System.out.println("docker ps 명령어 실행 중 에러 발생: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<DockerContainerDto> parseDockerPsOutput(String output) {
+        List<DockerContainerDto> containers = new ArrayList<>();
+        String[] lines = output.split("\n");
+
+        // 첫 번째 줄은 헤더이므로 건너뜀
+        for (int i = 1; i < lines.length; i++) {
+            String[] parts = lines[i].split("\\s{2,}");  // 두 개 이상의 공백으로 분할
+            if (parts.length >= 7) {
+                String containerId = parts[0];
+                String image = parts[1];
+                String command = parts[2];
+                String created = parts[3];
+                String status = parts[4];
+                String ports = parts[5];
+                String names = parts[6];
+                containers.add(new DockerContainerDto(containerId, image, command, created, status, ports, names));
+            }
+        }
+
+        return containers;
+    }
+
+//    @Override
+//    public void dockerContainerLister() {
+//        DefaultDockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
+//                .withDockerHost(System.getProperty("os.name").startsWith("Windows") ? "tcp://localhost:2375" : "unix:///var/run/docker.sock")// 또는 "tcp://localhost:2375"
+//                .build();
+//
+//        ApacheDockerHttpClient httpClient = new ApacheDockerHttpClient.Builder()
+//                .dockerHost(config.getDockerHost())
+//                .sslConfig(config.getSSLConfig())
+//                .build();
+//
+//        DockerClient dockerClient = DockerClientImpl.getInstance(config,httpClient);
+//        System.out.println("이우진");
+//        List<Container> containers = dockerClient.listContainersCmd().exec();
+//        for (Container container : containers) {
+//            System.out.println("Container ID: " + container.getId() + ", Image: " + container.getImage());
+//        }
+//    }
 }
