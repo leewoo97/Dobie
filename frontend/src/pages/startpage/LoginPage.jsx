@@ -62,7 +62,6 @@ export default function LoginPage() {
 
   return (
     <Container>
-      <Toaster position="top-center" />
       <div className={styles.content}>
         <div className={styles.title}>
           <img src={mascot} alt="" width="120px" decoding="async" />
