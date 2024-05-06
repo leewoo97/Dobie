@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FrontendGetResponseDto {
+    private String serviceId;
     private String serviceName;
 
     private String language;
@@ -25,6 +26,7 @@ public class FrontendGetResponseDto {
 
     private boolean usingNginx;
     public FrontendGetResponseDto(Frontend frontend) {
+        this.serviceId = frontend.getServiceId();
         this.serviceName = frontend.getServiceName();
         this.language = frontend.getLanguage();
         this.version = frontend.getVersion();

@@ -37,7 +37,7 @@ public class Project {
             String uuid = UUID.randomUUID().toString();
             this.backendMap.put(uuid, new Backend(uuid, value));
         });
-        this.frontend = new Frontend(dto.getFrontend());
+        this.frontend = new Frontend(UUID.randomUUID().toString(), dto.getFrontend());
         this.databaseMap = new HashMap<>();
         dto.getDatabaseMap().forEach((key,value) -> {
             String uuid = UUID.randomUUID().toString();
