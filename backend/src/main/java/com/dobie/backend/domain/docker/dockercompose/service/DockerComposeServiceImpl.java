@@ -40,7 +40,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
         for (String backendSeq : projectGetResponseDto.getBackendMap().keySet()) {
             BackendGetResponseDto backendGetResponseDto = projectGetResponseDto.getBackendMap().get(backendSeq);
-            if (backendGetResponseDto.getFramework().equals("SpringBoot(gradle)") || backendGetResponseDto.getFramework().equals("SpringBoot(Maven)")) {
+            if (backendGetResponseDto.getFramework().equals("SpringBoot(gradle)") || backendGetResponseDto.getFramework().equals("SpringBoot(maven)")) {
                 String databaseName = null;
                 String username = null;
                 String password = null;
@@ -95,7 +95,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         StringBuilder sb = new StringBuilder();
         //Framework가 SpringBoot(gradle)이면 gradle, SpringBoot(maven)이면 maven
         if(frameWork.equals("SpringBoot(gradle)")) {
-            sb.append("  SpringBoot(gradle)").append(seq).append(":\n");
+            sb.append("  spring-boot-gradle").append(seq).append(":\n");
             sb.append("    container_name: ").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
@@ -136,7 +136,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             return sb.toString();
         }
         else if(frameWork.equals("SpringBoot(maven)")){
-            sb.append("  SpringBoot(maven)").append(seq).append(":\n");
+            sb.append("  spring-boot-maven)").append(seq).append(":\n");
             sb.append("    container_name: ").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
@@ -196,7 +196,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             return sb.toString();
         }else if(frameWork.equals("Vue")){
             StringBuilder sb = new StringBuilder();
-            sb.append("  Vue:\n");
+            sb.append("  vue:\n");
             sb.append("    container_name: ").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
