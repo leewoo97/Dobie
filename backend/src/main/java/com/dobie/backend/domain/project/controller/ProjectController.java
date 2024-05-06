@@ -113,6 +113,7 @@ public class ProjectController {
     @PostMapping("/stop/service")
     public ResponseEntity<?> stopServiceInProject(@RequestParam String containerName) {
         projectService.stopService(containerName);
+        return response.success(ResponseCode.SERVICE_STOP_SUCCESS);
     }
 }
 
