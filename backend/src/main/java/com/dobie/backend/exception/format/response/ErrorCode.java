@@ -31,6 +31,7 @@ public enum ErrorCode {
     POM_XML_NOT_FOUND(HttpStatus.NOT_FOUND, "pom.xml이 해당 경로에 존재하지않습니다."),
     PACKAGE_JSON_NOT_FOUND(HttpStatus.NOT_FOUND, "package.json이 해당 경로에 존재하지않습니다."),
     FILE_PATH_NOT_EXIST(HttpStatus.NOT_FOUND, "존재하지 않는 경로입니다."),
+    PORT_NUMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "외부 또는 내부 포트번호가 존재하지않습니다."),
 
     /* nginx 파일 생성 */
     PROJECT_PATH_NOT_FOUND(HttpStatus.NOT_FOUND, "frontend 파일 경로 찾기를 실패했습니다."),

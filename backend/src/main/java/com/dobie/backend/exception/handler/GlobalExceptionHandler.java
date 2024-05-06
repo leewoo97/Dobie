@@ -1,10 +1,7 @@
 package com.dobie.backend.exception.handler;
 
+import com.dobie.backend.exception.exception.Environment.*;
 import com.dobie.backend.exception.exception.build.ProjectPathNotFoundException;
-import com.dobie.backend.exception.exception.Environment.BuildGradleNotFoundException;
-import com.dobie.backend.exception.exception.Environment.FilePathNotExistException;
-import com.dobie.backend.exception.exception.Environment.PackageJsonNotFoundException;
-import com.dobie.backend.exception.exception.Environment.PomXmlNotFoundException;
 import com.dobie.backend.exception.exception.build.*;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.exception.exception.git.GitCheckoutFailedException;
@@ -124,6 +121,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    @ExceptionHandler(PortNumberNotFoundException.class)
+    protected ResponseEntity<?> handle(PortNumberNotFoundException e) {
+        log.error("PortNumberNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    /* NGINX */
     @ExceptionHandler(ProjectPathNotFoundException.class)
     protected ResponseEntity<?> handle(ProjectPathNotFoundException e) {
         log.error("ProjectPathNotFoundException = {}", e.getErrorCode().getMessage());

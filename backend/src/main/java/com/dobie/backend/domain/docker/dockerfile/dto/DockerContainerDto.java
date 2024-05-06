@@ -7,16 +7,20 @@ public class DockerContainerDto {
     private String created;
     private String status;
     private String ports;
+    private String innerPort;
+    private String outerPort;
     private String names;
 
     // 생성자, getter 및 setter는 필요에 따라 추가
-    public DockerContainerDto(String containerId, String image, String command, String created, String status, String ports, String names) {
+    public DockerContainerDto(String containerId, String image, String command, String created, String status, String ports, String innerPort, String outerPort, String names) {
         this.containerId = containerId;
         this.image = image;
         this.command = command;
         this.created = created;
         this.status = status;
         this.ports = ports;
+        this.innerPort = innerPort;
+        this.outerPort = outerPort;
         this.names = names;
     }
 
@@ -30,6 +34,8 @@ public class DockerContainerDto {
                 ", created='" + created + '\'' +
                 ", status='" + status + '\'' +
                 ", ports='" + ports + '\'' +
+                ", innerPorts='" + innerPort + '\'' +
+                ", outerPorts='" + outerPort + '\'' +
                 ", names='" + names + '\'' +
                 '}';
     }

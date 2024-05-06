@@ -1,10 +1,7 @@
 package com.dobie.backend.domain.docker.dockerfile.service;
 
 import com.dobie.backend.domain.docker.dockerfile.dto.DockerContainerDto;
-import com.dobie.backend.exception.exception.Environment.BuildGradleNotFoundException;
-import com.dobie.backend.exception.exception.Environment.FilePathNotExistException;
-import com.dobie.backend.exception.exception.Environment.PackageJsonNotFoundException;
-import com.dobie.backend.exception.exception.Environment.PomXmlNotFoundException;
+import com.dobie.backend.exception.exception.Environment.*;
 import com.dobie.backend.exception.exception.build.BackendBuildFailedException;
 import com.dobie.backend.exception.exception.build.FrontendBuildFailedException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
@@ -226,6 +223,7 @@ public class DockerfileServiceImpl implements DockerfileService {
             System.out.println("docker ps 결과: \n" + dockerOutput);
             List<DockerContainerDto> containers = parseDockerPsOutput(dockerOutput);
             containers.forEach(System.out::println);
+
         } catch (Exception e) {
             System.out.println("docker ps 명령어 실행 중 에러 발생: " + e.getMessage());
             e.printStackTrace();
@@ -247,30 +245,39 @@ public class DockerfileServiceImpl implements DockerfileService {
                 String created = parts[3];
                 String status = parts[4];
                 String ports = parts[5];
+                String innerPort = splitPorts(ports,"inner");
+                String outerPort = splitPorts(ports,"outer");
                 String names = parts[6];
-                containers.add(new DockerContainerDto(containerId, image, command, created, status, ports, names));
+                containers.add(new DockerContainerDto(containerId, image, command, created, status, ports, innerPort, outerPort, names));
             }
         }
 
         return containers;
     }
 
-//    @Override
-//    public void dockerContainerLister() {
-//        DefaultDockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-//                .withDockerHost(System.getProperty("os.name").startsWith("Windows") ? "tcp://localhost:2375" : "unix:///var/run/docker.sock")// 또는 "tcp://localhost:2375"
-//                .build();
-//
-//        ApacheDockerHttpClient httpClient = new ApacheDockerHttpClient.Builder()
-//                .dockerHost(config.getDockerHost())
-//                .sslConfig(config.getSSLConfig())
-//                .build();
-//
-//        DockerClient dockerClient = DockerClientImpl.getInstance(config,httpClient);
-//        System.out.println("이우진");
-//        List<Container> containers = dockerClient.listContainersCmd().exec();
-//        for (Container container : containers) {
-//            System.out.println("Container ID: " + container.getId() + ", Image: " + container.getImage());
-//        }
-//    }
+    public String splitPorts(String ports,String type){
+        if(type.equals("inner")) {
+            // ':'을 기준으로 문자열을 나눕니다.
+            String[] parts = ports.split(":");
+
+            // 나누어진 두 번째 부분('-'를 포함)에서 다시 '-'를 기준으로 나눕니다.
+            String[] subParts = parts[1].split("->");
+
+            // 결과적으로 첫 번째 부분이 포트 번호가 됩니다.
+            return subParts[0];
+        }
+        else if(type.equals("outer")){
+            // ':'을 기준으로 문자열을 나눕니다.
+            String[] parts = ports.split("->");
+
+            // 나누어진 두 번째 부분('-'를 포함)에서 다시 '-'를 기준으로 나눕니다.
+            String[] subParts = parts[1].split("/");
+
+            // 결과적으로 첫 번째 부분이 포트 번호가 됩니다.
+            return subParts[0];
+        }
+        else{
+            throw new PortNumberNotFoundException();
+        }
+    }
 }
