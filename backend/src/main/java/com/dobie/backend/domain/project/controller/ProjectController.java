@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -79,20 +78,28 @@ public class ProjectController {
 
     @Operation(summary = "프로젝트 실행", description = "dockerfile, compose 파일 바탕으로 프로젝트 빌드 후 실행")
     @PostMapping("/run/{projectId}")
-    public ResponseEntity<?> runProject(@PathVariable String projectId) {
-        try {
-            projectService.runProject(projectId);
-            Thread.sleep(10000);
-            if (projectService.verifyComposeUpSuccess(projectId)) {
-                return response.success(ResponseCode.PROJECT_RUN_SUCCESS);
-            }else{
-                throw new ProjectStartFailedException("Run Failed");
-            }
-        } catch (Exception e) {
-            throw new ProjectStartFailedException(e.getMessage());
-        }
+    public CompletableFuture<ResponseEntity<String>> runProject(@PathVariable String projectId) {
+        projectService.runProject(projectId);
+        String path = "./" + projectService.getProject(projectId).getProjectName();
 
+        return CompletableFuture.supplyAsync(() -> {
+                    try {
+                        Thread.sleep(10000);  // 10초 지연
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException(e);
+                    }
+                    return path;
+                }).thenCompose(updatedPath -> projectService.verifyComposeUpSuccess(updatedPath))
+                .thenApply(success -> {
+                    if (success) {
+                        return ResponseEntity.ok().body("Project started successfully");
+                    } else {
+                        throw new ProjectStartFailedException("Run Failed");
+                    }
+                }).exceptionally(e -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage()));
     }
+
 
 
     @Operation(summary = "프로젝트 일괄 정지", description = "실행중인 프로젝트를 정지")

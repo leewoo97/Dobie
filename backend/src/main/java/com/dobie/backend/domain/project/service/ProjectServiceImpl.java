@@ -15,12 +15,14 @@ import com.dobie.backend.exception.exception.git.GitInfoNotFoundException;
 import com.dobie.backend.util.command.CommandService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -174,15 +176,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     }
 
-    // 프로젝트 통째로 실행한다 했을때
-    @Override
-    public void runProject(String projectId) {
-        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
-        String path = "./" + projectGetResponseDto.getProjectName();
-        commandService.dockerComposeUp(path);
-
-    }
-
     @Override
     public void stopProject(String projectId) {
         ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
@@ -190,25 +183,37 @@ public class ProjectServiceImpl implements ProjectService {
         commandService.dockerComposeDown(path);
     }
 
+    // 프로젝트 통째로 실행한다 했을때
     @Override
-    public boolean verifyComposeUpSuccess(String path) {
-        try {
-            String command = "docker compose -f " + path + "/docker-compose.yml ps";
-            Process process = Runtime.getRuntime().exec(command);
-            BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.contains("Up")) {
-                    return true;
-                }
-            }
-            return false;
-        } catch (Exception e) {
-            throw new ProjectStartFailedException(e.getMessage());
-        }
+    @Async
+    public void runProject(String projectId) {
+        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
+        String path = "./" + projectGetResponseDto.getProjectName();
+        commandService.dockerComposeUp(path);
     }
 
+
+    @Override
+    @Async
+    public CompletableFuture<Boolean> verifyComposeUpSuccess(String path) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                String command = "docker compose -f " + path + "/docker-compose.yml ps";
+                Process process = Runtime.getRuntime().exec(command);
+                BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+                String line;
+                while ((line = br.readLine()) != null) {
+                    if (line.contains("Up")) {
+                        return true;
+                    }
+                }
+                return false;
+            } catch (Exception e) {
+                throw new ProjectStartFailedException(e.getMessage());
+            }
+        });
+    }
 //    @Override
 //    public void stopService(String projectId) {
 //        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
