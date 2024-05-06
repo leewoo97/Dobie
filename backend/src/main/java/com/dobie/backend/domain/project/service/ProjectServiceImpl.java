@@ -143,9 +143,9 @@ public class ProjectServiceImpl implements ProjectService {
         // 백엔드
         Map<String, BackendGetResponseDto> backendInfo = projectGetResponseDto.getBackendMap();
         backendInfo.forEach((key, value) -> {
-            if (value.getFramework().equals("SpringBoot(Gradle)")) {
+            if (value.getFramework().equals("SpringBoot(gradle)")) {
                 dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
-            } else if (value.getFramework().equals("SpringBoot(Maven)")) {
+            } else if (value.getFramework().equals("SpringBoot(maven)")) {
                 dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
             }
         });
