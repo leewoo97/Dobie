@@ -53,26 +53,26 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                 dockercompose.append(createSpringDockerComposeFile(backendGetResponseDto.getFramework(), backendSeq, backendGetResponseDto.getServiceId(), backendGetResponseDto.getPath(),
                         backendGetResponseDto.getExternalPort(),
                         backendGetResponseDto.getInternalPort(), mysql != null,
-                        redis != null, databaseName, username, password));
+                        redis != null, databaseName, username, password, projectGetResponseDto.getFrontend().getInternalPort()));
             } else if (backendGetResponseDto.getFramework().equals("Django")) {
 
             }
         }
 
-        dockercompose.append(createReactDockerComposeFile(projectGetResponseDto.getFrontend().getFramework(), projectGetResponseDto.getFrontend().getPath(),
+        dockercompose.append(createReactDockerComposeFile(projectGetResponseDto.getFrontend().getFramework(), projectGetResponseDto.getFrontend().getServiceId(),projectGetResponseDto.getFrontend().getPath(),
                 projectGetResponseDto.getFrontend().getExternalPort(),
                 projectGetResponseDto.getFrontend().getInternalPort()));
 
         // database 설정 추가
         if (mysql != null) {
             dockercompose.append(
-                    createMysqlDockerComposeFile(mysql.getDatabaseName(), mysql.getUsername(),
+                    createMysqlDockerComposeFile(mysql.getDatabaseId(), mysql.getDatabaseName(), mysql.getUsername(),
                             mysql.getPassword(), mysql.getExternalPort(),
                             mysql.getInternalPort()));
         }
         if (redis != null) {
             dockercompose.append(
-                    createRedisDockerComposeFile(redis.getExternalPort(), redis.getInternalPort()));
+                    createRedisDockerComposeFile(redis.getDatabaseId(), redis.getExternalPort(), redis.getInternalPort()));
         }
 
         if (mysql != null) {
@@ -91,11 +91,11 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
     @Override
     public String createSpringDockerComposeFile(String frameWork, String seq, String serviceId, String path, int externalPort, int internalPort, boolean mysql,
-                                                boolean redis, String databaseName, String username, String password) {
+                                                boolean redis, String databaseName, String username, String password, int frontInternalPort) {
         StringBuilder sb = new StringBuilder();
         //Framework가 SpringBoot(gradle)이면 gradle, SpringBoot(maven)이면 maven
         if(frameWork.equals("SpringBoot(gradle)")) {
-            sb.append("  gradle").append(seq).append(":\n");
+            sb.append("  SpringBoot(gradle)").append(seq).append(":\n");
             sb.append("    container_name:").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
@@ -131,12 +131,12 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                 }
             }
             //React인지 vue인지 찾아서 :뒤에 포트번호 바꿀것 , 그냥 사용자가 지정한 프론트 포트번호로 바꿀것
-            sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:3000\n");
+            sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:").append(frontInternalPort).append("\n");
 
             return sb.toString();
         }
         else if(frameWork.equals("SpringBoot(maven)")){
-            sb.append("  maven").append(seq).append(":\n");
+            sb.append("  SpringBoot(maven)").append(seq).append(":\n");
             sb.append("    container_name:").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
@@ -172,7 +172,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                 }
             }
             //React인지 vue인지 찾아서 :뒤에 포트번호 바꿀것 , 그냥 사용자가 지정한 프론트 포트번호로 바꿀것
-            sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:3000\n");
+            sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:").append(frontInternalPort).append("\n");
 
             return sb.toString();
 
@@ -183,10 +183,10 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
     //은석이가 프론트엔드 서비스 아이디 만들어주면 코드 변경해서 커밋하기
     @Override
-    public String createReactDockerComposeFile(String frameWork, String path, int externalPort, int internalPort) {
+    public String createReactDockerComposeFile(String frameWork, String serviceId, String path, int externalPort, int internalPort) {
         if(frameWork.equals("React")) {
             StringBuilder sb = new StringBuilder();
-            sb.append("  react:\n");
+            sb.append("  React:\n");
             sb.append("    container_name:").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
@@ -196,7 +196,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             return sb.toString();
         }else if(frameWork.equals("Vue")){
             StringBuilder sb = new StringBuilder();
-            sb.append("  vue:\n");
+            sb.append("  Vue:\n");
             sb.append("    container_name:").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
@@ -211,11 +211,12 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
     //은석이가 Mysql 서비스 아이디 만들어주면 코드 변경해서 커밋하기
     @Override
-    public String createMysqlDockerComposeFile(String databaseName, String username, String password, int externalPort,
+    public String createMysqlDockerComposeFile(String databaseId, String databaseName, String username, String password, int externalPort,
                                                int internalPort) {
 
         StringBuilder sb = new StringBuilder();
         sb.append("  mysql:\n");
+        sb.append("    container_name:").append(databaseId).append("\n");
         sb.append("    image: mysql:8.0\n");
         sb.append("    environment:\n");
         sb.append("      MYSQL_ROOT_PASSWORD: 1234\n");
@@ -232,10 +233,11 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
     //은석이가 Redis 서비스 아이디 만들어주면 코드 변경해서 커밋하기
     @Override
-    public String createRedisDockerComposeFile(int externalPort, int internalPort) {
+    public String createRedisDockerComposeFile(String databaseId,int externalPort, int internalPort) {
 
         StringBuilder sb = new StringBuilder();
         sb.append("  redis:\n");
+        sb.append("    container_name:").append(databaseId).append("\n");
         sb.append("    image: redis:latest\n");
         sb.append("    ports:\n");
         sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
