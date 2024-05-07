@@ -218,12 +218,17 @@ public class ProjectServiceImpl implements ProjectService {
         GitGetResponseDto gitInfo = dto.getGit();
         String path = "./" + dto.getProjectName();
 
-        // git pull
-        if (commandService.checkIsCloned(path)) {
-            commandService.gitPull(path);
-        } else {
-            log.info("프로젝트 정보가 없습니다. Build를 처음부터 진행합니다.");
-            buildTotalService(projectId);
+        try {
+
+            // git pull
+            if (commandService.checkIsCloned(path)) {
+                commandService.gitPull(path);
+            } else {
+                log.info("프로젝트 정보가 없습니다. Build를 처음부터 진행합니다.");
+                buildTotalService(projectId);
+            }
+        } catch (Exception e) {
+            e.getStackTrace();
         }
 
         // projectRestart

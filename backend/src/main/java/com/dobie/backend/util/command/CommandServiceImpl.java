@@ -97,9 +97,14 @@ public class CommandServiceImpl implements CommandService {
 
     // git pull
     @Override
-    public void gitPull(String path) throws IOException {
-        CommandLine commandLine1 = CommandLine.parse("pwd");
-        executor.execute(commandLine1);
+    public void gitPull(String path) {
+        try {
+            CommandLine commandLine1 = CommandLine.parse("pwd");
+            executor.execute(commandLine1);
+
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
 
         sb = new StringBuilder();
         sb.append("git -C ").append(path).append(" pull");
@@ -209,11 +214,11 @@ public class CommandServiceImpl implements CommandService {
         sb.append("docker stop ").append(containerName);
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
-        try{
+        try {
             executor.execute(commandLine);
             String result = outputStream.toString().trim();
             System.out.println("docker stop success : " + result);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new ServiceStopFailedException(e.getMessage());
         }
     }
