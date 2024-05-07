@@ -1,9 +1,10 @@
 package com.dobie.backend.domain.docker.dockerfile.service;
 
-import com.dobie.backend.domain.docker.dockerfile.dto.DockerContainerDto;
+import com.dobie.backend.exception.exception.docker.DockerPsErrorException;
 import com.dobie.backend.exception.exception.Environment.*;
 import com.dobie.backend.exception.exception.build.BackendBuildFailedException;
 import com.dobie.backend.exception.exception.build.FrontendBuildFailedException;
+import com.dobie.backend.exception.exception.docker.DockerPsLinePartsErrorException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.util.file.FileManager;
 
@@ -15,8 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 @Service
 @Log4j2
@@ -201,10 +201,10 @@ public class DockerfileServiceImpl implements DockerfileService {
     }
 
     @Override
-    public void dockerContainerLister() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("docker ps");
-        CommandLine commandLine = CommandLine.parse(sb.toString());
+    public HashMap<String, String> dockerContainerLister() {
+        CommandLine commandLine = new CommandLine("docker");
+        commandLine.addArgument("ps");
+        commandLine.addArgument("-a"); // "-a" 옵션 추가
 
         DefaultExecutor executor = new DefaultExecutor();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -214,39 +214,58 @@ public class DockerfileServiceImpl implements DockerfileService {
         try {
             executor.execute(commandLine);
             String dockerOutput = outputStream.toString();
-            System.out.println("docker ps 결과: \n" + dockerOutput);
-            List<DockerContainerDto> containers = parseDockerPsOutput(dockerOutput);
-            containers.forEach(System.out::println);
+//            System.out.println("docker ps -a결과: \n" + dockerOutput);
+            HashMap<String,String> containers = parseDockerPsOutput(dockerOutput);
+//            for (String key : containers.keySet()) {
+//                System.out.println("Key: " + key + ", Value: " + containers.get(key));
+//            }
+            return containers;
 
         } catch (Exception e) {
-            System.out.println("docker ps 명령어 실행 중 에러 발생: " + e.getMessage());
-            e.printStackTrace();
+//            System.out.println("docker ps 명령어 실행 중 에러 발생: " + e.getMessage());
+//            e.printStackTrace();
+            throw new DockerPsErrorException();
         }
     }
 
     @Override
-    public List<DockerContainerDto> parseDockerPsOutput(String output) {
-        List<DockerContainerDto> containers = new ArrayList<>();
+    public HashMap<String,String> parseDockerPsOutput(String output) {
+        HashMap<String,String> containers = new HashMap<>();
         String[] lines = output.split("\n");
-
-        // 첫 번째 줄은 헤더이므로 건너뜀
-        for (int i = 1; i < lines.length; i++) {
-            String[] parts = lines[i].split("\\s{2,}");  // 두 개 이상의 공백으로 분할
-            if (parts.length >= 7) {
-                String containerId = parts[0];
-                String image = parts[1];
-                String command = parts[2];
-                String created = parts[3];
-                String status = parts[4];
-                String currentStatus = checkStatus(status);
-                String ports = parts[5];
-                String innerPort = splitPorts(ports,"inner");
-                String outerPort = splitPorts(ports,"outer");
-                String names = parts[6];
+        try {
+            // 첫 번째 줄은 헤더이므로 건너뜀
+            for (int i = 1; i < lines.length; i++) {
+                String[] parts = lines[i].split("\\s{2,}");  // 두 개 이상의 공백으로 분할
+                if (parts.length == 7) {
+                    String containerId = parts[0];
+                    String image = parts[1];
+                    String command = parts[2];
+                    String created = parts[3];
+                    String status = parts[4];
+                    String currentStatus = checkStatus(status);
+                    String ports = parts[5];
+                    String innerPort = splitPorts(ports, "inner");
+                    String outerPort = splitPorts(ports, "outer");
+                    String names = parts[6];
 //                String frameWork = splitName(names);
-                containers.add(new DockerContainerDto(containerId, image, command, created, status, currentStatus, ports, innerPort, outerPort, names));
+                    containers.put(names, currentStatus);
+                } else {
+                    String containerId = parts[0];
+                    String image = parts[1];
+                    String command = parts[2];
+                    String created = parts[3];
+                    String status = parts[4];
+                    String currentStatus = checkStatus(status);
+                    String names = parts[5];
+//                String frameWork = splitName(names);
+                    containers.put(names, currentStatus);
+                }
+
             }
+        }catch(Exception e){
+            throw new DockerPsLinePartsErrorException();
         }
+
 
         return containers;
     }
@@ -260,9 +279,11 @@ public class DockerfileServiceImpl implements DockerfileService {
 //    }
     public String checkStatus(String status){
         if(status.contains("Up")){
-            return "Running";
-        }else if(status.contains("Exit")){
-            return "Stopped";
+            return "Running :)";
+        }else if(status.contains("Exited")){
+            return "Stopped :(";
+        }else if(status.contains("Created")){
+            return "Created :|";
         }else{
             throw new CurrentStatusNotFoundException();
         }

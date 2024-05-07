@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @Tag(name = "Container Check 컨트롤러", description = "Container Check Controller API")
 @RestController
 @RequiredArgsConstructor
@@ -20,9 +22,9 @@ public class ProceedingContainerController {
     @Operation(summary = "실행중인 컨테이너 확인", description = "실행중인 컨테이너 확인")
     @GetMapping("/proceeding")
     public ResponseEntity<?> checkProceedingContainer() {
-        dockerfileService.dockerContainerLister();
+        HashMap<String, String> containers = dockerfileService.dockerContainerLister();
 
-        return response.success(ResponseCode.DOCKER_FILE_INSTALL_SUCCESS);
+        return response.success(ResponseCode.CONTAINER_STATUS_SUCCESS,containers);
     }
 
 }

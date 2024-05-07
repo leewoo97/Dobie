@@ -38,6 +38,10 @@ public enum ErrorCode {
     CURRENT_STATUS_NOT_FOUND(HttpStatus.NOT_FOUND, "현재 상태를 조회할 수 없습니다."),
     PORT_NUMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "외부 또는 내부 포트번호가 존재하지않습니다."),
 
+    /* 도커 명령어 실행 중 오류 */
+    DOCKER_PS_ERROR(HttpStatus.NOT_FOUND, "docker ps 명령어 실행 중 에러 발생"),
+    DOCKER_PS_LINE_PARTS_ERROR(HttpStatus.NOT_FOUND, "docker ps 명령어 실행 이후 문자열 분해과정에서 예외가 발생했습니다"),
+
     /* nginx 파일 생성 */
     PROJECT_PATH_NOT_FOUND(HttpStatus.NOT_FOUND, "frontend 파일 경로 찾기를 실패했습니다."),
     ;

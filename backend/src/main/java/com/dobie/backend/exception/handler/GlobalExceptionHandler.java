@@ -3,6 +3,8 @@ package com.dobie.backend.exception.handler;
 import com.dobie.backend.exception.exception.Environment.*;
 import com.dobie.backend.exception.exception.build.ProjectPathNotFoundException;
 import com.dobie.backend.exception.exception.build.*;
+import com.dobie.backend.exception.exception.docker.DockerPsErrorException;
+import com.dobie.backend.exception.exception.docker.DockerPsLinePartsErrorException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.exception.exception.git.GitCheckoutFailedException;
 import com.dobie.backend.exception.exception.git.GitCloneFailedException;
@@ -100,6 +102,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<?> handle(SaveFileFailedException e) {
         log.error("SaveFileFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    /* 도커 컨테이너 분석 과정 오류 */
+    @ExceptionHandler(DockerPsErrorException.class)
+    protected ResponseEntity<?> handle(DockerPsErrorException e) {
+        log.error("DockerPsErrorException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(DockerPsLinePartsErrorException.class)
+    protected ResponseEntity<?> handle(DockerPsLinePartsErrorException e) {
+        log.error("DockerPsLinePartsErrorException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 

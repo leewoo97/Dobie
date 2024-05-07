@@ -2,6 +2,7 @@ package com.dobie.backend.domain.docker.dockerfile.service;
 
 import com.dobie.backend.domain.docker.dockerfile.dto.DockerContainerDto;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface DockerfileService {
@@ -22,7 +23,7 @@ public interface DockerfileService {
     void checkBuildPackageJson(String filepath);
 
     /* 실행중인 컨테이너 확인 메소드 */
-    void dockerContainerLister();
+    HashMap<String, String> dockerContainerLister();
 
-    List<DockerContainerDto> parseDockerPsOutput(String output);
+    HashMap<String,String> parseDockerPsOutput(String output);
 }
