@@ -7,7 +7,7 @@ export default function ProjectPage(){
     return(
         <Container>
             <NavTop/>
-            <InnerContainer/>
+            <InnerContainer num={2}/>
         </Container>
     );
 }

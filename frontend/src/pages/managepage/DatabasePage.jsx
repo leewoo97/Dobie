@@ -7,7 +7,7 @@ export default function DatabasePage(){
     return(
         <Container>
             <NavTop/>
-            <InnerContainer/>
+            <InnerContainer num={5}/>
         </Container>
     );
 }
