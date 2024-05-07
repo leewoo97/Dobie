@@ -27,9 +27,9 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
         for (String databaseSeq : projectGetResponseDto.getDatabaseMap().keySet()) {
             DatabaseGetResponseDto databaseGetResponseDto = projectGetResponseDto.getDatabaseMap().get(databaseSeq);
-            if (databaseGetResponseDto.getDatabaseType().equals("mysql")) {
+            if (databaseGetResponseDto.getDatabaseType().equals("Mysql")) {
                 mysql = databaseGetResponseDto;
-            } else if (databaseGetResponseDto.getDatabaseType().equals("redis")) {
+            } else if (databaseGetResponseDto.getDatabaseType().equals("Redis")) {
                 redis = databaseGetResponseDto;
             }
         }
