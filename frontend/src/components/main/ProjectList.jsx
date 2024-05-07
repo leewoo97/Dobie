@@ -30,23 +30,43 @@ export default function ProjectList() {
     }
   };
 
-  return (
-    <>
-      <div className={styles.table}>
-        <div className={styles.colume}>
-          <div>프로젝트명</div>
-          <div>도메인주소</div>
-          <div>실행</div>
-          <div>Git Link</div>
-        </div>
-        <div className={styles.projectlist}>
-          {Object.values(projectMap).map((project) => (
-            <div key={project.projectId}>
-              <ProjectItem project={project} />
+  if (projectMap === null || projectMap === undefined) {
+    return (
+      <>
+        <div className={styles.table}>
+          <div className={styles.colume}>
+            <div>프로젝트명</div>
+            <div>도메인주소</div>
+            <div>실행</div>
+            <div>Git Link</div>
+          </div>
+          <div className={styles.projectlist}>
+            <div className={styles.box}>
+              <h3>등록된 프로젝트가 없습니다.</h3>
             </div>
-          ))}
+          </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className={styles.table}>
+          <div className={styles.colume}>
+            <div>프로젝트명</div>
+            <div>도메인주소</div>
+            <div>실행</div>
+            <div>Git Link</div>
+          </div>
+          <div className={styles.projectlist}>
+            {Object.values(projectMap).map((project) => (
+              <div key={project.projectId}>
+                <ProjectItem project={project} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </>
+    );
+  }
 }
