@@ -1,0 +1,49 @@
+.top {
+    /* background-color: red; */
+    display: flex;
+    padding: 2% 8%;
+    justify-content: space-between;
+}
+
+.text{
+    margin-right: 1vh;
+}
+
+.projectName{
+    font-size: 5vh;
+    font-weight: 600;
+}
+
+.buttons{
+    display: inline-flex;
+    align-items: flex-end;
+}
+
+.buttons > div{
+    display: inline-flex;
+    align-items: center;
+}
+
+.buttons > div > img{
+    margin-left: 1vh;
+}
+
+.edit{
+    height: 40%;
+    color: white;
+    font-weight: 600;
+    background-color: #6096B4;
+    border-radius: 10px;
+    padding: 6px 15px;
+    margin: 0 5px;
+}
+
+.remove{
+    height: 40%;
+    color: white;
+    font-weight: 600;
+    background-color: #4A7A94;
+    border-radius: 10px;
+    padding: 6px 15px;
+    margin: 0 5px;
+}

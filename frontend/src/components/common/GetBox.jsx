@@ -7,8 +7,8 @@ export default function GetBox({ keyName, valueName}){
         <div className={styles.page}>
             {/* <p>박스</p> */}
             <div className={styles.boxFrame}>
-                <p>{keyName}</p>
-                <p>{valueName}</p>
+                <p className={styles.key}>{keyName}</p>
+                <p className={styles.value}>{valueName}</p>
             </div>
         </div>
     );
