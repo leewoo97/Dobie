@@ -7,7 +7,7 @@ export default function BackendPage(){
     return(
         <Container>
             <NavTop/>
-            <InnerContainer/>
+            <InnerContainer num={3}/>
         </Container>
     );
 }
