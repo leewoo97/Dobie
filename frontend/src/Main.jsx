@@ -6,7 +6,7 @@ import MainPage from "./pages/mainpage/MainPage";
 import BackendPage from "./pages/managepage/BackendPage";
 import FrontendPage from "./pages/managepage/FrontendPage";
 import ProjectPage from "./pages/managepage/ProjectPage";
-import DatabasePage from "./pages/managepage/BackendPage";
+import DatabasePage from "./pages/managepage/DatabasePage";
 import RunPage from "./pages/managepage/RunPage";
 import ErrorPage from "./pages/errorpage/ErrorPage";
 

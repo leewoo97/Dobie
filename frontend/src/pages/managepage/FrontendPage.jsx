@@ -7,7 +7,7 @@ export default function FrontendPage(){
     return(
         <Container>
             <NavTop/>
-            <InnerContainer/>
+            <InnerContainer num={4}/>
         </Container>
     );
 }

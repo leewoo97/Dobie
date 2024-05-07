@@ -33,16 +33,6 @@ export default function NavLeft({ num }){
                 ) : (
                     <p className={styles.text} onClick={() => navigate("/manage/database")}>DB</p>
                 )}
-            {/* <p className={styles.text} onClick={() => navigate("/manage")}>Run</p>
-            <p className={styles.text2} onClick={() => navigate("/manage")}>Run</p>
-            <p className={styles.text} onClick={() => navigate("/manage/project")}>Project</p>
-            <p className={styles.text2} onClick={() => navigate("/manage/project")}>Project</p>
-            <p className={styles.text} onClick={() => navigate("/manage/backend")}>Backend</p>
-            <p className={styles.text2} onClick={() => navigate("/manage/backend")}>Backend</p>
-            <p className={styles.text} onClick={() => navigate("/manage/frontend")}>Frontend</p>
-            <p className={styles.text2} onClick={() => navigate("/manage/frontend")}>Frontend</p>
-            <p className={styles.text} onClick={() => navigate("/manage/database")}>DB</p>
-            <p className={styles.text2} onClick={() => navigate("/manage/database")}>DB</p> */}
             </div>
             <img src={mainBtn} alt="search_icon" onClick={() => navigate("/main")} className={styles.img}/>
         </div>
