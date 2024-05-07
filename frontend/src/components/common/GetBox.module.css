@@ -3,6 +3,15 @@
     flex-direction: row;
     background-color: #EEE9DA;
     width: 80%;
-    margin: 0 auto;
-    border-radius: 15px;
+    margin: 1% auto;
+    padding: 0 3%;
+    border-radius: 10px;
+}
+
+.key{
+    flex: 30;
+}
+
+.value{
+    flex: 70;
 }

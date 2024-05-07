@@ -12,7 +12,7 @@
 .top {
     /* background-color: red; */
     display: inline-flex;
-    padding: 2% 5%;
+    padding: 2% 8%;
     justify-content: space-between;
 }
 
@@ -116,7 +116,7 @@
     /* background-color: yellow; */
     display: inline-flex;
     align-items: center;
-    padding: 0 5%;
+    padding: 0 8%;
     margin-bottom: 3%;
     justify-content: space-between;
 }
