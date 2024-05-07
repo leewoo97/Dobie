@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ProjectList.module.css";
-import { getProject } from "../../api/Main";
+import { getProject } from "../../api/Project";
 import useProjectStore from "../../stores/projectStore";
 
 import ProjectItem from "./ProjectItem";
