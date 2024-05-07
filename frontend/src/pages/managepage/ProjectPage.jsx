@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import NavTop from "../../components/common/NavTop";
-import InnerContainer from "../../components/common/InnerContainer";
-import Container from "../../components/common/Container";
+import NavLeft from "../../components/common/NavLeft";
+import ProjectFrame from "../../components/manage/ProjectFrame";
 
 export default function ProjectPage(){
     return(
-        <Container>
+        <>
             <NavTop/>
-            <InnerContainer num={2}/>
-        </Container>
+            <NavLeft num={2}/>
+            <ProjectFrame />
+        </>
     );
 }

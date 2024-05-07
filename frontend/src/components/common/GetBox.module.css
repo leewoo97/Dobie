@@ -1,0 +1,8 @@
+.boxFrame{
+    display: flex;
+    flex-direction: row;
+    background-color: #EEE9DA;
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 15px;
+}

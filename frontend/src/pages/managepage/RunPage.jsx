@@ -32,7 +32,8 @@ export default function RunPage() {
     return (
         <>
             <NavTop />
-            <NavLeft />
+            <NavLeft num={1}/>
+            {/* <InnerContainer /> */}
             <div className={styles.page}>
                 <div className={styles.top}>
                     <div>
