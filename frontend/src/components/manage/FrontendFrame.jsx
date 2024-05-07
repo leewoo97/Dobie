@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "./ProjectFrame.module.css";
+import styles from "./FrontendFrame.module.css";
 import GetBox from "../common/GetBox";
 import ProjectTop from "../common/ProjectTop";
 
