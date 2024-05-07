@@ -150,7 +150,7 @@ public class DockerfileServiceImpl implements DockerfileService {
             }
         } else {
 //            System.out.println("파일 경로 자체가 잘못되었음.");
-            throw new FilePathNotExistException();
+            throw new BackendFilePathNotExistException();
         }
     }
 
@@ -173,7 +173,7 @@ public class DockerfileServiceImpl implements DockerfileService {
             }
         } else {
 //            System.out.println("파일 경로 자체가 잘못되었음.");
-            throw new FilePathNotExistException();
+            throw new BackendFilePathNotExistException();
         }
     }
 
@@ -196,7 +196,7 @@ public class DockerfileServiceImpl implements DockerfileService {
             }
         } else {
 //            System.out.println("파일 경로 자체가 잘못되었음.");
-            throw new FilePathNotExistException();
+            throw new FrontendFilePathNotExistException();
         }
     }
 

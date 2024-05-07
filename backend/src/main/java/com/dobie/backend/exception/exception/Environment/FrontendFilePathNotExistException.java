@@ -4,10 +4,10 @@ import com.dobie.backend.exception.format.response.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class FilePathNotExistException extends RuntimeException {
+public class FrontendFilePathNotExistException extends RuntimeException {
     private final ErrorCode errorCode;
 
-    public FilePathNotExistException(){
-        this.errorCode = ErrorCode.FILE_PATH_NOT_EXIST;
+    public FrontendFilePathNotExistException(){
+        this.errorCode = ErrorCode.FRONTEND_FILE_PATH_NOT_EXIST;
     }
 }

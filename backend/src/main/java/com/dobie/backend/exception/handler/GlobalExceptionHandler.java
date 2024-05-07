@@ -149,9 +149,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
-    @ExceptionHandler(FilePathNotExistException.class)
-    protected ResponseEntity<?> handle(FilePathNotExistException e) {
+    @ExceptionHandler(BackendFilePathNotExistException.class)
+    protected ResponseEntity<?> handle(BackendFilePathNotExistException e) {
         log.error("FilePathNotExistException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+    @ExceptionHandler(FrontendFilePathNotExistException.class)
+    protected ResponseEntity<?> handle(FrontendFilePathNotExistException e) {
+        log.error("FrontendFilePathNotExistException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 
