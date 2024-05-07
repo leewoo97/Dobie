@@ -13,3 +13,7 @@ body {
   height: 100%;
   /* overflow: hidden; 페이지 스크롤 방지 */
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
