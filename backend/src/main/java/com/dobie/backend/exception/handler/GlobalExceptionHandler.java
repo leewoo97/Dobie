@@ -94,7 +94,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<?> handle(GitPullFailedException e) {
         log.error("GitPullFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
-        log.error("Cause : {}", e.getCause());
+        log.error("Cause : {}", e.getCause().getMessage());
         return response.error(e.getErrorCode());
     }
 
