@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "./ProjectFrame.module.css";
+import styles from "./DatabaseFrame.module.css";
 import GetBox from "../common/GetBox";
 
 export default function DatabaseFrame(){

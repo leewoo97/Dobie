@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "./ProjectFrame.module.css";
+import styles from "./BackendFrame.module.css";
 import GetBox from "../common/GetBox";
 
 export default function BackendFrame(){
