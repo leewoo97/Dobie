@@ -10,7 +10,9 @@ public interface CommandService {
 
     void gitCheckout(String path, String branchName);
 
-    void gitPull(String path, String branchName);
+    void gitPull(String path);
+
+//    void gitPull(String path, String branchName);
 
     void build(String path, String projectName);
 

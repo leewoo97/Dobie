@@ -96,9 +96,9 @@ public class CommandServiceImpl implements CommandService {
 
     // git pull
     @Override
-    public void gitPull(String path, String branchName) {
+    public void gitPull(String path) {
         sb = new StringBuilder();
-        sb.append("git -C ").append(path).append(" pull origin ").append(branchName);
+        sb.append("git -C ").append(path).append(" pull");
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
@@ -109,6 +109,20 @@ public class CommandServiceImpl implements CommandService {
             throw new GitPullFailedException(e.getMessage());
         }
     }
+//    @Override
+//    public void gitPull(String path, String branchName) {
+//        sb = new StringBuilder();
+//        sb.append("git -C ").append(path).append(" pull origin ").append(branchName);
+//        CommandLine commandLine = CommandLine.parse(sb.toString());
+//        executor.setStreamHandler(streamHandler);
+//        try {
+//            executor.execute(commandLine);
+//            String result = outputStream.toString().trim();
+//            System.out.println("git pull success : " + result);
+//        } catch (Exception e) {
+//            throw new GitPullFailedException(e.getMessage());
+//        }
+//    }
 
 
     // 빌드

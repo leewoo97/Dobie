@@ -18,6 +18,8 @@ public enum ResponseCode {
     PROJECT_RUN_SUCCESS(HttpStatus.OK, "프로젝트가 성공적으로 실행되었습니다."),
     PROJECT_STOP_SUCCESS(HttpStatus.OK, "프로젝트가 성공적으로 정지되었습니다."),
     SERVICE_STOP_SUCCESS(HttpStatus.OK, "서비스가 성공적으로 정지되었습니다."),
+    PROJECT_REBUILD_AND_START_SUCCESS(HttpStatus.OK, "WebHook 요청이 성공적으로 수행되었습니다."),
+
     /* 컨테이너(container) */
     CONTAINER_STATUS_SUCCESS(HttpStatus.OK, "설치된 컨테이너 실행 상태 분석이 완료되었습니다."),
     /* 도커파일(Dockerfile) */

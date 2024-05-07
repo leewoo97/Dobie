@@ -188,7 +188,7 @@ public class ProjectServiceImpl implements ProjectService {
         String path = "./" + projectGetResponseDto.getProjectName();
         commandService.dockerComposeUp(path);
 
-        if(!verifyComposeUpSuccess(path)){
+        if (!verifyComposeUpSuccess(path)) {
             throw new ProjectStartFailedException("Verify compose up failed.");
         }
     }
@@ -209,6 +209,27 @@ public class ProjectServiceImpl implements ProjectService {
             return false;
         } catch (Exception e) {
             throw new ProjectStartFailedException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void rebuildAndStartProject(String projectId) {
+        ProjectGetResponseDto dto = getProject(projectId);
+        GitGetResponseDto gitInfo = dto.getGit();
+        String path = "./" + dto.getProjectName();
+
+        // git pull
+        if (commandService.checkIsCloned(path)) {
+            commandService.gitPull(path);
+        } else {
+            log.info("프로젝트 정보가 없습니다. Build를 처음부터 진행합니다.");
+            buildTotalService(projectId);
+        }
+
+        // projectRestart
+        commandService.dockerComposeUp(path);
+        if (!verifyComposeUpSuccess(path)) {
+            throw new ProjectStartFailedException("Verify compose up failed.");
         }
     }
 

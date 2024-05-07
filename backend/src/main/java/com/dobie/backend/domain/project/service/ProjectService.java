@@ -37,6 +37,8 @@ public interface ProjectService {
 
     boolean verifyComposeUpSuccess(String path);
 
+    void rebuildAndStartProject(String projectId);
+
 //    void buildFrontService(String projectId, ProjectRequestDto dto)
 
 //    void buildBackService(String projectId, ProjectRequestDto dto)

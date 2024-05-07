@@ -95,5 +95,12 @@ public class ProjectController {
         projectService.stopService(containerName);
         return response.success(ResponseCode.SERVICE_STOP_SUCCESS);
     }
+
+    @Operation(summary = "프로젝트 재시작", description = "webhook 요청 시 프로젝트 재빌드, 시작")
+    @PostMapping("/webhook/{projectId}")
+    public ResponseEntity<?> restartProject(@PathVariable String projectId) {
+        projectService.rebuildAndStartProject(projectId);
+        return response.success(ResponseCode.PROJECT_REBUILD_AND_START_SUCCESS);
+    }
 }
 
