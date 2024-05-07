@@ -9,7 +9,7 @@ public class GitPullFailedException extends RuntimeException {
     private final String errorMessage;
 
     public GitPullFailedException(String errorMessage, Throwable cause){
-        super(errorMessage, cause);  // 부모 클래스인 RuntimeException에 메시지와 원인을 전달
+        super(cause);  // 부모 클래스인 RuntimeException에 메시지와 원인을 전달
         this.errorCode = ErrorCode.GIT_PULL_FAILED;
         this.errorMessage = errorMessage;
     }
