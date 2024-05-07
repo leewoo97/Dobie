@@ -11,18 +11,18 @@ import lombok.*;
 @AllArgsConstructor
 public class NginxProxyDto {
     private String location;
-    private String serviceName;
+    private String serviceId;
     private int port;
 
     public NginxProxyDto(Backend backend){
         this.location = backend.getLocation();
-        this.serviceName = backend.getServiceName();
+        this.serviceId = backend.getServiceId();
         this.port = backend.getInternalPort();
     }
 
     public NginxProxyDto(Frontend frontend){
         this.location = frontend.getLocation();
-        this.serviceName = frontend.getServiceName();
+        this.serviceId = frontend.getServiceId();
         this.port = frontend.getInternalPort();
     }
 }
