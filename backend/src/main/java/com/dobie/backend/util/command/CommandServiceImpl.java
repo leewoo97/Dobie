@@ -171,7 +171,7 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public void dockerComposeDown(String path) {
         sb = new StringBuilder();
-        sb.append("docker compose down");
+        sb.append("docker compose down --rmi all");
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
