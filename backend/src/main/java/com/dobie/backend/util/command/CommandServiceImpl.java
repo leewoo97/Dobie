@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 
 @Service
 @Slf4j
@@ -96,7 +97,10 @@ public class CommandServiceImpl implements CommandService {
 
     // git pull
     @Override
-    public void gitPull(String path) {
+    public void gitPull(String path) throws IOException {
+        CommandLine commandLine1 = CommandLine.parse("pwd");
+        executor.execute(commandLine1);
+
         sb = new StringBuilder();
         sb.append("git -C ").append(path).append(" pull");
         CommandLine commandLine = CommandLine.parse(sb.toString());
