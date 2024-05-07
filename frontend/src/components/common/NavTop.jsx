@@ -8,7 +8,7 @@ export default function NavTop() {
     return (
         <div className={s(styles.nav)}>
             <div className={styles.title}>
-                <img src={mascot} alt="" width="80px" decoding="async" />
+                <img src={mascot} alt="" height="90%" decoding="async" />
                 <div className={styles.dobie}>Dobie</div>
             </div>
         </div>

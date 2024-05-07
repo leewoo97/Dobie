@@ -1,12 +1,14 @@
 .nav{
     margin: 0 auto;
+    height: 18%;
     width: 100%;
     position: fixed;
     top: 0;
+    z-index: 1;
 }
 
 .title {
-    height: 130px;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,7 +17,7 @@
   
   .dobie {
     color: white;
-    font-size: 60px;
+    font-size: 10vh;
     font-weight: 900;
     margin-left: 10px;
   }
