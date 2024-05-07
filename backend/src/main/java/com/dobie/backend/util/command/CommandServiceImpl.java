@@ -106,9 +106,8 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim();
             System.out.println("git pull success : " + result);
         } catch (Exception e) {
-            e.getStackTrace();
-            log.info(e.getStackTrace().toString());
-            throw new GitPullFailedException(e.getMessage());
+            System.out.println(outputStream.toString().trim());
+            throw new GitPullFailedException(e.getMessage(), e);
         }
     }
 //    @Override
