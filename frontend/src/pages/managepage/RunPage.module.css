@@ -1,8 +1,220 @@
-.page{
+.page {
     height: 82%;
     width: 80%;
     position: relative;
     top: 18%;
     left: 20%;
+    display: flex;
+    flex-direction: column;
+    
 }
 
+.top {
+    /* background-color: red; */
+    display: inline-flex;
+    padding: 2% 5%;
+    justify-content: space-between;
+}
+
+.text{
+    margin-right: 1vh;
+}
+
+.projectName{
+    font-size: 5vh;
+    font-weight: 600;
+}
+
+.buttons{
+    display: inline-flex;
+    align-items: flex-end;
+}
+
+.buttons > div{
+    display: inline-flex;
+    align-items: center;
+}
+
+.buttons > div > img{
+    margin-left: 1vh;
+}
+
+.webhook{
+    height: 40%;
+    color: white;
+    font-weight: 600;
+    background-color: #E5AA17;
+    border-radius: 10px;
+    padding: 6px 15px;
+    margin: 0 5px;
+}
+
+.edit{
+    height: 40%;
+    color: white;
+    font-weight: 600;
+    background-color: #6096B4;
+    border-radius: 10px;
+    padding: 6px 15px;
+    margin: 0 5px;
+}
+
+.remove{
+    height: 40%;
+    color: white;
+    font-weight: 600;
+    background-color: #4A7A94;
+    border-radius: 10px;
+    padding: 6px 15px;
+    margin: 0 5px;
+}
+
+.ningx{
+    color: #6096B4;
+    font-weight: 600;
+    background-color: #EEE9DA;
+    border-radius: 10px;
+    padding: 5px 15px;
+    margin: 0 5px;
+}
+
+.compose{
+    color: #6096B4;
+    font-weight: 600;
+    background-color: #EEE9DA;
+    border-radius: 10px;
+    padding: 5px 15px;
+    margin: 0 5px;
+}
+
+.containerButton{
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.containerButton > div{
+    display: inline-flex;
+}
+
+.fileButton{
+    color: #6096B4;
+    font-weight: 600;
+    background-color: #EEE9DA;
+    border-radius: 10px;
+    padding: 5px 15px;
+    margin: 0 5px;
+    text-align: center;
+    align-items: center;
+}
+
+.runButton > img{
+    margin: 0 3px;
+}
+
+.mid {
+    /* background-color: yellow; */
+    display: inline-flex;
+    align-items: center;
+    padding: 0 5%;
+    margin-bottom: 3%;
+    justify-content: space-between;
+}
+
+.mid > div{
+    align-items: center;
+}
+
+.mid>div {
+    display: inline-flex;
+}
+
+.bottom {
+    /* background-color: blue; */
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content:  center;
+}
+
+.container {
+    width: 40%;
+    margin: 1% 3%;
+}
+
+.containerButton {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 3%;
+}
+
+.box {
+    /* background-color: red; */
+    border-radius: 10px;
+    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+}
+
+.boxTop {
+    /* background-color: yellow; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+table {
+    width: 100%; /* 테이블의 너비를 설정 */
+}
+
+.boxTop table{
+    flex: 80;
+}
+
+.boxTop div{
+    flex: 20;
+}
+
+td{
+    padding: 8px;
+}
+
+.serviceName{
+    font-weight: 600;
+}
+
+.line {
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 2px;
+    background-color: rgba(0, 0, 0, 0.05);
+    /* box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.25); */
+}
+
+.boxBottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px;
+}
+
+.running{
+    color: #57965C;
+    font-weight: 600;
+}
+
+.stopped{
+    color: #FF5370;
+    font-weight: 600;
+}
+
+.log{
+    display: inline-flex;
+    align-items: center;
+}
+
+.boxBottom > div > img {
+    margin-right: 5px;
+    margin-top: 1px;
+}
