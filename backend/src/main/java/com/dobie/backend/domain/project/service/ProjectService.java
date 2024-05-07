@@ -34,8 +34,6 @@ public interface ProjectService {
 
     void stopProject(String projectId);
 
-    CompletableFuture<Boolean> verifyComposeUpSuccess(String path);
-
     void stopService(String containerName);
 
 //    void buildFrontService(String projectId, ProjectRequestDto dto)

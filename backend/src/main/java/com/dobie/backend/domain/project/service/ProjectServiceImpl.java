@@ -185,7 +185,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     // 프로젝트 통째로 실행한다 했을때
     @Override
-    @Async
+
     public void runProject(String projectId) {
         ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
         String path = "./" + projectGetResponseDto.getProjectName();
@@ -193,27 +193,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
 
-    @Override
-    @Async
-    public CompletableFuture<Boolean> verifyComposeUpSuccess(String path) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                String command = "docker compose -f " + path + "/docker-compose.yml ps";
-                Process process = Runtime.getRuntime().exec(command);
-                BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-                String line;
-                while ((line = br.readLine()) != null) {
-                    if (line.contains("Up")) {
-                        return true;
-                    }
-                }
-                return false;
-            } catch (Exception e) {
-                throw new ProjectStartFailedException(e.getMessage());
-            }
-        });
-    }
     @Override
     public void stopService(String containerName) {
         commandService.dockerStop(containerName);

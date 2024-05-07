@@ -151,7 +151,7 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public void dockerComposeUp(String path) {
         sb = new StringBuilder();
-        sb.append("docker compose up --build ");
+        sb.append("docker compose up --build -d");
 
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
