@@ -6,18 +6,24 @@ import github from "../../assets/github.png";
 import run from "../../assets/run.png";
 import rerun from "../../assets/rerun.png";
 import stop from "../../assets/stop.png";
+import useProjectStore from "../../stores/projectStore";
+
+import { useNavigate } from "react-router-dom";
 
 export default function ProjectItem({ project }) {
-  // const [projectList, setProjectList] = useState([{
-  //     projectName: null,
-  //     domainUrl: null,
-  //     running: false,
-  //     gitLink: null,
-  // }]);
-
+  const navigate = useNavigate();
+  const { selectedProject, setSelectedProject } = useProjectStore();
+  const handleSubmit = async (e) => {
+    try {
+      setSelectedProject(project);
+      navigate("/manage");
+    } catch (error) {
+      console.error("프로젝트 store 저장 실패:", error);
+    }
+  };
   return (
     <>
-      <div className={styles.content}>
+      <div className={styles.content} onClick={() => handleSubmit()}>
         <div key={project.projectName}>{project.projectName}</div>
         <div key={project.projectDomain}>{project.projectDomain}</div>
         <div className={styles.runButton}>

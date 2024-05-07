@@ -1,7 +1,7 @@
 import axios from "axios";
 const projectUrl = "http://localhost:8080/api/project";
 
-//회원가입 여부 확인
+//프로젝트 전체 조회
 export async function getProject() {
   try {
     const response = await axios.get(projectUrl);
