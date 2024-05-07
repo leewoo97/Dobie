@@ -157,7 +157,7 @@ public class CommandServiceImpl implements CommandService {
         executor.setStreamHandler(streamHandler);
         try {
             executor.setWorkingDirectory(new File(path));
-            executor.execute(commandLine);
+            int exitValue = executor.execute(commandLine);
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
             System.out.println("compose up success : " + result);
         } catch (Exception e) {
