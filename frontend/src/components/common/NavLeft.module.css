@@ -5,12 +5,16 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
+    padding-top: 5%;
+    position: fixed;
+    top: 18%;
+    height: 100%;
 }
 .list {
    
     text-align: left;
-    margin: 0 auto;
-    
+    margin: 0 0 0 20%;
+    color: #93BFCF;
 }
 .text {
     margin-bottom: 50%;
@@ -26,4 +30,6 @@
 .img {
     width: 70%;
     margin: 0 auto;
+    display: inline-flex;
+    align-items: flex-end;
 }
