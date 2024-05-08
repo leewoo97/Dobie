@@ -33,3 +33,7 @@
     display: inline-flex;
     align-items: flex-end;
 }
+
+.list > p{
+    cursor: pointer;
+}

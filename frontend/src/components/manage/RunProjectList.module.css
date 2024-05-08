@@ -21,6 +21,7 @@
 
 .runButton > img {
   margin: 0 3px;
+  cursor: pointer;
 }
 
 .buttons {
@@ -46,6 +47,7 @@
   margin: 0 5px;
   text-align: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .bottom {
@@ -164,6 +166,7 @@ td {
 .log {
   display: inline-flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .boxBottom > div > img {
