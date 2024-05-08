@@ -246,6 +246,11 @@ public class ProjectServiceImpl implements ProjectService {
         commandService.dockerStop(containerName);
     }
 
+    @Override
+    public void startService(String containerName) {
+        commandService.dockerStart(containerName);
+    }
+
 //    // 프론트 개별 빌드
 //    void buildFrontService(String projectId, ProjectRequestDto dto) {
 //

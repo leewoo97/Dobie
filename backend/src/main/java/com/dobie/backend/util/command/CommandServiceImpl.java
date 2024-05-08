@@ -223,5 +223,21 @@ public class CommandServiceImpl implements CommandService {
             throw new ServiceStopFailedException(e.getMessage(), result);
         }
     }
+
+    @Override
+    public void dockerStart(String containerName) {
+        sb = new StringBuilder();
+        sb.append("docker start ").append(containerName);
+        CommandLine commandLine = CommandLine.parse(sb.toString());
+        executor.setStreamHandler(streamHandler);
+        try {
+            executor.execute(commandLine);
+            String result = outputStream.toString().trim();
+            System.out.println("docker start success : " + result);
+        } catch (Exception e) {
+            String result = outputStream.toString().trim();
+            throw new ServiceStopFailedException(e.getMessage(), result);
+        }
+    }
 }
 

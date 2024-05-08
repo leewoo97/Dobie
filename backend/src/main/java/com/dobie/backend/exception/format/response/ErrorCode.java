@@ -22,6 +22,7 @@ public enum ErrorCode {
     PROJECT_START_FAILED(HttpStatus.BAD_REQUEST, "프로젝트를 실행하는데 실패했습니다."),
     PROJECT_STOP_FAILED(HttpStatus.BAD_REQUEST, "프로젝트를 정지하는데 실패했습니다."),
     SERVICE_STOP_FAILED(HttpStatus.BAD_REQUEST, "개별 서비스를 정지하는데 실패했습니다."),
+    SERVICE_START_FAILED(HttpStatus.BAD_REQUEST, "개별 서비스를 실행하는데 실패했습니다."),
 
     /* 파일 생성 */
     SAVE_FILE_FAILED(HttpStatus.BAD_REQUEST, "파일 생성에 실패했습니다."),

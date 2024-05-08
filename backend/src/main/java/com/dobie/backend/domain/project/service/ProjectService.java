@@ -35,6 +35,8 @@ public interface ProjectService {
 
     void stopService(String containerName);
 
+    void startService(String containerName);
+
     boolean verifyComposeUpSuccess(String path);
 
     void rebuildAndStartProject(String projectId);

@@ -83,6 +83,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("Error Detail = {}", e.getErrorDetail());
         return response.error(e.getErrorCode());
     }
+    @ExceptionHandler(ServiceStartFailedException.class)
+    protected ResponseEntity<?> handle(ServiceStartFailedException e) {
+        log.error("ServiceStopFailedException = {}", e.getErrorCode().getMessage());
+        log.error("Error Message = {}", e.getErrorMessage());
+        log.error("Error Detail = {}", e.getErrorDetail());
+        return response.error(e.getErrorCode());
+    }
 
     /* Git */
     @ExceptionHandler(GitCheckoutFailedException.class)

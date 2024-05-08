@@ -26,5 +26,7 @@ public interface CommandService {
 
     void dockerStop(String containerName);
 
+    void dockerStart(String containerName);
+
 }
 
