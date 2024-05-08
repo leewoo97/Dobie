@@ -1,5 +1,5 @@
 import axios from "axios";
-const url = "https://api.silvstone.xyz/api/user";
+const url = process.env.REACT_APP_SERVER + "/user";
 
 //로그인
 export async function login(user) {
