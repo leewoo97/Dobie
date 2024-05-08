@@ -60,6 +60,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<?> handle(ProjectStartFailedException e) {
         log.error("ProjectStartFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
+        if (e.getErrorDetail() != null) {
+            log.error("Error Detail = {}", e.getErrorDetail());
+        }
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(ProjectStopFailedException.class)
+    protected ResponseEntity<?> handle(ProjectStopFailedException e) {
+        log.error("ProjectStopFailedException = {}", e.getErrorCode().getMessage());
+        log.error("Error Message = {}", e.getErrorMessage());
+        if (e.getErrorDetails() != null) {
+            log.error("Error Detail = {}", e.getErrorDetails());
+        }
         return response.error(e.getErrorCode());
     }
 
@@ -67,6 +80,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<?> handle(ServiceStopFailedException e) {
         log.error("ServiceStopFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
+        log.error("Error Detail = {}", e.getErrorDetail());
         return response.error(e.getErrorCode());
     }
 
@@ -75,6 +89,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<?> handle(GitCheckoutFailedException e) {
         log.error("GitCheckoutFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
+        log.error("Error Detail = {}", e.getErrorDetail());
         return response.error(e.getErrorCode());
     }
 
@@ -82,6 +97,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<?> handle(GitCloneFailedException e) {
         log.error("GitCloneFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
+        log.error("Error Detail = {}", e.getErrorDetail());
         return response.error(e.getErrorCode());
     }
 
@@ -126,6 +142,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("BackendFrameWorkNotFoundException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
+
     @ExceptionHandler(FrontendFrameWorkNotFoundException.class)
     protected ResponseEntity<?> handle(FrontendFrameWorkNotFoundException e) {
         log.error("FrontendFrameWorkNotFoundException = {}", e.getErrorCode().getMessage());
@@ -163,6 +180,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("FilePathNotExistException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
+
     @ExceptionHandler(FrontendFilePathNotExistException.class)
     protected ResponseEntity<?> handle(FrontendFilePathNotExistException e) {
         log.error("FrontendFilePathNotExistException = {}", e.getErrorCode().getMessage());

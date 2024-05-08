@@ -208,7 +208,7 @@ public class ProjectServiceImpl implements ProjectService {
             }
             return false;
         } catch (Exception e) {
-            throw new ProjectStartFailedException(e.getMessage());
+            throw new ProjectStartFailedException(e.getMessage(), "컨테이너 실행 검증에 실패했습니다.");
         }
     }
 

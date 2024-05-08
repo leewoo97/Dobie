@@ -54,7 +54,8 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
             System.out.println("git clone success : " + result);
         } catch (Exception e) {
-            throw new GitCloneFailedException(e.getMessage());
+            String result = outputStream.toString().trim();
+            throw new GitCloneFailedException(e.getMessage(), result);
         }
     }
 
@@ -76,7 +77,8 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
             System.out.println("git clone success : " + result);
         } catch (Exception e) {
-            throw new GitCloneFailedException(e.getMessage());
+            String result = outputStream.toString().trim();
+            throw new GitCloneFailedException(e.getMessage(), result);
         }
     }
 
@@ -91,7 +93,8 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim();
             System.out.println("git checkout success : " + result);
         } catch (Exception e) {
-            throw new GitCheckoutFailedException(e.getMessage());
+            String result = outputStream.toString().trim();
+            throw new GitCheckoutFailedException(e.getMessage(), result);
         }
     }
 
@@ -184,10 +187,8 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
             System.out.println("compose up success : " + result);
         } catch (Exception e) {
-            e.getStackTrace();
             String result = outputStream.toString().trim();
-            System.out.println(result);
-            throw new ProjectStartFailedException(e.getMessage());
+            throw new ProjectStartFailedException(e.getMessage(), result);
         }
     }
 
@@ -202,7 +203,8 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
             System.out.println("compose down success : " + result);
         } catch (Exception e) {
-            throw new ProjectStopFailedException(e.getMessage());
+            String result = outputStream.toString().trim();
+            throw new ProjectStopFailedException(e.getMessage(), result);
         }
     }
 
@@ -217,7 +219,8 @@ public class CommandServiceImpl implements CommandService {
             String result = outputStream.toString().trim();
             System.out.println("docker stop success : " + result);
         } catch (Exception e) {
-            throw new ServiceStopFailedException(e.getMessage());
+            String result = outputStream.toString().trim();
+            throw new ServiceStopFailedException(e.getMessage(), result);
         }
     }
 }
