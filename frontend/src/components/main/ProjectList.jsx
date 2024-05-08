@@ -25,6 +25,8 @@ export default function ProjectList() {
       const response = await getProject();
       console.log(response.data.data);
       setProjectMap(response.data.data);
+      console.log("test#########################");
+      console.log(typeof projectMap);
     } catch (error) {
       console.error("프로젝트 조회 실패:", error);
     }

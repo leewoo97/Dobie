@@ -5,7 +5,6 @@ import mascot from "../../assets/mascot.png";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../stores/userStore";
 import toast, { Toaster } from "react-hot-toast";
-
 import { login } from "../../api/Member";
 import axios from "axios";
 
@@ -60,6 +59,12 @@ export default function LoginPage() {
     }
   };
 
+  const handleKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
+  }
+
   return (
     <Container>
       <div className={styles.content}>
@@ -73,6 +78,7 @@ export default function LoginPage() {
           name="username"
           value={formData.username}
           onChange={handleChange}
+          onKeyUp={handleKeyUp}
           placeholder="username"
         />
         <input
@@ -82,10 +88,11 @@ export default function LoginPage() {
           name="password"
           value={formData.password}
           onChange={handleChange}
+          onKeyUp={handleKeyUp}
           placeholder="password"
         ></input>
-        <div className={styles.button}>
-          <div className={styles.login} onClick={() => handleSubmit()}>
+        <div className={styles.button} onClick={() => handleSubmit()}>
+          <div className={styles.login} >
             로그인
           </div>
         </div>

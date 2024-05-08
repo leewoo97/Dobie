@@ -1,4 +1,4 @@
-import styles from "./RunProjectList.module.css";
+import styles from "../manage/RunProjectList.module.css";
 import springIcon from "../../assets/springIcon.png";
 import reactIcon from "../../assets/reactIcon.png";
 import vueIcon from "../../assets/vueIcon.png";
@@ -7,7 +7,7 @@ import mysqlIcon from "../../assets/mysqlIcon.png";
 import redisIcon from "../../assets/redisIcon.png";
 import mongodbIcon from "../../assets/mongodbIcon.png";
 
-export default function RunProjectItem({ framework, databaseType }) {
+export default function FrameworkImg({ framework, databaseType }) {
   return (
     <>
       <div>
