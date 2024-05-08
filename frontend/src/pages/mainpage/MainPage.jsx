@@ -7,9 +7,19 @@ import newpjtIcon from "../../assets/newpjtIcon.png";
 import guideIcon from "../../assets/guideIcon.png";
 
 import ProjectList from "../../components/main/ProjectList";
+import useProjectStore from "../../stores/projectStore";
 
 export default function MainPage() {
   const navigate = useNavigate();
+  const { selectedProject, setSelectedProject } = useProjectStore();
+
+  useEffect(() => {
+    try {
+      setSelectedProject({});
+    } catch (error) {
+      console.error("setSelectedProject초기화 에러: ", error);
+    }
+  }, []);
 
   return (
     <>
