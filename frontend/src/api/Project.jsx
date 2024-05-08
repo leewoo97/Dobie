@@ -1,5 +1,5 @@
 import axios from "axios";
-const projectUrl = "https://api.silvstone.xyz/api/project";
+const projectUrl = process.env.REACT_APP_SERVER + "/project";
 
 //프로젝트 전체 조회
 export async function getProject() {
