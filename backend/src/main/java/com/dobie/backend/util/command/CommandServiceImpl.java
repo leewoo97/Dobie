@@ -175,13 +175,12 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public void dockerComposeUp(String path) {
         sb = new StringBuilder();
-        sb.append("docker compose up --build -d");
+        sb.append("docker compose up -f ").append(path+"/docker-compose.yml").append("--build -d");
 
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
-            executor.setWorkingDirectory(new File(path));
-            int exitValue = executor.execute(commandLine);
+            executor.execute(commandLine);
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
             System.out.println("compose up success : " + result);
         } catch (Exception e) {
@@ -195,11 +194,10 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public void dockerComposeDown(String path) {
         sb = new StringBuilder();
-        sb.append("docker compose down --rmi all");
+        sb.append("docker compose down -f ").append(path+"/docker-compose.yml").append("--rmi all");
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
-            executor.setWorkingDirectory(new File(path));
             executor.execute(commandLine);
             String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
             System.out.println("compose down success : " + result);
