@@ -7,8 +7,8 @@ export default function InputBox({ keyName, valueName, onChange }){
         <div className={styles.page}>
             {/* <p>박스</p> */}
             <div className={styles.boxFrame}>
-                <p>{keyName}</p>
-                <input type="text" value={valueName} onChange={onChange}/>
+                <p className={styles.key}>{keyName}</p>
+                <input className={styles.value} type="text" placeholder={valueName} onChange={onChange}/>
             </div>
         </div>
     );

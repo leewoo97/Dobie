@@ -1,13 +1,13 @@
 import NavTop from "../../components/common/NavTop";
-import styles from "./CreateProjectPage.module.css";
+import NavLeftCreate from "../../components/common/NavLeftCreate";
+import ProjectFrame from "../../components/create/ProjectFrame";
 
 export default function CreateProjectPage() {
   return (
     <>
       <NavTop />
-      <div className={styles.page}>
-        <h1>Create Project</h1>
-      </div>
+      <NavLeftCreate num={2} />
+      <ProjectFrame />
     </>
   );
 }

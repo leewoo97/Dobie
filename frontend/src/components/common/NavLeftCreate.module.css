@@ -1,0 +1,35 @@
+.container{
+    width: 20%;
+    background-color: #D9E1E8;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding-top: 5%;
+    position: fixed;
+    top: 18%;
+    height: 100%;
+}
+.list {
+   
+    text-align: left;
+    margin: 0 0 0 20%;
+    color: #93BFCF;
+}
+.text {
+    margin-bottom: 50%;
+    font-size: calc(0.6vw + 1rem);
+    color: #93BFCF;
+}
+.text2 {
+    margin-bottom: 50%;
+    font-size: calc(0.6vw + 1rem);
+    color: #6096B4;
+    font-weight: bold;
+}
+.img {
+    width: 70%;
+    margin: 0 auto;
+    display: inline-flex;
+    align-items: flex-end;
+}

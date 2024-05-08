@@ -78,6 +78,7 @@ export default function SginUpPage() {
           <div className={styles.dobie}>Dobie</div>
         </div>
         <input
+        className={styles.signupInput}
           type="text"
           name="username"
           value={formData.username}
@@ -85,6 +86,7 @@ export default function SginUpPage() {
           placeholder="username"
         ></input>
         <input
+        className={styles.signupInput}
           type="password"
           name="password"
           value={formData.password}
@@ -92,6 +94,7 @@ export default function SginUpPage() {
           placeholder="password"
         ></input>
         <input
+        className={styles.signupInput}
           type="password"
           name="confirmPassword"
           value={formData.confirmPassword}

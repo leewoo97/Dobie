@@ -1,0 +1,18 @@
+.boxFrame{
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 3%;
+    padding: 0 3%;
+    border-radius: 10px;
+}
+
+.key{
+    flex: 31;
+    
+}
+
+.desc {
+    flex: 69;
+}
