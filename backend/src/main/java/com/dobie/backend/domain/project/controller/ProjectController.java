@@ -58,7 +58,7 @@ public class ProjectController {
     }
 
     @Operation(summary = "프로젝트 등록, 빌드", description = "프로젝트 정보를 등록한 후 정보 기반으로 빌드파일 생성")
-    @PostMapping("/regist}")
+    @PostMapping("/regist")
     public ResponseEntity<?> registerProject(@RequestBody ProjectRequestDto dto) {
         String projectId = projectService.createProject(dto);
         projectService.buildTotalService(projectId);
