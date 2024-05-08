@@ -5,6 +5,7 @@ const projectUrl = "http://localhost:8080/api/project";
 export async function getProject() {
   try {
     const response = await axios.get(projectUrl);
+    console.log(typeof response);
     return response;
   } catch (error) {
     // console.log("회원가입 실패: " + error);

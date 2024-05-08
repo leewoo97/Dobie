@@ -4,7 +4,7 @@ import { persist } from "zustand/middleware";
 const useProjectStore = create(
   persist(
     (set) => ({
-      projectMap: {},
+      projectMap: new Map(),
       setProjectMap: (projectMap) => {
         set({ projectMap: projectMap });
       },
