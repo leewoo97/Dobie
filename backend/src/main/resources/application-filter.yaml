@@ -14,3 +14,5 @@ filter-path:
       swaggerResources: "/swagger-resources/**"
       favicon: "/favicon.ico"
       webhook: "/api/project/webhook/**"
+
+      health: "/actuator/**"

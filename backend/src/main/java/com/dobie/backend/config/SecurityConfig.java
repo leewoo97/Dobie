@@ -54,7 +54,9 @@ public class SecurityConfig {
                                 "/swagger-resources/**",
                                 "/api/user/**",
                                 // 웹훅
-                                "/api/project/webhook/**"
+                                "/api/project/webhook/**",
+                                // health check
+                                "/actuator/**"
                                 ).permitAll() // 문서 관련 경로는 인증 없이 접근 허용
                         .requestMatchers("/admin/**").hasRole("ADMIN") //권한을 가진 사용자만 접근 허용
                         .anyRequest().authenticated()//로그인한 사용자만 접근 허용
