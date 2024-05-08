@@ -1,4 +1,6 @@
 import axios from "axios";
+
+// const projectUrl = "http://localhost:8080/api/project";
 const projectUrl = process.env.REACT_APP_SERVER + "/project";
 
 //프로젝트 전체 조회

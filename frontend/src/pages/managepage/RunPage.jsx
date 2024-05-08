@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import NavTop from "../../components/common/NavTop";
 import NavLeft from "../../components/common/NavLeft";
@@ -8,7 +8,7 @@ import styles from "./RunPage.module.css";
 import run from "../../assets/run.png";
 import rerun from "../../assets/rerun.png";
 import stop from "../../assets/stop.png";
-
+import close from "../../assets/close.png";
 import edit from "../../assets/editIcon.png";
 import remove from "../../assets/deleteIcon.png";
 import setting from "../../assets/settingIcon.png";
@@ -16,10 +16,15 @@ import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 
 import { deleteProject } from "../../api/Project";
+import { getNginxConf } from "../../api/ngixn";
 import useProjectStore from "../../stores/projectStore";
 import RunProjectList from "../../components/manage/RunProjectList";
 
 export default function RunPage() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [nginxConf, setNginxConf] = useState("");
+  const modalBackground = useRef();
+
   const { selectedProject, setSelectedProject } = useProjectStore();
   const navigate = useNavigate();
 
@@ -33,6 +38,19 @@ export default function RunPage() {
       });
     } catch (error) {
       console.log("프로젝트 삭제 실패: " + error);
+    }
+  };
+  const handleOpenModal = async (projectId) => {
+    try {
+      console.log(projectId);
+      const response = await getNginxConf(projectId);
+
+      setModalOpen(true);
+      setNginxConf(response.data.data);
+
+      console.log(response.data.data);
+    } catch (error) {
+      console.log("nginx config 조회 실패: " + error);
     }
   };
 
@@ -97,8 +115,11 @@ export default function RunPage() {
             </div>
           </div>
           <div className={styles.buttons}>
-            <div className={styles.fileButton}>
-              nginx.conf 파일 조회{" "}
+            <div
+              className={styles.fileButton}
+              onClick={() => handleOpenModal(selectedProject.projectId)}
+            >
+              ningx.conf 파일 조회{" "}
               <img
                 src={document}
                 alt=""
@@ -121,6 +142,39 @@ export default function RunPage() {
         </div>
         <RunProjectList />
       </div>
+      {modalOpen && (
+        <div
+          className={styles.modalContainer}
+          ref={modalBackground}
+          onClick={(e) => {
+            if (e.target === modalBackground.current) {
+              setModalOpen(false);
+            }
+          }}
+        >
+          <div className={styles.modalContent}>
+            <div className={styles.modalhead}>
+              <h2>Nginx Config File</h2>
+              <div
+                className={styles.closeImg}
+                onClick={() => setModalOpen(false)}
+              >
+                <img
+                  src={close}
+                  alt=""
+                  height="20px"
+                  decoding="async"
+                  className={styles.btnIcon}
+                />
+              </div>
+            </div>
+
+            <div className={styles.modalBody}>
+              <p className={styles.nginxConf}>{nginxConf}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
