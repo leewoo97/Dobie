@@ -47,7 +47,9 @@ public enum ErrorCode {
     /*파일 내용 조회 */
     TYPE_ERROR(HttpStatus.NOT_FOUND, "도커 파일 경로 조회메소드에 잘못된 타입이 입력되었습니다."),
     MAKE_DOCKER_FILE_PATH_CONTENT(HttpStatus.NOT_FOUND, "도커 파일 경로 조회과정에서 오류가 발생했습니다."),
+    MAKE_DOCKER_COMPOSE_FILE_PATH_CONTENT(HttpStatus.NOT_FOUND, "도커컴포즈 파일 경로 조회과정에서 오류가 발생했습니다."),
     DOCKER_FILE_CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "도커 파일 경로 조회는 성공했지만, 도커 파일 내용 조회 과정에서 오류가 발생했습니다."),
+    DOCKER_COMPOSE_FILE_CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "도커컴포즈 파일 경로 조회는 성공했지만, 도커컴포즈 파일 내용 조회 과정에서 오류가 발생했습니다."),
 
 
     /* 도커 명령어 실행 중 오류 */

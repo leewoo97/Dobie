@@ -281,12 +281,32 @@ public class DockerfileServiceImpl implements DockerfileService {
     }
 
     @Override
+    public String makeDockerComposefilePathContent(String projectId) {
+        try {
+            //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
+            //data/projectJson을 map으로 변환해서 불러왔음
+            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+//        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
+            String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap, projectId, "projectName");
+//        System.out.println("프로젝트 이름 나오겠지? " + projectName);
+            String filepath = "/" + projectName;
+//            System.out.println("파일 경로 : " + filepath);
+//            return new String(Files.readAllBytes(Paths.get(filePath)));
+            return filepath;
+        }catch (Exception e) {
+            System.out.println("File not found or error reading file: " + e.getMessage());
+            throw new makeDockerComposefilePathContentException();
+//            return "File not found or error reading file: " + e.getMessage();
+        }
+    }
+
+    @Override
     public String readEnvironmentDockerFile(String filepath) {
 
         CommandLine commandLine = new CommandLine("docker");
         commandLine.addArgument("exec");
 //        commandLine.addArgument("dobie-be"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
-        commandLine.addArgument("5fade2f00236"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
+        commandLine.addArgument("2109de6647fa"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
         commandLine.addArgument("cat");
         commandLine.addArgument(filepath+"/Dockerfile"); //이렇게하면 아마 될걸..? 컨테이너에 ko2sist도비 말고 다른 컨테이너도 빌드해야 테스트 가능 ㅠ
 
@@ -303,6 +323,31 @@ public class DockerfileServiceImpl implements DockerfileService {
         } catch (Exception e) {
 //            System.err.println("Error during file reading: " + e.getMessage());
             throw new DockerFileContentNotFoundException();
+        }
+    }
+
+    @Override
+    public String readEnvironmentDockerComposeFile(String filepath) {
+        CommandLine commandLine = new CommandLine("docker");
+        commandLine.addArgument("exec");
+//        commandLine.addArgument("dobie-be"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
+        commandLine.addArgument("2109de6647fa"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
+        commandLine.addArgument("cat");
+        commandLine.addArgument(filepath+"/docker-compose.yml"); //이렇게하면 아마 될걸..? 컨테이너에 ko2sist도비 말고 다른 컨테이너도 빌드해야 테스트 가능 ㅠ
+
+        DefaultExecutor executor = new DefaultExecutor();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+        executor.setStreamHandler(streamHandler);
+
+        try {
+            executor.execute(commandLine);
+            String fileContent = outputStream.toString();
+//            System.out.println("File content: \n" + fileContent);
+            return fileContent;
+        } catch (Exception e) {
+//            System.err.println("Error during file reading: " + e.getMessage());
+            throw new DockerComposeFileContentNotFoundException();
         }
     }
 

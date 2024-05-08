@@ -63,7 +63,7 @@ public class SwaggerConfig {
     public GroupedOpenApi dockerfile() {
         return GroupedOpenApi.builder()
                              .group("d. 도커파일")
-                             .pathsToMatch("/dockerfile/**")
+                             .pathsToMatch("/api/dockerfile/**")
                              .build();
     }
 
