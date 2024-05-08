@@ -5,10 +5,10 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
-    padding-top: 5%;
+    /* padding-top: 5%; */
     position: fixed;
     top: 18%;
-    height: 100%;
+    height: 82%;
 }
 .list {
    
@@ -31,6 +31,10 @@
 .text3{
     color: #6096B4;
     font-weight: bold;
+}
+
+.hide{
+    display: none;
 }
 
 .img {

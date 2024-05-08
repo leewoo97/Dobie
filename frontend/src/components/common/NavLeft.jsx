@@ -4,6 +4,7 @@ import s from "classnames";
 import mainBtn from "../../assets/btn_main.png";
 import usePrjectStore from "../../stores/projectStore";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 export default function NavLeft({ num }){
     const navigate = useNavigate();
@@ -13,6 +14,16 @@ export default function NavLeft({ num }){
     const serviceId = params.serviceId;
     const databaseId = params.databaseId;
 
+    const [spreadBackend, setSpreadBackend] = useState(serviceId? true : false);
+    const [spreadDatabase, setSpreadDatabase] = useState(databaseId? true : false);
+
+    const changeStateBE = () => {
+        setSpreadBackend(!spreadBackend);
+    }
+
+    const changeStateDB = () => {
+        setSpreadDatabase(!spreadDatabase);
+    }
 
     return(
         <div className={s(styles.container)}>
@@ -20,18 +31,18 @@ export default function NavLeft({ num }){
                 <p className={num === 1 ? styles.text2 : styles.text} onClick={() => navigate("/manage")}>Run</p>
                 <p className={num === 2 ? styles.text2 : styles.text} onClick={() => navigate("/manage/project")}>Project</p>
                 <div>
-                <p className={num === 3 ? styles.text2 : styles.text} >Backend</p>
+                <p className={num === 3 ? styles.text2 : styles.text} onClick={changeStateBE}>Backend</p>
                 {/* 여기는 BackendMap */}
                 {Object.values(selectedProject.backendMap).map((backendProject) => (
-                    <div className={backendProject.serviceId === serviceId ? styles.text3 : ""} key={backendProject.serviceId} onClick={()=> navigate(`/manage/backend/${backendProject.serviceId}`) }>{backendProject.framework}</div>
+                    <div className={[spreadBackend? "" : styles.hide, backendProject.serviceId === serviceId ? styles.text3 : ""].join(" ")} key={backendProject.serviceId} onClick={()=> navigate(`/manage/backend/${backendProject.serviceId}`) }>{backendProject.framework}</div>
                 ))}
                 </div>
                 <p className={num === 4 ? styles.text2 : styles.text} onClick={() => navigate("/manage/frontend")}>Frontend</p>
                 <div>
-                <p className={num === 5 ? styles.text2 : styles.text} >DB</p>
+                <p className={num === 5 ? styles.text2 : styles.text} onClick={changeStateDB}>DB</p>
                 {/* 여기는 DatabaseMap */}
                 {Object.values(selectedProject.databaseMap).map((databaseProject) => (
-                    <div className={databaseProject.databaseId === databaseId ? styles.text3 : ""} key={databaseProject.databaseId} onClick={() => navigate(`/manage/database/${databaseProject.databaseId}`)}>{databaseProject.databaseType}</div>
+                    <div className={[spreadDatabase? "" : styles.hide, databaseProject.databaseId === databaseId ? styles.text3 : ""].join(" ")} key={databaseProject.databaseId} onClick={() => navigate(`/manage/database/${databaseProject.databaseId}`)}>{databaseProject.databaseType}</div>
                 ))}
                 </div>
             </div>
