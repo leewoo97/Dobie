@@ -6,9 +6,7 @@ public interface CommandService {
 
     boolean checkIsCloned(String path);
 
-    void gitClone(String repositoryURL);
-
-    void gitCloneGitLab(String repositoryURL, String accessToken);
+    void gitClone(String repositoryURL, String accessToken);
 
     void gitCheckout(String path, String branchName);
 

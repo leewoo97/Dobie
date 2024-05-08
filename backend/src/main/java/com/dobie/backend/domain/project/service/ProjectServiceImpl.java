@@ -127,17 +127,11 @@ public class ProjectServiceImpl implements ProjectService {
 
         // git type 확인, gitLab인지 gitHub인지
         // 1이면 gitLab
-        if (gitInfo.getGitType() == 1) {
-            if (!commandService.checkIsCloned("./" + projectGetResponseDto.getProjectName())) {
-                // gitLab clone
-                commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
-            }
-        } else {
-            if (!commandService.checkIsCloned("./" + projectGetResponseDto.getProjectName())) {
-                // gitHub Clone
-                commandService.gitClone(gitInfo.getGitUrl());
-            }
+        if (!commandService.checkIsCloned("./" + projectGetResponseDto.getProjectName())) {
+            // gitLab clone
+            commandService.gitClone(gitInfo.getGitUrl(), gitInfo.getAccessToken());
         }
+
 
         // dockerfile 생성
         // 백엔드

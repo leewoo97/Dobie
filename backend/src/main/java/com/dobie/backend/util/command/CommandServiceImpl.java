@@ -44,23 +44,7 @@ public class CommandServiceImpl implements CommandService {
 
     // 깃 클론
     @Override
-    public void gitClone(String repositoryURL) {
-        sb = new StringBuilder();
-        sb.append("git clone ").append(repositoryURL);
-        CommandLine commandLine = CommandLine.parse(sb.toString());
-        executor.setStreamHandler(streamHandler);
-        try {
-            executor.execute(commandLine);
-            String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
-            System.out.println("git clone success : " + result);
-        } catch (Exception e) {
-            String result = outputStream.toString().trim();
-            throw new GitCloneFailedException(e.getMessage(), result);
-        }
-    }
-
-    @Override
-    public void gitCloneGitLab(String repositoryURL, String accessToken) {
+    public void gitClone(String repositoryURL, String accessToken) {
         StringBuilder sb = new StringBuilder();
         // URL에 액세스 토큰을 포함하여 인증 정보 제공
         String authUrl = repositoryURL.replace("https://", "https://oauth2:" + accessToken + "@");
