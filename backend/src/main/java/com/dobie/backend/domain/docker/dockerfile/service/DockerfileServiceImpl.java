@@ -18,9 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -239,31 +236,59 @@ public class DockerfileServiceImpl implements DockerfileService {
 
 
     @Override
-    public String readBackendDockerfileContent(String projectId, String serviceId) {
-        //data/projectJson을 map으로 변환해서 불러왔음
-        Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
-        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
-        String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap,projectId,"projectName");
-        System.out.println("프로젝트 이름 나오겠지? " + projectName);
-        String path = (String) readJsonService.JsonGetFour(projectJsonMap,projectId,"backendMap",serviceId,"path");
-        System.out.println("백엔드 경로 나오겠지? " + path);
-        String filePath = "./" + projectName + path;
-        try {
-            System.out.println("파일 경로 : " + filePath);
-            return new String(Files.readAllBytes(Paths.get(filePath)));
-        } catch (IOException e) {
-            return "File not found or error reading file: " + e.getMessage();
+    public String makeDockerfilePathContent(String projectId, String serviceId, String type) {
+        if(type.equals("Backend")) {
+            try {
+            //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
+            //data/projectJson을 map으로 변환해서 불러왔음
+            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+//        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
+            String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap, projectId, "projectName");
+//        System.out.println("프로젝트 이름 나오겠지? " + projectName);
+            String path = (String) readJsonService.JsonGetFour(projectJsonMap, projectId, "backendMap", serviceId, "path");
+//        System.out.println("백엔드 경로 나오겠지? " + path);
+            String filepath = "/" + projectName + path;
+//            System.out.println("파일 경로 : " + filepath);
+//            return new String(Files.readAllBytes(Paths.get(filePath)));
+                return filepath;
+            }catch (Exception e) {
+                System.out.println("File not found or error reading file: " + e.getMessage());
+                throw new makeDockerfilePathContentException();
+//            return "File not found or error reading file: " + e.getMessage();
+            }
+        }else if(type.equals("Frontend")){
+            try {
+            //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
+            //data/projectJson을 map으로 변환해서 불러왔음
+            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+//        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
+            String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap, projectId, "projectName");
+//        System.out.println("프로젝트 이름 나오겠지? " + projectName);
+            String path = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend","path");
+//        System.out.println("백엔드 경로 나오겠지? " + path);
+            String filepath = "/" + projectName + path;
+//            System.out.println("파일 경로 : " + filepath);
+//            return new String(Files.readAllBytes(Paths.get(filePath)));
+                return filepath;
+            }catch (Exception e) {
+                System.out.println("File not found or error reading file: " + e.getMessage());
+                throw new makeDockerfilePathContentException();
+//            return "File not found or error reading file: " + e.getMessage();
+            }
+        }else{
+            throw new TypeErrorException();
         }
     }
 
     @Override
-    public String readEnvironmentFile(String filepath) {
+    public String readEnvironmentDockerFile(String filepath) {
 
         CommandLine commandLine = new CommandLine("docker");
         commandLine.addArgument("exec");
-        commandLine.addArgument("dobie-be"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
+//        commandLine.addArgument("dobie-be"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
+        commandLine.addArgument("5fade2f00236"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
         commandLine.addArgument("cat");
-        commandLine.addArgument(filepath);
+        commandLine.addArgument(filepath+"/Dockerfile"); //이렇게하면 아마 될걸..? 컨테이너에 ko2sist도비 말고 다른 컨테이너도 빌드해야 테스트 가능 ㅠ
 
         DefaultExecutor executor = new DefaultExecutor();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -273,12 +298,12 @@ public class DockerfileServiceImpl implements DockerfileService {
         try {
             executor.execute(commandLine);
             String fileContent = outputStream.toString();
-            System.out.println("File content: \n" + fileContent);
+//            System.out.println("File content: \n" + fileContent);
             return fileContent;
         } catch (Exception e) {
-            System.err.println("Error during file reading: " + e.getMessage());
+//            System.err.println("Error during file reading: " + e.getMessage());
+            throw new DockerFileContentNotFoundException();
         }
-        return null;
     }
 
 
@@ -366,4 +391,5 @@ public class DockerfileServiceImpl implements DockerfileService {
             throw new PortNumberNotFoundException();
         }
     }
+
 }

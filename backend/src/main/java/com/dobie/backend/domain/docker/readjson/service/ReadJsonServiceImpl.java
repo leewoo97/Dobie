@@ -45,7 +45,7 @@ public class ReadJsonServiceImpl implements ReadJsonService {
             Map<String, Object> map = mapper.readValue(inputStream, Map.class);
 
             // 맵 출력
-            System.out.println(map);
+//            System.out.println(map);
 
             // 맵 반환
             return map;

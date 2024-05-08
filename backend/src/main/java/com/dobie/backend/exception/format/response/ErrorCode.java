@@ -43,6 +43,12 @@ public enum ErrorCode {
     CURRENT_STATUS_NOT_FOUND(HttpStatus.NOT_FOUND, "현재 상태를 조회할 수 없습니다."),
     PORT_NUMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "외부 또는 내부 포트번호가 존재하지않습니다."),
 
+    /*파일 내용 조회 */
+    TYPE_ERROR(HttpStatus.NOT_FOUND, "도커 파일 경로 조회메소드에 잘못된 타입이 입력되었습니다."),
+    MAKE_DOCKER_FILE_PATH_CONTENT(HttpStatus.NOT_FOUND, "도커 파일 경로 조회과정에서 오류가 발생했습니다."),
+    DOCKER_FILE_CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "도커 파일 경로 조회는 성공했지만, 도커 파일 내용 조회 과정에서 오류가 발생했습니다."),
+
+
     /* 도커 명령어 실행 중 오류 */
     DOCKER_PS_ERROR(HttpStatus.NOT_FOUND, "docker ps 명령어 실행 중 에러 발생"),
     DOCKER_PS_LINE_PARTS_ERROR(HttpStatus.NOT_FOUND, "docker ps 명령어 실행 이후 문자열 분해과정에서 예외가 발생했습니다"),

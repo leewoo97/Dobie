@@ -199,6 +199,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    /* 파일 내용 조회 오류*/
+    @ExceptionHandler(TypeErrorException.class)
+    protected ResponseEntity<?> handle(TypeErrorException e) {
+        log.error("TypeErrorException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+    @ExceptionHandler(makeDockerfilePathContentException.class)
+    protected ResponseEntity<?> handle(makeDockerfilePathContentException e) {
+        log.error("ReadBackendDockerfilePathContentException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+    @ExceptionHandler(DockerFileContentNotFoundException.class)
+    protected ResponseEntity<?> handle(DockerFileContentNotFoundException e) {
+        log.error("BackendDockerFileNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
     /* NGINX */
     @ExceptionHandler(ProjectPathNotFoundException.class)
     protected ResponseEntity<?> handle(ProjectPathNotFoundException e) {
