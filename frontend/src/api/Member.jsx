@@ -1,6 +1,5 @@
 import axios from "axios";
-const url = "http://localhost:8080/api/user";
-// const BASE_URL = "https://api.silvstone.xyz/api/user";
+const url = "https://api.silvstone.xyz/api/user";
 
 //로그인
 export async function login(user) {
