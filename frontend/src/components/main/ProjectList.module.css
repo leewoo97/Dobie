@@ -30,6 +30,7 @@
 .projectlist {
   width: 100%;
   /* display: flex; */
+  cursor: pointer;
 }
 .box {
   display: flex;

@@ -10,6 +10,7 @@
 
 .key{
     flex: 30;
+    font-weight: 600;
 }
 
 .value{

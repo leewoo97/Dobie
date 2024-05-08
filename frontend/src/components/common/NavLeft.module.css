@@ -21,6 +21,7 @@
     /* margin-bottom: 50%; */
     font-size: calc(0.6vw + 1rem);
     color: #93BFCF;
+    /* cursor: pointer; */
     
 }
 .text2 {
@@ -46,4 +47,13 @@
     margin: 0 auto;
     display: inline-flex;
     align-items: flex-end;
+    cursor: pointer;
 }
+
+/* .list > p{
+    cursor: pointer;
+}
+
+.list > div > p, .list > div > div{
+    cursor: pointer;
+} */

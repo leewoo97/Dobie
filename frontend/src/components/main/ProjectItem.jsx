@@ -27,7 +27,7 @@ export default function ProjectItem({ project }) {
         <div key={project.projectName}>{project.projectName}</div>
         <div key={project.projectDomain}>{project.projectDomain}</div>
         <div className={styles.runButton}>
-          <img src={project.running ? rerun : run} alt="" width="50px" />
+          <img src={project.running ? rerun : run} alt="" width="50px" className={styles.run}/>
           <img src={stop} alt="" width="50px"></img>
         </div>
         <div>
