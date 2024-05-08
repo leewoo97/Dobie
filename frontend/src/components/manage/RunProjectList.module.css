@@ -50,6 +50,12 @@
   cursor: pointer;
 }
 
+.fileButton:hover{
+  opacity: 0.8;
+  transform: scale(1.05); 
+  transition: 0.3s ease-in-out; 
+}
+
 .bottom {
   /* background-color: blue; */
   display: inline-flex;

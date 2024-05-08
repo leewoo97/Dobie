@@ -49,6 +49,12 @@
   cursor: pointer;
 }
 
+.webhook:hover{
+  opacity: 0.8;
+  transform: scale(1.05); 
+  transition: 0.3s ease-in-out; 
+}
+
 .edit {
   height: 40%;
   color: white;
@@ -60,6 +66,12 @@
   cursor: pointer;
 }
 
+.edit:hover{
+  opacity: 0.8;
+  transform: scale(1.05); 
+  transition: 0.3s ease-in-out; 
+}
+
 .remove {
   height: 40%;
   color: white;
@@ -69,6 +81,12 @@
   padding: 6px 15px;
   margin: 0 5px;
   cursor: pointer;
+}
+
+.remove:hover{
+  opacity: 0.8;
+  transform: scale(1.05); 
+  transition: 0.3s ease-in-out; 
 }
 
 .ningx {
@@ -111,6 +129,12 @@
   text-align: center;
   align-items: center;
   cursor: pointer;
+}
+
+.fileButton:hover{
+  opacity: 0.8;
+  transform: scale(1.05); 
+  transition: 0.3s ease-in-out; 
 }
 
 .runButton > img {
