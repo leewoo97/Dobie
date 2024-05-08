@@ -119,7 +119,7 @@ export default function RunPage() {
               className={styles.fileButton}
               onClick={() => handleOpenModal(selectedProject.projectId)}
             >
-              ningx.conf 파일 조회{" "}
+              nginx.config 파일 조회{" "}
               <img
                 src={document}
                 alt=""
