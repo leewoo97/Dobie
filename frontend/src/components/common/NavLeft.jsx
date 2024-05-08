@@ -18,11 +18,19 @@ export default function NavLeft({ num }){
     const [spreadDatabase, setSpreadDatabase] = useState(databaseId? true : false);
 
     const changeStateBE = () => {
-        setSpreadBackend(!spreadBackend);
+        if(!spreadBackend){
+            setSpreadBackend(true);
+            navigate(`/manage/backend/${Object.values(selectedProject.backendMap).at(0).serviceId}`);
+        }
+        
+
     }
 
     const changeStateDB = () => {
-        setSpreadDatabase(!spreadDatabase);
+        if(!spreadDatabase){
+            setSpreadBackend(true);
+            navigate(`/manage/database/${Object.values(selectedProject.databaseMap).at(0).databaseId}`)
+        }
     }
 
     return(

@@ -15,22 +15,26 @@
     text-align: left;
     margin: 0 0 0 20%;
     color: #93BFCF;
+    cursor: pointer;
 }
 .text {
     /* margin-bottom: 50%; */
     font-size: calc(0.6vw + 1rem);
     color: #93BFCF;
+    
 }
 .text2 {
     /* margin-bottom: 50%; */
     font-size: calc(0.6vw + 1rem);
     color: #6096B4;
     font-weight: bold;
+    cursor: default;
 }
 
 .text3{
     color: #6096B4;
     font-weight: bold;
+    cursor: default;
 }
 
 .hide{
