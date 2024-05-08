@@ -14,4 +14,6 @@ public interface NginxConfigService {
     void saveFrontNginxConfigFile(String path, String projectName) throws IOException;
 
     String createFrontNginxConfig();
+
+    String readNginxFile(String filePath) throws IOException;
 }

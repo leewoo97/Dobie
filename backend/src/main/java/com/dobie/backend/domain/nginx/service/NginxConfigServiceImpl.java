@@ -4,8 +4,10 @@ import com.dobie.backend.domain.project.dto.NginxConfigDto;
 import com.dobie.backend.domain.project.dto.NginxProxyDto;
 import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
+import com.dobie.backend.exception.exception.file.NginxFileNotFoundException;
 import com.dobie.backend.exception.format.response.ErrorCode;
 import com.dobie.backend.exception.exception.build.ProjectPathNotFoundException;
+
 
 import com.dobie.backend.exception.exception.build.NginxCreateFailedException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
@@ -20,6 +22,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -216,5 +220,17 @@ public class NginxConfigServiceImpl implements NginxConfigService {
         dto.setProxyList(proxyList);
 
         return dto;
+    }
+
+    //nginx config 파일 조회
+    @Override
+    public String readNginxFile(String filePath) throws IOException {
+        if (!new File(filePath).exists()) {
+            log.info(filePath+" :잘못된 파일 경로입니다.");
+            throw new NginxFileNotFoundException(); //예외처리
+        }
+        StringBuilder sb = new StringBuilder();
+        Files.lines(Paths.get(filePath)).forEach(line -> sb.append(line).append("\n"));
+        return sb.toString();
     }
 }
