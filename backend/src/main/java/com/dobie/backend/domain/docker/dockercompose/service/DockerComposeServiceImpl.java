@@ -77,6 +77,10 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             dockercompose.append("  mysql-data:\n");
         }
 
+        dockercompose.append("networks: \n");
+        dockercompose.append("  dobie:");
+        dockercompose.append("    external: true ");
+
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectGetResponseDto.getProjectName();
         try {
@@ -130,6 +134,10 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             //React인지 vue인지 찾아서 :뒤에 포트번호 바꿀것 , 그냥 사용자가 지정한 프론트 포트번호로 바꿀것
             sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:").append(frontInternalPort).append("\n");
 
+            // network
+            sb.append("    networks:\n");
+            sb.append("      - ").append("dobie").append("\n");
+
             return sb.toString();
         }
         else if(frameWork.equals("SpringBoot(maven)")){
@@ -171,6 +179,10 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             //React인지 vue인지 찾아서 :뒤에 포트번호 바꿀것 , 그냥 사용자가 지정한 프론트 포트번호로 바꿀것
             sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:").append(frontInternalPort).append("\n");
 
+            // network
+            sb.append("    networks:\n");
+            sb.append("      - ").append("dobie").append("\n");
+
             return sb.toString();
 
         }else{
@@ -199,6 +211,10 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             sb.append("    ports:\n");
             sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
 
+            // network
+            sb.append("    networks:\n");
+            sb.append("      - ").append("dobie").append("\n");
+
             return sb.toString();
         }else{
             throw new FrontendFrameWorkNotFoundException();
@@ -223,6 +239,10 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         sb.append("    volumes:\n");
         sb.append("      - mysql-data:/var/lib/mysql\n");
 
+        // network
+        sb.append("    networks:\n");
+        sb.append("      - ").append("dobie").append("\n");
+
         return sb.toString();
     }
 
@@ -236,6 +256,10 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         sb.append("    ports:\n");
         sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
         sb.append("    command: [\"redis-server\", \"--bind\", \"0.0.0.0\", \"--protected-mode\", \"no\"]\n");
+
+        // network
+        sb.append("    networks:\n");
+        sb.append("      - ").append("dobie").append("\n");
 
         return sb.toString();
     }
