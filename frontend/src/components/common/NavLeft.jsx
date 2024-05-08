@@ -8,8 +8,6 @@ export default function NavLeft({ num }){
     const navigate = useNavigate();
     const { selectedProject, setSelectedProject } = usePrjectStore();
 
-
-
     return(
         <div className={s(styles.container)}>
             <div className={styles.list}>
