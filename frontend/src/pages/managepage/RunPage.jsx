@@ -80,7 +80,7 @@ export default function RunPage() {
             </div>
             <div
               className={styles.edit}
-              onClick={() => navigate("/create/project")}
+              onClick={() => navigate("/update/project")}
             >
               수정{" "}
               <img

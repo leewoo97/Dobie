@@ -42,7 +42,8 @@ export default function NavLeft({ num }){
                 <p className={num === 3 ? styles.text2 : styles.text} onClick={changeStateBE}>Backend</p>
                 {/* 여기는 BackendMap */}
                 {Object.values(selectedProject.backendMap).map((backendProject) => (
-                    <div className={[spreadBackend? "" : styles.hide, backendProject.serviceId === serviceId ? styles.text3 : ""].join(" ")} key={backendProject.serviceId} onClick={()=> navigate(`/manage/backend/${backendProject.serviceId}`) }>{backendProject.framework}</div>
+                    <div className={[spreadBackend? "" : styles.hide, backendProject.serviceId === serviceId ? styles.text3 : ""].join(" ")} 
+                    key={backendProject.serviceId} onClick={()=> navigate(`/manage/backend/${backendProject.serviceId}`) }>{backendProject.framework}</div>
                 ))}
                 </div>
                 <p className={num === 4 ? styles.text2 : styles.text} onClick={() => navigate("/manage/frontend")}>Frontend</p>
@@ -50,7 +51,8 @@ export default function NavLeft({ num }){
                 <p className={num === 5 ? styles.text2 : styles.text} onClick={changeStateDB}>DB</p>
                 {/* 여기는 DatabaseMap */}
                 {Object.values(selectedProject.databaseMap).map((databaseProject) => (
-                    <div className={[spreadDatabase? "" : styles.hide, databaseProject.databaseId === databaseId ? styles.text3 : ""].join(" ")} key={databaseProject.databaseId} onClick={() => navigate(`/manage/database/${databaseProject.databaseId}`)}>{databaseProject.databaseType}</div>
+                    <div className={[spreadDatabase? "" : styles.hide, databaseProject.databaseId === databaseId ? styles.text3 : ""].join(" ")} 
+                    key={databaseProject.databaseId} onClick={() => navigate(`/manage/database/${databaseProject.databaseId}`)}>{databaseProject.databaseType}</div>
                 ))}
                 </div>
             </div>

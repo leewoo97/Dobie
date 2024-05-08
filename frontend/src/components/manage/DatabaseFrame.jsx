@@ -14,7 +14,7 @@ export default function DatabaseFrame(){
     const selectedDatabase = new Map(Object.entries(selectedProject.databaseMap)).get(serviceId);
     return(
         <div className={styles.page}>
-            <ProjectTop />
+            <ProjectTop  projectName={selectedProject.projectName} />
             <GetBox keyName={"프레임워크"} valueName={selectedDatabase.databaseType}/>
             <GetBox keyName={"Username"} valueName={selectedDatabase.username}/>
             <GetBox keyName={"Password"} valueName={selectedDatabase.password}/>
