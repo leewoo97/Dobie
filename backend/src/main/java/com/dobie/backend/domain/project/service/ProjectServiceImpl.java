@@ -34,9 +34,11 @@ public class ProjectServiceImpl implements ProjectService {
     private final NginxConfigService nginxConfigService;
 
     @Override
-    public void createProject(ProjectRequestDto dto) {
-        Project project = new Project(UUID.randomUUID().toString(), dto);
+    public String createProject(ProjectRequestDto dto) {
+        String projectId = UUID.randomUUID().toString();
+        Project project = new Project(projectId, dto);
         projectRepository.upsertProject(project);
+        return projectId;
     }
 
     @Override

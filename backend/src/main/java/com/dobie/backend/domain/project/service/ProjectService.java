@@ -7,7 +7,7 @@ import java.util.*;
 public interface ProjectService {
 
 
-    void createProject(ProjectRequestDto dto);
+    String createProject(ProjectRequestDto dto);
 
     Map<String, ProjectGetResponseDto> getAllProjects();
 
