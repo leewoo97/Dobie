@@ -1,5 +1,6 @@
 import axios from "axios";
 const projectUrl = "https://api.silvstone.xyz/api/project";
+// const projectUrl = "http://localhost:8080/api/project";
 
 //프로젝트 전체 조회
 export async function getProject() {
