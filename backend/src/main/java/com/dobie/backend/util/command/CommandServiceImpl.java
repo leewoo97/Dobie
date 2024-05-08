@@ -175,7 +175,7 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public void dockerComposeUp(String path) {
         sb = new StringBuilder();
-        sb.append("docker compose up -f ").append(path+"/docker-compose.yml").append("--build -d");
+        sb.append("docker compose -f ").append(path+"/docker-compose.yml").append(" up --build -d");
 
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
@@ -194,7 +194,7 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public void dockerComposeDown(String path) {
         sb = new StringBuilder();
-        sb.append("docker compose down -f ").append(path+"/docker-compose.yml").append("--rmi all");
+        sb.append("docker compose -f ").append(path+"/docker-compose.yml").append(" down --rmi all");
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
