@@ -98,7 +98,7 @@ export default function RunPage() {
           </div>
           <div className={styles.buttons}>
             <div className={styles.fileButton}>
-              ningx.conf 파일 조회{" "}
+              nginx.conf 파일 조회{" "}
               <img
                 src={document}
                 alt=""
