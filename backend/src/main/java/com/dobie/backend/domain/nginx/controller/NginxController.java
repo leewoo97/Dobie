@@ -23,7 +23,7 @@ public class NginxController {
 
     @Operation(summary = "nginx config 파일 조회", description = "nginx config 파일 내용 조회")
     @GetMapping ("")
-    public ResponseEntity<?> searchGradle(@RequestParam(name = "projectId") String projectId){
+    public ResponseEntity<?> getNginxConfig(@RequestParam(name = "projectId") String projectId){
         String nginxConfFile = "";
         try {
             String nginxConfPath = "/nginx/"+projectId+".conf";
