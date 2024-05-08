@@ -14,8 +14,7 @@ import mongodbIcon from "../../assets/mongodbIcon.png";
 import setting from "../../assets/settingIcon.png";
 import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
-
-import FrameworkImg from "./FrameworkImg";
+import FrameworkImg from "../common/FrameworkImg";
 
 export default function RunProjectItem({ container, type }) {
   return (

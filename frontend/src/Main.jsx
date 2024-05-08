@@ -32,9 +32,9 @@ function Main() {
           <Route path="manage">
             <Route index element={<RunPage />} />
             <Route path="project" element={<ProjectPage />} />
-            <Route path="backend" element={<BackendPage />} />
+            <Route path="backend/:serviceId" element={<BackendPage />} />
             <Route path="frontend" element={<FrontendPage />} />
-            <Route path="database" element={<DatabasePage />} />
+            <Route path="database/:databaseId" element={<DatabasePage />} />
           </Route>
           <Route path="create">
             <Route index element={<RunPage />} />

@@ -7,6 +7,7 @@ const projectUrl = process.env.REACT_APP_SERVER + "/project";
 export async function getProject() {
   try {
     const response = await axios.get(projectUrl);
+    console.log(typeof response);
     return response;
   } catch (error) {
     // console.log("회원가입 실패: " + error);

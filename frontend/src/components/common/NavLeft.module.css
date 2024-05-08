@@ -17,16 +17,17 @@
     color: #93BFCF;
 }
 .text {
-    margin-bottom: 50%;
+    /* margin-bottom: 50%; */
     font-size: calc(0.6vw + 1rem);
     color: #93BFCF;
 }
 .text2 {
-    margin-bottom: 50%;
+    /* margin-bottom: 50%; */
     font-size: calc(0.6vw + 1rem);
     color: #6096B4;
     font-weight: bold;
 }
+
 .img {
     width: 70%;
     margin: 0 auto;
