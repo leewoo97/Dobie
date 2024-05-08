@@ -201,6 +201,10 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             sb.append("    ports:\n");
             sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
 
+            // network
+            sb.append("    networks:\n");
+            sb.append("      - ").append("dobie").append("\n");
+
             return sb.toString();
         }else if(frameWork.equals("Vue")){
             StringBuilder sb = new StringBuilder();
