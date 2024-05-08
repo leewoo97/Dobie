@@ -1,13 +1,13 @@
 import NavTop from "../../components/common/NavTop";
-import styles from "./CreateFrontendPage.module.css";
+import NavLeftCreate from "../../components/common/NavLeftCreate";
+import FrontendFrame from "../../components/create/FrontendFrame";
 
 export default function CreateFrontendPage() {
   return (
     <>
       <NavTop />
-      <div className={styles.page}>
-        <h1>Create Frontend</h1>
-      </div>
+      <NavLeftCreate num={4} />
+      <FrontendFrame />
     </>
   );
 }

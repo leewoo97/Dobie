@@ -1,0 +1,40 @@
+.boxFrame {
+    display: flex;
+    flex-direction: row;
+    background-color: #EEE9DA;
+    width: 80%;
+    margin: 1% auto;
+    padding: 0 3%;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.key{
+    flex: 30;
+}
+
+.list{
+    flex: 70;
+}
+
+.value{
+    display: inline-flex;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    padding: 6px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.selectedValue{
+    display: inline-flex;
+    background-color: #93BFCF; /* 선택된 아이템 배경색 변경 */
+    color: white; /* 선택된 아이템 글자색 변경 */
+    border-radius: 10px;
+    padding: 6px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}

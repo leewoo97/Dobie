@@ -1,13 +1,12 @@
 import NavTop from "../../components/common/NavTop";
-import styles from "./CreateDatabasePage.module.css";
-
+import NavLeftCreate from "../../components/common/NavLeftCreate";
+import DatabaseFrame from "../../components/create/DatabaseFrame";
 export default function CreateDatabasePage() {
   return (
     <>
       <NavTop />
-      <div className={styles.page}>
-        <h1>Create Database</h1>
-      </div>
+      <NavLeftCreate num={5} />
+      <DatabaseFrame />
     </>
   );
 }

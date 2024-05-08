@@ -1,0 +1,52 @@
+.page{
+    height: 82%;
+    width: 80%;
+    position: relative;
+    top: 18%;
+    left: 20%;
+}
+
+.boxFrame{
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 3%;
+    padding: 0 3%;
+    border-radius: 10px;
+}
+
+.key{
+    flex: 30%;
+}
+
+.desc{
+    flex: 70%;
+}
+
+.selected {
+    opacity: 1.0;
+}
+
+.unselected {
+    opacity: 0.3;
+}
+
+.accessinfo {
+    font-size: 130%;
+    margin-right: 1%;
+    font-weight: 600;
+}
+
+.access {
+    display: flex;
+    align-items: center;
+}
+
+.access > div{
+    display: inline-flex;
+}
+
+.selection > img {
+    margin: 0 1%;
+}

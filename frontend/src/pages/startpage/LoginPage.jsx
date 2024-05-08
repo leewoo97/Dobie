@@ -73,6 +73,7 @@ export default function LoginPage() {
           <div className={styles.dobie}>Dobie</div>
         </div>
         <input
+        className={styles.loginInput}
           type="text"
           name="username"
           value={formData.username}
@@ -81,6 +82,8 @@ export default function LoginPage() {
           placeholder="username"
         />
         <input
+        className={styles.loginInput}
+
           type="password"
           name="password"
           value={formData.password}
