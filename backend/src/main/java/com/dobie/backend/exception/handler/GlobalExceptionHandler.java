@@ -131,6 +131,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    /* json을 map으로 변환 */
+    @ExceptionHandler(JsonToMapErrorException.class)
+    protected ResponseEntity<?> handle(JsonToMapErrorException e) {
+        log.error("JsonToMapErrorException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
     /* 경로 확인 */
     @ExceptionHandler(BuildGradleNotFoundException.class)
     protected ResponseEntity<?> handle(BuildGradleNotFoundException e) {

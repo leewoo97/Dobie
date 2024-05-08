@@ -178,7 +178,6 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         }
     }
 
-    //은석이가 프론트엔드 서비스 아이디 만들어주면 코드 변경해서 커밋하기
     @Override
     public String createReactDockerComposeFile(String frameWork, String serviceId, String path, int externalPort, int internalPort) {
         if(frameWork.equals("React")) {
@@ -206,7 +205,6 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         }
     }
 
-    //은석이가 Mysql 서비스 아이디 만들어주면 코드 변경해서 커밋하기
     @Override
     public String createMysqlDockerComposeFile(String databaseId, String databaseName, String username, String password, int externalPort,
                                                int internalPort) {
@@ -228,7 +226,6 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         return sb.toString();
     }
 
-    //은석이가 Redis 서비스 아이디 만들어주면 코드 변경해서 커밋하기
     @Override
     public String createRedisDockerComposeFile(String databaseId,int externalPort, int internalPort) {
 

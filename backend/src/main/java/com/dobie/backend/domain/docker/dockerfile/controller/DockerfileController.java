@@ -1,15 +1,15 @@
 package com.dobie.backend.domain.docker.dockerfile.controller;
 
 import com.dobie.backend.domain.docker.dockerfile.service.DockerfileService;
+import com.dobie.backend.domain.docker.readjson.service.ReadJsonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Tag(name = "Dockerfile 컨트롤러", description = "Dockerfile Controller API")
 @RestController
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DockerfileController {
 
     final DockerfileService dockerfileService;
+    final ReadJsonService readJsonService;
 
     @Operation(summary = "스프링 도커파일 생성", description = "프로젝트이름, 언어버전, 경로")
     @PostMapping("/spring")
@@ -35,5 +36,30 @@ public class DockerfileController {
                                                @RequestParam(name = "path") String path){
         dockerfileService.createReactDockerfile(projectName, version, path);
         return new ResponseEntity<String>("성공", HttpStatus.OK);
+    }
+//    @Operation(summary = "백엔드 도커파일 조회(exec로 조회)", description = "지정된 경로에서 백엔드 도커파일의 내용을 조회합니다.")
+//    @GetMapping("/dockerfile-content")
+//    public ResponseEntity<?> readDockerfileContent(@RequestParam(name = "projectId") String projectId,
+//                                                   @RequestParam(name = "serviceId") String serviceId){
+//        //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
+//        String content = dockerfileService.readBackendDockerfileContent(projectId, serviceId);
+//        return new ResponseEntity<>(content,HttpStatus.OK);
+//    }
+
+    @Operation(summary = "백엔드 도커파일 위치 조회(project.json으로 경로파악해서 조회)", description = "지정된 경로에서 백엔드 도커파일의 내용을 조회합니다.")
+    @GetMapping("/dockerfile-content")
+    public ResponseEntity<?> readDockerfileContent(@RequestParam(name = "projectId") String projectId,
+                                                   @RequestParam(name = "serviceId") String serviceId){
+        //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
+        String content = dockerfileService.readBackendDockerfileContent(projectId, serviceId);
+        return new ResponseEntity<>(content,HttpStatus.OK);
+    }
+
+    @Operation(summary = "파일 내용 조회(파일 위치 파악 후 진행)", description = "파일의 내용을 조회합니다.")
+    @GetMapping("/file-content")
+    public ResponseEntity<?> readEnvironmentfileContent(@RequestParam(name = "filepath") String filepath){
+        //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
+        String content = dockerfileService.readEnvironmentFile(filepath);
+        return new ResponseEntity<>(content,HttpStatus.OK);
     }
 }
