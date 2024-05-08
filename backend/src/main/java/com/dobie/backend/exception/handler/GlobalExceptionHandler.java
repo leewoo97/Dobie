@@ -5,6 +5,7 @@ import com.dobie.backend.exception.exception.build.ProjectPathNotFoundException;
 import com.dobie.backend.exception.exception.build.*;
 import com.dobie.backend.exception.exception.docker.DockerPsErrorException;
 import com.dobie.backend.exception.exception.docker.DockerPsLinePartsErrorException;
+import com.dobie.backend.exception.exception.file.NginxFileNotFoundException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.exception.exception.git.GitCheckoutFailedException;
 import com.dobie.backend.exception.exception.git.GitCloneFailedException;
@@ -184,6 +185,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ProjectPathNotFoundException.class)
     protected ResponseEntity<?> handle(ProjectPathNotFoundException e) {
         log.error("ProjectPathNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+    @ExceptionHandler(NginxFileNotFoundException.class)
+    protected ResponseEntity<?> handle(NginxFileNotFoundException e) {
+        log.error("NginxFileNotFoundException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 

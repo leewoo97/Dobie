@@ -24,6 +24,8 @@ public enum ResponseCode {
     CONTAINER_STATUS_SUCCESS(HttpStatus.OK, "설치된 컨테이너 실행 상태 분석이 완료되었습니다."),
     /* 도커파일(Dockerfile) */
     DOCKER_FILE_INSTALL_SUCCESS(HttpStatus.OK, "도커파일이 성공적으로 설치되었습니다."),
+    /* nginx config 파일 */
+    NGINX_CONFIG_READ_SUCCESS(HttpStatus.OK, "niginx config파일을 성공적으로 조회했습니다.")
     ;
 
     private final HttpStatus status;
