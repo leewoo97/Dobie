@@ -18,6 +18,7 @@ export default function RunProjectItem({
   setModalOpen,
   setContent,
   setType,
+  isRunning,
 }) {
   const { selectedProject, setSelectedProject } = useProjectStore();
 
@@ -105,13 +106,11 @@ export default function RunProjectItem({
           <div className={styles.boxBottom}>
             <div
               className={
-                container.running == "Running :)"
-                  ? styles.running
-                  : styles.stopped
+                isRunning == "Running :)" ? styles.running : styles.stopped
               }
-              key={container.running}
+              key={isRunning}
             >
-              {container.running}
+              {isRunning}
               stoped :(
             </div>
             <div className={styles.log}>

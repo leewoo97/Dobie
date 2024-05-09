@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // const projectUrl = "http://localhost:8080/api/project";
-const projectUrl = process.env.REACT_APP_SERVER + "/project";
+// const projectUrl = process.env.REACT_APP_SERVER + "/project";
+const projectUrl = "http://3.38.208.235:8010/api/project";
 
 //프로젝트 전체 조회
 export async function getProject() {

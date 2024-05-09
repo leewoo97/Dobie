@@ -18,6 +18,7 @@ import log from "../../assets/logIcon.png";
 import { deleteProject } from "../../api/Project";
 import { getNginxConf } from "../../api/ngixn";
 import { getDockerCompose } from "../../api/Docker";
+import { checkProceeding } from "../../api/CheckProcess";
 import useProjectStore from "../../stores/projectStore";
 import RunProjectList from "../../components/manage/RunProjectList";
 import Modal from "../../components/modal/Modal";
@@ -26,10 +27,21 @@ export default function RunPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [content, setContent] = useState("");
   const [type, setType] = useState("");
+  const [data, setData] = useState({});
   // const modalBackground = useRef();
 
   const { selectedProject, setSelectedProject } = useProjectStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    try {
+      const response = checkProceeding(selectedProject.projectId);
+      setData(response.data);
+      // console.log(response.data[selectedProject.frontend.serviceId]);
+    } catch (error) {
+      console.error("컨테이너 실행 확인 에러: ", error);
+    }
+  }, []);
 
   const handleDelete = async (projectId) => {
     try {
@@ -57,6 +69,7 @@ export default function RunPage() {
       console.log("nginx config 조회 실패: " + error);
     }
   };
+
   const handleDockerComposeModal = async (projectId) => {
     try {
       console.log(projectId);
@@ -128,8 +141,14 @@ export default function RunPage() {
           <div>
             <div className={styles.text}>프로젝트 전체 실행</div>
             <div className={styles.runButton}>
-              <img src={run} width="40px"></img>
-              <img src={rerun} width="40px"></img>
+              {data.allRunning == "run" ? (
+                <img src={run} width="40px"></img>
+              ) : (
+                <div>
+                  <img src={rerun} width="40px"></img>
+                  <img src={stop} width="40px"></img>
+                </div>
+              )}
             </div>
           </div>
           <div className={styles.buttons}>
@@ -167,6 +186,7 @@ export default function RunPage() {
           setModalOpen={setModalOpen}
           setContent={setContent}
           setType={setType}
+          data={data}
         />
       </div>
       {modalOpen && (
