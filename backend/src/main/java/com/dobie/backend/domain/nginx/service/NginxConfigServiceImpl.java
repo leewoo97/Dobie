@@ -126,7 +126,7 @@ public class NginxConfigServiceImpl implements NginxConfigService {
         //locations 리스트 for문 통해서 config 작성
         for (NginxProxyDto proxyConfig : nginxConfig.getProxyList()) {
             sb.append("    location ").append(proxyConfig.getLocation()).append(" {\n"); //location 경로설정 (ex. location /api {)
-            sb.append("        proxy_pass ").append("user_").append(proxyConfig.getLocation()).append("_server\n");
+            sb.append("        proxy_pass ").append("http://user_").append(proxyConfig.getLocation()).append("_server;\n");
             sb.append("        proxy_http_version 1.1;\n"); // HTTP 프로토콜 버전 설정
             sb.append("        proxy_set_header Connection \"\";\n"); // Connection 헤더 설정
             sb.append("        proxy_redirect off;\n"); // 리다이렉션 설정 비활성화
@@ -165,7 +165,7 @@ public class NginxConfigServiceImpl implements NginxConfigService {
         sb.append("\n");
         for (NginxProxyDto proxyConfig : nginxConfig.getProxyList()) {
             sb.append("    location ").append(proxyConfig.getLocation()).append(" {\n");
-            sb.append("        proxy_pass ").append("user_").append(proxyConfig.getLocation()).append("_server\n");
+            sb.append("        proxy_pass ").append("http://user_").append(proxyConfig.getLocation()).append("_server;\n");
             sb.append("        proxy_http_version 1.1;\n");
             sb.append("        proxy_set_header Connection \"\";\n");
             sb.append("        proxy_redirect off;\n");
