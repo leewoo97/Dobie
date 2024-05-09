@@ -17,13 +17,16 @@ import log from "../../assets/logIcon.png";
 
 import { deleteProject } from "../../api/Project";
 import { getNginxConf } from "../../api/ngixn";
+import { getDockerCompose } from "../../api/Docker";
 import useProjectStore from "../../stores/projectStore";
 import RunProjectList from "../../components/manage/RunProjectList";
+import Modal from "../../components/modal/Modal";
 
 export default function RunPage() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [nginxConf, setNginxConf] = useState("");
-  const modalBackground = useRef();
+  const [content, setContent] = useState("");
+  const [type, setType] = useState("");
+  // const modalBackground = useRef();
 
   const { selectedProject, setSelectedProject } = useProjectStore();
   const navigate = useNavigate();
@@ -40,17 +43,32 @@ export default function RunPage() {
       console.log("프로젝트 삭제 실패: " + error);
     }
   };
-  const handleOpenModal = async (projectId) => {
+  const handleOpenNginxModal = async (projectId) => {
     try {
       console.log(projectId);
       const response = await getNginxConf(projectId);
 
       setModalOpen(true);
-      setNginxConf(response.data.data);
+      setType("nginx");
+      setContent(response.data.data);
 
       console.log(response.data.data);
     } catch (error) {
       console.log("nginx config 조회 실패: " + error);
+    }
+  };
+  const handleDockerComposeModal = async (projectId) => {
+    try {
+      console.log(projectId);
+      const response = await getDockerCompose(projectId);
+
+      setModalOpen(true);
+      setType("dockerCompose");
+      setContent(response.data.data);
+
+      console.log(response.data.data);
+    } catch (error) {
+      console.log("docker compose 조회 실패: " + error);
     }
   };
 
@@ -117,7 +135,7 @@ export default function RunPage() {
           <div className={styles.buttons}>
             <div
               className={styles.fileButton}
-              onClick={() => handleOpenModal(selectedProject.projectId)}
+              onClick={() => handleOpenNginxModal(selectedProject.projectId)}
             >
               nginx.config 파일 조회{" "}
               <img
@@ -128,7 +146,12 @@ export default function RunPage() {
                 className={styles.btnIcon}
               />
             </div>
-            <div className={styles.fileButton}>
+            <div
+              className={styles.fileButton}
+              onClick={() =>
+                handleDockerComposeModal(selectedProject.projectId)
+              }
+            >
               docker-compose.yml 파일 조회{" "}
               <img
                 src={document}
@@ -143,37 +166,43 @@ export default function RunPage() {
         <RunProjectList />
       </div>
       {modalOpen && (
-        <div
-          className={styles.modalContainer}
-          ref={modalBackground}
-          onClick={(e) => {
-            if (e.target === modalBackground.current) {
-              setModalOpen(false);
-            }
-          }}
-        >
-          <div className={styles.modalContent}>
-            <div className={styles.modalhead}>
-              <h2>Nginx Config File</h2>
-              <div
-                className={styles.closeImg}
-                onClick={() => setModalOpen(false)}
-              >
-                <img
-                  src={close}
-                  alt=""
-                  height="20px"
-                  decoding="async"
-                  className={styles.btnIcon}
-                />
-              </div>
-            </div>
+        <Modal
+          content={content}
+          type={type}
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+        />
+        // <div
+        //   className={styles.modalContainer}
+        //   ref={modalBackground}
+        //   onClick={(e) => {
+        //     if (e.target === modalBackground.current) {
+        //       setModalOpen(false);
+        //     }
+        //   }}
+        // >
+        //   <div className={styles.modalContent}>
+        //     <div className={styles.modalhead}>
+        //       <h2>Nginx Config File</h2>
+        //       <div
+        //         className={styles.closeImg}
+        //         onClick={() => setModalOpen(false)}
+        //       >
+        //         <img
+        //           src={close}
+        //           alt=""
+        //           height="20px"
+        //           decoding="async"
+        //           className={styles.btnIcon}
+        //         />
+        //       </div>
+        //     </div>
 
-            <div className={styles.modalBody}>
-              <p className={styles.nginxConf}>{nginxConf}</p>
-            </div>
-          </div>
-        </div>
+        //     <div className={styles.modalBody}>
+        //       <p className={styles.nginxConf}>{nginxConf}</p>
+        //     </div>
+        //   </div>
+        // </div>
       )}
     </>
   );
