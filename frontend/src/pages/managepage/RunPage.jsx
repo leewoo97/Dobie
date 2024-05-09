@@ -21,11 +21,13 @@ import { getDockerCompose } from "../../api/Docker";
 import useProjectStore from "../../stores/projectStore";
 import RunProjectList from "../../components/manage/RunProjectList";
 import Modal from "../../components/modal/Modal";
+import LoadingModal from "../../components/modal/LoadingModal";
 
 export default function RunPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [content, setContent] = useState("");
   const [type, setType] = useState("");
+  const [loadingModal, setLoadingModal] = useState(false);
   // const modalBackground = useRef();
 
   const { selectedProject, setSelectedProject } = useProjectStore();
@@ -62,13 +64,20 @@ export default function RunPage() {
       console.log(projectId);
       const response = await getDockerCompose(projectId);
 
-      setModalOpen(true);
+      setLoadingModal(true);
       setType("dockerCompose");
       setContent(response.data.data);
 
       console.log(response.data.data);
     } catch (error) {
       console.log("docker compose 조회 실패: " + error);
+    }
+  };
+  const handleLoadingModal = async () => {
+    try {
+      setLoadingModal(true);
+    } catch (error) {
+      
     }
   };
 
@@ -128,7 +137,7 @@ export default function RunPage() {
           <div>
             <div className={styles.text}>프로젝트 전체 실행</div>
             <div className={styles.runButton}>
-              <img src={run} width="40px"></img>
+              <img src={run} width="40px" onClick={() => handleLoadingModal()}></img>
               <img src={rerun} width="40px"></img>
             </div>
           </div>
@@ -165,6 +174,11 @@ export default function RunPage() {
         </div>
         <RunProjectList />
       </div>
+      {
+        loadingModal && (
+          <LoadingModal setModalOpen={setLoadingModal}/>
+        )
+      }
       {modalOpen && (
         <Modal
           content={content}
