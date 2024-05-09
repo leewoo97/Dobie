@@ -29,8 +29,14 @@
     justify-content: center;
   }
 
-  .text{
+  .runtext{
     color: #4FC153;
+    font-size: 150%;
+    font-weight: 600;
+  }
+
+  .stoptext{
+    color: #FF6699;
     font-size: 150%;
     font-weight: 600;
   }

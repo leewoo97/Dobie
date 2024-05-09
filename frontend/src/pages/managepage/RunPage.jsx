@@ -27,7 +27,8 @@ export default function RunPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [content, setContent] = useState("");
   const [type, setType] = useState("");
-  const [loadingModal, setLoadingModal] = useState(false);
+  const [runLoadingModal, setRunLoadingModal] = useState(false);
+  const [stopLoadingModal, setStopLoadingModal] = useState(false);
   // const modalBackground = useRef();
 
   const { selectedProject, setSelectedProject } = useProjectStore();
@@ -64,7 +65,7 @@ export default function RunPage() {
       console.log(projectId);
       const response = await getDockerCompose(projectId);
 
-      setLoadingModal(true);
+      setModalOpen(true);
       setType("dockerCompose");
       setContent(response.data.data);
 
@@ -73,9 +74,18 @@ export default function RunPage() {
       console.log("docker compose 조회 실패: " + error);
     }
   };
-  const handleLoadingModal = async () => {
+
+  const handleRunLoadingModal = async () => {
     try {
-      setLoadingModal(true);
+      setRunLoadingModal(true);
+    } catch (error) {
+      
+    }
+  };
+
+  const handleStopLoadingModal = async () => {
+    try {
+      setStopLoadingModal(true);
     } catch (error) {
       
     }
@@ -137,8 +147,8 @@ export default function RunPage() {
           <div>
             <div className={styles.text}>프로젝트 전체 실행</div>
             <div className={styles.runButton}>
-              <img src={run} width="40px" onClick={() => handleLoadingModal()}></img>
-              <img src={rerun} width="40px"></img>
+              <img src={run} width="40px" onClick={() => handleRunLoadingModal()}></img>
+              <img src={stop} width="40px" onClick={() => handleStopLoadingModal()}></img>
             </div>
           </div>
           <div className={styles.buttons}>
@@ -179,8 +189,13 @@ export default function RunPage() {
         />
       </div>
       {
-        loadingModal && (
-          <LoadingModal setModalOpen={setLoadingModal}/>
+        runLoadingModal && (
+          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
+        )
+      }
+      {
+        stopLoadingModal && (
+          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
         )
       }
       {modalOpen && (

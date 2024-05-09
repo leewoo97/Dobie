@@ -37,12 +37,22 @@ export default function RunProjectItem({
     }
   };
 
-  const [loadingModal, setLoadingModal] = useState(false);
-  const handleLoadingModal = async () => {
-    try {
-      setLoadingModal(true);
-    } catch (error) {
+  const [runLoadingModal, setRunLoadingModal] = useState(false);
+  const [stopLoadingModal, setStopLoadingModal] = useState(false);
 
+const handleRunLoadingModal = async () => {
+    try {
+      setRunLoadingModal(true);
+    } catch (error) {
+      
+    }
+  };
+
+  const handleStopLoadingModal = async () => {
+    try {
+      setStopLoadingModal(true);
+    } catch (error) {
+      
     }
   };
 
@@ -55,9 +65,10 @@ export default function RunProjectItem({
               src={container.running == "Running :)" ? rerun : run}
               alt=""
               width="30px"
-              onClick={() => handleLoadingModal()}
+              onClick={() => handleRunLoadingModal()}
             />
-            <img src={stop} width="30px"></img>
+            <img src={stop} width="30px"
+            onClick={() => handleStopLoadingModal()}></img>
           </div>
           {(type == "Backend" || type == "Frontend") && (
             <div
@@ -140,8 +151,13 @@ export default function RunProjectItem({
         </div>
       </div>
       {
-        loadingModal && (
-          <LoadingModal setModalOpen={setLoadingModal}/>
+        runLoadingModal && (
+          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
+        )
+      }
+      {
+        stopLoadingModal && (
+          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
         )
       }
     </>
