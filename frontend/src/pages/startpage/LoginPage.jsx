@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "../../components/common/Container";
 import styles from "./LoginPage.module.css";
 import mascot from "../../assets/mascot.png";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../stores/userStore";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { login } from "../../api/Member";
+import axios from "axios";
 
 export default function LoginPage() {
 
@@ -69,7 +70,7 @@ export default function LoginPage() {
     <Container>
       <div className={styles.content}>
         <div className={styles.title}>
-          <img src={mascot} alt="logo" className={styles.logo}/>
+          <img src={mascot} alt="" height="100vh" decoding="async" />
           <div className={styles.dobie}>Dobie</div>
         </div>
         <input
