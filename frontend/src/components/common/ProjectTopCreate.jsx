@@ -15,7 +15,7 @@ export default function ProjectTopCreate({ keyName, valueName }) {
     return (
         <div className={styles.top}>
             <div>
-                <input className={styles.title} placeholder="프로젝트명"></input>
+                <div className={styles.title}>{updatedProject.projectName}</div>
                 <div className={styles.text}>Git에 등록한 Project명 또는 Repository명을 등록하세요 <br></br>( = 최상단 폴더 이름)</div>
             </div>
             <div className={styles.buttons}>
