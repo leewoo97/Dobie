@@ -49,10 +49,10 @@
   cursor: pointer;
 }
 
-.webhook:hover{
+.webhook:hover {
   opacity: 0.8;
-  transform: scale(1.05); 
-  transition: 0.3s ease-in-out; 
+  transform: scale(1.05);
+  transition: 0.3s ease-in-out;
 }
 
 .edit {
@@ -66,10 +66,10 @@
   cursor: pointer;
 }
 
-.edit:hover{
+.edit:hover {
   opacity: 0.8;
-  transform: scale(1.05); 
-  transition: 0.3s ease-in-out; 
+  transform: scale(1.05);
+  transition: 0.3s ease-in-out;
 }
 
 .remove {
@@ -83,10 +83,10 @@
   cursor: pointer;
 }
 
-.remove:hover{
+.remove:hover {
   opacity: 0.8;
-  transform: scale(1.05); 
-  transition: 0.3s ease-in-out; 
+  transform: scale(1.05);
+  transition: 0.3s ease-in-out;
 }
 
 .ningx {
@@ -131,10 +131,10 @@
   cursor: pointer;
 }
 
-.fileButton:hover{
+.fileButton:hover {
   opacity: 0.8;
-  transform: scale(1.05); 
-  transition: 0.3s ease-in-out; 
+  transform: scale(1.05);
+  transition: 0.3s ease-in-out;
 }
 
 .runButton > img {
@@ -247,55 +247,4 @@ td {
 .boxBottom > div > img {
   margin-right: 5px;
   margin-top: 1px;
-}
-
-.modalCloseBtn {
-  cursor: pointer;
-  margin-left: auto;
-}
-.modalContainer {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(74, 122, 148, 0.5);
-  /* background-color: 4A7A94; */
-  /* opacity: 0.5; */
-  z-index: 2;
-}
-.modalContent {
-  background-color: #ffffff;
-  width: 45%;
-  height: 70%;
-  padding: 15px;
-  border-radius: 30px;
-  /* display: block; */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.nginxConf {
-  white-space: pre-wrap;
-  height: 55vh;
-  overflow-y: auto;
-}
-.modalBody {
-  display: flex;
-  justify-content: center;
-}
-.modalhead {
-  display: flex;
-  justify-content: space-between;
-  width: 80%;
-}
-
-.closeImg {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  cursor: pointer;
 }
