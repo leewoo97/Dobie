@@ -2,32 +2,59 @@ import { useState, useEffect } from "react";
 import styles from "./ProjectFrame.module.css";
 import InputBox from "../common/InputBox";
 import DescBox from "../common/DescBox";
-import ProjectTopCreate from "../common/ProjectTopCreate";
+import ProjectTopUpdate from "../common/ProjectTopUpdate";
 import githubImage from "../../assets/github.png";
 import gitlabImage from "../../assets/gitlab.png";
-
+import useProjectStore from "../../stores/projectStore";
 
 export default function ProjectFrame() {
 
-    // const [url, setUrl] = useState(null);
-    // const [accessToken, setAccessToken] = useState(null);
-    // const [webHook, setWebHook] = useState(null);
-    // const [branch, setBranch] = useState(null);
-
+    const { selectedProject, setSelectedProject} = useProjectStore();
+    console.log(typeof selectedProject);
     const [gittype, setGittype] = useState("gitlab");
+    const [ updatedProject, setUpdatedProject] = useState({...selectedProject});
+    // console.log(updatedProject);
 
+    const handleUrlChange = (e) => {
+        // setUrl(e.target.value);
+        setUpdatedProject(prev => ({
+            ...prev,
+            git: {
+                ...prev.git,
+                gitUrl: e.target.value
+            }
+        }));
+    };
 
+    const handleTokenChange = (e) => {
+        // setUrl(e.target.value);
+        setUpdatedProject(prev => ({
+            ...prev,
+            git: {
+                ...prev.git,
+                accessToken: e.target.value
+            }
+        }));
+    };
 
+    // const handleBranchChange = (e) => {
+    //     // setUrl(e.target.value);
+    //     setUpdatedProject(prev => ({
+    //         ...prev,
+    //         git: {
+    //             ...prev.git,
+    //             accessToken: e.target.value
+    //         }
+    //     }));
+    // };
+    
     return (
         <div className={styles.page}>
-            <ProjectTopCreate />
-            {/* <GetBox keyName={"url"} valueName={url} onChange={(e) => setUrl(e.target.value)}/>
-            <GetBox keyName={"액세스 토큰"} valueName={accessToken} onChange={(e)=> setAccessToken(e.target.value)}/>
-            <GetBox keyName={"자동 배포 웹훅 설정"} valueName={webHook} onChange={(e)=> setWebHook(e.target.value)}/>
-            <GetBox keyName={"브랜치"} valueName={branch} onChange={(e)=>setBranch(e.target.value)}/> */}
-            <InputBox keyName={"url"} valueName={"url"} />
+            <ProjectTopUpdate updatedProject={updatedProject} />
+
+            <InputBox keyName={"url"} updateText={updatedProject.git.gitUrl} onChange={handleUrlChange}/>
             <DescBox desc={"GitLab 또는 GitHub 의 프로젝트를 클론하기 위한 URL을 등록하세요 "} />
-            <InputBox keyName={"액세스 토큰"} valueName={"accessToken"} />
+            <InputBox keyName={"액세스 토큰"} updateText={updatedProject.git.accessToken} onChange={handleTokenChange} />
             <DescBox desc={"Git 저장소에 접근하기 위한 엑세스 토큰을 발급하여 등록하세요 "} />
 
             <div className={styles.boxFrame}>

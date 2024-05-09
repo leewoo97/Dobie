@@ -3,7 +3,7 @@ import styles from "./BackendFrame.module.css";
 import InputBox from "../common/InputBox";
 import InputSelectBox from "../common/InputSelectBox";
 import DescBox from "../common/DescBox";
-import ProjectTopCreate from "../common/ProjectTopCreate";
+import ProjectTopUpdate from "../common/ProjectTopUpdate";
 
 export default function BackendFrame() {
 
@@ -35,7 +35,7 @@ export default function BackendFrame() {
 
     return (
         <div className={styles.page}>
-            <ProjectTopCreate />
+            {/* <ProjectTopUpdate updatedProject={updatedProject} /> */}
             <InputSelectBox keyName={"프레임워크"} list={frameworkList} value={framework} onChange={frameworkSelect} />
             <DescBox desc={"Backend 서비스의 프레임워크를 선택하세요"} />
             

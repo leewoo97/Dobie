@@ -2,13 +2,13 @@ import { useNavigate } from "react-router-dom";
 import styles from "./NavLeft.module.css";
 import s from "classnames";
 import mainBtn from "../../assets/btn_main.png";
-import usePrjectStore from "../../stores/projectStore";
+import useProjectStore from "../../stores/projectStore";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 
 export default function NavLeft({ num }){
     const navigate = useNavigate();
-    const { selectedProject, setSelectedProject } = usePrjectStore();
+    const { selectedProject, setSelectedProject } = useProjectStore();
 
     const params = useParams();
     const serviceId = params.serviceId;
@@ -22,8 +22,7 @@ export default function NavLeft({ num }){
             setSpreadBackend(true);
             navigate(`/manage/backend/${Object.values(selectedProject.backendMap).at(0).serviceId}`);
         }
-        
-
+    
     }
 
     const changeStateDB = () => {

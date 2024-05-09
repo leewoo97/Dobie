@@ -12,6 +12,10 @@ const useProjectStore = create(
       setSelectedProject: (selectedProject) => {
         set({ selectedProject: selectedProject });
       },
+      updatedProject: {},
+      setUpdatedProject: (project) => {
+        set({updatedProject : project});
+      },
       //   createProject: {
       //     projectName: "",
       //     backendMap: [],
