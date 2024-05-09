@@ -1,6 +1,6 @@
 .topButton {
-  margin: 150px 0px 60px 0px;
-  padding: 0px 100px 0px 0px;
+  margin: 15vh 0px 10vh 0px;
+  padding: 0px 10vw 0px 0px;
   display: flex;
   justify-content: flex-end;
 }
@@ -10,8 +10,8 @@
   color: #6096b4;
   font-weight: bold;
   display: inline-flex;
-  margin: 5px;
-  padding: 10px 20px;
+  margin-right: 1%;
+  padding: 1vh 1.5vw;
   border-radius: 10px;
   align-items: center;
   cursor: pointer;
@@ -28,8 +28,7 @@
   color: white;
   font-weight: bold;
   display: inline-flex;
-  margin: 5px;
-  padding: 10px 20px;
+  padding: 1vh 1.5vw;
   border-radius: 10px;
   align-items: center;
   cursor: pointer;

@@ -34,8 +34,8 @@
     font-weight: 600;
     background-color: #6096B4;
     border-radius: 10px;
-    padding: 6px 15px;
-    margin: 0 5px;
+    padding: 1vh 1.5vw;
+    margin: 0 0.5vw;
     cursor: pointer;
 }
 
@@ -45,7 +45,6 @@
     font-weight: 600;
     background-color: #4A7A94;
     border-radius: 10px;
-    padding: 6px 15px;
-    margin: 0 5px;
+    padding: 1vh 1.5vw;
     cursor: pointer;
 }

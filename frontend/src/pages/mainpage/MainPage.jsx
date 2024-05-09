@@ -33,7 +33,7 @@ export default function MainPage() {
           <img
             src={newpjtIcon}
             alt=""
-            width="30px"
+            width="30vw"
             decoding="async"
             className={styles.btnIcon}
           />
@@ -46,7 +46,7 @@ export default function MainPage() {
           <img
             src={guideIcon}
             alt=""
-            width="30px"
+            width="30vw"
             decoding="async"
             className={styles.btnIcon}
           />

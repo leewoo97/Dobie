@@ -44,8 +44,8 @@
   font-weight: 600;
   background-color: #e5aa17;
   border-radius: 10px;
-  padding: 6px 15px;
-  margin: 0 5px;
+  padding: 1vh 1.5vw;
+  margin-right: 0.3vw;
   cursor: pointer;
 }
 
@@ -61,8 +61,8 @@
   font-weight: 600;
   background-color: #6096b4;
   border-radius: 10px;
-  padding: 6px 15px;
-  margin: 0 5px;
+  padding: 1vh 1.5vw;
+  margin-right: 0.3vw;
   cursor: pointer;
 }
 
@@ -78,8 +78,7 @@
   font-weight: 600;
   background-color: #4a7a94;
   border-radius: 10px;
-  padding: 6px 15px;
-  margin: 0 5px;
+  padding: 1vh 1.5vw;
   cursor: pointer;
 }
 
@@ -94,8 +93,8 @@
   font-weight: 600;
   background-color: #eee9da;
   border-radius: 10px;
-  padding: 5px 15px;
-  margin: 0 5px;
+  padding: 1vh 1.5vw;
+  margin-right: 0.3vw;
   cursor: pointer;
 }
 
@@ -104,15 +103,14 @@
   font-weight: 600;
   background-color: #eee9da;
   border-radius: 10px;
-  padding: 5px 15px;
-  margin: 0 5px;
+  padding: 1vh 1.5vw;
   cursor: pointer;
 }
 
 .containerButton {
   display: inline-flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 10vh;
 }
 
 .containerButton > div {
@@ -124,8 +122,8 @@
   font-weight: 600;
   background-color: #eee9da;
   border-radius: 10px;
-  padding: 5px 15px;
-  margin: 0 5px;
+  padding: 1vh 1.5vw;
+  margin-right: 0.3vw;
   text-align: center;
   align-items: center;
   cursor: pointer;
@@ -138,7 +136,7 @@
 }
 
 .runButton > img {
-  margin: 0 3px;
+  margin-left: 0.5vw;
   cursor: pointer;
 }
 
@@ -181,7 +179,7 @@
   /* background-color: red; */
   border-radius: 10px;
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.25);
-  padding: 20px;
+  padding: 20vw;
 }
 
 .boxTop {
@@ -204,7 +202,7 @@ table {
 }
 
 td {
-  padding: 8px;
+  padding: 8vh;
 }
 
 .serviceName {
