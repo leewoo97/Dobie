@@ -70,3 +70,7 @@
     margin: 0 5px;
     cursor: pointer;
 }
+
+.add > img {
+    height: 3.5vh;
+}

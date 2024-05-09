@@ -20,8 +20,13 @@
 }
 
 .runButton > img {
+  height: 5vh;
   margin-right: 0.5svw;
   cursor: pointer;
+}
+
+.btnIcon{
+  height: 4vh;
 }
 
 .buttons {

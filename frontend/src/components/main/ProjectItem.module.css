@@ -25,5 +25,10 @@
 }
 
 .runButton > img {
+  height: 7vh;
   margin: 0 3px;
+}
+
+.gitImage{
+  height: 7vh;
 }

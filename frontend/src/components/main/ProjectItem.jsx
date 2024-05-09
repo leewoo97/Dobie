@@ -7,7 +7,7 @@ import run from "../../assets/run.png";
 import rerun from "../../assets/rerun.png";
 import stop from "../../assets/stop.png";
 import useProjectStore from "../../stores/projectStore";
-import LoadingModal from "../../components/modal/LoadingModal";
+import LoadingModal from "../modal/LoadingModal";
 import restart from "../../assets/restart.png";
 
 import { stopProject } from "../../api/Project";
@@ -61,14 +61,14 @@ export default function ProjectItem({ project }) {
         <div key={project.projectName}>{project.projectName}</div>
         <div key={project.projectDomain}>{project.projectDomain}</div>
         <div className={styles.runButton}>
-          <img src={project.running ? rerun : restart} alt="" width="50px" className={styles.run} onClick={() => handleRunLoadingModal()} />
-          <img src={stop} alt="" width="50px" onClick={() => handleStopLoadingModal()}></img>
+          <img src={project.running ? rerun : restart} alt="" className={styles.run} onClick={() => handleRunLoadingModal()} />
+          <img src={stop} alt="" onClick={() => handleStopLoadingModal()}></img>
         </div>
         <div>
           <img
             src={project.git.gitType == 1 ? gitlab : github}
             alt=""
-            width="50px"
+            className={styles.gitImage}
           />
         </div>
       </div>

@@ -11,7 +11,7 @@ export default function GetBox({ keyName, valueName }) {
                 <div className={styles.text}>Git에 등록한 Project명 또는 Repository명을 등록하세요 <br></br>( = 최상단 폴더 이름)</div>
             </div>
             <div className={styles.buttons}>
-                <div className={styles.add}>등록 <img src={add} alt="" width="23px" decoding="async" className={styles.btnIcon} /></div>
+                <div className={styles.add}>등록 <img src={add} alt="" decoding="async" className={styles.btnIcon} /></div>
             </div>
         </div>
     );
