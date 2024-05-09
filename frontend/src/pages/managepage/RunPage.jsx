@@ -109,7 +109,6 @@ export default function RunPage() {
               <img
                 src={setting}
                 alt=""
-                height="20px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -122,7 +121,6 @@ export default function RunPage() {
               <img
                 src={edit}
                 alt=""
-                height="20px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -135,7 +133,6 @@ export default function RunPage() {
               <img
                 src={remove}
                 alt=""
-                width="23px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -146,8 +143,8 @@ export default function RunPage() {
           <div>
             <div className={styles.text}>프로젝트 전체 실행</div>
             <div className={styles.runButton}>
-              <img src={run} width="40px" onClick={() => handleRunLoadingModal()}></img>
-              <img src={stop} width="40px" onClick={() => handleStopLoadingModal()}></img>
+              <img src={run} onClick={() => handleRunLoadingModal()}></img>
+              <img src={stop} onClick={() => handleStopLoadingModal()}></img>
             </div>
           </div>
           <div className={styles.buttons}>
@@ -159,7 +156,6 @@ export default function RunPage() {
               <img
                 src={document}
                 alt=""
-                width="30px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -174,7 +170,6 @@ export default function RunPage() {
               <img
                 src={document}
                 alt=""
-                width="30px"
                 decoding="async"
                 className={styles.btnIcon}
               />

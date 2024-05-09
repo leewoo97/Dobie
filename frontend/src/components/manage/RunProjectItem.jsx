@@ -64,10 +64,9 @@ const handleRunLoadingModal = async () => {
             <img
               src={container.running == "Running :)" ? rerun : run}
               alt=""
-              width="30px"
               onClick={() => handleRunLoadingModal()}
             />
-            <img src={stop} width="30px"
+            <img src={stop} 
             onClick={() => handleStopLoadingModal()}></img>
           </div>
           {(type == "Backend" || type == "Frontend") && (
@@ -85,7 +84,6 @@ const handleRunLoadingModal = async () => {
               <img
                 src={document}
                 alt=""
-                width="25px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -141,7 +139,6 @@ const handleRunLoadingModal = async () => {
               <img
                 src={log}
                 alt=""
-                width="25px"
                 decoding="async"
                 className={styles.btnIcon}
               />

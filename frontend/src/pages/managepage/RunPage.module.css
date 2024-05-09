@@ -44,8 +44,8 @@
   font-weight: 600;
   background-color: #e5aa17;
   border-radius: 10px;
-  padding: 1vh 1.5vw;
-  margin-right: 0.3vw;
+  padding: 1vh 1vw;
+  margin: 0 0.5vw;
   cursor: pointer;
 }
 
@@ -61,9 +61,19 @@
   font-weight: 600;
   background-color: #6096b4;
   border-radius: 10px;
-  padding: 1vh 1.5vw;
-  margin-right: 0.3vw;
+  padding: 1vh 1vw;
+  margin: 0 0.5vw;
   cursor: pointer;
+}
+
+.webhook > img {
+  height: 3.5vh;
+}
+.edit > img {
+  height: 3.5vh;
+}
+.remove > img {
+  height: 3.5vh;
 }
 
 .edit:hover {
@@ -78,7 +88,7 @@
   font-weight: 600;
   background-color: #4a7a94;
   border-radius: 10px;
-  padding: 1vh 1.5vw;
+  padding: 1vh 1vw;
   cursor: pointer;
 }
 
@@ -93,8 +103,8 @@
   font-weight: 600;
   background-color: #eee9da;
   border-radius: 10px;
-  padding: 1vh 1.5vw;
-  margin-right: 0.3vw;
+  padding: 1vh 1vw;
+  margin: 0 0.5vw;
   cursor: pointer;
 }
 
@@ -103,14 +113,15 @@
   font-weight: 600;
   background-color: #eee9da;
   border-radius: 10px;
-  padding: 1vh 1.5vw;
+  padding: 5px 15px;
+  margin: 0 5px;
   cursor: pointer;
 }
 
 .containerButton {
   display: inline-flex;
   align-items: center;
-  margin-bottom: 10vh;
+  margin-bottom: 10px;
 }
 
 .containerButton > div {
@@ -122,8 +133,8 @@
   font-weight: 600;
   background-color: #eee9da;
   border-radius: 10px;
-  padding: 1vh 1.5vw;
-  margin-right: 0.3vw;
+  padding: 5px 15px;
+  margin: 0 5px;
   text-align: center;
   align-items: center;
   cursor: pointer;
@@ -136,7 +147,8 @@
 }
 
 .runButton > img {
-  margin-left: 0.5vw;
+  height: 5vh;
+  margin: 0 3px;
   cursor: pointer;
 }
 
@@ -155,6 +167,10 @@
 
 .mid > div {
   display: inline-flex;
+}
+
+.btnIcon{
+  height: 4vh;
 }
 
 .bottom {
@@ -179,7 +195,7 @@
   /* background-color: red; */
   border-radius: 10px;
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.25);
-  padding: 20vw;
+  padding: 20px;
 }
 
 .boxTop {
@@ -202,7 +218,7 @@ table {
 }
 
 td {
-  padding: 8vh;
+  padding: 8px;
 }
 
 .serviceName {
