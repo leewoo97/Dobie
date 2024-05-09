@@ -17,13 +17,19 @@ import log from "../../assets/logIcon.png";
 
 import { deleteProject } from "../../api/Project";
 import { getNginxConf } from "../../api/ngixn";
+import { getDockerCompose } from "../../api/Docker";
 import useProjectStore from "../../stores/projectStore";
 import RunProjectList from "../../components/manage/RunProjectList";
+import Modal from "../../components/modal/Modal";
+import LoadingModal from "../../components/modal/LoadingModal";
 
 export default function RunPage() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [nginxConf, setNginxConf] = useState("");
-  const modalBackground = useRef();
+  const [content, setContent] = useState("");
+  const [type, setType] = useState("");
+  const [runLoadingModal, setRunLoadingModal] = useState(false);
+  const [stopLoadingModal, setStopLoadingModal] = useState(false);
+  // const modalBackground = useRef();
 
   const { selectedProject, setSelectedProject } = useProjectStore();
   const navigate = useNavigate();
@@ -40,17 +46,48 @@ export default function RunPage() {
       console.log("프로젝트 삭제 실패: " + error);
     }
   };
-  const handleOpenModal = async (projectId) => {
+  const handleOpenNginxModal = async (projectId) => {
     try {
       console.log(projectId);
       const response = await getNginxConf(projectId);
 
       setModalOpen(true);
-      setNginxConf(response.data.data);
+      setType("nginx");
+      setContent(response.data.data);
 
       console.log(response.data.data);
     } catch (error) {
       console.log("nginx config 조회 실패: " + error);
+    }
+  };
+  const handleDockerComposeModal = async (projectId) => {
+    try {
+      console.log(projectId);
+      const response = await getDockerCompose(projectId);
+
+      setModalOpen(true);
+      setType("dockerCompose");
+      setContent(response.data.data);
+
+      console.log(response.data.data);
+    } catch (error) {
+      console.log("docker compose 조회 실패: " + error);
+    }
+  };
+
+  const handleRunLoadingModal = async () => {
+    try {
+      setRunLoadingModal(true);
+    } catch (error) {
+      
+    }
+  };
+
+  const handleStopLoadingModal = async () => {
+    try {
+      setStopLoadingModal(true);
+    } catch (error) {
+      
     }
   };
 
@@ -109,16 +146,16 @@ export default function RunPage() {
           <div>
             <div className={styles.text}>프로젝트 전체 실행</div>
             <div className={styles.runButton}>
-              <img src={run} width="40px"></img>
-              <img src={rerun} width="40px"></img>
+              <img src={run} width="40px" onClick={() => handleRunLoadingModal()}></img>
+              <img src={stop} width="40px" onClick={() => handleStopLoadingModal()}></img>
             </div>
           </div>
           <div className={styles.buttons}>
             <div
               className={styles.fileButton}
-              onClick={() => handleOpenModal(selectedProject.projectId)}
+              onClick={() => handleOpenNginxModal(selectedProject.projectId)}
             >
-              ningx.conf 파일 조회{" "}
+              nginx.config 파일 조회{" "}
               <img
                 src={document}
                 alt=""
@@ -127,7 +164,12 @@ export default function RunPage() {
                 className={styles.btnIcon}
               />
             </div>
-            <div className={styles.fileButton}>
+            <div
+              className={styles.fileButton}
+              onClick={() =>
+                handleDockerComposeModal(selectedProject.projectId)
+              }
+            >
               docker-compose.yml 파일 조회{" "}
               <img
                 src={document}
@@ -139,40 +181,24 @@ export default function RunPage() {
             </div>
           </div>
         </div>
-        <RunProjectList />
+        <RunProjectList
+          setModalOpen={setModalOpen}
+          setContent={setContent}
+          setType={setType}
+        />
       </div>
+      {
+        runLoadingModal && (
+          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
+        )
+      }
+      {
+        stopLoadingModal && (
+          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
+        )
+      }
       {modalOpen && (
-        <div
-          className={styles.modalContainer}
-          ref={modalBackground}
-          onClick={(e) => {
-            if (e.target === modalBackground.current) {
-              setModalOpen(false);
-            }
-          }}
-        >
-          <div className={styles.modalContent}>
-            <div className={styles.modalhead}>
-              <h2>Nginx Config File</h2>
-              <div
-                className={styles.closeImg}
-                onClick={() => setModalOpen(false)}
-              >
-                <img
-                  src={close}
-                  alt=""
-                  height="20px"
-                  decoding="async"
-                  className={styles.btnIcon}
-                />
-              </div>
-            </div>
-
-            <div className={styles.modalBody}>
-              <p className={styles.nginxConf}>{nginxConf}</p>
-            </div>
-          </div>
-        </div>
+        <Modal content={content} type={type} setModalOpen={setModalOpen} />
       )}
     </>
   );

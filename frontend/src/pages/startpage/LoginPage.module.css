@@ -1,6 +1,6 @@
 .content {
   margin: auto auto;
-  width: 450px;
+  width: 30vw;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -10,27 +10,36 @@
 
 .title {
   display: inline-flex;
+  justify-content: center;
   align-items: center;
+}
+
+.title > img{
+  height: 20vh;
+}
+
+.logo{
+  width : 8.54vw
 }
 
 .dobie {
   color: white;
-  font-size: 80px;
+  font-size: 14vh;
   font-weight: 750;
-  margin-left: 10px;
+  margin-left: 1%;
 }
 
 .loginInput {
   width: 100%;
-  height: 50px;
-  margin: 10px 0;
+  height: 7vh;
+  margin: 1vh 0;
   border: 3px solid #6096b4;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   padding: 0;
   outline: none;
 
-  padding-left: 10px;
-  font-size: 20px;
+  padding-left: 2%;
+  font-size: 130%;
   font-weight: 600;
   color: #4a7a94;
 }
@@ -38,14 +47,14 @@
 .loginInput::placeholder {
   color: #d9e1e8;
   opacity: 1;
-  font-size: 20px;
+  font-size: 100%;
   font-weight: 500;
 }
 
 .button {
   width: 102%;
-  height: 50px;
-  margin: 10px 0;
+  height: 7vh;
+  margin: 1vh 0;
   color: #6096b4;
   border: 3px solid #4a7a94;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -58,6 +67,6 @@
 .login {
   text-align: center;
   color: white;
-  font-size: 20px;
+  font-size: 130%;
   font-weight: 700;
 }

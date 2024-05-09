@@ -1,22 +1,61 @@
 import { useState, useEffect } from "react";
 
-import styles from "./RunProjectList.module.css";
+import styles from "./RunProjectItem.module.css";
 import run from "../../assets/run.png";
 import rerun from "../../assets/rerun.png";
 import stop from "../../assets/stop.png";
-import springIcon from "../../assets/springIcon.png";
-import reactIcon from "../../assets/reactIcon.png";
-import vueIcon from "../../assets/vueIcon.png";
-import djangoIcon from "../../assets/djangoIcon.png";
-import mysqlIcon from "../../assets/mysqlIcon.png";
-import redisIcon from "../../assets/redisIcon.png";
-import mongodbIcon from "../../assets/mongodbIcon.png";
-import setting from "../../assets/settingIcon.png";
 import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 import FrameworkImg from "../common/FrameworkImg";
+import LoadingModal from "../../components/modal/LoadingModal";
 
-export default function RunProjectItem({ container, type }) {
+import { getDockerFile } from "../../api/Docker";
+
+import useProjectStore from "../../stores/projectStore";
+
+export default function RunProjectItem({
+  container,
+  type,
+  setModalOpen,
+  setContent,
+  setType,
+}) {
+  const { selectedProject, setSelectedProject } = useProjectStore();
+
+  const handleDockerFileModal = async (projectId, serviceId, type) => {
+    try {
+      console.log(projectId);
+      const response = await getDockerFile(projectId, serviceId, type);
+
+      setModalOpen(true);
+      setType("dockerFile");
+      setContent(response.data.data);
+
+      console.log(response.data.data);
+    } catch (error) {
+      console.log("docker File 조회 실패: " + error);
+    }
+  };
+
+  const [runLoadingModal, setRunLoadingModal] = useState(false);
+  const [stopLoadingModal, setStopLoadingModal] = useState(false);
+
+const handleRunLoadingModal = async () => {
+    try {
+      setRunLoadingModal(true);
+    } catch (error) {
+      
+    }
+  };
+
+  const handleStopLoadingModal = async () => {
+    try {
+      setStopLoadingModal(true);
+    } catch (error) {
+      
+    }
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -26,11 +65,22 @@ export default function RunProjectItem({ container, type }) {
               src={container.running == "Running :)" ? rerun : run}
               alt=""
               width="30px"
+              onClick={() => handleRunLoadingModal()}
             />
-            <img src={stop} width="30px"></img>
+            <img src={stop} width="30px"
+            onClick={() => handleStopLoadingModal()}></img>
           </div>
           {(type == "Backend" || type == "Frontend") && (
-            <div className={styles.fileButton}>
+            <div
+              className={styles.fileButton}
+              onClick={() =>
+                handleDockerFileModal(
+                  selectedProject.projectId,
+                  container.serviceId,
+                  type
+                )
+              }
+            >
               Dockerfile 파일 조회
               <img
                 src={document}
@@ -100,6 +150,16 @@ export default function RunProjectItem({ container, type }) {
           </div>
         </div>
       </div>
+      {
+        runLoadingModal && (
+          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
+        )
+      }
+      {
+        stopLoadingModal && (
+          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
+        )
+      }
     </>
   );
 }

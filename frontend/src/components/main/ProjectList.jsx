@@ -62,7 +62,7 @@ export default function ProjectList() {
           </div>
           <div className={styles.projectlist}>
             {Object.values(projectMap).map((project) => (
-              <div key={project.projectId}>
+              <div key={project.projectId} className={styles.project}>
                 <ProjectItem project={project} />
               </div>
             ))}

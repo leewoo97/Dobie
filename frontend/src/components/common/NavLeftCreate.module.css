@@ -5,6 +5,7 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
+    /* padding-top: 5%; */
     position: fixed;
     top: 8%;
     height: 92%;

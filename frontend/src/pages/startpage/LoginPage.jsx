@@ -9,6 +9,7 @@ import { login } from "../../api/Member";
 import axios from "axios";
 
 export default function LoginPage() {
+
   const navigate = useNavigate();
 
   const { user, setUser } = useUserStore();
@@ -69,7 +70,7 @@ export default function LoginPage() {
     <Container>
       <div className={styles.content}>
         <div className={styles.title}>
-          <img src={mascot} alt="" width="120px" decoding="async" />
+          <img src={mascot} alt="" height="100vh" decoding="async" />
           <div className={styles.dobie}>Dobie</div>
         </div>
         <input

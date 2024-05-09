@@ -8,7 +8,7 @@ import FrontendPage from "./pages/managepage/FrontendPage";
 import ProjectPage from "./pages/managepage/ProjectPage";
 import DatabasePage from "./pages/managepage/DatabasePage";
 import RunPage from "./pages/managepage/RunPage";
-import SginUpPage from "./pages/startpage/SginUpPage";
+import SignUpPage from "./pages/startpage/SignUpPage";
 import ErrorPage from "./pages/errorpage/ErrorPage";
 
 import CreateBackendPage from "./pages/createPage/CreateBackendPage";
@@ -16,6 +16,7 @@ import CreateDatabasePage from "./pages/createPage/CreateDatabasePage";
 import CreateFrontendPage from "./pages/createPage/CreateFrontendPage";
 import CreateProjectPage from "./pages/createPage/CreateProjectPage";
 import GuidePage from "./pages/mainpage/GuidePage";
+import WebhookPage from "./pages/managepage/WebhookPage";
 
 import UpdateProjectPage from "./pages/updatePage/UpdateProjectPage";
 import UpdateBackendPage from "./pages/updatePage/UpdateBackendPage";
@@ -28,7 +29,7 @@ function Main() {
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<WelcomePage />} />
-          <Route path="sginup" element={<SginUpPage />} />
+          <Route path="sginup" element={<SignUpPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="main">
             <Route index element={<MainPage />} />
@@ -40,6 +41,7 @@ function Main() {
             <Route path="backend/:serviceId" element={<BackendPage />} />
             <Route path="frontend" element={<FrontendPage />} />
             <Route path="database/:databaseId" element={<DatabasePage />} />
+            <Route path="webhook" element={<WebhookPage/>}/>
           </Route>
           <Route path="create">
             <Route index path="project" element={<CreateProjectPage />} />

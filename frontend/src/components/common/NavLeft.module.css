@@ -11,18 +11,22 @@
     height: 92%;
 }
 .list {
-   
     text-align: left;
     margin-left: 20%;
     color: #93BFCF;
     cursor: pointer;
 }
+
 .text {
     font-size: calc(0.6vw + 1rem);
     color: #93BFCF;
-    /* cursor: pointer; */
-    
 }
+.text:hover{
+    transform: scale(1.05); /* 5% 확대 */
+    transition: 0.3s ease-in-out; /* 부드러운 전환 효과 */
+    color: #6096B4;
+}
+
 .text2 {
     margin-bottom: 0.3rem;
     font-size: calc(0.6vw + 1rem);
@@ -58,3 +62,11 @@
 .list > div > p, .list > div > div{
     cursor: pointer;
 } */
+
+
+.img:hover{
+    opacity: 0.8;
+    transform: scale(1.05); /* 5% 확대 */
+    transition: 0.3s ease-in-out; /* 부드러운 전환 효과 */
+    cursor: default;
+}
