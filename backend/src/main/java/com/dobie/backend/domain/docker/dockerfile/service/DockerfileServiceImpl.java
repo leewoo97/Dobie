@@ -142,6 +142,7 @@ public class DockerfileServiceImpl implements DockerfileService {
 
     @Override
     public void checkBuildGradle(String filepath) {
+        System.out.println("백엔드 오류 잡기 위한 파일 패스 : " + filepath);
         File directory = new File(filepath); // 디렉토리 경로 지정
         File[] filesList = directory.listFiles(); // 디렉토리의 모든 파일 및 폴더 목록 얻기
         boolean correctPath = false;
