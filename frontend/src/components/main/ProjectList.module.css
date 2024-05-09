@@ -33,12 +33,6 @@
   cursor: pointer;
 }
 
-.project:hover{
-  opacity: 0.7;
-  transform: scale(1.01); 
-  transition: 0.3s ease-in-out; 
-}
-
 .box {
   display: flex;
   margin: 30px 0;

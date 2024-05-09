@@ -11,7 +11,7 @@ import useProjectStore from "../../stores/projectStore";
 
 export default function MainPage() {
   const navigate = useNavigate();
-  const { selectedProject, setSelectedProject } = useProjectStore();
+  const { selectedProject, setSelectedProject, newProject, makeNewProject } = useProjectStore();
 
   useEffect(() => {
     try {
@@ -21,13 +21,18 @@ export default function MainPage() {
     }
   }, []);
 
+  const createClickHandler = () => {
+    makeNewProject();
+    navigate("/create/project")
+  }
+
   return (
     <>
       <NavTop />
       <div className={styles.topButton}>
         <div
           className={styles.newpjtBtn}
-          onClick={() => navigate("/create/project")}
+          onClick={createClickHandler}
         >
           새 프로젝트 등록
           <img

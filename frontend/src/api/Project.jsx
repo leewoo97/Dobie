@@ -26,6 +26,16 @@ export async function deleteProject(projectId) {
   }
 }
 
+export async function createProject(project) {
+  try{
+    const response = await axios.post(`${projectUrl}/regist`, project);
+    return response;
+  }catch (error) {
+    throw error;
+  }
+}
+
+
 export async function stopProject(projectId){
   try{
     const response = await axios.post(`${projectUrl}/stop/${projectId}`);

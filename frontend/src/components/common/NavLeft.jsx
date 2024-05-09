@@ -2,13 +2,13 @@ import { useNavigate } from "react-router-dom";
 import styles from "./NavLeft.module.css";
 import s from "classnames";
 import mainBtn from "../../assets/btn_main.png";
-import usePrjectStore from "../../stores/projectStore";
+import useProjectStore from "../../stores/projectStore";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 
 export default function NavLeft({ num }){
     const navigate = useNavigate();
-    const { selectedProject, setSelectedProject } = usePrjectStore();
+    const { selectedProject, setSelectedProject } = useProjectStore();
 
     const params = useParams();
     const serviceId = params.serviceId;
@@ -22,8 +22,7 @@ export default function NavLeft({ num }){
             setSpreadBackend(true);
             navigate(`/manage/backend/${Object.values(selectedProject.backendMap).at(0).serviceId}`);
         }
-        
-
+    
     }
 
     const changeStateDB = () => {
@@ -42,7 +41,8 @@ export default function NavLeft({ num }){
                 <p className={num === 3 ? styles.text2 : styles.text} onClick={changeStateBE}>Backend</p>
                 {/* 여기는 BackendMap */}
                 {Object.values(selectedProject.backendMap).map((backendProject) => (
-                    <div className={[spreadBackend? "" : styles.hide, backendProject.serviceId === serviceId ? styles.text3 : ""].join(" ")} key={backendProject.serviceId} onClick={()=> navigate(`/manage/backend/${backendProject.serviceId}`) }>{backendProject.framework}</div>
+                    <div className={[spreadBackend? "" : styles.hide, backendProject.serviceId === serviceId ? styles.text3 : ""].join(" ")} 
+                    key={backendProject.serviceId} onClick={()=> navigate(`/manage/backend/${backendProject.serviceId}`) }>{backendProject.framework}</div>
                 ))}
                 </div>
                 <p className={num === 4 ? styles.text2 : styles.text} onClick={() => navigate("/manage/frontend")}>Frontend</p>
@@ -50,7 +50,8 @@ export default function NavLeft({ num }){
                 <p className={num === 5 ? styles.text2 : styles.text} onClick={changeStateDB}>DB</p>
                 {/* 여기는 DatabaseMap */}
                 {Object.values(selectedProject.databaseMap).map((databaseProject) => (
-                    <div className={[spreadDatabase? "" : styles.hide, databaseProject.databaseId === databaseId ? styles.text3 : ""].join(" ")} key={databaseProject.databaseId} onClick={() => navigate(`/manage/database/${databaseProject.databaseId}`)}>{databaseProject.databaseType}</div>
+                    <div className={[spreadDatabase? "" : styles.hide, databaseProject.databaseId === databaseId ? styles.text3 : ""].join(" ")} 
+                    key={databaseProject.databaseId} onClick={() => navigate(`/manage/database/${databaseProject.databaseId}`)}>{databaseProject.databaseType}</div>
                 ))}
                 </div>
             </div>

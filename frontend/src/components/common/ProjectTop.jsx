@@ -4,12 +4,12 @@ import edit from "../../assets/editIcon.png";
 import remove from "../../assets/deleteIcon.png";
 import setting from "../../assets/settingIcon.png";
 
-export default function GetBox({ keyName, valueName }) {
+export default function ProjectTop({ projectName }) {
     return (
         <div className={styles.top}>
             <div>
                 <div className={styles.text}>프로젝트</div>
-                <div className={styles.projectName}>NOAH</div>
+                <div className={styles.projectName}>{projectName}</div>
             </div>
             <div className={styles.buttons}>
                 <div className={styles.edit}>수정 <img src={edit} alt="" decoding="async" className={styles.btnIcon} /></div>

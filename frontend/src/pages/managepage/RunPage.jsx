@@ -95,7 +95,6 @@ export default function RunPage() {
     <>
       <NavTop />
       <NavLeft num={1} />
-      {/* <InnerContainer /> */}
       <div className={styles.page}>
         <div className={styles.top}>
           <div>
@@ -116,7 +115,7 @@ export default function RunPage() {
             </div>
             <div
               className={styles.edit}
-              onClick={() => navigate("/create/project")}
+              onClick={() => navigate("/update/project")}
             >
               수정{" "}
               <img

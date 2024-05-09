@@ -8,7 +8,7 @@ export default function FrontendFrame(){
     const {selectedProject, setSelectedProject} = useProjectStore();
     return(
         <div className={styles.page}>
-            <ProjectTop />
+            <ProjectTop  projectName={selectedProject.projectName} />
             <GetBox keyName={"프레임워크"} valueName={selectedProject.frontend.framework}/>
             <GetBox keyName={"언어 버전"} valueName={selectedProject.frontend.language + " " + selectedProject.frontend.version}/>
             <GetBox keyName={"폴더 경로"} valueName={selectedProject.frontend.path}/>
