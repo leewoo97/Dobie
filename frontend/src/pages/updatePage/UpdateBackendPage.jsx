@@ -1,12 +1,12 @@
 import NavTop from "../../components/common/NavTop";
-import NavLeftCreate from "../../components/common/NavLeftCreate";
+import NavLeftUpdate from "../../components/common/NavLeftUpdate";
 import BackendFrame from "../../components/update/BackendFrame";
 
 export default function UpdateBackendPage() {
   return (
     <>
       <NavTop />
-      <NavLeftCreate num={3} />
+      <NavLeftUpdate num={3} />
       <BackendFrame />
     </>
   );

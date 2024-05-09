@@ -1,12 +1,12 @@
 import NavTop from "../../components/common/NavTop";
-import NavLeftCreate from "../../components/common/NavLeftCreate";
+import NavLeftUpdate from "../../components/common/NavLeftUpdate";
 import ProjectFrame from "../../components/update/ProjectFrame";
 
 export default function UpdateProjectPage() {
   return (
     <>
       <NavTop />
-      <NavLeftCreate num={2} />
+      <NavLeftUpdate num={2} />
       <ProjectFrame />
     </>
   );
