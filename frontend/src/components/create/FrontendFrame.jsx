@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "./BackendFrame.module.css";
+import styles from "./FrontendFrame.module.css";
 import InputBox from "../common/InputBox";
 import InputSelectBox from "../common/InputSelectBox";
 import DescBox from "../common/DescBox";
