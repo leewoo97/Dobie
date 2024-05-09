@@ -1,4 +1,5 @@
 import axios from "axios";
+import { func } from "prop-types";
 
 // const projectUrl = "http://localhost:8080/api/project";
 const projectUrl = process.env.REACT_APP_SERVER + "/project";
@@ -21,6 +22,15 @@ export async function deleteProject(projectId) {
     return response;
   } catch (error) {
     // console.log("회원가입 실패: " + error);
+    throw error;
+  }
+}
+
+export async function stopProject(projectId){
+  try{
+    const response = await axios.post(`${projectUrl}/stop/${projectId}`);
+    return response;
+  } catch(error){
     throw error;
   }
 }
