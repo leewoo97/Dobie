@@ -8,6 +8,7 @@ import rerun from "../../assets/rerun.png";
 import stop from "../../assets/stop.png";
 import useProjectStore from "../../stores/projectStore";
 import LoadingModal from "../../components/modal/LoadingModal";
+import restart from "../../assets/restart.png";
 
 import { stopProject } from "../../api/Project";
 
@@ -50,7 +51,7 @@ export default function ProjectItem({ project }) {
         <div key={project.projectName}>{project.projectName}</div>
         <div key={project.projectDomain}>{project.projectDomain}</div>
         <div className={styles.runButton}>
-          <img src={project.running ? rerun : run} alt="" width="50px" className={styles.run} onClick={() => handleLoadingModal(project.projectId)} />
+          <img src={project.running ? rerun : restart} alt="" width="50px" className={styles.run} onClick={() => handleLoadingModal(project.projectId)} />
           <img src={stop} alt="" width="50px" onClick={()=> handleProjectStop()}></img>
         </div>
         <div>
