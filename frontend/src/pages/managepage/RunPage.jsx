@@ -31,7 +31,7 @@ export default function RunPage() {
   const [stopLoadingModal, setStopLoadingModal] = useState(false);
   // const modalBackground = useRef();
 
-  const { selectedProject, setSelectedProject } = useProjectStore();
+  const { selectedProject, setUpdatedProject } = useProjectStore();
   const navigate = useNavigate();
 
   const handleDelete = async (projectId) => {
@@ -91,6 +91,11 @@ export default function RunPage() {
     }
   };
 
+  const handleUpdateProject = () => {
+    setUpdatedProject({...selectedProject});
+    navigate("/update/project");
+  }
+
   return (
     <>
       <NavTop />
@@ -116,7 +121,7 @@ export default function RunPage() {
             </div>
             <div
               className={styles.edit}
-              onClick={() => navigate("/update/project")}
+              onClick={handleUpdateProject}
             >
               수정{" "}
               <img
