@@ -53,8 +53,8 @@ export default function ProjectFrame() {
 
                     {gittype === "gitlab" && (
                         <div className={styles.gitlab}>
-                            <p>1. GitHub의 프로필에서 Settings > Developer Settings</p>
-                            <p>2. Personal access tokens > Tokens (Classic) 에서 Generate New Token 클릭</p>
+                            <p>1. GitHub의 프로필에서 Settings &gt; Developer Settings</p>
+                            <p>2. Personal access tokens &gt; Tokens (Classic) 에서 Generate New Token 클릭</p>
                             <p>3. Note에 해당 토큰 설명 작성 (선택)</p>
                             <p>4. Expiration 은 해당 토큰 유효기간 설정</p>
                             <p>5. repo 체크 한 뒤 Generate Token 클릭</p>
@@ -63,8 +63,8 @@ export default function ProjectFrame() {
                     )}
                     {gittype === "github" && (
                         <div className={styles.github}>
-                            <p>1. GitHub의 프로필에서 Settings > Developer Settings</p>
-                            <p>2. Personal access tokens > Tokens (Classic) 에서 Generate New Token 클릭</p>
+                            <p>1. GitHub의 프로필에서 Settings &gt; Developer Settings</p>
+                            <p>2. Personal access tokens &gt; Tokens (Classic) 에서 Generate New Token 클릭</p>
                             <p>3. Note에 해당 토큰 설명 작성 (선택)</p>
                         </div>
                     )}
