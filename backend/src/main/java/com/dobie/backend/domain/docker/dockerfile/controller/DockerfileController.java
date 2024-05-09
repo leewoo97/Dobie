@@ -77,4 +77,12 @@ public class DockerfileController {
         String content = dockerfileService.readEnvironmentDockerComposeFile(filepath);
         return new ResponseEntity<>(content,HttpStatus.OK);
     }
+
+    @Operation(summary = "컨테이너 로그 내용 조회", description = "컨테이너 로그를 조회합니다.")
+    @GetMapping("/docker-container-logs")
+    public ResponseEntity<?> readContainerLogContent(@RequestParam(name = "mountId") String mountId){
+        //mountId는 serviceId또는 databaseId를 의미합니다.
+        String content = dockerfileService.readContainerLog(mountId);
+        return new ResponseEntity<>(content,HttpStatus.OK);
+    }
 }

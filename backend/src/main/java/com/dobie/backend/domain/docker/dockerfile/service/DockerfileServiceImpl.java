@@ -228,8 +228,8 @@ public class DockerfileServiceImpl implements DockerfileService {
             return containers;
 
         } catch (Exception e) {
-//            System.out.println("docker ps 명령어 실행 중 에러 발생: " + e.getMessage());
-//            e.printStackTrace();
+            System.out.println("docker ps 명령어 실행 중 에러 발생: " + e.getMessage());
+            e.printStackTrace();
             throw new DockerPsErrorException();
         }
     }
@@ -252,7 +252,7 @@ public class DockerfileServiceImpl implements DockerfileService {
 //            return new String(Files.readAllBytes(Paths.get(filePath)));
                 return filepath;
             }catch (Exception e) {
-                System.out.println("File not found or error reading file: " + e.getMessage());
+                System.out.println("백엔드 도커 파일 경로 생성 오류: " + e.getMessage());
                 throw new makeDockerfilePathContentException();
 //            return "File not found or error reading file: " + e.getMessage();
             }
@@ -271,7 +271,7 @@ public class DockerfileServiceImpl implements DockerfileService {
 //            return new String(Files.readAllBytes(Paths.get(filePath)));
                 return filepath;
             }catch (Exception e) {
-                System.out.println("File not found or error reading file: " + e.getMessage());
+                System.out.println("프론트엔드 도커 파일 경로 생성 오류: " + e.getMessage());
                 throw new makeDockerfilePathContentException();
 //            return "File not found or error reading file: " + e.getMessage();
             }
@@ -294,7 +294,8 @@ public class DockerfileServiceImpl implements DockerfileService {
 //            return new String(Files.readAllBytes(Paths.get(filePath)));
             return filepath;
         }catch (Exception e) {
-            System.out.println("File not found or error reading file: " + e.getMessage());
+            System.out.println("도커 컴포즈 파일 경로 생성 오류 : " + e.getMessage());
+            e.printStackTrace();
             throw new makeDockerComposefilePathContentException();
 //            return "File not found or error reading file: " + e.getMessage();
         }
@@ -305,8 +306,8 @@ public class DockerfileServiceImpl implements DockerfileService {
 
         CommandLine commandLine = new CommandLine("docker");
         commandLine.addArgument("exec");
-//        commandLine.addArgument("dobie-be"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
-        commandLine.addArgument("2109de6647fa"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
+        commandLine.addArgument("dobie-be"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
+//        commandLine.addArgument("2109de6647fa"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
         commandLine.addArgument("cat");
         commandLine.addArgument(filepath+"/Dockerfile"); //이렇게하면 아마 될걸..? 컨테이너에 ko2sist도비 말고 다른 컨테이너도 빌드해야 테스트 가능 ㅠ
 
@@ -321,7 +322,8 @@ public class DockerfileServiceImpl implements DockerfileService {
 //            System.out.println("File content: \n" + fileContent);
             return fileContent;
         } catch (Exception e) {
-//            System.err.println("Error during file reading: " + e.getMessage());
+            System.err.println("도커 파일 내용 조회 오류 : " + e.getMessage());
+            e.printStackTrace();
             throw new DockerFileContentNotFoundException();
         }
     }
@@ -330,8 +332,8 @@ public class DockerfileServiceImpl implements DockerfileService {
     public String readEnvironmentDockerComposeFile(String filepath) {
         CommandLine commandLine = new CommandLine("docker");
         commandLine.addArgument("exec");
-//        commandLine.addArgument("dobie-be"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
-        commandLine.addArgument("2109de6647fa"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
+        commandLine.addArgument("dobie-be"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
+//        commandLine.addArgument("2109de6647fa"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
         commandLine.addArgument("cat");
         commandLine.addArgument(filepath+"/docker-compose.yml"); //이렇게하면 아마 될걸..? 컨테이너에 ko2sist도비 말고 다른 컨테이너도 빌드해야 테스트 가능 ㅠ
 
@@ -346,8 +348,32 @@ public class DockerfileServiceImpl implements DockerfileService {
 //            System.out.println("File content: \n" + fileContent);
             return fileContent;
         } catch (Exception e) {
-//            System.err.println("Error during file reading: " + e.getMessage());
+            System.err.println("도커 컴포즈 파일 내용 조회 오류 : " + e.getMessage());
+            e.printStackTrace();
             throw new DockerComposeFileContentNotFoundException();
+        }
+    }
+
+    @Override
+    public String readContainerLog(String mountId) {
+        CommandLine commandLine = new CommandLine("docker");
+        commandLine.addArgument("logs");
+        commandLine.addArgument(mountId); //serviceId 또는 databaseId
+
+        DefaultExecutor executor = new DefaultExecutor();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+        executor.setStreamHandler(streamHandler);
+
+        try {
+            executor.execute(commandLine);
+            String logContent = processBackspaces(removeAnsiEscapeCodes(outputStream.toString()));
+//            System.out.println("File content: \n" + fileContent);
+            return logContent;
+        } catch (Exception e) {
+            System.err.println("컨테이너 로그 조회 오류 : " + e.getMessage());
+            e.printStackTrace();
+            throw new ContainerLogNotFoundException();
         }
     }
 
@@ -435,6 +461,26 @@ public class DockerfileServiceImpl implements DockerfileService {
         else{
             throw new PortNumberNotFoundException();
         }
+    }
+
+    String removeAnsiEscapeCodes(String text) {
+        String withoutAnsiColors = text.replaceAll("\u001B\\[[;\\d]*m", "");
+        String withoutTerminalTitle = withoutAnsiColors.replaceAll("\u001B\\]0;.*?\u0007", "");
+        return withoutTerminalTitle.replaceAll("\u001B\\[\\?\\d{4}[hl]", "");
+    }
+
+    String processBackspaces(String text) {
+        StringBuilder sb = new StringBuilder();
+        for (char c : text.toCharArray()) {
+            if (c == '\b') {
+                if (sb.length() > 0) {
+                    sb.deleteCharAt(sb.length() - 1);
+                }
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
 }

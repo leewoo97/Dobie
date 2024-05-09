@@ -75,4 +75,12 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi containercheck() {
+        return GroupedOpenApi.builder()
+                .group("f. 실행중인 컨테이너 확인")
+                .pathsToMatch("/api/containercheck/**")
+                .build();
+    }
+
 }

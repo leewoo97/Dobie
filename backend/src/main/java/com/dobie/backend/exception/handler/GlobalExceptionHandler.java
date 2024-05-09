@@ -232,6 +232,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("DockerComposeFileContentNotFoundException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
+    @ExceptionHandler(ContainerLogNotFoundException.class)
+    protected ResponseEntity<?> handle(ContainerLogNotFoundException e) {
+        log.error("ContainerLogNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
 
     /* NGINX */
     @ExceptionHandler(ProjectPathNotFoundException.class)
