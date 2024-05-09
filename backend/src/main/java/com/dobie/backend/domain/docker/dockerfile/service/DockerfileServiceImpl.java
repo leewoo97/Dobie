@@ -225,7 +225,7 @@ public class DockerfileServiceImpl implements DockerfileService {
         try {
             executor.execute(commandLine);
             String dockerOutput = outputStream.toString();
-//            System.out.println("docker ps -a결과: \n" + dockerOutput);
+            System.out.println("docker ps -a결과: \n" + dockerOutput);
             HashMap<String,String> containers = parseDockerPsOutput(dockerOutput);
 //            System.out.println("실행중인 컨테이너 목록 : " + containers);
 //            for (String key : containers.keySet()) {
@@ -248,7 +248,7 @@ public class DockerfileServiceImpl implements DockerfileService {
             if(allRunning==true){
                 analyzeContainer.put("allRunning","Run");
             }else{
-                analyzeContainer.put("allRunning","false");
+                analyzeContainer.put("allRunning","Stop");
             }
 //            System.out.println("결과값 : "+ analyzeContainer);
             return analyzeContainer;
