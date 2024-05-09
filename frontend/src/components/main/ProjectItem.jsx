@@ -9,6 +9,8 @@ import stop from "../../assets/stop.png";
 import useProjectStore from "../../stores/projectStore";
 import LoadingModal from "../../components/modal/LoadingModal";
 
+import { stopProject } from "../../api/Project";
+
 import { useNavigate } from "react-router-dom";
 
 export default function ProjectItem({ project }) {
@@ -32,14 +34,24 @@ export default function ProjectItem({ project }) {
     }
   };
 
+  const handleProjectStop = async (projectId) =>{
+    try{
+      const response = await stopProject(projectId);
+      console.log(response);
+    } catch(error){
+      console.log("프로젝트 정지 실패: "+ error);
+    }
+
+  }
+
   return (
     <>
       <div className={styles.content} onClick={() => handleSubmit()}>
         <div key={project.projectName}>{project.projectName}</div>
         <div key={project.projectDomain}>{project.projectDomain}</div>
         <div className={styles.runButton}>
-          <img src={project.running ? rerun : run} alt="" width="50px" className={styles.run} onClick={() => handleLoadingModal()} />
-          <img src={stop} alt="" width="50px"></img>
+          <img src={project.running ? rerun : run} alt="" width="50px" className={styles.run} onClick={() => handleLoadingModal(project.projectId)} />
+          <img src={stop} alt="" width="50px" onClick={()=> handleProjectStop()}></img>
         </div>
         <div>
           <img
