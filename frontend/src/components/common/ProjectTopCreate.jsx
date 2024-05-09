@@ -2,8 +2,17 @@ import { useState, useEffect } from "react";
 import styles from "./ProjectTopCreate.module.css";
 import remove from "../../assets/deleteIcon.png";
 import add from "../../assets/createIcon.png"
+import useProjectStore from "../../stores/projectStore";
 
 export default function GetBox({ keyName, valueName }) {
+    const {newProject, projectMap, setProjectMap} = useProjectStore();
+    // const {tempProjectMap, setTempProjectMap} = useState(new Map({...projectMap}));
+    console.log(projectMap);
+    // console.log(new Map(Object.entries({...projectMap})));
+    const createProject = () => {
+        
+    }
+
     return (
         <div className={styles.top}>
             <div>
