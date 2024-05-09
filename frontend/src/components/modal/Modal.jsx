@@ -30,6 +30,7 @@ export default function Madal({ content, type, setModalOpen }) {
           <div className={styles.modalhead}>
             {type == "nginx" && <h2>Nginx Config File</h2>}
             {type == "dockerCompose" && <h2>docker-compose File</h2>}
+            {type == "dockerFile" && <h2>docker File</h2>}
 
             <div
               className={styles.closeImg}
