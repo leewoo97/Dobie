@@ -9,6 +9,7 @@ import com.dobie.backend.exception.exception.docker.DockerPsLinePartsErrorExcept
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.util.file.FileManager;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.exec.CommandLine;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -510,18 +512,26 @@ public class DockerfileServiceImpl implements DockerfileService {
     ArrayList<String> AnalyzeProjectContainer(String projectId){//프로젝트가 가지고있는 백,프론트엔드,데이터베이스의 아이디를 가져옴
         try {
             ArrayList<String> result = new ArrayList<>();
+            ReadJsonFromDocker();
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
-            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+            Map<String, Object> projectJsonMap = ReadJsonFromDocker();
             Map<String, Object> backendMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "backendMap");
             System.out.println("backendMap : " + backendMap);
             String frontendId = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend", "serviceId");
             System.out.println("frontendId : " + frontendId);
             Map<String, Object> databaseMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "databaseMap");
             System.out.println("databaseMap : " + databaseMap);
-            result.addAll(backendMap.keySet());
-            result.add(frontendId);
-            result.addAll(databaseMap.keySet());
+            if(backendMap!=null) {
+                result.addAll(backendMap.keySet());
+            }
+            if(frontendId!=null) {
+                result.add(frontendId);
+            }
+            if(databaseMap!=null) {
+                result.addAll(databaseMap.keySet());
+            }
 //            System.out.println("result는 어떻게 나올까? " + result);
             return result;
         }catch (Exception e){
@@ -529,6 +539,39 @@ public class DockerfileServiceImpl implements DockerfileService {
             e.printStackTrace();
             throw new AnalyzeProjectContainerErrorException();
         }
+    }
+
+    //도커에서 가져온 json파일을 map으로 변환
+    Map<String, Object> ReadJsonFromDocker(){
+        try {
+            String jsonContent = getJsonContentFromDocker("dobie-be", "/data/project.json");
+            System.out.println("JSON Content: " + jsonContent);
+
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> jsonMap = mapper.readValue(jsonContent, Map.class);
+            System.out.println("Map Content: " + jsonMap);
+            return jsonMap;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //도커에서 json파일 가져오기
+    String getJsonContentFromDocker(String containerName, String filePath) throws IOException {
+        CommandLine cmdLine = new CommandLine("docker");
+        cmdLine.addArgument("exec");
+        cmdLine.addArgument(containerName);
+        cmdLine.addArgument("cat");
+        cmdLine.addArgument(filePath);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        DefaultExecutor executor = new DefaultExecutor();
+        PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+        executor.setStreamHandler(streamHandler);
+        executor.execute(cmdLine);
+
+        return outputStream.toString();
     }
 
 }
