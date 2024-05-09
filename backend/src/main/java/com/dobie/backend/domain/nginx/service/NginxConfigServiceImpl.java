@@ -51,6 +51,10 @@ public class NginxConfigServiceImpl implements NginxConfigService {
 
         String fileName = projectId + ".conf"; //파일이름 [projectName].conf로 만들어주기
         try {
+            if (!new File("/nginx").exists()) {
+                log.info("/nginx"+" :파일이 없어 새로 생성합니다.");
+                new File("/nginx").mkdirs();
+            }
             fileManager.saveFile("/nginx", fileName, sb.toString()); //fileManager활용해서 /nginx경로에 저장하기
         } catch (SaveFileFailedException e) {
             throw new NginxCreateFailedException(e.getErrorMessage());

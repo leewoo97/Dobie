@@ -159,15 +159,16 @@ public class ProjectServiceImpl implements ProjectService {
         //nginx proxy config 파일생성
         nginxConfigService.saveProxyNginxConfig(projectId);
 
-        try {
-            //frontend nginx config 파일 저장
-            nginxConfigService.saveFrontNginxConfigFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getProjectName());
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            throw new SaveFileFailedException("front nginx config 파일 저장에 실패했습니다."); //예외처리
+        if(frontendInfo.isUsingNginx()){
+            try {
+                //frontend nginx config 파일 저장
+                nginxConfigService.saveFrontNginxConfigFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getProjectName());
+            } catch (IOException e) {
+                log.error(e.getMessage());
+                throw new SaveFileFailedException("front nginx config 파일 저장에 실패했습니다."); //예외처리
+            }
         }
-
-
+       
     }
 
     @Override
