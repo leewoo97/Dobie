@@ -7,6 +7,7 @@ import stop from "../../assets/stop.png";
 import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 import FrameworkImg from "../common/FrameworkImg";
+import LoadingModal from "../../components/modal/LoadingModal";
 
 import { getDockerFile } from "../../api/Docker";
 
@@ -35,6 +36,16 @@ export default function RunProjectItem({
       console.log("docker File 조회 실패: " + error);
     }
   };
+
+  const [loadingModal, setLoadingModal] = useState(false);
+  const handleLoadingModal = async () => {
+    try {
+      setLoadingModal(true);
+    } catch (error) {
+
+    }
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -44,6 +55,7 @@ export default function RunProjectItem({
               src={container.running == "Running :)" ? rerun : run}
               alt=""
               width="30px"
+              onClick={() => handleLoadingModal()}
             />
             <img src={stop} width="30px"></img>
           </div>
@@ -127,6 +139,11 @@ export default function RunProjectItem({
           </div>
         </div>
       </div>
+      {
+        loadingModal && (
+          <LoadingModal setModalOpen={setLoadingModal}/>
+        )
+      }
     </>
   );
 }
