@@ -10,7 +10,7 @@ import log from "../../assets/logIcon.png";
 import RunProjectItem from "./RunProjectItem";
 import useProjectStore from "../../stores/projectStore";
 
-export default function RunProjectList() {
+export default function RunProjectList({ setModalOpen, setContent, setType }) {
   const { selectedProject, setSelectedProject } = useProjectStore();
 
   useEffect(() => {
@@ -31,17 +31,26 @@ export default function RunProjectList() {
                 key={container.serviceId}
                 container={container}
                 type="Backend"
+                setModalOpen={setModalOpen}
+                setContent={setContent}
+                setType={setType}
               />
             ))}
             <RunProjectItem
               container={selectedProject.frontend}
               type="Frontend"
+              setModalOpen={setModalOpen}
+              setContent={setContent}
+              setType={setType}
             />
             {Object.values(selectedProject.databaseMap).map((container) => (
               <RunProjectItem
                 key={container.databaseId}
                 container={container}
                 type="Database"
+                setModalOpen={setModalOpen}
+                setContent={setContent}
+                setType={setType}
               />
             ))}
           </div>

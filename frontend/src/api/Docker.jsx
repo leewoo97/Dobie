@@ -14,3 +14,15 @@ export async function getDockerCompose(projectId) {
     throw error;
   }
 }
+
+export async function getDockerFile(projectId, serviceId, type) {
+  try {
+    const response = await axios.get(nginxUrl + "/dockerfile-content", {
+      params: { projectId, serviceId, type },
+    });
+    console.log(response);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}

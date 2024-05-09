@@ -163,46 +163,14 @@ export default function RunPage() {
             </div>
           </div>
         </div>
-        <RunProjectList />
+        <RunProjectList
+          setModalOpen={setModalOpen}
+          setContent={setContent}
+          setType={setType}
+        />
       </div>
       {modalOpen && (
-        <Modal
-          content={content}
-          type={type}
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-        />
-        // <div
-        //   className={styles.modalContainer}
-        //   ref={modalBackground}
-        //   onClick={(e) => {
-        //     if (e.target === modalBackground.current) {
-        //       setModalOpen(false);
-        //     }
-        //   }}
-        // >
-        //   <div className={styles.modalContent}>
-        //     <div className={styles.modalhead}>
-        //       <h2>Nginx Config File</h2>
-        //       <div
-        //         className={styles.closeImg}
-        //         onClick={() => setModalOpen(false)}
-        //       >
-        //         <img
-        //           src={close}
-        //           alt=""
-        //           height="20px"
-        //           decoding="async"
-        //           className={styles.btnIcon}
-        //         />
-        //       </div>
-        //     </div>
-
-        //     <div className={styles.modalBody}>
-        //       <p className={styles.nginxConf}>{nginxConf}</p>
-        //     </div>
-        //   </div>
-        // </div>
+        <Modal content={content} type={type} setModalOpen={setModalOpen} />
       )}
     </>
   );
