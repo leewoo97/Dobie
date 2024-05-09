@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Container from "../../components/common/Container";
 import mascot from "../../assets/mascot.png";
 import styles from "./WelcomePage.module.css";

@@ -8,7 +8,7 @@ import FrontendPage from "./pages/managepage/FrontendPage";
 import ProjectPage from "./pages/managepage/ProjectPage";
 import DatabasePage from "./pages/managepage/DatabasePage";
 import RunPage from "./pages/managepage/RunPage";
-import SginUpPage from "./pages/startpage/SginUpPage";
+import SignUpPage from "./pages/startpage/SignUpPage";
 import ErrorPage from "./pages/errorpage/ErrorPage";
 
 import CreateBackendPage from "./pages/createPage/CreateBackendPage";
@@ -23,7 +23,7 @@ function Main() {
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<WelcomePage />} />
-          <Route path="sginup" element={<SginUpPage />} />
+          <Route path="sginup" element={<SignUpPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="main">
             <Route index element={<MainPage />} />

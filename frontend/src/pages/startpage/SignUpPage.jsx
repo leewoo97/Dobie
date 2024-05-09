@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Container from "../../components/common/Container";
-import styles from "./SginUpPage.module.css";
+import styles from "./SignUpPage.module.css";
 import mascot from "../../assets/mascot.png";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../stores/userStore";
