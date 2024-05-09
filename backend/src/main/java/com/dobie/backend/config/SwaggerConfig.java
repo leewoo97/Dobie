@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
-        info = @Info(title = "Dobie API 명세서",
-                description = "Dobie 서비스 API 명세서",
+        info = @Info(title = "DDobie API 명세서",
+                description = "DDobie 서비스 API 명세서",
                 version = "v1"))
 @Configuration
 public class SwaggerConfig {
