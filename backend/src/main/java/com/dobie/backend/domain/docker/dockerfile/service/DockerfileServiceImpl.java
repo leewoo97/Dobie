@@ -514,8 +514,11 @@ public class DockerfileServiceImpl implements DockerfileService {
             //data/projectJson을 map으로 변환해서 불러왔음
             Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
             Map<String, Object> backendMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "backendMap");
+            System.out.println("backendMap : " + backendMap);
             String frontendId = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend", "serviceId");
+            System.out.println("frontendId : " + frontendId);
             Map<String, Object> databaseMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "databaseMap");
+            System.out.println("databaseMap : " + databaseMap);
             result.addAll(backendMap.keySet());
             result.add(frontendId);
             result.addAll(databaseMap.keySet());
