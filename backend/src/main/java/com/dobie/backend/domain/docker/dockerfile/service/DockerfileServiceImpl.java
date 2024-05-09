@@ -213,19 +213,19 @@ public class DockerfileServiceImpl implements DockerfileService {
         CommandLine commandLine = new CommandLine("docker");
         commandLine.addArgument("ps");
         commandLine.addArgument("-a"); // "-a" 옵션 추가
-        System.out.println("어디서 잘못되는거지 : " + analyzeList);
+//        System.out.println("어디서 잘못되는거지 : " + analyzeList);
         DefaultExecutor executor = new DefaultExecutor();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
         executor.setStreamHandler(streamHandler);
 
-        System.out.println("프로젝트 내부 서비스 아이디 목록 : " + analyzeList);
+//        System.out.println("프로젝트 내부 서비스 아이디 목록 : " + analyzeList);
         try {
             executor.execute(commandLine);
             String dockerOutput = outputStream.toString();
 //            System.out.println("docker ps -a결과: \n" + dockerOutput);
             HashMap<String,String> containers = parseDockerPsOutput(dockerOutput);
-            System.out.println("실행중인 컨테이너 목록 : " + containers);
+//            System.out.println("실행중인 컨테이너 목록 : " + containers);
 //            for (String key : containers.keySet()) {
 //                System.out.println("Key: " + key + ", Value: " + containers.get(key));
 //            }
@@ -234,17 +234,21 @@ public class DockerfileServiceImpl implements DockerfileService {
             for(int i=0; i<analyzeList.size(); i++){
                 String currentContainerName = analyzeList.get(i);
                 String currentStatus = containers.get(currentContainerName);
-               analyzeContainer.put(currentContainerName,currentStatus);
-               if(currentStatus.equals("Running :)")&&!allRunning){
-                   allRunning = true;
-               }
+                if(currentStatus==null){
+                    analyzeContainer.put(currentContainerName,"ERROR :/");
+                }else {
+                    analyzeContainer.put(currentContainerName, currentStatus);
+                   if(currentStatus.equals("Running :)")&&!allRunning){
+                       allRunning = true;
+                   }
+                }
             }
             if(allRunning==true){
                 analyzeContainer.put("allRunning","Run");
             }else{
                 analyzeContainer.put("allRunning","false");
             }
-            System.out.println("결과값 : "+ analyzeContainer);
+//            System.out.println("결과값 : "+ analyzeContainer);
             return analyzeContainer;
 
         } catch (Exception e) {
@@ -515,10 +519,10 @@ public class DockerfileServiceImpl implements DockerfileService {
             result.addAll(backendMap.keySet());
             result.add(frontendId);
             result.addAll(databaseMap.keySet());
-            System.out.println("result는 어떻게 나올까? " + result);
+//            System.out.println("result는 어떻게 나올까? " + result);
             return result;
         }catch (Exception e){
-            System.err.println("프로젝트 내부 백,프론트,데이터베이스 Id조회 도중 발생한 오류 : " + e.getMessage());
+//            System.err.println("프로젝트 내부 백,프론트,데이터베이스 Id조회 도중 발생한 오류 : " + e.getMessage());
             e.printStackTrace();
             throw new AnalyzeProjectContainerErrorException();
         }
