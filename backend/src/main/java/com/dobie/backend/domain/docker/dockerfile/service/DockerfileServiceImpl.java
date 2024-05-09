@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -207,25 +208,44 @@ public class DockerfileServiceImpl implements DockerfileService {
     }
 
     @Override
-    public HashMap<String, String> dockerContainerLister() {
+    public HashMap<String,String> dockerContainerLister(String projectId) {
+        ArrayList<String> analyzeList = AnalyzeProjectContainer(projectId);
         CommandLine commandLine = new CommandLine("docker");
         commandLine.addArgument("ps");
         commandLine.addArgument("-a"); // "-a" 옵션 추가
-
+        System.out.println("어디서 잘못되는거지 : " + analyzeList);
         DefaultExecutor executor = new DefaultExecutor();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
         executor.setStreamHandler(streamHandler);
 
+        System.out.println("프로젝트 내부 서비스 아이디 목록 : " + analyzeList);
         try {
             executor.execute(commandLine);
             String dockerOutput = outputStream.toString();
 //            System.out.println("docker ps -a결과: \n" + dockerOutput);
             HashMap<String,String> containers = parseDockerPsOutput(dockerOutput);
+            System.out.println("실행중인 컨테이너 목록 : " + containers);
 //            for (String key : containers.keySet()) {
 //                System.out.println("Key: " + key + ", Value: " + containers.get(key));
 //            }
-            return containers;
+            HashMap<String,String> analyzeContainer = new HashMap<>();
+            boolean allRunning = false;
+            for(int i=0; i<analyzeList.size(); i++){
+                String currentContainerName = analyzeList.get(i);
+                String currentStatus = containers.get(currentContainerName);
+               analyzeContainer.put(currentContainerName,currentStatus);
+               if(currentStatus.equals("Running :)")&&!allRunning){
+                   allRunning = true;
+               }
+            }
+            if(allRunning==true){
+                analyzeContainer.put("allRunning","Run");
+            }else{
+                analyzeContainer.put("allRunning","false");
+            }
+            System.out.println("결과값 : "+ analyzeContainer);
+            return analyzeContainer;
 
         } catch (Exception e) {
             System.out.println("docker ps 명령어 실행 중 에러 발생: " + e.getMessage());
@@ -380,7 +400,7 @@ public class DockerfileServiceImpl implements DockerfileService {
 
 //----------------------------------------------------------------------------------------------------
 
-    public HashMap<String,String> parseDockerPsOutput(String output) {
+    public HashMap<String,String> parseDockerPsOutput(String output) {//실행중인 컨테이너 조회시 사용
         HashMap<String,String> containers = new HashMap<>();
         String[] lines = output.split("\n");
         try {
@@ -426,7 +446,7 @@ public class DockerfileServiceImpl implements DockerfileService {
 //        String[] temp = name.split("-");
 //        return temp[temp.length-2];
 //    }
-    public String checkStatus(String status){
+    public String checkStatus(String status){//실행중인 컨테이너 상태 반환
         if(status.contains("Up")){
             return "Running :)";
         }else if(status.contains("Exited")){
@@ -437,7 +457,7 @@ public class DockerfileServiceImpl implements DockerfileService {
             throw new CurrentStatusNotFoundException();
         }
     }
-    public String splitPorts(String ports,String type){
+    public String splitPorts(String ports,String type){//실행중인 컨테이너 조회시 사용
         if(type.equals("inner")) {
             // ':'을 기준으로 문자열을 나눕니다.
             String[] parts = ports.split(":");
@@ -463,13 +483,13 @@ public class DockerfileServiceImpl implements DockerfileService {
         }
     }
 
-    String removeAnsiEscapeCodes(String text) {
+    String removeAnsiEscapeCodes(String text) {//컨테이너 로그 가져올때 로그 언어 삭제 시키는 메소드
         String withoutAnsiColors = text.replaceAll("\u001B\\[[;\\d]*m", "");
         String withoutTerminalTitle = withoutAnsiColors.replaceAll("\u001B\\]0;.*?\u0007", "");
         return withoutTerminalTitle.replaceAll("\u001B\\[\\?\\d{4}[hl]", "");
     }
 
-    String processBackspaces(String text) {
+    String processBackspaces(String text) { //컨테이너 로그 가져올때 백스페이스 삭제 시키는 메소드
         StringBuilder sb = new StringBuilder();
         for (char c : text.toCharArray()) {
             if (c == '\b') {
@@ -481,6 +501,27 @@ public class DockerfileServiceImpl implements DockerfileService {
             }
         }
         return sb.toString();
+    }
+
+    ArrayList<String> AnalyzeProjectContainer(String projectId){//프로젝트가 가지고있는 백,프론트엔드,데이터베이스의 아이디를 가져옴
+        try {
+            ArrayList<String> result = new ArrayList<>();
+            //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
+            //data/projectJson을 map으로 변환해서 불러왔음
+            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+            Map<String, Object> backendMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "backendMap");
+            String frontendId = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend", "serviceId");
+            Map<String, Object> databaseMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "databaseMap");
+            result.addAll(backendMap.keySet());
+            result.add(frontendId);
+            result.addAll(databaseMap.keySet());
+            System.out.println("result는 어떻게 나올까? " + result);
+            return result;
+        }catch (Exception e){
+            System.err.println("프로젝트 내부 백,프론트,데이터베이스 Id조회 도중 발생한 오류 : " + e.getMessage());
+            e.printStackTrace();
+            throw new AnalyzeProjectContainerErrorException();
+        }
     }
 
 }

@@ -51,6 +51,7 @@ public enum ErrorCode {
     DOCKER_FILE_CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "도커 파일 경로 조회는 성공했지만, 도커 파일 내용 조회 과정에서 오류가 발생했습니다."),
     DOCKER_COMPOSE_FILE_CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "도커컴포즈 파일 경로 조회는 성공했지만, 도커컴포즈 파일 내용 조회 과정에서 오류가 발생했습니다."),
     CONTAINER_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "컨테이너 로그를 가져올수 없습니다."),
+    ANALYZE_PROJECT_CONTAINER_ERROR(HttpStatus.NOT_FOUND, "프로젝트 내부 아이디 분석중 오류가 발생했습니다."),
 
 
     /* 도커 명령어 실행 중 오류 */

@@ -238,6 +238,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    @ExceptionHandler(AnalyzeProjectContainerErrorException.class)
+    protected ResponseEntity<?> handle(AnalyzeProjectContainerErrorException e) {
+        log.error("AnalyzeProjectContainerErrorException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
     /* NGINX */
     @ExceptionHandler(ProjectPathNotFoundException.class)
     protected ResponseEntity<?> handle(ProjectPathNotFoundException e) {
