@@ -21,11 +21,13 @@ import { getDockerCompose } from "../../api/Docker";
 import useProjectStore from "../../stores/projectStore";
 import RunProjectList from "../../components/manage/RunProjectList";
 import Modal from "../../components/modal/Modal";
+import LoadingModal from "../../components/modal/LoadingModal";
 
 export default function RunPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [content, setContent] = useState("");
   const [type, setType] = useState("");
+  const [loadingModal, setLoadingModal] = useState(false);
   // const modalBackground = useRef();
 
   const { selectedProject, setSelectedProject } = useProjectStore();
@@ -62,13 +64,20 @@ export default function RunPage() {
       console.log(projectId);
       const response = await getDockerCompose(projectId);
 
-      setModalOpen(true);
+      setLoadingModal(true);
       setType("dockerCompose");
       setContent(response.data.data);
 
       console.log(response.data.data);
     } catch (error) {
       console.log("docker compose 조회 실패: " + error);
+    }
+  };
+  const handleLoadingModal = async () => {
+    try {
+      setLoadingModal(true);
+    } catch (error) {
+      
     }
   };
 
@@ -128,7 +137,7 @@ export default function RunPage() {
           <div>
             <div className={styles.text}>프로젝트 전체 실행</div>
             <div className={styles.runButton}>
-              <img src={run} width="40px"></img>
+              <img src={run} width="40px" onClick={() => handleLoadingModal()}></img>
               <img src={rerun} width="40px"></img>
             </div>
           </div>
@@ -163,46 +172,19 @@ export default function RunPage() {
             </div>
           </div>
         </div>
-        <RunProjectList />
-      </div>
-      {modalOpen && (
-        <Modal
-          content={content}
-          type={type}
-          modalOpen={modalOpen}
+        <RunProjectList
           setModalOpen={setModalOpen}
+          setContent={setContent}
+          setType={setType}
         />
-        // <div
-        //   className={styles.modalContainer}
-        //   ref={modalBackground}
-        //   onClick={(e) => {
-        //     if (e.target === modalBackground.current) {
-        //       setModalOpen(false);
-        //     }
-        //   }}
-        // >
-        //   <div className={styles.modalContent}>
-        //     <div className={styles.modalhead}>
-        //       <h2>Nginx Config File</h2>
-        //       <div
-        //         className={styles.closeImg}
-        //         onClick={() => setModalOpen(false)}
-        //       >
-        //         <img
-        //           src={close}
-        //           alt=""
-        //           height="20px"
-        //           decoding="async"
-        //           className={styles.btnIcon}
-        //         />
-        //       </div>
-        //     </div>
-
-        //     <div className={styles.modalBody}>
-        //       <p className={styles.nginxConf}>{nginxConf}</p>
-        //     </div>
-        //   </div>
-        // </div>
+      </div>
+      {
+        loadingModal && (
+          <LoadingModal setModalOpen={setLoadingModal}/>
+        )
+      }
+      {modalOpen && (
+        <Modal content={content} type={type} setModalOpen={setModalOpen} />
       )}
     </>
   );
