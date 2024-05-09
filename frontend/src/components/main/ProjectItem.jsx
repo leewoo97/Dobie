@@ -32,17 +32,13 @@ export default function ProjectItem({ project }) {
   const handleRunLoadingModal = async () => {
     try {
       setRunLoadingModal(true);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   const handleStopLoadingModal = async () => {
     try {
       setStopLoadingModal(true);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   const handleProjectStop = async (projectId) => {
@@ -52,8 +48,7 @@ export default function ProjectItem({ project }) {
     } catch (error) {
       console.log("프로젝트 정지 실패: " + error);
     }
-
-  }
+  };
 
   return (
     <>
@@ -61,8 +56,19 @@ export default function ProjectItem({ project }) {
         <div key={project.projectName}>{project.projectName}</div>
         <div key={project.projectDomain}>{project.projectDomain}</div>
         <div className={styles.runButton}>
-          <img src={project.running ? rerun : restart} alt="" width="50px" className={styles.run} onClick={() => handleRunLoadingModal()} />
-          <img src={stop} alt="" width="50px" onClick={() => handleStopLoadingModal()}></img>
+          <img
+            src={project.running ? rerun : restart}
+            alt=""
+            width="50px"
+            className={styles.run}
+            onClick={() => handleRunLoadingModal()}
+          />
+          <img
+            src={stop}
+            alt=""
+            width="50px"
+            onClick={() => handleStopLoadingModal()}
+          ></img>
         </div>
         <div>
           <img
@@ -72,16 +78,12 @@ export default function ProjectItem({ project }) {
           />
         </div>
       </div>
-      {
-        runLoadingModal && (
-          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
-        )
-      }
-      {
-        stopLoadingModal && (
-          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
-        )
-      }
+      {runLoadingModal && (
+        <LoadingModal action={"run"} setModalOpen={setRunLoadingModal} />
+      )}
+      {stopLoadingModal && (
+        <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal} />
+      )}
     </>
   );
 }
