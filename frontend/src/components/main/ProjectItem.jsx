@@ -27,9 +27,7 @@ export default function ProjectItem({ project }) {
   const handleLoadingModal = async () => {
     try {
       setLoadingModal(true);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   return (
@@ -38,7 +36,13 @@ export default function ProjectItem({ project }) {
         <div key={project.projectName}>{project.projectName}</div>
         <div key={project.projectDomain}>{project.projectDomain}</div>
         <div className={styles.runButton}>
-          <img src={project.running ? rerun : run} alt="" width="50px" className={styles.run} onClick={() => handleLoadingModal()} />
+          <img
+            src={project.running ? rerun : run}
+            alt=""
+            width="50px"
+            className={styles.run}
+            onClick={() => handleLoadingModal()}
+          />
           <img src={stop} alt="" width="50px"></img>
         </div>
         <div>
@@ -49,11 +53,7 @@ export default function ProjectItem({ project }) {
           />
         </div>
       </div>
-      {
-        loadingModal && (
-          <LoadingModal setModalOpen={setLoadingModal}/>
-        )
-      }
+      {loadingModal && <LoadingModal setModalOpen={setLoadingModal} />}
     </>
   );
 }
