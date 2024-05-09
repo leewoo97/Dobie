@@ -85,6 +85,11 @@ public class NginxConfigServiceImpl implements NginxConfigService {
     @Override
     public String withHttpsConfig(NginxConfigDto nginxConfig) {
         StringBuilder sb = new StringBuilder();
+        for(NginxProxyDto proxyConfig : nginxConfig.getProxyList()){
+            sb.append("upstream user_").append(proxyConfig.getLocation()).append("_server {\n");
+            sb.append("    server ").append(proxyConfig.getServiceId()).append(":").append(proxyConfig.getPort()).append(";\n");
+            sb.append("}\n");
+        }
         // HTTP를 HTTPS로 리디렉션하는 서버 블록
         sb.append("server {\n");
         sb.append("    listen 80;\n"); //80번 포트로 요청이 들어왔을때
@@ -121,7 +126,7 @@ public class NginxConfigServiceImpl implements NginxConfigService {
         //locations 리스트 for문 통해서 config 작성
         for (NginxProxyDto proxyConfig : nginxConfig.getProxyList()) {
             sb.append("    location ").append(proxyConfig.getLocation()).append(" {\n"); //location 경로설정 (ex. location /api {)
-            sb.append("        proxy_pass ").append(proxyConfig.getServiceId()).append(":").append(proxyConfig.getPort()).append(";\n"); //위의 경로로 요청이 왔을때 연결할 경로(ex. https://www.catale.8080)
+            sb.append("        proxy_pass ").append("user_").append(proxyConfig.getLocation()).append("_server\n");
             sb.append("        proxy_http_version 1.1;\n"); // HTTP 프로토콜 버전 설정
             sb.append("        proxy_set_header Connection \"\";\n"); // Connection 헤더 설정
             sb.append("        proxy_redirect off;\n"); // 리다이렉션 설정 비활성화
@@ -146,6 +151,11 @@ public class NginxConfigServiceImpl implements NginxConfigService {
     @Override
     public String withoutHttpsConfig(NginxConfigDto nginxConfig) {
         StringBuilder sb = new StringBuilder();
+        for(NginxProxyDto proxyConfig : nginxConfig.getProxyList()){
+            sb.append("upstream user_").append(proxyConfig.getLocation()).append("_server {\n");
+            sb.append("    server ").append(proxyConfig.getServiceId()).append(":").append(proxyConfig.getPort()).append(";\n");
+            sb.append("}\n");
+        }
         sb.append("server {\n");
         sb.append("    listen 80;\n");
         sb.append("    listen [::]:80;\n");
@@ -155,7 +165,7 @@ public class NginxConfigServiceImpl implements NginxConfigService {
         sb.append("\n");
         for (NginxProxyDto proxyConfig : nginxConfig.getProxyList()) {
             sb.append("    location ").append(proxyConfig.getLocation()).append(" {\n");
-            sb.append("        proxy_pass ").append(proxyConfig.getServiceId()).append(":").append(proxyConfig.getPort()).append(";\n");
+            sb.append("        proxy_pass ").append("user_").append(proxyConfig.getLocation()).append("_server\n");
             sb.append("        proxy_http_version 1.1;\n");
             sb.append("        proxy_set_header Connection \"\";\n");
             sb.append("        proxy_redirect off;\n");
