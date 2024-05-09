@@ -26,21 +26,31 @@ export default function ProjectItem({ project }) {
     }
   };
 
-  const [loadingModal, setLoadingModal] = useState(false);
-  const handleLoadingModal = async () => {
+  const [runLoadingModal, setRunLoadingModal] = useState(false);
+  const [stopLoadingModal, setStopLoadingModal] = useState(false);
+
+  const handleRunLoadingModal = async () => {
     try {
-      setLoadingModal(true);
+      setRunLoadingModal(true);
     } catch (error) {
 
     }
   };
 
-  const handleProjectStop = async (projectId) =>{
-    try{
+  const handleStopLoadingModal = async () => {
+    try {
+      setStopLoadingModal(true);
+    } catch (error) {
+
+    }
+  };
+
+  const handleProjectStop = async (projectId) => {
+    try {
       const response = await stopProject(projectId);
       console.log(response);
-    } catch(error){
-      console.log("프로젝트 정지 실패: "+ error);
+    } catch (error) {
+      console.log("프로젝트 정지 실패: " + error);
     }
 
   }
@@ -51,8 +61,8 @@ export default function ProjectItem({ project }) {
         <div key={project.projectName}>{project.projectName}</div>
         <div key={project.projectDomain}>{project.projectDomain}</div>
         <div className={styles.runButton}>
-          <img src={project.running ? rerun : restart} alt="" width="50px" className={styles.run} onClick={() => handleLoadingModal(project.projectId)} />
-          <img src={stop} alt="" width="50px" onClick={()=> handleProjectStop()}></img>
+          <img src={project.running ? rerun : restart} alt="" width="50px" className={styles.run} onClick={() => handleRunLoadingModal()} />
+          <img src={stop} alt="" width="50px" onClick={() => handleStopLoadingModal()}></img>
         </div>
         <div>
           <img
@@ -63,8 +73,13 @@ export default function ProjectItem({ project }) {
         </div>
       </div>
       {
-        loadingModal && (
-          <LoadingModal setModalOpen={setLoadingModal}/>
+        runLoadingModal && (
+          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
+        )
+      }
+      {
+        stopLoadingModal && (
+          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
         )
       }
     </>
