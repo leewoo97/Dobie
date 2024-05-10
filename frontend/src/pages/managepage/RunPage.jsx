@@ -33,7 +33,8 @@ export default function RunPage() {
   const { fileType, setFileType } = useModalStore();
   const { checkProceed, setCheckProceed } = useProjectStore();
   const { loadingModal, setLoadingModal } = useModalStore();
-  const { selectedProject, setSelectedProject } = useProjectStore();
+  const { selectedProject, setSelectedProject, setUpdatedProject } = useProjectStore();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -167,6 +168,11 @@ export default function RunPage() {
     }
   };
 
+  const handleUpdateProject = () => {
+    setUpdatedProject({...selectedProject});
+    navigate("/update/project");
+  }
+
   return (
     <>
       <NavTop />
@@ -194,7 +200,7 @@ export default function RunPage() {
             </div>
             <div
               className={styles.edit}
-              onClick={() => navigate("/update/project")}
+              onClick={handleUpdateProject}
             >
               수정{" "}
               <img
