@@ -25,3 +25,27 @@ export async function deleteProject(projectId) {
     throw error;
   }
 }
+export async function stopService(containerName) {
+  try {
+    console.log("################# axios함수");
+    console.log(containerName);
+    const response = await axios.post(projectUrl + "/stop/service", null, {
+      params: { containerName },
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+export async function startService(containerName) {
+  try {
+    console.log("################# axios함수");
+    console.log(containerName);
+    const response = await axios.post(projectUrl + "/start/service", null, {
+      params: { containerName },
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}

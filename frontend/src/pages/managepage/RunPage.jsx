@@ -35,13 +35,22 @@ export default function RunPage() {
 
   useEffect(() => {
     try {
-      const response = checkProceeding(selectedProject.projectId);
-      setData(response.data);
-      // console.log(response.data[selectedProject.frontend.serviceId]);
+      handleCheckProceding();
     } catch (error) {
       console.error("컨테이너 실행 확인 에러: ", error);
     }
   }, []);
+  const handleCheckProceding = async () => {
+    try {
+      console.log(selectedProject.projectId);
+      const response = await checkProceeding(selectedProject.projectId);
+      setData(response.data.data);
+      console.log("process");
+      console.log(response.data.data);
+    } catch (error) {
+      console.error("컨테이너 실행 확인 에러: ", error);
+    }
+  };
 
   const handleDelete = async (projectId) => {
     try {

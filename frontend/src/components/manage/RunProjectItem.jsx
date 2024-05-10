@@ -7,8 +7,11 @@ import stop from "../../assets/stop.png";
 import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 import FrameworkImg from "../common/FrameworkImg";
+import toast from "react-hot-toast";
 
 import { getDockerFile } from "../../api/Docker";
+import { stopService } from "../../api/Project";
+import { startService } from "../../api/Project";
 
 import useProjectStore from "../../stores/projectStore";
 
@@ -21,6 +24,7 @@ export default function RunProjectItem({
   isRunning,
 }) {
   const { selectedProject, setSelectedProject } = useProjectStore();
+  console.log(isRunning);
 
   const handleDockerFileModal = async (projectId, serviceId, type) => {
     try {
@@ -36,17 +40,65 @@ export default function RunProjectItem({
       console.log("docker File 조회 실패: " + error);
     }
   };
+  const handleStopService = async (containerName) => {
+    try {
+      if (isRunning == "Running :)") {
+        console.log(containerName);
+        const response = await stopService(containerName);
+        console.log(response);
+      } else {
+        toast.error(`이미 중지된 컨테이너 입니다. `, {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      console.log("개별중지 실패: " + error);
+    }
+  };
+  const handleStartService = async (containerName) => {
+    try {
+      console.log(containerName);
+      const response = await startService(containerName);
+      console.log(response);
+    } catch (error) {
+      console.log("개별실행 실패: " + error);
+    }
+  };
   return (
     <>
       <div className={styles.container}>
         <div className={styles.containerButton}>
           <div className={styles.runButton}>
-            <img
-              src={container.running == "Running :)" ? rerun : run}
-              alt=""
-              width="30px"
-            />
-            <img src={stop} width="30px"></img>
+            {type == "Database" ? (
+              <img
+                src={isRunning == "Running :)" ? rerun : run}
+                alt=""
+                width="30px"
+                onClick={() => handleStartService(container.databaseId)}
+              />
+            ) : (
+              <img
+                src={isRunning == "Running :)" ? rerun : run}
+                alt=""
+                width="30px"
+                onClick={() => handleStartService(container.serviceId)}
+              />
+            )}
+
+            {(type == "Backend" || type == "Frontend") && (
+              <img
+                src={stop}
+                width="30px"
+                onClick={() => handleStopService(container.serviceId)}
+              ></img>
+            )}
+            {type == "Database" && (
+              <img
+                src={stop}
+                width="30px"
+                onClick={() => handleStopService(container.databaseId)}
+              ></img>
+            )}
           </div>
           {(type == "Backend" || type == "Frontend") && (
             <div
@@ -111,7 +163,6 @@ export default function RunProjectItem({
               key={isRunning}
             >
               {isRunning}
-              stoped :(
             </div>
             <div className={styles.log}>
               <img
