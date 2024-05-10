@@ -16,8 +16,8 @@ export default function ProjectFrame() {
     // const [branch, setBranch] = useState(null);
 
     const [gittype, setGittype] = useState("gitlab");
-    const {newProject, setNewProject} = useProjectStore();
-    const [tempProject, setTempProject] = useState({...newProject});
+    const {createdProject, setCreatedProject} = useProjectStore();
+    const [tempProject, setTempProject] = useState({...createdProject});
 
     const changeUrlHandler = (e) => {
         setTempProject(prev => ({
@@ -40,7 +40,7 @@ export default function ProjectFrame() {
     }
 
     useEffect(() => {
-        setNewProject(tempProject);
+        setCreatedProject(tempProject);
     }, [tempProject])
 
 
