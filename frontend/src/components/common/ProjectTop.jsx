@@ -12,8 +12,8 @@ export default function ProjectTop({ projectName }) {
                 <div className={styles.projectName}>{projectName}</div>
             </div>
             <div className={styles.buttons}>
-                <div className={styles.edit}>수정 <img src={edit} alt="" height="20px" decoding="async" className={styles.btnIcon} /></div>
-                <div className={styles.remove}>삭제 <img src={remove} alt="" width="23px" decoding="async" className={styles.btnIcon} /></div>
+                <div className={styles.edit}>수정 <img src={edit} alt="" decoding="async" className={styles.btnIcon} /></div>
+                <div className={styles.remove}>삭제 <img src={remove} alt="" decoding="async" className={styles.btnIcon} /></div>
             </div>
         </div>
     );

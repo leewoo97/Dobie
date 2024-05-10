@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 import styles from "./RunProjectItem.module.css";
 import run from "../../assets/run.png";
 import rerun from "../../assets/rerun.png";
@@ -7,52 +5,95 @@ import stop from "../../assets/stop.png";
 import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 import FrameworkImg from "../common/FrameworkImg";
-import LoadingModal from "../../components/modal/LoadingModal";
+import toast from "react-hot-toast";
+import restart from "../../assets/restart.png";
 
 import { getDockerFile } from "../../api/Docker";
+import { stopService } from "../../api/Project";
+import { startService } from "../../api/Project";
+import { useNavigate } from "react-router-dom";
 
 import useProjectStore from "../../stores/projectStore";
+import useModalStore from "../../stores/modalStore";
 
-export default function RunProjectItem({
-  container,
-  type,
-  setModalOpen,
-  setContent,
-  setType,
-}) {
+export default function RunProjectItem({ container, type, setContent }) {
   const { selectedProject, setSelectedProject } = useProjectStore();
+  const { checkProceed, setCheckProceed } = useProjectStore();
+  const { loadingModal, setLoadingModal } = useModalStore();
+  const { action, setAction } = useModalStore();
+  const { fileType, setFileType } = useModalStore();
+  const { modalOpen, setModalOpen } = useModalStore();
 
+  const navigate = useNavigate();
+
+  //도커파일 조회
   const handleDockerFileModal = async (projectId, serviceId, type) => {
     try {
-      console.log(projectId);
+      console.log(checkProceed[container.serviceId]);
       const response = await getDockerFile(projectId, serviceId, type);
-
-      setModalOpen(true);
-      setType("dockerFile");
-      setContent(response.data.data);
-
-      console.log(response.data.data);
+      if (response.status == 200) {
+        setModalOpen(true);
+        setFileType("dockerFile");
+        setContent(response.data);
+      } else {
+        toast.error(`도커 파일 조회 실패`, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("docker File 조회 실패: " + error);
     }
   };
 
-  const [runLoadingModal, setRunLoadingModal] = useState(false);
-  const [stopLoadingModal, setStopLoadingModal] = useState(false);
-
-const handleRunLoadingModal = async () => {
+  //개별 서비스 중지
+  const handleStopService = async (containerName) => {
     try {
-      setRunLoadingModal(true);
+      if (checkProceed[containerName] == "Running :)") {
+        setAction("stop");
+        setLoadingModal(true);
+        const response = await stopService(containerName).then(() =>
+          setLoadingModal(false)
+        );
+        window.location.replace("/manage");
+        console.log(response);
+      } else {
+        toast.error(`이미 중지된 컨테이너 입니다. `, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
-      
+      console.log("개별중지 실패: " + error);
     }
   };
 
-  const handleStopLoadingModal = async () => {
+  //개별 서비스 실행
+  const handleStartService = async (containerName) => {
     try {
-      setStopLoadingModal(true);
+      setAction("run");
+      setLoadingModal(true);
+      const response = await startService(containerName).then(() =>
+        setLoadingModal(false)
+      );
+      window.location.replace("/manage");
+      if (response.data.status == "SUCCESS") {
+        console.log(response);
+      } else {
+        toast.error(`개별 실행에 실패하였습니다. `, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
-      
+      console.log("개별실행 실패: " + error);
+    }
+  };
+
+  const handleIntoContainer = () => {
+    if (type == "Backend") {
+      navigate(`/manage/backend/${container.serviceId}`);
+    } else if (type == "Frontend") {
+      navigate(`/manage/frontend`);
+    } else {
+      navigate(`/manage/database/${container.databaseId}`);
     }
   };
 
@@ -61,14 +102,44 @@ const handleRunLoadingModal = async () => {
       <div className={styles.container}>
         <div className={styles.containerButton}>
           <div className={styles.runButton}>
-            <img
-              src={container.running == "Running :)" ? rerun : run}
-              alt=""
-              width="30px"
-              onClick={() => handleRunLoadingModal()}
-            />
-            <img src={stop} width="30px"
-            onClick={() => handleStopLoadingModal()}></img>
+            {type == "Database" ? (
+              <img
+                src={
+                  checkProceed[container.databaseId] == "Running :)"
+                    ? restart
+                    : run
+                }
+                alt=""
+                width="30px"
+                onClick={() => handleStartService(container.databaseId)}
+              />
+            ) : (
+              <img
+                src={
+                  checkProceed[container.serviceId] == "Running :)"
+                    ? restart
+                    : run
+                }
+                alt=""
+                width="30px"
+                onClick={() => handleStartService(container.serviceId)}
+              />
+            )}
+
+            {(type == "Backend" || type == "Frontend") && (
+              <img
+                src={stop}
+                width="30px"
+                onClick={() => handleStopService(container.serviceId)}
+              ></img>
+            )}
+            {type == "Database" && (
+              <img
+                src={stop}
+                width="30px"
+                onClick={() => handleStopService(container.databaseId)}
+              ></img>
+            )}
           </div>
           {(type == "Backend" || type == "Frontend") && (
             <div
@@ -85,14 +156,13 @@ const handleRunLoadingModal = async () => {
               <img
                 src={document}
                 alt=""
-                width="25px"
                 decoding="async"
                 className={styles.btnIcon}
               />
             </div>
           )}
         </div>
-        <div className={styles.box}>
+        <div className={styles.box} onClick={() => handleIntoContainer()}>
           <div className={styles.boxTop}>
             <table>
               <tbody>
@@ -126,22 +196,33 @@ const handleRunLoadingModal = async () => {
           </div>
           <div className={styles.line}></div>
           <div className={styles.boxBottom}>
-            <div
-              className={
-                container.running == "Running :)"
-                  ? styles.running
-                  : styles.stopped
-              }
-              key={container.running}
-            >
-              {container.running}
-              stoped :(
-            </div>
+            {type == "Database" ? (
+              <div
+                className={
+                  checkProceed[container.databaseId] == "Running :)"
+                    ? styles.running
+                    : styles.stopped
+                }
+                key={checkProceed[container.databaseId]}
+              >
+                {checkProceed[container.databaseId]}
+              </div>
+            ) : (
+              <div
+                className={
+                  checkProceed[container.serviceId] == "Running :)"
+                    ? styles.running
+                    : styles.stopped
+                }
+                key={checkProceed[container.serviceId]}
+              >
+                {checkProceed[container.serviceId]}
+              </div>
+            )}
             <div className={styles.log}>
               <img
                 src={log}
                 alt=""
-                width="25px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -150,16 +231,6 @@ const handleRunLoadingModal = async () => {
           </div>
         </div>
       </div>
-      {
-        runLoadingModal && (
-          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
-        )
-      }
-      {
-        stopLoadingModal && (
-          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
-        )
-      }
     </>
   );
 }

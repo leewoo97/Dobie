@@ -31,7 +31,7 @@ export default function FrontendFrame(){
 
     return(
         <div className={styles.page}>
-            <ProjectTopCreate />
+            {/* <ProjectTopCreate /> */}
             <InputSelectBox keyName={"프레임워크"} list={frameworkList} value={framework} onChange={frameworkSelect} />
             <DescBox desc={"Frontend 서비스의 프레임워크를 선택하세요"} />
             

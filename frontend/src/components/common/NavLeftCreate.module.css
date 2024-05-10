@@ -27,13 +27,62 @@
     color: #6096B4;
     font-weight: bold;
 }
-.img {
-    width: 70%;
-    margin: 0 auto;
-    display: inline-flex;
-    align-items: flex-end;
-}
 
 .list > p{
     cursor: pointer;
+}
+
+.buttons{
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.add{
+    color: white;
+    font-weight: bold;
+    background-color: #E5AA17;
+    border-radius: 10px;
+    margin: 3% 0;
+    padding: 4% 10%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home{
+    color: white;
+    font-weight: bold;
+    background-color: #6096B4;
+    border-radius: 10px;
+    margin: 3% 0;
+    padding: 4% 10%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add:hover{
+    opacity: 0.8;
+    transform: scale(1.05); /* 5% 확대 */
+    transition: 0.3s ease-in-out; /* 부드러운 전환 효과 */
+    cursor: default;
+}
+
+.home:hover{
+    opacity: 0.8;
+    transform: scale(1.05); /* 5% 확대 */
+    transition: 0.3s ease-in-out; /* 부드러운 전환 효과 */
+    cursor: default;
+}
+
+.addIcon{
+    height: 4vh;
+    margin-left: 5%;
+}
+
+.homeIcon{
+    height: 4vh;
+    margin-left: 5%;
 }

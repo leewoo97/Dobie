@@ -1,19 +1,14 @@
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import NavTop from "../../components/common/NavTop";
-import NavLeft from "../../components/common/NavLeft";
+import { useRef } from "react";
 
-import toast from "react-hot-toast";
 import styles from "./Modal.module.css";
 import close from "../../assets/close.png";
 
-// import { deleteProject } from "../../api/Project";
-// import { getNginxConf } from "../../api/ngixn";
-// import { getDockerCompose } from "../../api/Docker";
-import useProjectStore from "../../stores/projectStore";
+import useModalStore from "../../stores/modalStore";
 
-export default function Madal({ content, type, setModalOpen }) {
+export default function Madal({ content }) {
   const modalBackground = useRef();
+  const { fileType, setFileType } = useModalStore();
+  const { modalOpen, setModalOpen } = useModalStore();
 
   return (
     <>
@@ -28,9 +23,9 @@ export default function Madal({ content, type, setModalOpen }) {
       >
         <div className={styles.modalContent}>
           <div className={styles.modalhead}>
-            {type == "nginx" && <h2>Nginx Config File</h2>}
-            {type == "dockerCompose" && <h2>docker-compose File</h2>}
-            {type == "dockerFile" && <h2>docker File</h2>}
+            {fileType == "nginx" && <h2>Nginx Config File</h2>}
+            {fileType == "dockerCompose" && <h2>docker-compose File</h2>}
+            {fileType == "dockerFile" && <h2>docker File</h2>}
 
             <div
               className={styles.closeImg}
@@ -47,7 +42,7 @@ export default function Madal({ content, type, setModalOpen }) {
           </div>
 
           <div className={styles.modalBody}>
-            <p className={styles.nginxConf}>{content}</p>
+            <p className={styles.content}>{content}</p>
           </div>
         </div>
       </div>

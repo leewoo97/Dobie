@@ -8,86 +8,163 @@ import styles from "./RunPage.module.css";
 import run from "../../assets/run.png";
 import rerun from "../../assets/rerun.png";
 import stop from "../../assets/stop.png";
-import close from "../../assets/close.png";
 import edit from "../../assets/editIcon.png";
 import remove from "../../assets/deleteIcon.png";
 import setting from "../../assets/settingIcon.png";
 import document from "../../assets/documentIcon.png";
-import log from "../../assets/logIcon.png";
+import restart from "../../assets/restart.png";
 
-import { deleteProject } from "../../api/Project";
+import { deleteProject, startProject, stopProject } from "../../api/Project";
 import { getNginxConf } from "../../api/ngixn";
 import { getDockerCompose } from "../../api/Docker";
+import { checkProceeding } from "../../api/CheckProcess";
+
 import useProjectStore from "../../stores/projectStore";
+import useModalStore from "../../stores/modalStore";
 import RunProjectList from "../../components/manage/RunProjectList";
 import Modal from "../../components/modal/Modal";
 import LoadingModal from "../../components/modal/LoadingModal";
 
 export default function RunPage() {
-  const [modalOpen, setModalOpen] = useState(false);
   const [content, setContent] = useState("");
-  const [type, setType] = useState("");
-  const [runLoadingModal, setRunLoadingModal] = useState(false);
-  const [stopLoadingModal, setStopLoadingModal] = useState(false);
-  // const modalBackground = useRef();
 
-  const { selectedProject, setUpdatedProject } = useProjectStore();
+  const { action, setAction } = useModalStore();
+  const { modalOpen, setModalOpen } = useModalStore();
+  const { fileType, setFileType } = useModalStore();
+  const { checkProceed, setCheckProceed } = useProjectStore();
+  const { loadingModal, setLoadingModal } = useModalStore();
+  const { selectedProject, setSelectedProject, setUpdatedProject } = useProjectStore();
+
   const navigate = useNavigate();
 
+  useEffect(() => {
+    try {
+      handleCheckProceding();
+      setLoadingModal(false);
+    } catch (error) {
+      console.error("컨테이너 실행 확인 에러: ", error);
+    }
+  }, []);
+
+  //실행상태 조회
+  const handleCheckProceding = async () => {
+    try {
+      const response = await checkProceeding(selectedProject.projectId);
+      if (response.data.status == "SUCCESS") {
+        setCheckProceed(response.data.data);
+        console.log(response.data.data);
+      } else {
+        setCheckProceed({ allRunning: "null" });
+        toast.error(`프로젝트 실행상태를 불러올수 없습니다.`, {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      console.error("컨테이너 실행 확인 에러: ", error);
+    }
+  };
+
+  //프로젝트 삭제
   const handleDelete = async (projectId) => {
     try {
       const response = await deleteProject(projectId);
-      console.log(response);
-      navigate("/main");
-      toast.success(`프로젝트를 삭제했습니다`, {
-        position: "top-center",
-      });
+      if (response.data.status == "SUCCESS") {
+        console.log(response);
+        navigate("/main");
+        toast.success(`프로젝트를 삭제했습니다`, {
+          position: "top-center",
+        });
+      } else {
+        toast.error(`프로젝트 삭제를 실패했습니다.`, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("프로젝트 삭제 실패: " + error);
+      toast.error(`프로젝트 삭제를 실패했습니다.`, {
+        position: "top-center",
+      });
     }
   };
+
+  //nginx config 조회
   const handleOpenNginxModal = async (projectId) => {
     try {
-      console.log(projectId);
       const response = await getNginxConf(projectId);
-
-      setModalOpen(true);
-      setType("nginx");
-      setContent(response.data.data);
-
-      console.log(response.data.data);
+      if (response.data.status == "SUCCESS") {
+        await setFileType("nginx");
+        setModalOpen(true);
+        setContent(response.data.data);
+      } else {
+        toast.error("nginx config 파일 조회 실패", {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("nginx config 조회 실패: " + error);
     }
   };
+
+  //도커 컴포즈 조회
   const handleDockerComposeModal = async (projectId) => {
     try {
       console.log(projectId);
       const response = await getDockerCompose(projectId);
-
-      setModalOpen(true);
-      setType("dockerCompose");
-      setContent(response.data.data);
-
-      console.log(response.data.data);
+      if (response.status == 200) {
+        setModalOpen(true);
+        setFileType("dockerCompose");
+        setContent(response.data);
+      } else {
+        toast.error("도커 컴포즈 파일 조회 실패", {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("docker compose 조회 실패: " + error);
     }
   };
 
-  const handleRunLoadingModal = async () => {
+  //전체 프로젝트 중지
+  const handleProjectStop = async (projectId) => {
     try {
-      setRunLoadingModal(true);
+      if (checkProceed.allRunning == "Run") {
+        setAction("stop");
+        setLoadingModal(true);
+        const response = await stopProject(projectId).then(() =>
+          setLoadingModal(false)
+        );
+        window.location.replace("/manage");
+        console.log(response);
+
+        console.log(response);
+      } else {
+        toast.error(`이미 중지된 프로젝트 입니다. `, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
-      
+      console.log("프로젝트 정지 실패: " + error);
     }
   };
 
-  const handleStopLoadingModal = async () => {
+  //전체 프로젝트 실행
+  const handleProjectStart = async (projectId) => {
     try {
-      setStopLoadingModal(true);
+      setAction("run");
+      setLoadingModal(true);
+      const response = await startProject(projectId).then(() =>
+        setLoadingModal(false)
+      );
+      window.location.replace("/manage");
+      if (response.data.status == "SUCCESS") {
+        console.log(response);
+      } else {
+        toast.error(`전체 실행에 실패하였습니다. `, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
-      
+      console.log("프로젝트 전체실행 실패");
     }
   };
 
@@ -109,12 +186,14 @@ export default function RunPage() {
             </div>
           </div>
           <div className={styles.buttons}>
-            <div className={styles.webhook}>
+            <div
+              className={styles.webhook}
+              onClick={() => navigate("/manage/webhook")}
+            >
               Webhook 설정{" "}
               <img
                 src={setting}
                 alt=""
-                height="20px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -127,7 +206,6 @@ export default function RunPage() {
               <img
                 src={edit}
                 alt=""
-                height="20px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -140,7 +218,6 @@ export default function RunPage() {
               <img
                 src={remove}
                 alt=""
-                width="23px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -151,8 +228,38 @@ export default function RunPage() {
           <div>
             <div className={styles.text}>프로젝트 전체 실행</div>
             <div className={styles.runButton}>
-              <img src={run} width="40px" onClick={() => handleRunLoadingModal()}></img>
-              <img src={stop} width="40px" onClick={() => handleStopLoadingModal()}></img>
+              {checkProceed.allRunning == "Run" && (
+                <div>
+                  <img
+                    src={restart}
+                    width="40px"
+                    onClick={() =>
+                      handleProjectStart(selectedProject.projectId)
+                    }
+                  ></img>
+                  <img
+                    src={stop}
+                    width="40px"
+                    onClick={() => handleProjectStop(selectedProject.projectId)}
+                  ></img>
+                </div>
+              )}
+              {checkProceed.allRunning == "Stop" && (
+                <div>
+                  <img
+                    src={run}
+                    width="40px"
+                    onClick={() =>
+                      handleProjectStart(selectedProject.projectId)
+                    }
+                  ></img>
+                  <img
+                    src={stop}
+                    width="40px"
+                    onClick={() => handleProjectStop(selectedProject.projectId)}
+                  ></img>
+                </div>
+              )}
             </div>
           </div>
           <div className={styles.buttons}>
@@ -164,7 +271,6 @@ export default function RunPage() {
               <img
                 src={document}
                 alt=""
-                width="30px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -179,32 +285,18 @@ export default function RunPage() {
               <img
                 src={document}
                 alt=""
-                width="30px"
                 decoding="async"
                 className={styles.btnIcon}
               />
             </div>
           </div>
         </div>
-        <RunProjectList
-          setModalOpen={setModalOpen}
-          setContent={setContent}
-          setType={setType}
-        />
+        {checkProceed.allRunning == "Run" && (
+          <RunProjectList setContent={setContent} />
+        )}
       </div>
-      {
-        runLoadingModal && (
-          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
-        )
-      }
-      {
-        stopLoadingModal && (
-          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
-        )
-      }
-      {modalOpen && (
-        <Modal content={content} type={type} setModalOpen={setModalOpen} />
-      )}
+      {loadingModal && <LoadingModal />}
+      {modalOpen && <Modal content={content} />}
     </>
   );
 }

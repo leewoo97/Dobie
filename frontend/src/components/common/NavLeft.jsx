@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./NavLeft.module.css";
 import s from "classnames";
 import mainBtn from "../../assets/btn_main.png";
+import home2 from "../../assets/homeIcon2.png";
 import useProjectStore from "../../stores/projectStore";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
@@ -55,7 +56,10 @@ export default function NavLeft({ num }){
                 ))}
                 </div>
             </div>
-            <img src={mainBtn} alt="search_icon" onClick={() => navigate("/main")} className={styles.img}/>
+            <div className={styles.buttons}>
+                <div className={styles.home} onClick={() => navigate("/main")}>메인페이지 <img src={home2} alt="" decoding="async" className={styles.homeIcon} /></div>
+                {/* <img src={mainBtn} alt="search_icon" onClick={() => navigate("/main")} className={styles.img}/> */}
+            </div>
         </div>
     );
 
