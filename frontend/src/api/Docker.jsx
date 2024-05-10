@@ -2,8 +2,8 @@ import axios from "axios";
 // const dockerUrl = "http://localhost:8080/api/dockerfile";
 const dockerUrl = process.env.REACT_APP_SERVER + "/dockerfile";
 // const dockerUrl = "https://api.silvstone.xyz/api/dockerfile";
-// const dockerUrl = "http://3.38.208.235:8010/api/containercheck";
 
+//도커컴포즈 파일 조회
 export async function getDockerCompose(projectId) {
   try {
     const response = await axios.get(
@@ -17,6 +17,7 @@ export async function getDockerCompose(projectId) {
   }
 }
 
+//도커파일 조회
 export async function getDockerFile(projectId, serviceId, type) {
   try {
     const response = await axios.get(dockerUrl + "/dockerfile-content", {
