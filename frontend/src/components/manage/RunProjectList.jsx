@@ -2,7 +2,7 @@ import styles from "./RunProjectList.module.css";
 import RunProjectItem from "./RunProjectItem";
 import useProjectStore from "../../stores/projectStore";
 
-export default function RunProjectList({ setModalOpen, setContent }) {
+export default function RunProjectList({ setContent }) {
   const { selectedProject, setSelectedProject } = useProjectStore();
 
   return (
@@ -15,14 +15,12 @@ export default function RunProjectList({ setModalOpen, setContent }) {
                 key={container.serviceId}
                 container={container}
                 type="Backend"
-                setModalOpen={setModalOpen}
                 setContent={setContent}
               />
             ))}
             <RunProjectItem
               container={selectedProject.frontend}
               type="Frontend"
-              setModalOpen={setModalOpen}
               setContent={setContent}
             />
             {Object.values(selectedProject.databaseMap).map((container) => (
@@ -30,7 +28,6 @@ export default function RunProjectList({ setModalOpen, setContent }) {
                 key={container.databaseId}
                 container={container}
                 type="Database"
-                setModalOpen={setModalOpen}
                 setContent={setContent}
               />
             ))}

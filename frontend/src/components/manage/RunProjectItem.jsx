@@ -14,17 +14,13 @@ import { startService } from "../../api/Project";
 import useProjectStore from "../../stores/projectStore";
 import useModalStore from "../../stores/modalStore";
 
-export default function RunProjectItem({
-  container,
-  type,
-  setModalOpen,
-  setContent,
-}) {
+export default function RunProjectItem({ container, type, setContent }) {
   const { selectedProject, setSelectedProject } = useProjectStore();
   const { checkProceed, setCheckProceed } = useProjectStore();
   const { loadingModal, setLoadingModal } = useModalStore();
   const { action, setAction } = useModalStore();
   const { fileType, setFileType } = useModalStore();
+  const { modalOpen, setModalOpen } = useModalStore();
 
   //도커파일 조회
   const handleDockerFileModal = async (projectId, serviceId, type) => {

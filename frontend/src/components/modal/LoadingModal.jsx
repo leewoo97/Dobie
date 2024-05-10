@@ -4,10 +4,11 @@ import Animaion from "../common/Animaion";
 import StopAnimaion from "../common/StopAnimaion";
 import useModalStore from "../../stores/modalStore";
 
-export default function Madal({ action }) {
+export default function Madal() {
   const modalBackground = useRef();
 
   const { loadingModal, setLoadingModal } = useModalStore();
+  const { action, setAction } = useModalStore();
 
   return (
     <>

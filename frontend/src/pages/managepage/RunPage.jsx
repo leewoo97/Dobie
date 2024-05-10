@@ -25,12 +25,11 @@ import Modal from "../../components/modal/Modal";
 import LoadingModal from "../../components/modal/LoadingModal";
 
 export default function RunPage() {
-  const [modalOpen, setModalOpen] = useState(false);
   const [content, setContent] = useState("");
 
+  const { modalOpen, setModalOpen } = useModalStore();
   const { fileType, setFileType } = useModalStore();
   const { checkProceed, setCheckProceed } = useProjectStore();
-  const { action, setAction } = useModalStore();
   const { loadingModal, setLoadingModal } = useModalStore();
   const { selectedProject, setSelectedProject } = useProjectStore();
   const navigate = useNavigate();
@@ -218,11 +217,11 @@ export default function RunPage() {
           </div>
         </div>
         {checkProceed.allRunning == "Run" && (
-          <RunProjectList setModalOpen={setModalOpen} setContent={setContent} />
+          <RunProjectList setContent={setContent} />
         )}
       </div>
-      {loadingModal && <LoadingModal action={action} />}
-      {modalOpen && <Modal content={content} setModalOpen={setModalOpen} />}
+      {loadingModal && <LoadingModal />}
+      {modalOpen && <Modal content={content} />}
     </>
   );
 }
