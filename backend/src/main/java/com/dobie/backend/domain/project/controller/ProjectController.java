@@ -8,11 +8,18 @@ import com.dobie.backend.exception.format.code.ApiResponse;
 import com.dobie.backend.exception.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Project 컨트롤러", description = "Project Controller API")
 @RestController
@@ -108,6 +115,31 @@ public class ProjectController {
     public ResponseEntity<?> restartProject(@PathVariable String projectId) {
         projectService.rebuildAndStartProject(projectId);
         return response.success(ResponseCode.PROJECT_REBUILD_AND_START_SUCCESS);
+    }
+
+    @Operation(summary = "파일첨부", description = "gitignore에 존재하는 파일 첨부")
+    @PostMapping(value="/upload", consumes = "multipart/form-data")
+    public ResponseEntity<?> uploadFile(@RequestParam("files") List<MultipartFile> files) {
+        if (files.isEmpty()) {
+            return ResponseEntity.status(400).body("Please upload a file!");
+        }
+
+        for(MultipartFile file : files){
+            System.out.println("파일도착");
+            try (InputStream inputStream = file.getInputStream()) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+
+            } catch (IOException e) {
+                return ResponseEntity.status(500).body("Failed to read file: " + e.getMessage());
+            }
+            System.out.println();
+        }
+
+        return response.success(ResponseCode.FILE_UPLOAD_SUCCESS);
     }
 }
 

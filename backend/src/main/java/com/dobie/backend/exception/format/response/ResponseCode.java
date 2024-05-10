@@ -26,8 +26,13 @@ public enum ResponseCode {
     /* 도커파일(Dockerfile) */
     DOCKER_FILE_INSTALL_SUCCESS(HttpStatus.OK, "도커파일이 성공적으로 설치되었습니다."),
     /* nginx config 파일 */
-    NGINX_CONFIG_READ_SUCCESS(HttpStatus.OK, "niginx config파일을 성공적으로 조회했습니다.")
+    NGINX_CONFIG_READ_SUCCESS(HttpStatus.OK, "niginx config파일을 성공적으로 조회했습니다."),
+
+    /* gitignore 파일 첨부 */
+    FILE_UPLOAD_SUCCESS(HttpStatus.OK, "파일 업로드가 성공적으로 수행되었습니다.")
+
     ;
+
 
     private final HttpStatus status;
     private final String message;
