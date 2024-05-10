@@ -126,7 +126,7 @@ export default function RunPage() {
           <div className={styles.buttons}>
             <div
               className={styles.webhook}
-              onClick={() => navigate("/webhook")}
+              onClick={() => navigate("/manage/webhook")}
             >
               Webhook 설정{" "}
               <img

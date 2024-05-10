@@ -1,5 +1,8 @@
 import { useState } from "react";
 import styles from "./GetSecretBox.module.css";
+import ShowIcon from "../../assets/show.png";
+import HideIcon from "../../assets/hide.png";
+import CopyIcon from "../../assets/copy.png";
 
 export default function GetSecretBox({ keyName, valueName }) {
   const [showToken, setShowToken] = useState(false);
@@ -18,10 +21,29 @@ export default function GetSecretBox({ keyName, valueName }) {
       <div className={styles.boxFrame}>
         <p className={styles.key}>{keyName}</p>
         <p className={styles.value}>{showToken ? valueName : "••••••••••"}</p>
-        <button onClick={toggleTokenVisibility}>
-          {showToken ? "Hide" : "Show"}
-        </button>
-        <button onClick={copyToClipboard}>Copy</button>
+        <div className={styles.iconBox}>
+          {showToken ? (
+            <img
+              className={styles.icon}
+              src={HideIcon}
+              alt="Hide"
+              onClick={toggleTokenVisibility}
+            />
+          ) : (
+            <img
+              className={styles.icon}
+              src={ShowIcon}
+              alt="Show"
+              onClick={toggleTokenVisibility}
+            />
+          )}
+          <img
+            className={styles.icon}
+            src={CopyIcon}
+            alt="Copy"
+            onClick={copyToClipboard}
+          />
+        </div>
       </div>
     </div>
   );
