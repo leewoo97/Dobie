@@ -48,9 +48,17 @@ export default function RunPage() {
     try {
       console.log(selectedProject.projectId);
       const response = await checkProceeding(selectedProject.projectId);
-      setData(response.data.data);
-      console.log("process");
-      console.log(response.data.data);
+      console.log(response.data.status);
+      if (response.data.status == "SUCCESS") {
+        setData(response.data.data);
+        console.log("process");
+        console.log(response.data.data);
+      } else {
+        setData({ allRunning: "null" });
+        toast.error(`프로젝트 실행상태를 불러올수 없습니다.`, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.error("컨테이너 실행 확인 에러: ", error);
     }
@@ -59,25 +67,39 @@ export default function RunPage() {
   const handleDelete = async (projectId) => {
     try {
       const response = await deleteProject(projectId);
-      console.log(response);
-      navigate("/main");
-      toast.success(`프로젝트를 삭제했습니다`, {
-        position: "top-center",
-      });
+      if (response.data.status == "SUCCESS") {
+        console.log(response);
+        navigate("/main");
+        toast.success(`프로젝트를 삭제했습니다`, {
+          position: "top-center",
+        });
+      } else {
+        toast.error(`프로젝트 삭제를 실패했습니다.`, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("프로젝트 삭제 실패: " + error);
+      toast.error(`프로젝트 삭제를 실패했습니다.`, {
+        position: "top-center",
+      });
     }
   };
   const handleOpenNginxModal = async (projectId) => {
     try {
       console.log(projectId);
       const response = await getNginxConf(projectId);
+      if (response.data.status == "SUCCESS") {
+        setModalOpen(true);
+        setType("nginx");
+        setContent(response.data.data);
 
-      setModalOpen(true);
-      setType("nginx");
-      setContent(response.data.data);
-
-      console.log(response.data.data);
+        console.log(response.data.data);
+      } else {
+        toast.error("nginx config 파일 조회 실패", {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("nginx config 조회 실패: " + error);
     }
@@ -87,27 +109,20 @@ export default function RunPage() {
     try {
       console.log(projectId);
       const response = await getDockerCompose(projectId);
+      if (response.data.status == "SUCCESS") {
+        setModalOpen(true);
+        setType("dockerCompose");
+        setContent(response.data.data);
 
-      setModalOpen(true);
-      setType("dockerCompose");
-      setContent(response.data.data);
-
-      console.log(response.data.data);
+        console.log(response.data.data);
+      } else {
+        toast.error("도커 컴포즈 파일 조회 실패", {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("docker compose 조회 실패: " + error);
     }
-  };
-
-  const handleRunLoadingModal = async () => {
-    try {
-      setRunLoadingModal(true);
-    } catch (error) {}
-  };
-
-  const handleStopLoadingModal = async () => {
-    try {
-      setStopLoadingModal(true);
-    } catch (error) {}
   };
 
   return (
@@ -162,11 +177,15 @@ export default function RunPage() {
           <div>
             <div className={styles.text}>프로젝트 전체 실행</div>
             <div className={styles.runButton}>
-              {data.allRunning == "run" ? (
-                <img src={run} width="40px"></img>
-              ) : (
+              {data.allRunning == "Run" && (
                 <div>
                   <img src={rerun} width="40px"></img>
+                  <img src={stop} width="40px"></img>
+                </div>
+              )}
+              {data.allRunning == "Stop" && (
+                <div>
+                  <img src={run} width="40px"></img>
                   <img src={stop} width="40px"></img>
                 </div>
               )}
@@ -201,12 +220,14 @@ export default function RunPage() {
             </div>
           </div>
         </div>
-        <RunProjectList
-          setModalOpen={setModalOpen}
-          setContent={setContent}
-          setType={setType}
-          data={data}
-        />
+        {data.allRunning == "Run" && (
+          <RunProjectList
+            setModalOpen={setModalOpen}
+            setContent={setContent}
+            setType={setType}
+            data={data}
+          />
+        )}
       </div>
       {runLoadingModal && (
         <LoadingModal action={"run"} setModalOpen={setRunLoadingModal} />
