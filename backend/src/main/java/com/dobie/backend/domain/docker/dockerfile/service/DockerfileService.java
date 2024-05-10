@@ -1,6 +1,5 @@
 package com.dobie.backend.domain.docker.dockerfile.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface DockerfileService {
@@ -22,6 +21,9 @@ public interface DockerfileService {
 
     /* 실행중인 컨테이너 확인 메소드 */
     HashMap<String,String> dockerContainerLister(String projectId);
+
+    /* 실행중인 컨테이너 확인 메소드(프레임워크도 확인함) */
+    String checkDBContainer(String projectId);
 
     /* 도커파일 위치 조회 메소드 */
     String makeDockerfilePathContent(String projectId, String serviceId, String type);

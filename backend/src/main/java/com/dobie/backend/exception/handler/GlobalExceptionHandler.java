@@ -244,6 +244,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    @ExceptionHandler(DockerContainerFrameworkErrorException.class)
+    protected ResponseEntity<?> handle(DockerContainerFrameworkErrorException e) {
+        log.error("DockerContainerFrameworkErrorException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
     /* NGINX */
     @ExceptionHandler(ProjectPathNotFoundException.class)
     protected ResponseEntity<?> handle(ProjectPathNotFoundException e) {
