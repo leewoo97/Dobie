@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // const url = "http://localhost:8080/api/user";
-// const url = process.env.REACT_APP_SERVER + "/user";
-const url = "http://3.38.208.235:8010/api/user";
+const url = process.env.REACT_APP_SERVER + "/user";
+// const url = "http://3.38.208.235:8010/api/user";
 
 //로그인
 export async function login(user) {
