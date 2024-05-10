@@ -2,6 +2,9 @@ import { useNavigate } from "react-router-dom";
 import styles from "./NavLeftCreate.module.css";
 import s from "classnames";
 import mainBtn from "../../assets/btn_main.png";
+import add from "../../assets/createIcon.png";
+import home from "../../assets/homeIcon.png";
+import home2 from "../../assets/homeIcon2.png";
 
 export default function NavLeftCreate({ num }){
     const navigate = useNavigate();
@@ -13,7 +16,11 @@ export default function NavLeftCreate({ num }){
                 <p className={num === 4 ? styles.text2 : styles.text} onClick={() => navigate("/create/frontend")}>Frontend</p>
                 <p className={num === 5 ? styles.text2 : styles.text} onClick={() => navigate("/create/database")}>DB</p>
             </div>
-            <img src={mainBtn} alt="search_icon" onClick={() => navigate("/main")} className={styles.img}/>
+            <div className={styles.buttons}>
+                <div className={styles.add}>프로젝트 등록 <img src={add} alt="" decoding="async" className={styles.addIcon} /></div>
+                <div className={styles.home} onClick={() => navigate("/main")}>메인페이지 <img src={home2} alt="" decoding="async" className={styles.homeIcon} /></div>
+                {/* <img src={mainBtn} alt="search_icon" onClick={() => navigate("/main")} className={styles.img}/> */}
+            </div>
         </div>
     );
 
