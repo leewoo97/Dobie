@@ -11,6 +11,7 @@ import restart from "../../assets/restart.png";
 import { getDockerFile } from "../../api/Docker";
 import { stopService } from "../../api/Project";
 import { startService } from "../../api/Project";
+import { useNavigate } from "react-router-dom";
 
 import useProjectStore from "../../stores/projectStore";
 import useModalStore from "../../stores/modalStore";
@@ -22,6 +23,8 @@ export default function RunProjectItem({ container, type, setContent }) {
   const { action, setAction } = useModalStore();
   const { fileType, setFileType } = useModalStore();
   const { modalOpen, setModalOpen } = useModalStore();
+
+  const navigate = useNavigate();
 
   //도커파일 조회
   const handleDockerFileModal = async (projectId, serviceId, type) => {
@@ -81,6 +84,16 @@ export default function RunProjectItem({ container, type, setContent }) {
       }
     } catch (error) {
       console.log("개별실행 실패: " + error);
+    }
+  };
+
+  const handleIntoContainer = () => {
+    if (type == "Backend") {
+      navigate(`/manage/backend/${container.serviceId}`);
+    } else if (type == "Frontend") {
+      navigate(`/manage/frontend`);
+    } else {
+      navigate(`/manage/database/${container.databaseId}`);
     }
   };
 
@@ -149,7 +162,7 @@ export default function RunProjectItem({ container, type, setContent }) {
             </div>
           )}
         </div>
-        <div className={styles.box}>
+        <div className={styles.box} onClick={() => handleIntoContainer()}>
           <div className={styles.boxTop}>
             <table>
               <tbody>
