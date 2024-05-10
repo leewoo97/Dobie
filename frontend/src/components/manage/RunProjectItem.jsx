@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 import styles from "./RunProjectItem.module.css";
 import run from "../../assets/run.png";
 import rerun from "../../assets/rerun.png";
@@ -8,45 +6,55 @@ import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 import FrameworkImg from "../common/FrameworkImg";
 import toast from "react-hot-toast";
-import LoadingModal from "../../components/modal/LoadingModal";
 
 import { getDockerFile } from "../../api/Docker";
 import { stopService } from "../../api/Project";
 import { startService } from "../../api/Project";
 
 import useProjectStore from "../../stores/projectStore";
+import useModalStore from "../../stores/modalStore";
 
 export default function RunProjectItem({
   container,
   type,
   setModalOpen,
   setContent,
-  setType,
-  isRunning,
 }) {
   const { selectedProject, setSelectedProject } = useProjectStore();
-  console.log(isRunning);
+  const { checkProceed, setCheckProceed } = useProjectStore();
+  const { loadingModal, setLoadingModal } = useModalStore();
+  const { action, setAction } = useModalStore();
+  const { fileType, setFileType } = useModalStore();
 
+  //도커파일 조회
   const handleDockerFileModal = async (projectId, serviceId, type) => {
     try {
-      console.log(projectId);
+      console.log(checkProceed[container.serviceId]);
       const response = await getDockerFile(projectId, serviceId, type);
-
-      setModalOpen(true);
-      setType("dockerFile");
-      setContent(response.data.data);
-
-      console.log(response.data.data);
+      if (response.data.status == "SUCCESS") {
+        setModalOpen(true);
+        setFileType("dockerFile");
+        setContent(response.data.data);
+      } else {
+        toast.error(`도커 파일 조회 실패`, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("docker File 조회 실패: " + error);
     }
   };
 
+  //개별 서비스 중지
   const handleStopService = async (containerName) => {
     try {
-      if (isRunning == "Running :)") {
-        console.log(containerName);
-        const response = await stopService(containerName);
+      if (checkProceed[containerName] == "Running :)") {
+        setAction("stop");
+        setLoadingModal(true);
+        const response = await stopService(containerName).then(() =>
+          setLoadingModal(false)
+        );
+        window.location.replace("/manage");
         console.log(response);
       } else {
         toast.error(`이미 중지된 컨테이너 입니다. `, {
@@ -57,11 +65,24 @@ export default function RunProjectItem({
       console.log("개별중지 실패: " + error);
     }
   };
+
+  //개별 서비스 실행
   const handleStartService = async (containerName) => {
     try {
       console.log(containerName);
-      const response = await startService(containerName);
-      console.log(response);
+      setAction("run");
+      setLoadingModal(true);
+      const response = await startService(containerName).then(() =>
+        setLoadingModal(false)
+      );
+      window.location.replace("/manage");
+      if (response.data.status == "SUCCESS") {
+        console.log(response);
+      } else {
+        toast.error(`개별 실행에 실패하였습니다. `, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("개별실행 실패: " + error);
     }
@@ -74,14 +95,22 @@ export default function RunProjectItem({
           <div className={styles.runButton}>
             {type == "Database" ? (
               <img
-                src={isRunning == "Running :)" ? rerun : run}
+                src={
+                  checkProceed[container.databaseId] == "Running :)"
+                    ? rerun
+                    : run
+                }
                 alt=""
                 width="30px"
                 onClick={() => handleStartService(container.databaseId)}
               />
             ) : (
               <img
-                src={isRunning == "Running :)" ? rerun : run}
+                src={
+                  checkProceed[container.serviceId] == "Running :)"
+                    ? rerun
+                    : run
+                }
                 alt=""
                 width="30px"
                 onClick={() => handleStartService(container.serviceId)}
@@ -158,14 +187,29 @@ export default function RunProjectItem({
           </div>
           <div className={styles.line}></div>
           <div className={styles.boxBottom}>
-            <div
-              className={
-                isRunning == "Running :)" ? styles.running : styles.stopped
-              }
-              key={isRunning}
-            >
-              {isRunning}
-            </div>
+            {type == "Database" ? (
+              <div
+                className={
+                  checkProceed[container.databaseId] == "Running :)"
+                    ? styles.running
+                    : styles.stopped
+                }
+                key={checkProceed[container.databaseId]}
+              >
+                {checkProceed[container.databaseId]}
+              </div>
+            ) : (
+              <div
+                className={
+                  checkProceed[container.serviceId] == "Running :)"
+                    ? styles.running
+                    : styles.stopped
+                }
+                key={checkProceed[container.serviceId]}
+              >
+                {checkProceed[container.serviceId]}
+              </div>
+            )}
             <div className={styles.log}>
               <img
                 src={log}
@@ -178,16 +222,6 @@ export default function RunProjectItem({
           </div>
         </div>
       </div>
-      {
-        //   runLoadingModal && (
-        //     <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
-        //   )
-        // }
-        // {
-        //   stopLoadingModal && (
-        //     <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
-        //   )
-      }
     </>
   );
 }
