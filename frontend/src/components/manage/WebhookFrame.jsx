@@ -37,7 +37,7 @@ export default function WebhookFrame() {
       />
       <GetCopyBox
         keyName={"등록 URL"}
-        valueName={`http://${selectedProject.projectDomain}/api/project/webhook/${selectedProject.projectId}`}
+        valueName={`http://${selectedProject.projectDomain}:8010/api/project/webhook/${selectedProject.projectId}`}
       />
 
       <div className={styles.manual}>
