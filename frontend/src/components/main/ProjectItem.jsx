@@ -10,13 +10,15 @@ import useProjectStore from "../../stores/projectStore";
 import LoadingModal from "../modal/LoadingModal";
 import restart from "../../assets/restart.png";
 
-import { stopProject } from "../../api/Project";
+import { startService, stopProject } from "../../api/Project";
 
 import { useNavigate } from "react-router-dom";
+import useModalStore from "../../stores/modalStore";
 
 export default function ProjectItem({ project }) {
   const navigate = useNavigate();
   const { selectedProject, setSelectedProject } = useProjectStore();
+  const { loadingModal, setLoadingModal } = useModalStore();
   const handleSubmit = async (e) => {
     try {
       setSelectedProject(project);
@@ -24,21 +26,6 @@ export default function ProjectItem({ project }) {
     } catch (error) {
       console.error("프로젝트 store 저장 실패:", error);
     }
-  };
-
-  const [runLoadingModal, setRunLoadingModal] = useState(false);
-  const [stopLoadingModal, setStopLoadingModal] = useState(false);
-
-  const handleRunLoadingModal = async () => {
-    try {
-      setRunLoadingModal(true);
-    } catch (error) {}
-  };
-
-  const handleStopLoadingModal = async () => {
-    try {
-      setStopLoadingModal(true);
-    } catch (error) {}
   };
 
   const handleProjectStop = async (projectId) => {
@@ -50,14 +37,32 @@ export default function ProjectItem({ project }) {
     }
   };
 
+  const handleProjectStart = async (projectId) => {
+    try {
+      const response = await startService(projectId);
+      console.log(response);
+    } catch (error) {
+      console.log("프로젝트 전체실행 실패");
+    }
+  };
+
   return (
     <>
       <div className={styles.content} onClick={() => handleSubmit()}>
         <div key={project.projectName}>{project.projectName}</div>
         <div key={project.projectDomain}>{project.projectDomain}</div>
         <div className={styles.runButton}>
-          <img src={project.running ? rerun : restart} alt="" className={styles.run} onClick={() => handleRunLoadingModal()} />
-          <img src={stop} alt="" onClick={() => handleStopLoadingModal()}></img>
+          <img
+            src={project.running ? rerun : restart}
+            alt=""
+            className={styles.run}
+            onClick={() => handleProjectStart(project.projectId)}
+          />
+          <img
+            src={stop}
+            alt=""
+            onClick={() => handleProjectStop(project.projectId)}
+          ></img>
         </div>
         <div>
           <img
@@ -67,12 +72,7 @@ export default function ProjectItem({ project }) {
           />
         </div>
       </div>
-      {runLoadingModal && (
-        <LoadingModal action={"run"} setModalOpen={setRunLoadingModal} />
-      )}
-      {stopLoadingModal && (
-        <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal} />
-      )}
+      {loadingModal && <LoadingModal />}
     </>
   );
 }
