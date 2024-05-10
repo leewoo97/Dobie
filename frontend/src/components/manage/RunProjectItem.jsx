@@ -67,14 +67,11 @@ export default function RunProjectItem({
     }
   };
 
-
- 
   return (
     <>
       <div className={styles.container}>
         <div className={styles.containerButton}>
           <div className={styles.runButton}>
-
             {type == "Database" ? (
               <img
                 src={isRunning == "Running :)" ? rerun : run}
@@ -105,7 +102,6 @@ export default function RunProjectItem({
                 onClick={() => handleStopService(container.databaseId)}
               ></img>
             )}
-
           </div>
           {(type == "Backend" || type == "Frontend") && (
             <div
@@ -183,14 +179,14 @@ export default function RunProjectItem({
         </div>
       </div>
       {
-        runLoadingModal && (
-          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
-        )
-      }
-      {
-        stopLoadingModal && (
-          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
-        )
+        //   runLoadingModal && (
+        //     <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
+        //   )
+        // }
+        // {
+        //   stopLoadingModal && (
+        //     <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
+        //   )
       }
     </>
   );

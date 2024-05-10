@@ -8,12 +8,10 @@ import styles from "./RunPage.module.css";
 import run from "../../assets/run.png";
 import rerun from "../../assets/rerun.png";
 import stop from "../../assets/stop.png";
-import close from "../../assets/close.png";
 import edit from "../../assets/editIcon.png";
 import remove from "../../assets/deleteIcon.png";
 import setting from "../../assets/settingIcon.png";
 import document from "../../assets/documentIcon.png";
-import log from "../../assets/logIcon.png";
 
 import { deleteProject } from "../../api/Project";
 import { getNginxConf } from "../../api/ngixn";
@@ -103,17 +101,13 @@ export default function RunPage() {
   const handleRunLoadingModal = async () => {
     try {
       setRunLoadingModal(true);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const handleStopLoadingModal = async () => {
     try {
       setStopLoadingModal(true);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   return (
@@ -168,7 +162,6 @@ export default function RunPage() {
           <div>
             <div className={styles.text}>프로젝트 전체 실행</div>
             <div className={styles.runButton}>
-
               {data.allRunning == "run" ? (
                 <img src={run} width="40px"></img>
               ) : (
@@ -177,7 +170,6 @@ export default function RunPage() {
                   <img src={stop} width="40px"></img>
                 </div>
               )}
-
             </div>
           </div>
           <div className={styles.buttons}>
@@ -216,16 +208,12 @@ export default function RunPage() {
           data={data}
         />
       </div>
-      {
-        runLoadingModal && (
-          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
-        )
-      }
-      {
-        stopLoadingModal && (
-          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
-        )
-      }
+      {runLoadingModal && (
+        <LoadingModal action={"run"} setModalOpen={setRunLoadingModal} />
+      )}
+      {stopLoadingModal && (
+        <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal} />
+      )}
       {modalOpen && (
         <Modal content={content} type={type} setModalOpen={setModalOpen} />
       )}
