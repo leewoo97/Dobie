@@ -6,6 +6,7 @@ import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 import FrameworkImg from "../common/FrameworkImg";
 import toast from "react-hot-toast";
+import restart from "../../assets/restart.png";
 
 import { getDockerFile } from "../../api/Docker";
 import { stopService } from "../../api/Project";
@@ -27,10 +28,10 @@ export default function RunProjectItem({ container, type, setContent }) {
     try {
       console.log(checkProceed[container.serviceId]);
       const response = await getDockerFile(projectId, serviceId, type);
-      if (response.data.status == "SUCCESS") {
+      if (response.status == 200) {
         setModalOpen(true);
         setFileType("dockerFile");
-        setContent(response.data.data);
+        setContent(response.data);
       } else {
         toast.error(`도커 파일 조회 실패`, {
           position: "top-center",
@@ -65,7 +66,6 @@ export default function RunProjectItem({ container, type, setContent }) {
   //개별 서비스 실행
   const handleStartService = async (containerName) => {
     try {
-      console.log(containerName);
       setAction("run");
       setLoadingModal(true);
       const response = await startService(containerName).then(() =>
@@ -93,7 +93,7 @@ export default function RunProjectItem({ container, type, setContent }) {
               <img
                 src={
                   checkProceed[container.databaseId] == "Running :)"
-                    ? rerun
+                    ? restart
                     : run
                 }
                 alt=""
@@ -104,7 +104,7 @@ export default function RunProjectItem({ container, type, setContent }) {
               <img
                 src={
                   checkProceed[container.serviceId] == "Running :)"
-                    ? rerun
+                    ? restart
                     : run
                 }
                 alt=""

@@ -71,3 +71,12 @@ export async function stopProject(projectId) {
     throw error;
   }
 }
+//프로젝트 전체실행
+export async function startProject(projectId) {
+  try {
+    const response = await axios.post(`${projectUrl}/run/${projectId}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
