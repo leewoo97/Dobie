@@ -4,6 +4,8 @@ import InputBox from "../common/InputBox";
 import InputSelectBox from "../common/InputSelectBox";
 import DescBox from "../common/DescBox";
 import ProjectTopCreate from "../common/ProjectTopCreate";
+import useProjectStore from "../../stores/projectStore";
+
 
 export default function BackendFrame() {
 
@@ -32,6 +34,10 @@ export default function BackendFrame() {
         setVersion(value);
         console.log(value);
     };
+
+
+    const {createdProjcet, setCreatedProject} = useProjectStore(); 
+
 
     return (
         <div className={styles.page}>

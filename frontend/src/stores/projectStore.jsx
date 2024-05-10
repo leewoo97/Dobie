@@ -23,9 +23,9 @@ const useProjectStore = create(
       //   addBackend: (backend) => {
       //     createProject.backendMap.add(backend);
       //   },
-      newProject : {},
-      makeNewProject: () => {
-        set({newProject: {
+      createdProject : {},
+      makeCreatedProject: () => {
+        set({createdProject: {
             projectName : "",
             projectDomain : "",
             usingHttps : false,
@@ -73,8 +73,8 @@ const useProjectStore = create(
             }
         }})
       },
-      setNewProject: (project) => {
-        set({newProject : project})
+      setCreatedProject: (project) => {
+        set({createdProject : project})
       }
     }),
     {

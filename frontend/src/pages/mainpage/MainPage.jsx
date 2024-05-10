@@ -11,7 +11,7 @@ import useProjectStore from "../../stores/projectStore";
 
 export default function MainPage() {
   const navigate = useNavigate();
-  const { selectedProject, setSelectedProject, newProject, makeNewProject } = useProjectStore();
+  const { selectedProject, setSelectedProject, createdProject, makeCreatedProject } = useProjectStore();
 
   useEffect(() => {
     try {
@@ -22,7 +22,7 @@ export default function MainPage() {
   }, []);
 
   const createClickHandler = () => {
-    makeNewProject();
+    makeCreatedProject();
     navigate("/create/project")
   }
 
