@@ -22,12 +22,18 @@ import { checkProceeding } from "../../api/CheckProcess";
 import useProjectStore from "../../stores/projectStore";
 import RunProjectList from "../../components/manage/RunProjectList";
 import Modal from "../../components/modal/Modal";
+import LoadingModal from "../../components/modal/LoadingModal";
 
 export default function RunPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [content, setContent] = useState("");
   const [type, setType] = useState("");
+
   const [data, setData] = useState({});
+
+  const [runLoadingModal, setRunLoadingModal] = useState(false);
+  const [stopLoadingModal, setStopLoadingModal] = useState(false);
+
   // const modalBackground = useRef();
 
   const { selectedProject, setSelectedProject } = useProjectStore();
@@ -94,11 +100,26 @@ export default function RunPage() {
     }
   };
 
+  const handleRunLoadingModal = async () => {
+    try {
+      setRunLoadingModal(true);
+    } catch (error) {
+      
+    }
+  };
+
+  const handleStopLoadingModal = async () => {
+    try {
+      setStopLoadingModal(true);
+    } catch (error) {
+      
+    }
+  };
+
   return (
     <>
       <NavTop />
       <NavLeft num={1} />
-      {/* <InnerContainer /> */}
       <div className={styles.page}>
         <div className={styles.top}>
           <div>
@@ -113,20 +134,18 @@ export default function RunPage() {
               <img
                 src={setting}
                 alt=""
-                height="20px"
                 decoding="async"
                 className={styles.btnIcon}
               />
             </div>
             <div
               className={styles.edit}
-              onClick={() => navigate("/create/project")}
+              onClick={() => navigate("/update/project")}
             >
               수정{" "}
               <img
                 src={edit}
                 alt=""
-                height="20px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -139,7 +158,6 @@ export default function RunPage() {
               <img
                 src={remove}
                 alt=""
-                width="23px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -150,6 +168,7 @@ export default function RunPage() {
           <div>
             <div className={styles.text}>프로젝트 전체 실행</div>
             <div className={styles.runButton}>
+
               {data.allRunning == "run" ? (
                 <img src={run} width="40px"></img>
               ) : (
@@ -158,6 +177,7 @@ export default function RunPage() {
                   <img src={stop} width="40px"></img>
                 </div>
               )}
+
             </div>
           </div>
           <div className={styles.buttons}>
@@ -169,7 +189,6 @@ export default function RunPage() {
               <img
                 src={document}
                 alt=""
-                width="30px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -184,7 +203,6 @@ export default function RunPage() {
               <img
                 src={document}
                 alt=""
-                width="30px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -198,6 +216,16 @@ export default function RunPage() {
           data={data}
         />
       </div>
+      {
+        runLoadingModal && (
+          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
+        )
+      }
+      {
+        stopLoadingModal && (
+          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
+        )
+      }
       {modalOpen && (
         <Modal content={content} type={type} setModalOpen={setModalOpen} />
       )}

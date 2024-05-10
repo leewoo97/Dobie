@@ -8,6 +8,7 @@ import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 import FrameworkImg from "../common/FrameworkImg";
 import toast from "react-hot-toast";
+import LoadingModal from "../../components/modal/LoadingModal";
 
 import { getDockerFile } from "../../api/Docker";
 import { stopService } from "../../api/Project";
@@ -40,6 +41,7 @@ export default function RunProjectItem({
       console.log("docker File 조회 실패: " + error);
     }
   };
+
   const handleStopService = async (containerName) => {
     try {
       if (isRunning == "Running :)") {
@@ -64,11 +66,15 @@ export default function RunProjectItem({
       console.log("개별실행 실패: " + error);
     }
   };
+
+
+ 
   return (
     <>
       <div className={styles.container}>
         <div className={styles.containerButton}>
           <div className={styles.runButton}>
+
             {type == "Database" ? (
               <img
                 src={isRunning == "Running :)" ? rerun : run}
@@ -99,6 +105,7 @@ export default function RunProjectItem({
                 onClick={() => handleStopService(container.databaseId)}
               ></img>
             )}
+
           </div>
           {(type == "Backend" || type == "Frontend") && (
             <div
@@ -115,7 +122,6 @@ export default function RunProjectItem({
               <img
                 src={document}
                 alt=""
-                width="25px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -168,7 +174,6 @@ export default function RunProjectItem({
               <img
                 src={log}
                 alt=""
-                width="25px"
                 decoding="async"
                 className={styles.btnIcon}
               />
@@ -177,6 +182,16 @@ export default function RunProjectItem({
           </div>
         </div>
       </div>
+      {
+        runLoadingModal && (
+          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
+        )
+      }
+      {
+        stopLoadingModal && (
+          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
+        )
+      }
     </>
   );
 }

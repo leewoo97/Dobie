@@ -14,7 +14,7 @@ export default function BackendFrame(){
 
     return(
         <div className={styles.page}>
-            <ProjectTop />
+            <ProjectTop projectName={selectedProject.projectName} />
             <GetBox keyName={"프레임워크"} valueName={selectedBackend.serviceName}/>
             <GetBox keyName={"언어 버전"} valueName={selectedBackend.language + " " + selectedBackend.version}/>
             <GetBox keyName={"폴더 경로"} valueName={selectedBackend.path}/>

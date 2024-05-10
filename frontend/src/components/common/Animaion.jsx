@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import lottie from "lottie-web";
 
-import animation from "../../assets/loding.json";
+import animation from "../../assets/loading.json";
 
 export default function LottieAnimation() {
     const animationContainer = useRef(null);

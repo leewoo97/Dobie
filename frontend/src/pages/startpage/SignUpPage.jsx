@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Container from "../../components/common/Container";
-import styles from "./SginUpPage.module.css";
+import styles from "./SignUpPage.module.css";
 import mascot from "../../assets/mascot.png";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../stores/userStore";
@@ -74,7 +74,7 @@ export default function SginUpPage() {
     <Container>
       <div className={styles.content}>
         <div className={styles.title}>
-          <img src={mascot} alt="" width="120px" decoding="async" />
+          <img src={mascot} alt="" height="140vh" decoding="async" />
           <div className={styles.dobie}>Dobie</div>
         </div>
         <input

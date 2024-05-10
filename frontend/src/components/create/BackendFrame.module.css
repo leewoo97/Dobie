@@ -1,9 +1,10 @@
 .page{
-    height: 82%;
+    height: 130%;
     width: 80%;
     position: relative;
-    top: 18%;
+    top: 8%;
     left: 20%;
+    margin-bottom: 8%;
 }
 
 .descFrame{

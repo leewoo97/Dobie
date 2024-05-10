@@ -10,7 +10,7 @@ export default function ProjectFrame() {
 
     return (
         <div className={styles.page}>
-            <ProjectTop />
+            <ProjectTop  projectName={selectedProject.projectName} />
             {/* <GetBox keyName={"url"} valueName={url} onChange={(e) => setUrl(e.target.value)}/>
             <GetBox keyName={"액세스 토큰"} valueName={accessToken} onChange={(e)=> setAccessToken(e.target.value)}/>
             <GetBox keyName={"자동 배포 웹훅 설정"} valueName={webHook} onChange={(e)=> setWebHook(e.target.value)}/>
