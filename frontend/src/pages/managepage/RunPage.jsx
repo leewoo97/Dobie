@@ -44,6 +44,7 @@ export default function RunPage() {
       console.error("컨테이너 실행 확인 에러: ", error);
     }
   }, []);
+
   const handleCheckProceding = async () => {
     try {
       console.log(selectedProject.projectId);
@@ -123,7 +124,10 @@ export default function RunPage() {
             </div>
           </div>
           <div className={styles.buttons}>
-            <div className={styles.webhook}>
+            <div
+              className={styles.webhook}
+              onClick={() => navigate("/webhook")}
+            >
               Webhook 설정{" "}
               <img
                 src={setting}
