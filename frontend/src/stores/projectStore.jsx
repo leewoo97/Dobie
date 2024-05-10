@@ -14,7 +14,7 @@ const useProjectStore = create(
       },
       updatedProject: {},
       setUpdatedProject: (project) => {
-        set({updatedProject : project});
+        set({ updatedProject: project });
       },
       //   createProject: {
       //     projectName: "",
@@ -23,20 +23,21 @@ const useProjectStore = create(
       //   addBackend: (backend) => {
       //     createProject.backendMap.add(backend);
       //   },
-      newProject : {},
+      newProject: {},
       makeNewProject: () => {
-        set({newProject: {
-            projectName : "",
-            projectDomain : "",
-            usingHttps : false,
+        set({
+          newProject: {
+            projectName: "",
+            projectDomain: "",
+            usingHttps: false,
             git: {
               gitType: 0,
               gitUrl: "",
               accessToken: "",
               branch: "",
             },
-            backendMap:{
-              "1" : {
+            backendMap: {
+              1: {
                 serviceName: "",
                 language: "",
                 version: "",
@@ -45,8 +46,8 @@ const useProjectStore = create(
                 branch: "",
                 location: "",
                 externalPort: 0,
-                internalPort: 0
-              }
+                internalPort: 0,
+              },
             },
             frontend: {
               serviceName: "",
@@ -58,10 +59,10 @@ const useProjectStore = create(
               location: "",
               externalPort: 0,
               internalPort: 0,
-              usingNginx: false
+              usingNginx: false,
             },
-            databaseMap:{
-              "1" : {
+            databaseMap: {
+              1: {
                 databaseType: "",
                 databaseName: "",
                 schemaPath: "",
@@ -69,13 +70,18 @@ const useProjectStore = create(
                 password: "",
                 externalPort: 0,
                 internalPort: 0,
-              }
-            }
-        }})
+              },
+            },
+          },
+        });
       },
       setNewProject: (project) => {
-        set({newProject : project})
-      }
+        set({ newProject: project });
+      },
+      checkProceed: {},
+      setCheckProceed: (checkProceed) => {
+        set({ checkProceed: checkProceed });
+      },
     }),
     {
       name: "project-storage", // 저장될 localStorage의 key 이름
