@@ -8,16 +8,15 @@ import styles from "./RunPage.module.css";
 import run from "../../assets/run.png";
 import rerun from "../../assets/rerun.png";
 import stop from "../../assets/stop.png";
-import close from "../../assets/close.png";
 import edit from "../../assets/editIcon.png";
 import remove from "../../assets/deleteIcon.png";
 import setting from "../../assets/settingIcon.png";
 import document from "../../assets/documentIcon.png";
-import log from "../../assets/logIcon.png";
 
 import { deleteProject } from "../../api/Project";
 import { getNginxConf } from "../../api/ngixn";
 import { getDockerCompose } from "../../api/Docker";
+import { checkProceeding } from "../../api/CheckProcess";
 import useProjectStore from "../../stores/projectStore";
 import RunProjectList from "../../components/manage/RunProjectList";
 import Modal from "../../components/modal/Modal";
@@ -27,12 +26,35 @@ export default function RunPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [content, setContent] = useState("");
   const [type, setType] = useState("");
+
+  const [data, setData] = useState({});
+
   const [runLoadingModal, setRunLoadingModal] = useState(false);
   const [stopLoadingModal, setStopLoadingModal] = useState(false);
+
   // const modalBackground = useRef();
 
   const { selectedProject, setSelectedProject } = useProjectStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    try {
+      handleCheckProceding();
+    } catch (error) {
+      console.error("컨테이너 실행 확인 에러: ", error);
+    }
+  }, []);
+  const handleCheckProceding = async () => {
+    try {
+      console.log(selectedProject.projectId);
+      const response = await checkProceeding(selectedProject.projectId);
+      setData(response.data.data);
+      console.log("process");
+      console.log(response.data.data);
+    } catch (error) {
+      console.error("컨테이너 실행 확인 에러: ", error);
+    }
+  };
 
   const handleDelete = async (projectId) => {
     try {
@@ -60,6 +82,7 @@ export default function RunPage() {
       console.log("nginx config 조회 실패: " + error);
     }
   };
+
   const handleDockerComposeModal = async (projectId) => {
     try {
       console.log(projectId);
@@ -78,17 +101,13 @@ export default function RunPage() {
   const handleRunLoadingModal = async () => {
     try {
       setRunLoadingModal(true);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const handleStopLoadingModal = async () => {
     try {
       setStopLoadingModal(true);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   return (
@@ -143,8 +162,14 @@ export default function RunPage() {
           <div>
             <div className={styles.text}>프로젝트 전체 실행</div>
             <div className={styles.runButton}>
-              <img src={run} onClick={() => handleRunLoadingModal()}></img>
-              <img src={stop} onClick={() => handleStopLoadingModal()}></img>
+              {data.allRunning == "run" ? (
+                <img src={run} width="40px"></img>
+              ) : (
+                <div>
+                  <img src={rerun} width="40px"></img>
+                  <img src={stop} width="40px"></img>
+                </div>
+              )}
             </div>
           </div>
           <div className={styles.buttons}>
@@ -180,18 +205,15 @@ export default function RunPage() {
           setModalOpen={setModalOpen}
           setContent={setContent}
           setType={setType}
+          data={data}
         />
       </div>
-      {
-        runLoadingModal && (
-          <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
-        )
-      }
-      {
-        stopLoadingModal && (
-          <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
-        )
-      }
+      {runLoadingModal && (
+        <LoadingModal action={"run"} setModalOpen={setRunLoadingModal} />
+      )}
+      {stopLoadingModal && (
+        <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal} />
+      )}
       {modalOpen && (
         <Modal content={content} type={type} setModalOpen={setModalOpen} />
       )}

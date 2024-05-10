@@ -10,16 +10,26 @@ import log from "../../assets/logIcon.png";
 import RunProjectItem from "./RunProjectItem";
 import useProjectStore from "../../stores/projectStore";
 
-export default function RunProjectList({ setModalOpen, setContent, setType }) {
-  const { selectedProject, setSelectedProject } = useProjectStore();
+import { checkProceeding } from "../../api/CheckProcess";
 
-  useEffect(() => {
-    try {
-      console.log(selectedProject);
-    } catch (error) {
-      console.error("유저정보 조회 실패 에러: ", error);
-    }
-  }, []);
+export default function RunProjectList({
+  setModalOpen,
+  setContent,
+  setType,
+  data,
+}) {
+  const { selectedProject, setSelectedProject } = useProjectStore();
+  // const [data, setData] = useState({});
+
+  // useEffect(() => {
+  //   try {
+  //     const response = checkProceeding(selectedProject.projectId);
+  //     setData(response.data);
+  //     console.log(response.data[selectedProject.frontend.serviceId]);
+  //   } catch (error) {
+  //     console.error("컨테이너 실행 확인 에러: ", error);
+  //   }
+  // }, []);
 
   return (
     <>
@@ -34,6 +44,7 @@ export default function RunProjectList({ setModalOpen, setContent, setType }) {
                 setModalOpen={setModalOpen}
                 setContent={setContent}
                 setType={setType}
+                isRunning={data[container.serviceId]}
               />
             ))}
             <RunProjectItem
@@ -42,6 +53,7 @@ export default function RunProjectList({ setModalOpen, setContent, setType }) {
               setModalOpen={setModalOpen}
               setContent={setContent}
               setType={setType}
+              isRunning={data[selectedProject.frontend.serviceId]}
             />
             {Object.values(selectedProject.databaseMap).map((container) => (
               <RunProjectItem
@@ -51,6 +63,7 @@ export default function RunProjectList({ setModalOpen, setContent, setType }) {
                 setModalOpen={setModalOpen}
                 setContent={setContent}
                 setType={setType}
+                isRunning={data[container.databaseId]}
               />
             ))}
           </div>
