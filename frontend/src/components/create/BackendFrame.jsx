@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import {v4 as uuidv4} from "uuid";
 import styles from "./BackendFrame.module.css";
 import InputBox from "../common/InputBox";
 import InputSelectBox from "../common/InputSelectBox";
@@ -10,7 +11,7 @@ import useProjectStore from "../../stores/projectStore";
 export default function BackendFrame() {
     const {createdProject, setCreatedProject} = useProjectStore(); 
     const [tempProject, setTempProject] = useState({...createdProject});
-    const [selectedKey, setSelectedKey] = useState("1");
+    const [selectedKey, setSelectedKey] = useState(Object.keys(tempProject.backendMap).at(0));
     
     const [selectedBackend, setSelectedBackend] = useState({...tempProject.backendMap[selectedKey]});
 
@@ -23,7 +24,7 @@ export default function BackendFrame() {
         branch: "",
         location: "",
         externalPort: 0,
-        internalPort: 0
+        internalPort: ""
       };
 
     const clickKeyHandler = (key) => {
@@ -31,12 +32,17 @@ export default function BackendFrame() {
     }
 
     const clickDeleteHandler = (key) => {
+        const removeKeyIndex = Object.keys(tempProject.backendMap).indexOf(key);
+        const moveKeyIndex = removeKeyIndex === 0 ? 0 : removeKeyIndex-1;
         delete tempProject.backendMap[key];
+        setSelectedKey(Object.keys(tempProject.backendMap).at(moveKeyIndex));
         setTempProject({...tempProject});
     }
 
     const addEmptyBackend = () => {
-        tempProject.backendMap[`${Object.values(tempProject.backendMap).length+1}`] = emptyBackend;
+        const newKey = uuidv4();
+        tempProject.backendMap[newKey] = emptyBackend;
+        setSelectedKey(newKey);
         setTempProject({...tempProject});
     }
 
@@ -59,8 +65,6 @@ export default function BackendFrame() {
     useEffect(() => {
         setSelectedBackend({...tempProject.backendMap[selectedKey]});
     }, [selectedKey])
-
-
 
 
     const frameworkList = [
@@ -117,8 +121,7 @@ export default function BackendFrame() {
             {/* <InputBox keyName={"브랜치"} valueName={"dev-be"} value={selectedBackend.branch}/>
             <DescBox desc={"해당 프레임워크를 빌드 시킬 브랜치명을 작성하세요"} /> */}
             
-            <InputBox keyName={"내부 포트 번호"} valueName={"8080"} 
-                value={selectedBackend.internalPort === 0 ? "" : selectedBackend.internalPort} onChange={changeInternalPortHandler}/>
+            <InputBox keyName={"내부 포트 번호"} valueName={"8080"} value={selectedBackend.internalPort} onChange=  {changeInternalPortHandler}/>
             <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
 
             {/* <InputBox keyName={"외부 포트 번호"} valueName={"8080"} value={selectedBackend.externalPort}/>
