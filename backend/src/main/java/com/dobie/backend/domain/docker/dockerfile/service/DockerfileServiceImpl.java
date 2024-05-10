@@ -212,21 +212,9 @@ public class DockerfileServiceImpl implements DockerfileService {
 
     @Override
     public HashMap<String,String> dockerContainerLister(String projectId) {
-        ArrayList<String> analyzeList = AnalyzeProjectContainer(projectId);
-        CommandLine commandLine = new CommandLine("docker");
-        commandLine.addArgument("ps");
-        commandLine.addArgument("-a"); // "-a" 옵션 추가
-//        System.out.println("어디서 잘못되는거지 : " + analyzeList);
-        DefaultExecutor executor = new DefaultExecutor();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
-        executor.setStreamHandler(streamHandler);
-
-//        System.out.println("프로젝트 내부 서비스 아이디 목록 : " + analyzeList);
-        try {
-            executor.execute(commandLine);
-            String dockerOutput = outputStream.toString();
-            System.out.println("docker ps -a결과: \n" + dockerOutput);
+        try{
+            ArrayList<String> analyzeList = AnalyzeProjectContainer(projectId);
+            String dockerOutput = readProceedingDockerContainer();
             HashMap<String,String> containers = parseDockerPsOutput(dockerOutput);
 //            System.out.println("실행중인 컨테이너 목록 : " + containers);
 //            for (String key : containers.keySet()) {
@@ -261,6 +249,53 @@ public class DockerfileServiceImpl implements DockerfileService {
         }
     }
 
+    @Override
+    public String checkDBContainer(String projectId) {
+        try {
+            ArrayList<String> analyzeList = AnalyzeProjectContainer(projectId);
+            HashMap<String,String> frameworkMap = AnalyzeProjectContainerFramework(projectId); //key : 컨테이너 서비스id, value : 프레임 워크
+            String dockerOutput = readProceedingDockerContainer();
+            HashMap<String,String> containerStatus = parseDockerPsOutput(dockerOutput); //key : 컨테이너 서비스id, value : 실행 상태
+
+            boolean mysqlOn = false;
+            boolean redisOn = false;
+            boolean mongodbOn = false;
+            for(int i=0; i<analyzeList.size(); i++){
+                String currentContainerName = analyzeList.get(i);
+                String currentStatus = containerStatus.get(currentContainerName);
+                String currentFramework = frameworkMap.get(currentContainerName);
+                if(((currentStatus==null)||(currentStatus.equals("Stopped :(")))&&(currentFramework.equals("Mysql"))&&(!mysqlOn)){
+                    mysqlOn=true;
+                }else if(((currentStatus==null)||(currentStatus.equals("Stopped :(")))&&(currentFramework.equals("Redis"))&&(!redisOn)){
+                    redisOn=true;
+                }else if(((currentStatus==null)||(currentStatus.equals("Stopped :(")))&&(currentFramework.equals("Mongodb"))&&(!mongodbOn)){
+                    mongodbOn=true;
+                }
+            }
+
+            StringBuilder errorContainer = new StringBuilder();
+            if(mysqlOn) {
+                errorContainer.append("Mysql").append(" , ");
+            }
+            if(redisOn){
+                errorContainer.append("Redis").append(" , ");
+            }
+            if(mongodbOn){
+                errorContainer.append("Mongodb").append(" , ");
+            }
+            if(mysqlOn||redisOn||mongodbOn){
+                errorContainer.delete(errorContainer.length()-3,errorContainer.length());
+                errorContainer.append(" 컨테이너가 실행중이라 종료할 수 없습니다.");
+            }
+//            System.out.println("결과값 : "+ analyzeContainer);
+            return errorContainer.toString();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            throw new DockerContainerFrameworkErrorException();
+        }
+    }
+
 
     @Override
     public String makeDockerfilePathContent(String projectId, String serviceId, String type) {
@@ -268,7 +303,8 @@ public class DockerfileServiceImpl implements DockerfileService {
             try {
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
-            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+            Map<String, Object> projectJsonMap = ReadJsonFromDocker();
 //        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
             String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap, projectId, "projectName");
 //        System.out.println("프로젝트 이름 나오겠지? " + projectName);
@@ -287,7 +323,8 @@ public class DockerfileServiceImpl implements DockerfileService {
             try {
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
-            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+            Map<String, Object> projectJsonMap = ReadJsonFromDocker();
 //        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
             String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap, projectId, "projectName");
 //        System.out.println("프로젝트 이름 나오겠지? " + projectName);
@@ -312,7 +349,8 @@ public class DockerfileServiceImpl implements DockerfileService {
         try {
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
-            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+            Map<String, Object> projectJsonMap = ReadJsonFromDocker();
 //        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
             String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap, projectId, "projectName");
 //        System.out.println("프로젝트 이름 나오겠지? " + projectName);
@@ -406,8 +444,65 @@ public class DockerfileServiceImpl implements DockerfileService {
 
 
 //----------------------------------------------------------------------------------------------------
+    public String readProceedingDockerContainer() throws IOException {
+        CommandLine commandLine = new CommandLine("docker");
+        commandLine.addArgument("ps");
+        commandLine.addArgument("-a"); // "-a" 옵션 추가
+//        System.out.println("어디서 잘못되는거지 : " + analyzeList);
+        DefaultExecutor executor = new DefaultExecutor();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+        executor.setStreamHandler(streamHandler);
 
-    public HashMap<String,String> parseDockerPsOutput(String output) {//실행중인 컨테이너 조회시 사용
+//        System.out.println("프로젝트 내부 서비스 아이디 목록 : " + analyzeList);
+        executor.execute(commandLine);
+        String dockerOutput = outputStream.toString();
+        System.out.println("docker ps -a결과: \n" + dockerOutput);
+        return dockerOutput;
+    }
+
+    public HashMap<String,String> parseDockerPsOutput(String output) {//실행중인 컨테이너 status 조회시 사용
+        HashMap<String,String> containers = new HashMap<>();
+        String[] lines = output.split("\n");
+        try {
+            // 첫 번째 줄은 헤더이므로 건너뜀
+            for (int i = 1; i < lines.length; i++) {
+                String[] parts = lines[i].split("\\s{2,}");  // 두 개 이상의 공백으로 분할
+                if (parts.length == 7) {
+                    String containerId = parts[0];
+                    String image = parts[1];
+                    String command = parts[2];
+                    String created = parts[3];
+                    String status = parts[4];
+                    String currentStatus = checkStatus(status);
+                    String ports = parts[5];
+                    String innerPort = splitPorts(ports, "inner");
+                    String outerPort = splitPorts(ports, "outer");
+                    String names = parts[6];
+//                String frameWork = splitName(names);
+                    containers.put(names, currentStatus);
+                } else {
+                    String containerId = parts[0];
+                    String image = parts[1];
+                    String command = parts[2];
+                    String created = parts[3];
+                    String status = parts[4];
+                    String currentStatus = checkStatus(status);
+                    String names = parts[5];
+//                String frameWork = splitName(names);
+                    containers.put(names, currentStatus);
+                }
+
+            }
+        }catch(Exception e){
+            throw new DockerPsLinePartsErrorException();
+        }
+
+
+        return containers;
+    }
+
+    public HashMap<String,String> parseDockerPsOutputOnlyName(String output) {//실행중인 컨테이너 이름 조회시 사용
         HashMap<String,String> containers = new HashMap<>();
         String[] lines = output.split("\n");
         try {
@@ -532,6 +627,49 @@ public class DockerfileServiceImpl implements DockerfileService {
             }
             if(databaseMap!=null) {
                 result.addAll(databaseMap.keySet());
+            }
+//            System.out.println("result는 어떻게 나올까? " + result);
+            return result;
+        }catch (Exception e){
+//            System.err.println("프로젝트 내부 백,프론트,데이터베이스 Id조회 도중 발생한 오류 : " + e.getMessage());
+            e.printStackTrace();
+            throw new AnalyzeProjectContainerErrorException();
+        }
+    }
+
+    HashMap<String,String> AnalyzeProjectContainerFramework(String projectId){//프로젝트가 가지고있는 백,프론트엔드,데이터베이스의 아이디를 가져옴
+        try {
+            ReadJsonFromDocker();
+            //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
+            //data/projectJson을 map으로 변환해서 불러왔음
+//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+            Map<String, Object> projectJsonMap = ReadJsonFromDocker();
+            Map<String, Object> backendMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "backendMap");
+            System.out.println("backendMap : " + backendMap);
+            String frontendId = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend", "serviceId");
+            System.out.println("frontendId : " + frontendId);
+            Map<String, Object> databaseMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "databaseMap");
+            System.out.println("databaseMap : " + databaseMap);
+            HashMap<String,String> result = new HashMap<>();
+            if(backendMap!=null) {
+                for (String key : backendMap.keySet()) {
+//                    System.out.println("Key: " + key + ", Value: " + backendMap.get(key));
+                    String framework = (String) readJsonService.JsonGetFour(projectJsonMap, projectId, "backendMap", key, "framework");
+                    System.out.println("백엔드 컨테이너 명 : " + key + " 프레임워크 명 : " + framework);
+                    result.put(key, framework);
+                }
+            }
+            if(frontendId!=null) {
+                String framework = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend", "framework");
+                System.out.println("프론트엔드 컨테이너 명 : " + frontendId + " 프레임워크 명 : " + framework);
+                result.put(frontendId, framework);
+            }
+            if(databaseMap!=null) {
+                for (String key : backendMap.keySet()) {
+                    String framework = (String) readJsonService.JsonGetFour(projectJsonMap, projectId, "backendMap", key, "framework");
+                    System.out.println("DB 컨테이너 명 : " + key + " 프레임워크 명 : " + framework);
+                    result.put(key, framework);
+                }
             }
 //            System.out.println("result는 어떻게 나올까? " + result);
             return result;

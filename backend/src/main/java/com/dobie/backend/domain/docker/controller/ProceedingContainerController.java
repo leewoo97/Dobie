@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 @Tag(name = "Container Check 컨트롤러", description = "Container Check Controller API")
@@ -26,6 +25,14 @@ public class ProceedingContainerController {
         HashMap<String,String> containers = dockerfileService.dockerContainerLister(projectId);
 
         return response.success(ResponseCode.CONTAINER_STATUS_SUCCESS,containers);
+    }
+
+    @Operation(summary = "백엔드 실행 전 DB컨테이너 실행 상태 확인", description = "백엔드 실행 전 DB컨테이너 실행 상태 확인")
+    @GetMapping("/checkDB")
+    public ResponseEntity<?> checkDBContainerStatus(@RequestParam(name="projectId") String projectId) {
+        String result = dockerfileService.checkDBContainer(projectId);
+
+        return response.success(ResponseCode.CHECK_DB_CONTAINER_STATUS_SUCCESS,result);
     }
 
 }
