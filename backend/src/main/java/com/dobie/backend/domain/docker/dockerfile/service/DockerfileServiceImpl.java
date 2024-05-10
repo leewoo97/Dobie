@@ -303,7 +303,8 @@ public class DockerfileServiceImpl implements DockerfileService {
             try {
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
-            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+            Map<String, Object> projectJsonMap = ReadJsonFromDocker();
 //        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
             String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap, projectId, "projectName");
 //        System.out.println("프로젝트 이름 나오겠지? " + projectName);
@@ -322,7 +323,8 @@ public class DockerfileServiceImpl implements DockerfileService {
             try {
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
-            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+            Map<String, Object> projectJsonMap = ReadJsonFromDocker();
 //        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
             String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap, projectId, "projectName");
 //        System.out.println("프로젝트 이름 나오겠지? " + projectName);
@@ -347,7 +349,8 @@ public class DockerfileServiceImpl implements DockerfileService {
         try {
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
-            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
+            Map<String, Object> projectJsonMap = ReadJsonFromDocker();
 //        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
             String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap, projectId, "projectName");
 //        System.out.println("프로젝트 이름 나오겠지? " + projectName);
