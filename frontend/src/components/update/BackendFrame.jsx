@@ -67,9 +67,9 @@ export default function BackendFrame({serviceId}) {
             }
         }))
     }
+    // 컴포넌트가 업데이트 될 때마다 상위 스토어의 상태를 업데이트
     useEffect(()=>{
         setUpdatedProject(tempProject);
-
     },[tempProject])
 
     return (

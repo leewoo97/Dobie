@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 export default function UpdateBackendPage() {
 
-  const {updatedProject, setUpdatedProject} = useProjectStore();
+  const {updatedProject} = useProjectStore();
   const [selectedServiceId, setSelectedServiceId] = useState(null);
 
   useEffect(() => {
@@ -24,9 +24,9 @@ export default function UpdateBackendPage() {
       {/* <NavTop /> */}
       <NavLeftUpdate num={3} />
       <div>
-        {Object.entries(updatedProject.backendMap).map((backend) => (
+        {Object.entries(updatedProject.backendMap).map((backend, index) => (
           <button key={backend.at(0)} onClick={() => handleSelectedServiceId(backend.at(0))}>
-            {backend.at(0)}
+            {index+1}
           </button>
         ))}
         {selectedServiceId && (
