@@ -23,7 +23,7 @@ export default function BackendFrame() {
         path: "",
         branch: "",
         location: "",
-        externalPort: 0,
+        externalPort: "",
         internalPort: ""
       };
 
