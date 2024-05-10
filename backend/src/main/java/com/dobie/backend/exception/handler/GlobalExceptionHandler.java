@@ -214,7 +214,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(makeDockerfilePathContentException.class)
     protected ResponseEntity<?> handle(makeDockerfilePathContentException e) {
-        log.error("ReadBackendDockerfilePathContentException = {}", e.getErrorCode().getMessage());
+        log.error("makeDockerfilePathContentException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
     @ExceptionHandler(makeDockerComposefilePathContentException.class)
