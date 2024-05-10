@@ -31,12 +31,17 @@ export default function RunProjectItem({
     try {
       console.log(projectId);
       const response = await getDockerFile(projectId, serviceId, type);
+      if (response.data.status == "SUCCESS") {
+        setModalOpen(true);
+        setType("dockerFile");
+        setContent(response.data.data);
 
-      setModalOpen(true);
-      setType("dockerFile");
-      setContent(response.data.data);
-
-      console.log(response.data.data);
+        console.log(response.data.data);
+      } else {
+        toast.error(`도커 파일 조회 실패`, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("docker File 조회 실패: " + error);
     }
@@ -61,7 +66,13 @@ export default function RunProjectItem({
     try {
       console.log(containerName);
       const response = await startService(containerName);
-      console.log(response);
+      if (response.data.status == "SUCCESS") {
+        console.log(response);
+      } else {
+        toast.error(`개별 실행에 실패하였습니다. `, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("개별실행 실패: " + error);
     }
@@ -178,16 +189,6 @@ export default function RunProjectItem({
           </div>
         </div>
       </div>
-      {
-        //   runLoadingModal && (
-        //     <LoadingModal action={"run"} setModalOpen={setRunLoadingModal}/>
-        //   )
-        // }
-        // {
-        //   stopLoadingModal && (
-        //     <LoadingModal action={"stop"} setModalOpen={setStopLoadingModal}/>
-        //   )
-      }
     </>
   );
 }
