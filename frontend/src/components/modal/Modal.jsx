@@ -42,7 +42,7 @@ export default function Madal({ content }) {
           </div>
 
           <div className={styles.modalBody}>
-            <p className={styles.nginxConf}>{content}</p>
+            <p className={styles.content}>{content}</p>
           </div>
         </div>
       </div>

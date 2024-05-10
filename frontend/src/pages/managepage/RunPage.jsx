@@ -12,8 +12,9 @@ import edit from "../../assets/editIcon.png";
 import remove from "../../assets/deleteIcon.png";
 import setting from "../../assets/settingIcon.png";
 import document from "../../assets/documentIcon.png";
+import restart from "../../assets/restart.png";
 
-import { deleteProject } from "../../api/Project";
+import { deleteProject, startProject, stopProject } from "../../api/Project";
 import { getNginxConf } from "../../api/ngixn";
 import { getDockerCompose } from "../../api/Docker";
 import { checkProceeding } from "../../api/CheckProcess";
@@ -27,6 +28,7 @@ import LoadingModal from "../../components/modal/LoadingModal";
 export default function RunPage() {
   const [content, setContent] = useState("");
 
+  const { action, setAction } = useModalStore();
   const { modalOpen, setModalOpen } = useModalStore();
   const { fileType, setFileType } = useModalStore();
   const { checkProceed, setCheckProceed } = useProjectStore();
@@ -107,10 +109,10 @@ export default function RunPage() {
     try {
       console.log(projectId);
       const response = await getDockerCompose(projectId);
-      if (response.data.status == "SUCCESS") {
+      if (response.status == 200) {
         setModalOpen(true);
         setFileType("dockerCompose");
-        setContent(response.data.data);
+        setContent(response.data);
       } else {
         toast.error("도커 컴포즈 파일 조회 실패", {
           position: "top-center",
@@ -118,6 +120,50 @@ export default function RunPage() {
       }
     } catch (error) {
       console.log("docker compose 조회 실패: " + error);
+    }
+  };
+
+  //전체 프로젝트 중지
+  const handleProjectStop = async (projectId) => {
+    try {
+      if (checkProceed.allRunning == "Run") {
+        setAction("stop");
+        setLoadingModal(true);
+        const response = await stopProject(projectId).then(() =>
+          setLoadingModal(false)
+        );
+        window.location.replace("/manage");
+        console.log(response);
+
+        console.log(response);
+      } else {
+        toast.error(`이미 중지된 프로젝트 입니다. `, {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      console.log("프로젝트 정지 실패: " + error);
+    }
+  };
+
+  //전체 프로젝트 실행
+  const handleProjectStart = async (projectId) => {
+    try {
+      setAction("run");
+      setLoadingModal(true);
+      const response = await startProject(projectId).then(() =>
+        setLoadingModal(false)
+      );
+      window.location.replace("/manage");
+      if (response.data.status == "SUCCESS") {
+        console.log(response);
+      } else {
+        toast.error(`전체 실행에 실패하였습니다. `, {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      console.log("프로젝트 전체실행 실패");
     }
   };
 
@@ -178,14 +224,34 @@ export default function RunPage() {
             <div className={styles.runButton}>
               {checkProceed.allRunning == "Run" && (
                 <div>
-                  <img src={rerun} width="40px"></img>
-                  <img src={stop} width="40px"></img>
+                  <img
+                    src={restart}
+                    width="40px"
+                    onClick={() =>
+                      handleProjectStart(selectedProject.projectId)
+                    }
+                  ></img>
+                  <img
+                    src={stop}
+                    width="40px"
+                    onClick={() => handleProjectStop(selectedProject.projectId)}
+                  ></img>
                 </div>
               )}
               {checkProceed.allRunning == "Stop" && (
                 <div>
-                  <img src={run} width="40px"></img>
-                  <img src={stop} width="40px"></img>
+                  <img
+                    src={run}
+                    width="40px"
+                    onClick={() =>
+                      handleProjectStart(selectedProject.projectId)
+                    }
+                  ></img>
+                  <img
+                    src={stop}
+                    width="40px"
+                    onClick={() => handleProjectStop(selectedProject.projectId)}
+                  ></img>
                 </div>
               )}
             </div>

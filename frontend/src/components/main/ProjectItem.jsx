@@ -1,16 +1,17 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import styles from "./ProjectItem.module.css";
 import gitlab from "../../assets/gitlab.png";
 import github from "../../assets/github.png";
 import run from "../../assets/run.png";
-import rerun from "../../assets/rerun.png";
 import stop from "../../assets/stop.png";
 import useProjectStore from "../../stores/projectStore";
 import LoadingModal from "../modal/LoadingModal";
 import restart from "../../assets/restart.png";
 
-import { startService, stopProject } from "../../api/Project";
+import { startProject, stopProject } from "../../api/Project";
+import { checkProceeding } from "../../api/CheckProcess";
 
 import { useNavigate } from "react-router-dom";
 import useModalStore from "../../stores/modalStore";
@@ -19,6 +20,38 @@ export default function ProjectItem({ project }) {
   const navigate = useNavigate();
   const { selectedProject, setSelectedProject } = useProjectStore();
   const { loadingModal, setLoadingModal } = useModalStore();
+  const { action, setAction } = useModalStore();
+
+  const [checkProceed, setCheckProceed] = useState({});
+
+  useEffect(() => {
+    try {
+      handleCheckProceding();
+      setLoadingModal(false);
+    } catch (error) {
+      console.error("컨테이너 실행 확인 에러: ", error);
+    }
+  }, []);
+
+  //실행상태 조회
+  const handleCheckProceding = async () => {
+    try {
+      const response = await checkProceeding(project.projectId);
+
+      if (response.data.status == "SUCCESS") {
+        setCheckProceed(response.data.data);
+        console.log(response.data.data);
+      } else {
+        setCheckProceed({ allRunning: "null" });
+        toast.error(`프로젝트 실행상태를 불러올수 없습니다.`, {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      console.error("컨테이너 실행 확인 에러: ", error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     try {
       setSelectedProject(project);
@@ -28,19 +61,45 @@ export default function ProjectItem({ project }) {
     }
   };
 
+  //전체 프로젝트 중지
   const handleProjectStop = async (projectId) => {
     try {
-      const response = await stopProject(projectId);
-      console.log(response);
+      if (checkProceed.allRunning == "Run") {
+        setAction("stop");
+        setLoadingModal(true);
+        const response = await stopProject(projectId).then(() =>
+          setLoadingModal(false)
+        );
+        window.location.replace("/main");
+        console.log(response);
+
+        console.log(response);
+      } else {
+        toast.error(`이미 중지된 프로젝트 입니다. `, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("프로젝트 정지 실패: " + error);
     }
   };
 
+  //전체 프로젝트 실행
   const handleProjectStart = async (projectId) => {
     try {
-      const response = await startService(projectId);
-      console.log(response);
+      setAction("run");
+      setLoadingModal(true);
+      const response = await startProject(projectId).then(() =>
+        setLoadingModal(false)
+      );
+      window.location.replace("/main");
+      if (response.data.status == "SUCCESS") {
+        console.log(response);
+      } else {
+        toast.error(`전체 실행에 실패하였습니다. `, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       console.log("프로젝트 전체실행 실패");
     }
@@ -53,15 +112,21 @@ export default function ProjectItem({ project }) {
         <div key={project.projectDomain}>{project.projectDomain}</div>
         <div className={styles.runButton}>
           <img
-            src={project.running ? rerun : restart}
+            src={checkProceed.allRunning == "Run" ? restart : run}
             alt=""
             className={styles.run}
-            onClick={() => handleProjectStart(project.projectId)}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleProjectStart(project.projectId);
+            }}
           />
           <img
             src={stop}
             alt=""
-            onClick={() => handleProjectStop(project.projectId)}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleProjectStop(project.projectId);
+            }}
           ></img>
         </div>
         <div>

@@ -7,9 +7,9 @@
   align-items: center;
 }
 
-.content:hover{
+.content:hover:not(.runButton) {
   opacity: 0.8;
-  transform: scale(1.05); 
+  transform: scale(1.05);
   transition: 0.3s ease-in-out;
 }
 
@@ -35,6 +35,6 @@
   margin: 0 3px;
 }
 
-.gitImage{
+.gitImage {
   height: 7vh;
 }
