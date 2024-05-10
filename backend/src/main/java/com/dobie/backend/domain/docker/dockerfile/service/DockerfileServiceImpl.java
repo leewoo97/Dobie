@@ -674,7 +674,8 @@ public class DockerfileServiceImpl implements DockerfileService {
                     result.put(key, framework);
                 }
             }
-//            System.out.println("result는 어떻게 나올까? " + result);
+////            System.out.println("result는 어떻게 나올까? " + result);
+
             return result;
         }catch (Exception e){
 //            System.err.println("프로젝트 내부 백,프론트,데이터베이스 Id조회 도중 발생한 오류 : " + e.getMessage());
