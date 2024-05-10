@@ -7,9 +7,12 @@ import stop from "../../assets/stop.png";
 import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 import FrameworkImg from "../common/FrameworkImg";
+import toast from "react-hot-toast";
 import LoadingModal from "../../components/modal/LoadingModal";
 
 import { getDockerFile } from "../../api/Docker";
+import { stopService } from "../../api/Project";
+import { startService } from "../../api/Project";
 
 import useProjectStore from "../../stores/projectStore";
 
@@ -19,8 +22,10 @@ export default function RunProjectItem({
   setModalOpen,
   setContent,
   setType,
+  isRunning,
 }) {
   const { selectedProject, setSelectedProject } = useProjectStore();
+  console.log(isRunning);
 
   const handleDockerFileModal = async (projectId, serviceId, type) => {
     try {
@@ -37,37 +42,70 @@ export default function RunProjectItem({
     }
   };
 
-  const [runLoadingModal, setRunLoadingModal] = useState(false);
-  const [stopLoadingModal, setStopLoadingModal] = useState(false);
-
-const handleRunLoadingModal = async () => {
+  const handleStopService = async (containerName) => {
     try {
-      setRunLoadingModal(true);
+      if (isRunning == "Running :)") {
+        console.log(containerName);
+        const response = await stopService(containerName);
+        console.log(response);
+      } else {
+        toast.error(`이미 중지된 컨테이너 입니다. `, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
-      
+      console.log("개별중지 실패: " + error);
+    }
+  };
+  const handleStartService = async (containerName) => {
+    try {
+      console.log(containerName);
+      const response = await startService(containerName);
+      console.log(response);
+    } catch (error) {
+      console.log("개별실행 실패: " + error);
     }
   };
 
-  const handleStopLoadingModal = async () => {
-    try {
-      setStopLoadingModal(true);
-    } catch (error) {
-      
-    }
-  };
 
+ 
   return (
     <>
       <div className={styles.container}>
         <div className={styles.containerButton}>
           <div className={styles.runButton}>
-            <img
-              src={container.running == "Running :)" ? rerun : run}
-              alt=""
-              onClick={() => handleRunLoadingModal()}
-            />
-            <img src={stop} 
-            onClick={() => handleStopLoadingModal()}></img>
+
+            {type == "Database" ? (
+              <img
+                src={isRunning == "Running :)" ? rerun : run}
+                alt=""
+                width="30px"
+                onClick={() => handleStartService(container.databaseId)}
+              />
+            ) : (
+              <img
+                src={isRunning == "Running :)" ? rerun : run}
+                alt=""
+                width="30px"
+                onClick={() => handleStartService(container.serviceId)}
+              />
+            )}
+
+            {(type == "Backend" || type == "Frontend") && (
+              <img
+                src={stop}
+                width="30px"
+                onClick={() => handleStopService(container.serviceId)}
+              ></img>
+            )}
+            {type == "Database" && (
+              <img
+                src={stop}
+                width="30px"
+                onClick={() => handleStopService(container.databaseId)}
+              ></img>
+            )}
+
           </div>
           {(type == "Backend" || type == "Frontend") && (
             <div
@@ -126,14 +164,11 @@ const handleRunLoadingModal = async () => {
           <div className={styles.boxBottom}>
             <div
               className={
-                container.running == "Running :)"
-                  ? styles.running
-                  : styles.stopped
+                isRunning == "Running :)" ? styles.running : styles.stopped
               }
-              key={container.running}
+              key={isRunning}
             >
-              {container.running}
-              stoped :(
+              {isRunning}
             </div>
             <div className={styles.log}>
               <img

@@ -1,11 +1,13 @@
 import axios from "axios";
-// const nginxUrl = "http://localhost:8080/api/nginx";
-const nginxUrl = "https://api.silvstone.xyz/api/dockerfile";
+// const dockerUrl = "http://localhost:8080/api/dockerfile";
+// const dockerUrl = process.env.REACT_APP_SERVER + "/dockerfile";
+// const dockerUrl = "https://api.silvstone.xyz/api/dockerfile";
+const dockerUrl = "http://3.38.208.235:8010/api/containercheck";
 
 export async function getDockerCompose(projectId) {
   try {
     const response = await axios.get(
-      nginxUrl + "/docker-compose-file-content",
+      dockerUrl + "/docker-compose-file-content",
       { params: { projectId } }
     );
     console.log(response);
@@ -17,7 +19,7 @@ export async function getDockerCompose(projectId) {
 
 export async function getDockerFile(projectId, serviceId, type) {
   try {
-    const response = await axios.get(nginxUrl + "/dockerfile-content", {
+    const response = await axios.get(dockerUrl + "/dockerfile-content", {
       params: { projectId, serviceId, type },
     });
     console.log(response);
