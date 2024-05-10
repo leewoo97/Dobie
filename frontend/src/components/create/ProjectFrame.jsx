@@ -46,11 +46,13 @@ export default function ProjectFrame() {
 
     return (
         <div className={styles.page}>
-            <ProjectTopCreate />
+            {/* <ProjectTopCreate /> */}
             {/* <GetBox keyName={"url"} valueName={url} onChange={(e) => setUrl(e.target.value)}/>
             <GetBox keyName={"액세스 토큰"} valueName={accessToken} onChange={(e)=> setAccessToken(e.target.value)}/>
             <GetBox keyName={"자동 배포 웹훅 설정"} valueName={webHook} onChange={(e)=> setWebHook(e.target.value)}/>
             <GetBox keyName={"브랜치"} valueName={branch} onChange={(e)=>setBranch(e.target.value)}/> */}
+            <InputBox keyName={"프로젝트명"} valueName={"S10P31B101"} onChange={changeUrlHandler} value={tempProject.git.gitUrl}/>
+            <DescBox desc={"Git 저장소의 프로젝트 최상단 폴더명을 작성하세요"} />
             <InputBox keyName={"url"} valueName={"url"} onChange={changeUrlHandler} value={tempProject.git.gitUrl}/>
             <DescBox desc={"GitLab 또는 GitHub 의 프로젝트를 클론하기 위한 URL을 등록하세요 "} />
             <InputBox keyName={"액세스 토큰"} valueName={"accessToken"} onChange={changeTokenHandler} value={tempProject.git.accessToken}/>
