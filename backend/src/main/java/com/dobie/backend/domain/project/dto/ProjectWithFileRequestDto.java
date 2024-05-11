@@ -25,6 +25,4 @@ public class ProjectWithFileRequestDto {
     private FrontendRequestDto frontend;
     private Map<String, DatabaseRequestDto> databaseMap;
     private List<String> filePathList;
-
-    private List<MultipartFile> files;
 }
