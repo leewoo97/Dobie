@@ -170,29 +170,16 @@ export default function RunProjectItem({ container, type, setContent }) {
           </div>
           <div className={styles.line}></div>
           <div className={styles.boxBottom}>
-            {type === "Database" ? (
-              <div
-                className={
-                  checkProceed[container.databaseId] === "Running :)"
-                    ? styles.running
-                    : styles.stopped
-                }
-                key={checkProceed[container.databaseId]}
-              >
-                {checkProceed[container.databaseId]}
-              </div>
-            ) : (
-              <div
-                className={
-                  checkProceed[container.serviceId] === "Running :)"
-                    ? styles.running
-                    : styles.stopped
-                }
-                key={checkProceed[container.serviceId]}
-              >
-                {checkProceed[container.serviceId]}
-              </div>
-            )}
+            <div
+              className={
+                checkProceed[container.serviceId || container.databaseId] ===
+                "Running :)"
+                  ? styles.running
+                  : styles.stopped
+              }
+            >
+              {checkProceed[container.serviceId || container.databaseId]}
+            </div>
             <div className={styles.log}>
               <img
                 src={log}
