@@ -264,6 +264,9 @@ public class DockerfileServiceImpl implements DockerfileService {
                 String currentContainerName = analyzeList.get(i);
                 String currentStatus = containerStatus.get(currentContainerName);
                 String currentFramework = frameworkMap.get(currentContainerName);
+                System.out.println("현재 실행중인 컨테이너 이름 : " + currentContainerName);
+                System.out.println("현재 실행중인 컨테이너 상태 : " + currentStatus);
+                System.out.println("현재 실행중인 컨테이너 프레임워크 : " + currentFramework);
                 if(((currentStatus==null)||(currentStatus.equals("Stopped :(")))&&(currentFramework.equals("Mysql"))&&(!mysqlOn)){
                     mysqlOn=true;
                 }else if(((currentStatus==null)||(currentStatus.equals("Stopped :(")))&&(currentFramework.equals("Redis"))&&(!redisOn)){
@@ -639,7 +642,7 @@ public class DockerfileServiceImpl implements DockerfileService {
 
     HashMap<String,String> AnalyzeProjectContainerFramework(String projectId){//프로젝트가 가지고있는 백,프론트엔드,데이터베이스의 아이디를 가져옴
         try {
-            ReadJsonFromDocker();
+//            ReadJsonFromDocker();
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
 //            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
@@ -666,12 +669,13 @@ public class DockerfileServiceImpl implements DockerfileService {
             }
             if(databaseMap!=null) {
                 for (String key : backendMap.keySet()) {
-                    String framework = (String) readJsonService.JsonGetFour(projectJsonMap, projectId, "backendMap", key, "framework");
+                    String framework = (String) readJsonService.JsonGetFour(projectJsonMap, projectId, "databaseMap", key, "databaseType");
                     System.out.println("DB 컨테이너 명 : " + key + " 프레임워크 명 : " + framework);
                     result.put(key, framework);
                 }
             }
-//            System.out.println("result는 어떻게 나올까? " + result);
+////            System.out.println("result는 어떻게 나올까? " + result);
+
             return result;
         }catch (Exception e){
 //            System.err.println("프로젝트 내부 백,프론트,데이터베이스 Id조회 도중 발생한 오류 : " + e.getMessage());
