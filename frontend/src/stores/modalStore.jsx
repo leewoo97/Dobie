@@ -4,9 +4,9 @@ import { persist } from "zustand/middleware";
 const useModalStore = create(
   persist(
     (set) => ({
-      openModal: false,
-      setOpenModal: (openModal) => {
-        set({ openModal: openModal });
+      modalOpen: false,
+      setModalOpen: (modalOpen) => {
+        set({ modalOpen: modalOpen });
       },
       loadingModal: false,
       setLoadingModal: (loadingModal) => {

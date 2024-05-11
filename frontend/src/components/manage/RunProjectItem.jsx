@@ -6,35 +6,35 @@ import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 import FrameworkImg from "../common/FrameworkImg";
 import toast from "react-hot-toast";
+import restart from "../../assets/restart.png";
 
 import { getDockerFile } from "../../api/Docker";
 import { stopService } from "../../api/Project";
 import { startService } from "../../api/Project";
+import { useNavigate } from "react-router-dom";
 
 import useProjectStore from "../../stores/projectStore";
 import useModalStore from "../../stores/modalStore";
 
-export default function RunProjectItem({
-  container,
-  type,
-  setModalOpen,
-  setContent,
-}) {
+export default function RunProjectItem({ container, type, setContent }) {
   const { selectedProject, setSelectedProject } = useProjectStore();
   const { checkProceed, setCheckProceed } = useProjectStore();
   const { loadingModal, setLoadingModal } = useModalStore();
   const { action, setAction } = useModalStore();
   const { fileType, setFileType } = useModalStore();
+  const { modalOpen, setModalOpen } = useModalStore();
+
+  const navigate = useNavigate();
 
   //도커파일 조회
   const handleDockerFileModal = async (projectId, serviceId, type) => {
     try {
       console.log(checkProceed[container.serviceId]);
       const response = await getDockerFile(projectId, serviceId, type);
-      if (response.data.status == "SUCCESS") {
+      if (response.status == 200) {
         setModalOpen(true);
         setFileType("dockerFile");
-        setContent(response.data.data);
+        setContent(response.data);
       } else {
         toast.error(`도커 파일 조회 실패`, {
           position: "top-center",
@@ -69,7 +69,6 @@ export default function RunProjectItem({
   //개별 서비스 실행
   const handleStartService = async (containerName) => {
     try {
-      console.log(containerName);
       setAction("run");
       setLoadingModal(true);
       const response = await startService(containerName).then(() =>
@@ -88,6 +87,16 @@ export default function RunProjectItem({
     }
   };
 
+  const handleIntoContainer = () => {
+    if (type == "Backend") {
+      navigate(`/manage/backend/${container.serviceId}`);
+    } else if (type == "Frontend") {
+      navigate(`/manage/frontend`);
+    } else {
+      navigate(`/manage/database/${container.databaseId}`);
+    }
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -97,7 +106,7 @@ export default function RunProjectItem({
               <img
                 src={
                   checkProceed[container.databaseId] == "Running :)"
-                    ? rerun
+                    ? restart
                     : run
                 }
                 alt=""
@@ -108,7 +117,7 @@ export default function RunProjectItem({
               <img
                 src={
                   checkProceed[container.serviceId] == "Running :)"
-                    ? rerun
+                    ? restart
                     : run
                 }
                 alt=""
@@ -153,7 +162,7 @@ export default function RunProjectItem({
             </div>
           )}
         </div>
-        <div className={styles.box}>
+        <div className={styles.box} onClick={() => handleIntoContainer()}>
           <div className={styles.boxTop}>
             <table>
               <tbody>

@@ -9,35 +9,31 @@ import useProjectStore from "../../stores/projectStore";
 
 export default function ProjectFrame() {
 
-    const { selectedProject, setSelectedProject} = useProjectStore();
-    console.log(typeof selectedProject);
+    const {updatedProject, setUpdatedProject} = useProjectStore();
     const [gittype, setGittype] = useState("gitlab");
-    const [ updatedProject, setUpdatedProject] = useState({...selectedProject});
-    // console.log(updatedProject);
+    const [tempProject, setTempProject] = useState({...updatedProject});
 
-    const handleUrlChange = (e) => {
-        // setUrl(e.target.value);
-        setUpdatedProject(prev => ({
+    const changeUrlHandler = (e) => {
+       setTempProject(prev => ({
+        ...prev,
+        git : {
+            ...prev.git,
+            gitUrl: e.target.value
+        }
+       }));
+    };
+
+    const changeTokenHandler = (e) => {
+        setTempProject(prev => ({
             ...prev,
-            git: {
+            git : {
                 ...prev.git,
-                gitUrl: e.target.value
+                accessToken : e.target.value
             }
         }));
     };
 
-    const handleTokenChange = (e) => {
-        // setUrl(e.target.value);
-        setUpdatedProject(prev => ({
-            ...prev,
-            git: {
-                ...prev.git,
-                accessToken: e.target.value
-            }
-        }));
-    };
-
-    // const handleBranchChange = (e) => {
+    // const changeBranchHandler = (e) => {
     //     // setUrl(e.target.value);
     //     setUpdatedProject(prev => ({
     //         ...prev,
@@ -47,14 +43,18 @@ export default function ProjectFrame() {
     //         }
     //     }));
     // };
-    
+
+    useEffect(() => {
+        setUpdatedProject(tempProject);
+    },[tempProject]);
+
     return (
         <div className={styles.page}>
             <ProjectTopUpdate updatedProject={updatedProject} />
 
-            <InputBox keyName={"url"} updateText={updatedProject.git.gitUrl} onChange={handleUrlChange}/>
+            <InputBox keyName={"url"} value={tempProject.git.gitUrl} onChange={changeUrlHandler}/>
             <DescBox desc={"GitLab 또는 GitHub 의 프로젝트를 클론하기 위한 URL을 등록하세요 "} />
-            <InputBox keyName={"액세스 토큰"} updateText={updatedProject.git.accessToken} onChange={handleTokenChange} />
+            <InputBox keyName={"액세스 토큰"} value={tempProject.git.accessToken} onChange={changeTokenHandler} />
             <DescBox desc={"Git 저장소에 접근하기 위한 엑세스 토큰을 발급하여 등록하세요 "} />
 
             <div className={styles.boxFrame}>

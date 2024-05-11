@@ -5,9 +5,10 @@ import close from "../../assets/close.png";
 
 import useModalStore from "../../stores/modalStore";
 
-export default function Madal({ content, setModalOpen }) {
+export default function Madal({ content }) {
   const modalBackground = useRef();
   const { fileType, setFileType } = useModalStore();
+  const { modalOpen, setModalOpen } = useModalStore();
 
   return (
     <>
@@ -41,7 +42,7 @@ export default function Madal({ content, setModalOpen }) {
           </div>
 
           <div className={styles.modalBody}>
-            <p className={styles.nginxConf}>{content}</p>
+            <p className={styles.content}>{content}</p>
           </div>
         </div>
       </div>

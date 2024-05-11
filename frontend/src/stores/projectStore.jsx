@@ -23,13 +23,12 @@ const useProjectStore = create(
       //   addBackend: (backend) => {
       //     createProject.backendMap.add(backend);
       //   },
-      newProject: {},
-      makeNewProject: () => {
-        set({
-          newProject: {
-            projectName: "",
-            projectDomain: "",
-            usingHttps: false,
+      createdProject : {},
+      makeCreatedProject: () => {
+        set({createdProject: {
+            projectName : "",
+            projectDomain : "",
+            usingHttps : false,
             git: {
               gitType: 0,
               gitUrl: "",
@@ -45,9 +44,9 @@ const useProjectStore = create(
                 path: "",
                 branch: "",
                 location: "",
-                externalPort: 0,
-                internalPort: 0,
-              },
+                externalPort: "",
+                internalPort: ""
+              }
             },
             frontend: {
               serviceName: "",
@@ -57,9 +56,9 @@ const useProjectStore = create(
               path: "",
               branch: "",
               location: "",
-              externalPort: 0,
-              internalPort: 0,
-              usingNginx: false,
+              externalPort: "",
+              internalPort: "",
+              usingNginx: false
             },
             databaseMap: {
               1: {
@@ -68,14 +67,14 @@ const useProjectStore = create(
                 schemaPath: "",
                 username: "",
                 password: "",
-                externalPort: 0,
-                internalPort: 0,
+                externalPort: "",
+                internalPort: "",
               },
             },
           },
         });
       },
-      setNewProject: (project) => {
+      setCreatedProject: (project) => {
         set({ newProject: project });
       },
       checkProceed: {},
