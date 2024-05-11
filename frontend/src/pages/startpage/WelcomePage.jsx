@@ -2,9 +2,7 @@ import React, { useEffect } from "react";
 import Container from "../../components/common/Container";
 import mascot from "../../assets/mascot.png";
 import styles from "./WelcomePage.module.css";
-
 import { useNavigate } from "react-router-dom";
-
 import { getUser } from "../../api/Member";
 
 export default function WelcomePage() {
@@ -20,7 +18,6 @@ export default function WelcomePage() {
 
   const getUserInfo = async (e) => {
     try {
-      console.log("유저 정보찾기");
       const response = await getUser(); //userInfo API연결
 
       //response에 username이 null이면 회원가입 창(/sginup)으로 이동
@@ -52,7 +49,12 @@ export default function WelcomePage() {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.mascot}>
-            <img src={mascot} alt="" width="200px" decoding="async" />
+            <img
+              src={mascot}
+              className={styles.dobieIcon}
+              alt=""
+              decoding="async"
+            />
           </div>
           <div className={styles.text}>
             <div className={styles.dobie}>Dobie</div>
@@ -65,9 +67,6 @@ export default function WelcomePage() {
               <div className={styles.line4}>자유로워지자</div>
             </div>
           </div>
-          {/* <div className={styles.login} onClick={() => handleSubmit()}>
-            회원가입
-          </div> */}
         </div>
       </div>
     </Container>
