@@ -1,5 +1,4 @@
 .page {
-  /* height: 82%; */
   width: 83%;
   position: relative;
   top: 10%;
@@ -9,7 +8,6 @@
 }
 
 .top {
-  /* background-color: red; */
   display: inline-flex;
   padding: 2% 8%;
   justify-content: space-between;
@@ -108,22 +106,6 @@
   cursor: pointer;
 }
 
-.compose {
-  color: #6096b4;
-  font-weight: 600;
-  background-color: #eee9da;
-  border-radius: 10px;
-  padding: 5px 15px;
-  margin: 0 5px;
-  cursor: pointer;
-}
-
-.containerButton {
-  display: inline-flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
 .containerButton > div {
   display: inline-flex;
 }
@@ -146,14 +128,9 @@
   transition: 0.3s ease-in-out;
 }
 
-.runButton > img {
-  height: 5vh;
-  margin: 0 3px;
-  cursor: pointer;
-}
-
 .runButtonIcon {
   width: 2.4vw;
+  margin-right: 0.5vw;
   cursor: pointer;
 }
 .runButtonIcon:hover {
@@ -191,94 +168,4 @@
 
 .btnIcon {
   height: 4vh;
-}
-
-.bottom {
-  /* background-color: blue; */
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.container {
-  width: 40%;
-  margin: 1% 3%;
-}
-
-.containerButton {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 3%;
-}
-
-.box {
-  /* background-color: red; */
-  border-radius: 10px;
-  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.25);
-  padding: 20px;
-}
-
-.boxTop {
-  /* background-color: yellow; */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-table {
-  width: 100%; /* 테이블의 너비를 설정 */
-}
-
-.boxTop table {
-  flex: 80;
-}
-
-.boxTop div {
-  flex: 20;
-}
-
-td {
-  padding: 8px;
-}
-
-.serviceName {
-  font-weight: 600;
-}
-
-.line {
-  width: calc(100% + 40px);
-  margin-left: -20px;
-  margin-right: -20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  height: 2px;
-  background-color: rgba(0, 0, 0, 0.05);
-  /* box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.25); */
-}
-
-.boxBottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 8px;
-}
-
-.running {
-  color: #57965c;
-  font-weight: 600;
-}
-
-.stopped {
-  color: #ff5370;
-  font-weight: 600;
-}
-
-.log {
-  display: inline-flex;
-  align-items: center;
-}
-
-.boxBottom > div > img {
-  margin-right: 5px;
-  margin-top: 1px;
 }

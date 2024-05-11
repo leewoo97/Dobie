@@ -27,13 +27,12 @@ import LoadingModal from "../../components/modal/LoadingModal";
 export default function RunPage() {
   const [content, setContent] = useState("");
 
-  const { action, setAction } = useModalStore();
+  const { setAction } = useModalStore();
   const { modalOpen, setModalOpen } = useModalStore();
-  const { fileType, setFileType } = useModalStore();
+  const { setFileType } = useModalStore();
   const { checkProceed, setCheckProceed } = useProjectStore();
   const { loadingModal, setLoadingModal } = useModalStore();
-  const { selectedProject, setSelectedProject, setUpdatedProject } =
-    useProjectStore();
+  const { selectedProject, setUpdatedProject } = useProjectStore();
 
   const navigate = useNavigate();
 
