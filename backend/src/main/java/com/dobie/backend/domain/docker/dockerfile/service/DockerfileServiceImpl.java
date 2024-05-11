@@ -668,7 +668,7 @@ public class DockerfileServiceImpl implements DockerfileService {
                 result.put(frontendId, framework);
             }
             if(databaseMap!=null) {
-                for (String key : backendMap.keySet()) {
+                for (String key : databaseMap.keySet()) {
                     String framework = (String) readJsonService.JsonGetFour(projectJsonMap, projectId, "databaseMap", key, "databaseType");
                     System.out.println("DB 컨테이너 명 : " + key + " 프레임워크 명 : " + framework);
                     result.put(key, framework);
