@@ -27,7 +27,6 @@ export default function RunProjectItem({ container, type, setContent }) {
   //도커파일 조회
   const handleDockerFileModal = async (projectId, serviceId, type) => {
     try {
-      console.log(checkProceed[container.serviceId]);
       const response = await getDockerFile(projectId, serviceId, type);
       if (response.status === 200) {
         setModalOpen(true);
@@ -49,11 +48,8 @@ export default function RunProjectItem({ container, type, setContent }) {
       if (checkProceed[containerName] === "Running :)") {
         setAction("stop");
         setLoadingModal(true);
-        const response = await stopService(containerName).then(() =>
-          setLoadingModal(false)
-        );
+        await stopService(containerName).then(() => setLoadingModal(false));
         window.location.replace("/manage");
-        console.log(response);
       } else {
         toast.error(`이미 중지된 컨테이너 입니다. `, {
           position: "top-center",
