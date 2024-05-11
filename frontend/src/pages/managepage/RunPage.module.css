@@ -154,6 +154,7 @@
 
 .runButtonIcon {
   width: 2.4vw;
+  cursor: pointer;
 }
 .runButtonIcon:hover {
   opacity: 0.8;
@@ -163,6 +164,7 @@
 
 .stopButtonIcon {
   width: 2.4vw;
+  cursor: pointer;
 }
 
 .stopButtonIcon:hover {

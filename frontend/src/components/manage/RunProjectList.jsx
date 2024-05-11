@@ -3,7 +3,7 @@ import RunProjectItem from "./RunProjectItem";
 import useProjectStore from "../../stores/projectStore";
 
 export default function RunProjectList({ setContent }) {
-  const { selectedProject, setSelectedProject } = useProjectStore();
+  const { selectedProject } = useProjectStore();
 
   return (
     <>
