@@ -1,6 +1,6 @@
 import run from "../../assets/run.png";
 import restart from "../../assets/restart.png";
-import styles from "./RunProjectItem.module.css";
+import styles from "./RunButton.module.css";
 
 export default function RunButton({
   type,

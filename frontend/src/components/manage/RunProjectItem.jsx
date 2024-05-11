@@ -1,5 +1,4 @@
 import styles from "./RunProjectItem.module.css";
-import stop from "../../assets/stop.png";
 import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 import FrameworkImg from "../common/FrameworkImg";

@@ -1,5 +1,5 @@
 import stop from "../../assets/stop.png";
-import styles from "./RunProjectItem.module.css";
+import styles from "./StopButton.module.css";
 
 export default function StopButton({ type, container, handleStopService }) {
   const serviceId =
@@ -8,7 +8,7 @@ export default function StopButton({ type, container, handleStopService }) {
     <img
       src={stop}
       alt=""
-      className={styles.runButtonIcon}
+      className={styles.stopButtonIcon}
       onClick={() => handleStopService(serviceId)}
     />
   );

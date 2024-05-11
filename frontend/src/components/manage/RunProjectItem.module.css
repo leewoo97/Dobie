@@ -1,14 +1,20 @@
-.runButtonIcon {
-  width: 2vw;
-  margin-right: 0.5vw;
-  cursor: pointer;
+.container {
+  width: 40%;
+  margin: 1% 3%;
+}
+
+.containerButton {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2vh;
+  justify-content: space-between;
 }
 
 .fileButton {
   color: #6096b4;
   font-weight: 600;
   background-color: #eee9da;
-  border-radius: 10px;
+  border-radius: 0.5vw;
   padding: 0.8vh 1vw;
   margin-right: 0.3vw;
   text-align: center;
@@ -26,51 +32,8 @@
   height: 4vh;
 }
 
-.buttons {
-  display: inline-flex;
-  align-items: flex-end;
-}
-
-.buttons > div {
-  display: inline-flex;
-  align-items: center;
-}
-
-.buttons > div > img {
-  margin-left: 1vh;
-}
-
-.bottom {
-  /* background-color: blue; */
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.containerButton {
-  display: inline-flex;
-  align-items: center;
-  margin-bottom: 2vh;
-}
-
 .containerButton > div {
   display: inline-flex;
-}
-
-.container {
-  width: 40%;
-  margin: 1% 3%;
-}
-
-.containerButton {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 3%;
-}
-
-.projectName {
-  font-size: 5vh;
-  font-weight: 600;
 }
 
 .ningx {
