@@ -27,6 +27,7 @@ public enum ResponseCode {
     DOCKER_FILE_INSTALL_SUCCESS(HttpStatus.OK, "도커파일이 성공적으로 설치되었습니다."),
     /* 파일 내용 조회 */
     CHECK_DB_CONTAINER_STATUS_SUCCESS(HttpStatus.OK, "DB실행상태 조회가 성공적으로 완료되었습니다."),
+    CHECK_BACKEND_CONTAINER_STATUS_SUCCESS(HttpStatus.OK, "백엔드실행상태 조회가 성공적으로 완료되었습니다."),
     /* nginx config 파일 */
     NGINX_CONFIG_READ_SUCCESS(HttpStatus.OK, "niginx config파일을 성공적으로 조회했습니다."),
 
