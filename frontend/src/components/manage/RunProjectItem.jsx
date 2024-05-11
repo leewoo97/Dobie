@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import useProjectStore from "../../stores/projectStore";
 import useModalStore from "../../stores/modalStore";
 import RunButton from "./RunButton";
+import StopButton from "./StopButton";
 
 export default function RunProjectItem({ container, type, setContent }) {
   const { selectedProject } = useProjectStore();
@@ -108,22 +109,11 @@ export default function RunProjectItem({ container, type, setContent }) {
               handleStartService={handleStartService}
             />
 
-            {(type === "Backend" || type === "Frontend") && (
-              <img
-                src={stop}
-                alt=""
-                className={styles.runButtonIcon}
-                onClick={() => handleStopService(container.serviceId)}
-              ></img>
-            )}
-            {type === "Database" && (
-              <img
-                src={stop}
-                alt=""
-                className={styles.runButtonIcon}
-                onClick={() => handleStopService(container.databaseId)}
-              ></img>
-            )}
+            <StopButton
+              type={type}
+              container={container}
+              handleStopService={handleStopService}
+            />
           </div>
           {(type === "Backend" || type === "Frontend") && (
             <div
