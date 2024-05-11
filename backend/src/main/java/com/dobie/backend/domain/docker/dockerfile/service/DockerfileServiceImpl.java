@@ -288,7 +288,7 @@ public class DockerfileServiceImpl implements DockerfileService {
             }
             if(mysqlOn||redisOn||mongodbOn){
                 errorContainer.delete(errorContainer.length()-3,errorContainer.length());
-                errorContainer.append(" 컨테이너가 실행중이라 종료할 수 없습니다.");
+                errorContainer.append(" 컨테이너가 종료되어있어 실행할 수 없습니다.");
             }
 //            System.out.println("결과값 : "+ analyzeContainer);
             return errorContainer.toString();
