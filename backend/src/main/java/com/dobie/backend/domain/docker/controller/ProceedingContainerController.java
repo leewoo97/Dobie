@@ -35,11 +35,11 @@ public class ProceedingContainerController {
         return response.success(ResponseCode.CHECK_DB_CONTAINER_STATUS_SUCCESS,result);
     }
 
-    @Operation(summary = "DB 실행 전 백엔드 컨테이너 실행 상태 확인", description = "백엔드 실행 전 DB컨테이너 실행 상태 확인")
+    @Operation(summary = "DB 종료 전 백엔드 컨테이너 실행 상태 확인", description = "백엔드 실행 전 DB컨테이너 실행 상태 확인")
     @GetMapping("/checkBackend")
     public ResponseEntity<?> checkBackendContainerStatus(@RequestParam(name="projectId") String projectId) {
         String result = dockerfileService.checkBackendContainer(projectId);
 
-        return response.success(ResponseCode.CHECK_DB_CONTAINER_STATUS_SUCCESS,result);
+        return response.success(ResponseCode.CHECK_BACKEND_CONTAINER_STATUS_SUCCESS,result);
     }
 }
