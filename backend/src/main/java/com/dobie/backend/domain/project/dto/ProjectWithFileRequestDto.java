@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -24,4 +25,6 @@ public class ProjectWithFileRequestDto {
     private FrontendRequestDto frontend;
     private Map<String, DatabaseRequestDto> databaseMap;
     private List<String> filePathList;
+
+    private List<MultipartFile> files;
 }
