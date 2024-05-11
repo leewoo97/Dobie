@@ -1,5 +1,3 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavTop from "../../components/common/NavTop";
 import styles from "./MainPage.module.css";
@@ -11,29 +9,18 @@ import useProjectStore from "../../stores/projectStore";
 
 export default function MainPage() {
   const navigate = useNavigate();
-  const { selectedProject, setSelectedProject, createdProject, makeCreatedProject } = useProjectStore();
-
-  useEffect(() => {
-    try {
-      setSelectedProject({});
-    } catch (error) {
-      console.error("setSelectedProject초기화 에러: ", error);
-    }
-  }, []);
+  const { makeCreatedProject } = useProjectStore();
 
   const createClickHandler = () => {
     makeCreatedProject();
-    navigate("/create/project")
-  }
+    navigate("/create/project");
+  };
 
   return (
     <>
       <NavTop />
       <div className={styles.topButton}>
-        <div
-          className={styles.newpjtBtn}
-          onClick={createClickHandler}
-        >
+        <div className={styles.newpjtBtn} onClick={createClickHandler}>
           새 프로젝트 등록
           <img
             src={newpjtIcon}
