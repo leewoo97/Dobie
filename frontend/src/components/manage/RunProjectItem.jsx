@@ -1,12 +1,9 @@
 import styles from "./RunProjectItem.module.css";
-import run from "../../assets/run.png";
-import rerun from "../../assets/rerun.png";
 import stop from "../../assets/stop.png";
 import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 import FrameworkImg from "../common/FrameworkImg";
 import toast from "react-hot-toast";
-import restart from "../../assets/restart.png";
 
 import { getDockerFile } from "../../api/Docker";
 import { stopService } from "../../api/Project";
@@ -15,14 +12,15 @@ import { useNavigate } from "react-router-dom";
 
 import useProjectStore from "../../stores/projectStore";
 import useModalStore from "../../stores/modalStore";
+import RunButton from "./RunButton";
 
 export default function RunProjectItem({ container, type, setContent }) {
-  const { selectedProject, setSelectedProject } = useProjectStore();
-  const { checkProceed, setCheckProceed } = useProjectStore();
-  const { loadingModal, setLoadingModal } = useModalStore();
-  const { action, setAction } = useModalStore();
-  const { fileType, setFileType } = useModalStore();
-  const { modalOpen, setModalOpen } = useModalStore();
+  const { selectedProject } = useProjectStore();
+  const { checkProceed } = useProjectStore();
+  const { setLoadingModal } = useModalStore();
+  const { setAction } = useModalStore();
+  const { setFileType } = useModalStore();
+  const { setModalOpen } = useModalStore();
 
   const navigate = useNavigate();
 
@@ -31,7 +29,7 @@ export default function RunProjectItem({ container, type, setContent }) {
     try {
       console.log(checkProceed[container.serviceId]);
       const response = await getDockerFile(projectId, serviceId, type);
-      if (response.status == 200) {
+      if (response.status === 200) {
         setModalOpen(true);
         setFileType("dockerFile");
         setContent(response.data);
@@ -48,7 +46,7 @@ export default function RunProjectItem({ container, type, setContent }) {
   //개별 서비스 중지
   const handleStopService = async (containerName) => {
     try {
-      if (checkProceed[containerName] == "Running :)") {
+      if (checkProceed[containerName] === "Running :)") {
         setAction("stop");
         setLoadingModal(true);
         const response = await stopService(containerName).then(() =>
@@ -75,8 +73,7 @@ export default function RunProjectItem({ container, type, setContent }) {
         setLoadingModal(false)
       );
       window.location.replace("/manage");
-      if (response.data.status == "SUCCESS") {
-        console.log(response);
+      if (response.data.status === "SUCCESS") {
       } else {
         toast.error(`개별 실행에 실패하였습니다. `, {
           position: "top-center",
@@ -88,9 +85,9 @@ export default function RunProjectItem({ container, type, setContent }) {
   };
 
   const handleIntoContainer = () => {
-    if (type == "Backend") {
+    if (type === "Backend") {
       navigate(`/manage/backend/${container.serviceId}`);
-    } else if (type == "Frontend") {
+    } else if (type === "Frontend") {
       navigate(`/manage/frontend`);
     } else {
       navigate(`/manage/database/${container.databaseId}`);
@@ -102,46 +99,33 @@ export default function RunProjectItem({ container, type, setContent }) {
       <div className={styles.container}>
         <div className={styles.containerButton}>
           <div className={styles.runButton}>
-            {type == "Database" ? (
-              <img
-                src={
-                  checkProceed[container.databaseId] == "Running :)"
-                    ? restart
-                    : run
-                }
-                alt=""
-                width="30px"
-                onClick={() => handleStartService(container.databaseId)}
-              />
-            ) : (
-              <img
-                src={
-                  checkProceed[container.serviceId] == "Running :)"
-                    ? restart
-                    : run
-                }
-                alt=""
-                width="30px"
-                onClick={() => handleStartService(container.serviceId)}
-              />
-            )}
+            <RunButton
+              type={type}
+              container={container}
+              isRunning={
+                checkProceed[container.serviceId || container.databaseId]
+              }
+              handleStartService={handleStartService}
+            />
 
-            {(type == "Backend" || type == "Frontend") && (
+            {(type === "Backend" || type === "Frontend") && (
               <img
                 src={stop}
-                width="30px"
+                alt=""
+                className={styles.runButtonIcon}
                 onClick={() => handleStopService(container.serviceId)}
               ></img>
             )}
-            {type == "Database" && (
+            {type === "Database" && (
               <img
                 src={stop}
-                width="30px"
+                alt=""
+                className={styles.runButtonIcon}
                 onClick={() => handleStopService(container.databaseId)}
               ></img>
             )}
           </div>
-          {(type == "Backend" || type == "Frontend") && (
+          {(type === "Backend" || type === "Frontend") && (
             <div
               className={styles.fileButton}
               onClick={() =>
@@ -175,7 +159,7 @@ export default function RunProjectItem({ container, type, setContent }) {
                   </td>
                 </tr>
                 <tr>
-                  {type == "Backend" || type == "Frontend" ? (
+                  {type === "Backend" || type === "Frontend" ? (
                     <td key={container.framework}>{container.framework}</td>
                   ) : (
                     <td key={container.databaseType}>
@@ -196,10 +180,10 @@ export default function RunProjectItem({ container, type, setContent }) {
           </div>
           <div className={styles.line}></div>
           <div className={styles.boxBottom}>
-            {type == "Database" ? (
+            {type === "Database" ? (
               <div
                 className={
-                  checkProceed[container.databaseId] == "Running :)"
+                  checkProceed[container.databaseId] === "Running :)"
                     ? styles.running
                     : styles.stopped
                 }
@@ -210,7 +194,7 @@ export default function RunProjectItem({ container, type, setContent }) {
             ) : (
               <div
                 className={
-                  checkProceed[container.serviceId] == "Running :)"
+                  checkProceed[container.serviceId] === "Running :)"
                     ? styles.running
                     : styles.stopped
                 }
