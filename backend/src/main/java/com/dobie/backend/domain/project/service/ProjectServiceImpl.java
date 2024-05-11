@@ -8,19 +8,24 @@ import com.dobie.backend.domain.project.entity.Backend;
 import com.dobie.backend.domain.project.entity.Database;
 import com.dobie.backend.domain.project.entity.Frontend;
 import com.dobie.backend.domain.project.entity.Project;
+import com.dobie.backend.domain.project.entity.ProjectWithFile;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
 import com.dobie.backend.exception.exception.build.*;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.exception.exception.git.GitInfoNotFoundException;
 import com.dobie.backend.util.command.CommandService;
+import com.dobie.backend.util.file.FileManager;
+import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +37,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final DockerfileService dockerfileService;
     private final DockerComposeService dockerComposeService;
     private final NginxConfigService nginxConfigService;
+    private final FileManager fileManager = new FileManager();
 
     @Override
     public String createProject(ProjectRequestDto dto) {
@@ -232,6 +238,104 @@ public class ProjectServiceImpl implements ProjectService {
         commandService.dockerComposeUp(path);
         if (!verifyComposeUpSuccess(path)) {
             throw new ProjectStartFailedException("Verify compose up failed.");
+        }
+    }
+
+    @Override
+    public String createProjectWithFile(ProjectWithFileRequestDto dto, List<MultipartFile> files) {
+        String projectId = UUID.randomUUID().toString();
+
+        Map<String, FileRequestDto> fileMap = new HashMap<>();
+        for(int i = 0;i<files.size();i++){
+            fileMap.put(String.valueOf(i), new FileRequestDto(dto.getFilePathList().get(i), files.get(i).getName()));
+        }
+
+        ProjectWithFile project = new ProjectWithFile(projectId, dto, fileMap);
+        projectRepository.upsertProjectWithFile(project);
+        return projectId;
+    }
+
+    @Override
+    public void buildTotalServiceWithFile(String projectId, List<String> filePathList, List<MultipartFile> files) {
+        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
+
+        // git clone
+        GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
+
+        if (gitInfo == null) {
+            throw new GitInfoNotFoundException();
+        }
+
+        // git type 확인, gitLab인지 gitHub인지
+        // 1이면 gitLab
+        if (!commandService.checkIsCloned("./" + projectGetResponseDto.getProjectName())) {
+            // gitLab clone
+            commandService.gitClone(gitInfo.getGitUrl(), gitInfo.getAccessToken());
+        }
+
+        // gitignore에 등록한 파일 저장해주기
+        saveFile(projectGetResponseDto.getProjectName(), filePathList, files);
+
+
+        // dockerfile 생성
+        // 백엔드
+        Map<String, BackendGetResponseDto> backendInfo = projectGetResponseDto.getBackendMap();
+        backendInfo.forEach((key, value) -> {
+            if (value.getFramework().equals("SpringBoot(gradle)")) {
+                dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
+            } else if (value.getFramework().equals("SpringBoot(maven)")) {
+                dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
+            }
+        });
+
+
+        // 프론트엔드
+        FrontendGetResponseDto frontendInfo = projectGetResponseDto.getFrontend();
+        if (frontendInfo.getFramework().equals("React")) {
+            dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
+        } else if (frontendInfo.getFramework().equals("Vue")) {
+            dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
+        }
+
+        // docker-compose 파일 생성
+        dockerComposeService.createDockerComposeFile(projectGetResponseDto);
+
+        //nginx proxy config 파일생성
+        nginxConfigService.saveProxyNginxConfig(projectId);
+
+        if(frontendInfo.isUsingNginx()){
+            try {
+                //frontend nginx config 파일 저장
+                nginxConfigService.saveFrontNginxConfigFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getProjectName());
+            } catch (IOException e) {
+                log.error(e.getMessage());
+                throw new SaveFileFailedException("front nginx config 파일 저장에 실패했습니다."); //예외처리
+            }
+        }
+
+    }
+
+    public void saveFile(String projectName, List<String> filePaths, List<MultipartFile> files){
+
+        for(int i = 0;i<files.size();i++){
+            StringBuilder sb = new StringBuilder();
+            try (InputStream inputStream = files.get(i).getInputStream()) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+
+            } catch (IOException e) {
+
+            }
+
+            String ignoreFile = sb.toString();
+
+            // ec2 서버에서 깃클론하는 경로로 수정하기
+            String filePath = "./" + projectName + filePaths.get(i);
+            fileManager.saveFile(filePath, files.get(i).getName(), ignoreFile);
+
         }
     }
 

@@ -1,10 +1,10 @@
 package com.dobie.backend.domain.project.repository;
 
-import com.dobie.backend.domain.project.dto.ProjectRequestDto;
 import com.dobie.backend.domain.project.entity.Backend;
 import com.dobie.backend.domain.project.entity.Database;
 import com.dobie.backend.domain.project.entity.Frontend;
 import com.dobie.backend.domain.project.entity.Project;
+import com.dobie.backend.domain.project.entity.ProjectWithFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 import lombok.RequiredArgsConstructor;
@@ -211,6 +211,29 @@ public class ProjectRepository {
                     .writeValue(file, projects);
 
         }catch (IOException e){
+            e.getStackTrace();
+        }
+    }
+
+    public void upsertProjectWithFile(ProjectWithFile project) {
+        try{
+            // 파일 읽기
+            File file = new File(FILE_PATH);
+
+            // mapper class 지정
+            MapType mapType =
+                mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+
+            // project map 불러오기
+            Map<String, ProjectWithFile> projects = mapper.readValue(file, mapType);
+
+            // project 생성
+            projects.put(String.valueOf(project.getProjectId()), project);
+
+
+            mapper.writerWithDefaultPrettyPrinter()
+                  .writeValue(file, projects);
+        }catch (IOException e ){
             e.getStackTrace();
         }
     }

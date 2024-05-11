@@ -55,7 +55,6 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
                 .group("c. 프로젝트")
                 .pathsToMatch("/api/project/**")
-                .pathsToMatch("/api/**")
                 .build();
     }
 
