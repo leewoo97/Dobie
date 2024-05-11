@@ -1,2 +1,52 @@
 {
+  "ce415a8c-b1bf-4134-9763-eeab0c81b690" : {
+    "projectId" : "ce415a8c-b1bf-4134-9763-eeab0c81b690",
+    "projectName" : "S10P22B106",
+    "projectDomain" : "43.201.252.66",
+    "usingHttps" : false,
+    "git" : {
+      "gitType" : 1,
+      "gitUrl" : "https://lab.ssafy.com/dldnwls009/S10P22B106.git",
+      "accessToken" : "cxuT2a9N9aauynAEpZj2"
+    },
+    "backendMap" : {
+      "41edf38d-0b24-44f1-a790-3735304bd44f" : {
+        "serviceId" : "41edf38d-0b24-44f1-a790-3735304bd44f",
+        "serviceName" : "backend",
+        "language" : "java",
+        "version" : "17",
+        "framework" : "SpringBoot(gradle)",
+        "path" : "/backend",
+        "branch" : "main",
+        "location" : "/api",
+        "externalPort" : 8080,
+        "internalPort" : 8080
+      }
+    },
+    "frontend" : {
+      "serviceId" : "99a5e7e7-3c0d-4222-9cea-cad890979c4c",
+      "serviceName" : "frontend",
+      "language" : "node",
+      "version" : "20.11",
+      "framework" : "React",
+      "path" : "/frontend/noah",
+      "branch" : "main",
+      "location" : "/",
+      "externalPort" : 3000,
+      "internalPort" : 3000,
+      "usingNginx" : false
+    },
+    "databaseMap" : {
+      "98ce2b16-2265-4d2b-938e-853837d7591e" : {
+        "databaseId" : "98ce2b16-2265-4d2b-938e-853837d7591e",
+        "databaseType" : "Mysql",
+        "databaseName" : "test_db",
+        "schemaPath" : "/path/to/mysql/schema.sql",
+        "username" : "ssafy",
+        "password" : "ssafy",
+        "externalPort" : 3306,
+        "internalPort" : 3306
+      }
+    }
+  }
 }

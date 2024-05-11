@@ -3,6 +3,7 @@ package com.dobie.backend.domain.project.service;
 import com.dobie.backend.domain.project.dto.*;
 
 import java.util.*;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ProjectService {
 
@@ -40,6 +41,10 @@ public interface ProjectService {
     boolean verifyComposeUpSuccess(String path);
 
     void rebuildAndStartProject(String projectId);
+
+    String createProjectWithFile(ProjectWithFileRequestDto dto, List<MultipartFile> files);
+
+    void buildTotalServiceWithFile(String projectId, List<String> filePathList, List<MultipartFile> files);
 
 //    void buildFrontService(String projectId, ProjectRequestDto dto)
 

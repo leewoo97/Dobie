@@ -2,6 +2,7 @@ package com.dobie.backend.domain.project.controller;
 
 import com.dobie.backend.domain.project.dto.ProjectRequestDto;
 import com.dobie.backend.domain.project.dto.ProjectGetResponseDto;
+import com.dobie.backend.domain.project.dto.ProjectWithFileRequestDto;
 import com.dobie.backend.domain.project.service.ProjectService;
 import com.dobie.backend.exception.exception.build.ProjectStartFailedException;
 import com.dobie.backend.exception.format.code.ApiResponse;
@@ -140,6 +141,14 @@ public class ProjectController {
         }
 
         return response.success(ResponseCode.FILE_UPLOAD_SUCCESS);
+    }
+
+    @Operation(summary = "파일첨부 있는 프로젝트 등록, 빌드", description = "프로젝트 정보를 등록한 후 정보 기반으로 빌드파일 생성")
+    @PostMapping(value = "/registwithfile/", consumes = "multipart/form-data")
+    public ResponseEntity<?> registerProjectWithFile(@RequestBody ProjectWithFileRequestDto dto, @RequestParam("files") List<MultipartFile> files) {
+        String projectId = projectService.createProjectWithFile(dto, files);
+        projectService.buildTotalServiceWithFile(projectId, dto.getFilePathList(), files);
+        return response.success(ResponseCode.PROJECT_BUILD_SUCCESS);
     }
 }
 
