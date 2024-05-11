@@ -1,6 +1,4 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import styles from "./ProjectList.module.css";
 import { getProject } from "../../api/Project";
 import useProjectStore from "../../stores/projectStore";
@@ -8,8 +6,6 @@ import useProjectStore from "../../stores/projectStore";
 import ProjectItem from "./ProjectItem";
 
 export default function ProjectList() {
-  const navigate = useNavigate();
-  // const [projects, setProjects] = useState({});
   const { projectMap, setProjectMap } = useProjectStore();
 
   useEffect(() => {
@@ -23,52 +19,33 @@ export default function ProjectList() {
   const getProjectList = async (e) => {
     try {
       const response = await getProject();
-      console.log(response.data.data);
       setProjectMap(response.data.data);
-      console.log("test#########################");
-      console.log(typeof projectMap);
     } catch (error) {
       console.error("프로젝트 조회 실패:", error);
     }
   };
 
-  if (projectMap === null || projectMap === undefined) {
-    return (
-      <>
-        <div className={styles.table}>
-          <div className={styles.colume}>
-            <div>프로젝트명</div>
-            <div>도메인주소</div>
-            <div>실행</div>
-            <div>Git Link</div>
+  return (
+    <div className={styles.table}>
+      <div className={styles.colume}>
+        <div>프로젝트명</div>
+        <div>도메인주소</div>
+        <div>실행</div>
+        <div>Git Link</div>
+      </div>
+      <div className={styles.projectlist}>
+        {!projectMap || projectMap.size === 0 ? (
+          <div className={styles.box}>
+            <h3>등록된 프로젝트가 없습니다.</h3>
           </div>
-          <div className={styles.projectlist}>
-            <div className={styles.box}>
-              <h3>등록된 프로젝트가 없습니다.</h3>
+        ) : (
+          Object.values(projectMap).map((project) => (
+            <div key={project.projectId} className={styles.project}>
+              <ProjectItem project={project} />
             </div>
-          </div>
-        </div>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <div className={styles.table}>
-          <div className={styles.colume}>
-            <div>프로젝트명</div>
-            <div>도메인주소</div>
-            <div>실행</div>
-            <div>Git Link</div>
-          </div>
-          <div className={styles.projectlist}>
-            {Object.values(projectMap).map((project) => (
-              <div key={project.projectId} className={styles.project}>
-                <ProjectItem project={project} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </>
-    );
-  }
+          ))
+        )}
+      </div>
+    </div>
+  );
 }
