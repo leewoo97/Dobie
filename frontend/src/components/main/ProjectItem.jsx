@@ -1,46 +1,37 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import useModalStore from "../../stores/modalStore";
 import toast from "react-hot-toast";
 import styles from "./ProjectItem.module.css";
+import useProjectStore from "../../stores/projectStore";
+import { startProject, stopProject } from "../../api/Project";
+import { checkProceeding } from "../../api/CheckProcess";
+import LoadingModal from "../modal/LoadingModal";
+
 import gitlab from "../../assets/gitlab.png";
 import github from "../../assets/github.png";
 import run from "../../assets/run.png";
 import stop from "../../assets/stop.png";
-import useProjectStore from "../../stores/projectStore";
-import LoadingModal from "../modal/LoadingModal";
 import restart from "../../assets/restart.png";
-
-import { startProject, stopProject } from "../../api/Project";
-import { checkProceeding } from "../../api/CheckProcess";
-
-import { useNavigate } from "react-router-dom";
-import useModalStore from "../../stores/modalStore";
 
 export default function ProjectItem({ project }) {
   const navigate = useNavigate();
-  const { selectedProject, setSelectedProject } = useProjectStore();
+  const { setSelectedProject } = useProjectStore();
   const { loadingModal, setLoadingModal } = useModalStore();
-  const { action, setAction } = useModalStore();
-
+  const { setAction } = useModalStore();
   const [checkProceed, setCheckProceed] = useState({});
 
   useEffect(() => {
-    try {
-      handleCheckProceding();
-      setLoadingModal(false);
-    } catch (error) {
-      console.error("컨테이너 실행 확인 에러: ", error);
-    }
+    handleCheckProceding();
+    setLoadingModal(false);
   }, []);
 
   //실행상태 조회
   const handleCheckProceding = async () => {
     try {
       const response = await checkProceeding(project.projectId);
-
-      if (response.data.status == "SUCCESS") {
+      if (response.data.status === "SUCCESS") {
         setCheckProceed(response.data.data);
-        console.log(response.data.data);
       } else {
         setCheckProceed({ allRunning: "null" });
         toast.error(`프로젝트 실행상태를 불러올수 없습니다.`, {
@@ -64,16 +55,13 @@ export default function ProjectItem({ project }) {
   //전체 프로젝트 중지
   const handleProjectStop = async (projectId) => {
     try {
-      if (checkProceed.allRunning == "Run") {
+      if (checkProceed.allRunning === "Run") {
         setAction("stop");
         setLoadingModal(true);
         const response = await stopProject(projectId).then(() =>
           setLoadingModal(false)
         );
         window.location.replace("/main");
-        console.log(response);
-
-        console.log(response);
       } else {
         toast.error(`이미 중지된 프로젝트 입니다. `, {
           position: "top-center",
@@ -93,8 +81,7 @@ export default function ProjectItem({ project }) {
         setLoadingModal(false)
       );
       window.location.replace("/main");
-      if (response.data.status == "SUCCESS") {
-        console.log(response);
+      if (response.data.status === "SUCCESS") {
       } else {
         toast.error(`전체 실행에 실패하였습니다. `, {
           position: "top-center",
@@ -112,7 +99,7 @@ export default function ProjectItem({ project }) {
         <div key={project.projectDomain}>{project.projectDomain}</div>
         <div className={styles.runButton}>
           <img
-            src={checkProceed.allRunning == "Run" ? restart : run}
+            src={checkProceed.allRunning === "Run" ? restart : run}
             alt=""
             className={styles.run}
             onClick={(event) => {
@@ -123,6 +110,7 @@ export default function ProjectItem({ project }) {
           <img
             src={stop}
             alt=""
+            className={styles.stop}
             onClick={(event) => {
               event.stopPropagation();
               handleProjectStop(project.projectId);
@@ -131,7 +119,7 @@ export default function ProjectItem({ project }) {
         </div>
         <div>
           <img
-            src={project.git.gitType == 1 ? gitlab : github}
+            src={project.git.gitType === 1 ? gitlab : github}
             alt=""
             className={styles.gitImage}
           />
