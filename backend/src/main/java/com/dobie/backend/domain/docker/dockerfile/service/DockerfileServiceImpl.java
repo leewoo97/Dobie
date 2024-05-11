@@ -321,11 +321,11 @@ public class DockerfileServiceImpl implements DockerfileService {
                 System.out.println("현재 실행중인 컨테이너 이름 : " + currentContainerName);
                 System.out.println("현재 실행중인 컨테이너 상태 : " + currentStatus);
                 System.out.println("현재 실행중인 컨테이너 프레임워크 : " + currentFramework);
-                if(((currentStatus==null)||(currentStatus.equals("Stopped :(")))&&(currentFramework.equals("SpringBoot(gradle)"))&&(!gradleOn)){
+                if((currentStatus.equals("Running :)"))&&(currentFramework.equals("SpringBoot(gradle)"))&&(!gradleOn)){
                     gradleOn=true;
-                }else if(((currentStatus==null)||(currentStatus.equals("Stopped :(")))&&(currentFramework.equals("SpringBoot(maven)"))&&(!mavenOn)){
+                }else if((currentStatus.equals("Running :)"))&&(currentFramework.equals("SpringBoot(maven)"))&&(!mavenOn)){
                     mavenOn=true;
-                }else if(((currentStatus==null)||(currentStatus.equals("Stopped :(")))&&(currentFramework.equals("Django"))&&(!djangoOn)){
+                }else if((currentStatus.equals("Running :)"))&&(currentFramework.equals("Django"))&&(!djangoOn)){
                     djangoOn=true;
                 }
             }
