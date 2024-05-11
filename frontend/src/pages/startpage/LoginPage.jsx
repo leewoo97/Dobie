@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Container from "../../components/common/Container";
 import styles from "./LoginPage.module.css";
 import mascot from "../../assets/mascot.png";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../stores/userStore";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { login } from "../../api/Member";
-import axios from "axios";
 
 export default function LoginPage() {
-
   const navigate = useNavigate();
 
   const { user, setUser } = useUserStore();
@@ -33,7 +31,6 @@ export default function LoginPage() {
       const response = await login(formData);
       console.log(response);
       if (response.status === 200) {
-        console.log("200ok");
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("tokenTimestamp", Date.now());
         await setUser({
@@ -61,20 +58,20 @@ export default function LoginPage() {
   };
 
   const handleKeyUp = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSubmit();
     }
-  }
+  };
 
   return (
     <Container>
       <div className={styles.content}>
         <div className={styles.title}>
-          <img src={mascot} alt="" height="100vh" decoding="async" />
+          <img src={mascot} alt="" decoding="async" />
           <div className={styles.dobie}>Dobie</div>
         </div>
         <input
-        className={styles.loginInput}
+          className={styles.loginInput}
           type="text"
           name="username"
           value={formData.username}
@@ -83,8 +80,7 @@ export default function LoginPage() {
           placeholder="username"
         />
         <input
-        className={styles.loginInput}
-
+          className={styles.loginInput}
           type="password"
           name="password"
           value={formData.password}
@@ -93,9 +89,7 @@ export default function LoginPage() {
           placeholder="password"
         ></input>
         <div className={styles.button} onClick={() => handleSubmit()}>
-          <div className={styles.login} >
-            로그인
-          </div>
+          <div className={styles.login}>로그인</div>
         </div>
       </div>
     </Container>
