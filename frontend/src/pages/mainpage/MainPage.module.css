@@ -12,15 +12,15 @@
   display: inline-flex;
   margin-right: 1%;
   padding: 1vh 1.5vw;
-  border-radius: 10px;
+  border-radius: 1vw;
   align-items: center;
   cursor: pointer;
 }
 
-.newpjtBtn:hover{
+.newpjtBtn:hover {
   opacity: 0.8;
-  transform: scale(1.05); 
-  transition: 0.3s ease-in-out; 
+  transform: scale(1.05);
+  transition: 0.3s ease-in-out;
 }
 
 .guideBtn {
@@ -29,18 +29,19 @@
   font-weight: bold;
   display: inline-flex;
   padding: 1vh 1.5vw;
-  border-radius: 10px;
+  border-radius: 1vw;
   align-items: center;
   cursor: pointer;
 }
 
-.guideBtn:hover{
+.guideBtn:hover {
   opacity: 0.8;
-  transform: scale(1.05); 
+  transform: scale(1.05);
   transition: 0.3s ease-in-out;
 }
 
 .btnIcon {
   height: 4vh;
   margin-left: 5px;
+  margin-left: 0.4vw;
 }
