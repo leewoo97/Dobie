@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavTop from "../../components/common/NavTop";
 import NavLeft from "../../components/common/NavLeft";
@@ -6,7 +6,6 @@ import NavLeft from "../../components/common/NavLeft";
 import toast from "react-hot-toast";
 import styles from "./RunPage.module.css";
 import run from "../../assets/run.png";
-import rerun from "../../assets/rerun.png";
 import stop from "../../assets/stop.png";
 import edit from "../../assets/editIcon.png";
 import remove from "../../assets/deleteIcon.png";
@@ -33,26 +32,22 @@ export default function RunPage() {
   const { fileType, setFileType } = useModalStore();
   const { checkProceed, setCheckProceed } = useProjectStore();
   const { loadingModal, setLoadingModal } = useModalStore();
-  const { selectedProject, setSelectedProject, setUpdatedProject } = useProjectStore();
+  const { selectedProject, setSelectedProject, setUpdatedProject } =
+    useProjectStore();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      handleCheckProceding();
-      setLoadingModal(false);
-    } catch (error) {
-      console.error("컨테이너 실행 확인 에러: ", error);
-    }
+    handleCheckProceding();
+    setLoadingModal(false);
   }, []);
 
   //실행상태 조회
   const handleCheckProceding = async () => {
     try {
       const response = await checkProceeding(selectedProject.projectId);
-      if (response.data.status == "SUCCESS") {
+      if (response.data.status === "SUCCESS") {
         setCheckProceed(response.data.data);
-        console.log(response.data.data);
       } else {
         setCheckProceed({ allRunning: "null" });
         toast.error(`프로젝트 실행상태를 불러올수 없습니다.`, {
@@ -68,8 +63,7 @@ export default function RunPage() {
   const handleDelete = async (projectId) => {
     try {
       const response = await deleteProject(projectId);
-      if (response.data.status == "SUCCESS") {
-        console.log(response);
+      if (response.data.status === "SUCCESS") {
         navigate("/main");
         toast.success(`프로젝트를 삭제했습니다`, {
           position: "top-center",
@@ -91,7 +85,7 @@ export default function RunPage() {
   const handleOpenNginxModal = async (projectId) => {
     try {
       const response = await getNginxConf(projectId);
-      if (response.data.status == "SUCCESS") {
+      if (response.data.status === "SUCCESS") {
         await setFileType("nginx");
         setModalOpen(true);
         setContent(response.data.data);
@@ -108,9 +102,8 @@ export default function RunPage() {
   //도커 컴포즈 조회
   const handleDockerComposeModal = async (projectId) => {
     try {
-      console.log(projectId);
       const response = await getDockerCompose(projectId);
-      if (response.status == 200) {
+      if (response.status === 200) {
         setModalOpen(true);
         setFileType("dockerCompose");
         setContent(response.data);
@@ -127,16 +120,11 @@ export default function RunPage() {
   //전체 프로젝트 중지
   const handleProjectStop = async (projectId) => {
     try {
-      if (checkProceed.allRunning == "Run") {
+      if (checkProceed.allRunning === "Run") {
         setAction("stop");
         setLoadingModal(true);
-        const response = await stopProject(projectId).then(() =>
-          setLoadingModal(false)
-        );
+        await stopProject(projectId).then(() => setLoadingModal(false));
         window.location.replace("/manage");
-        console.log(response);
-
-        console.log(response);
       } else {
         toast.error(`이미 중지된 프로젝트 입니다. `, {
           position: "top-center",
@@ -156,8 +144,7 @@ export default function RunPage() {
         setLoadingModal(false)
       );
       window.location.replace("/manage");
-      if (response.data.status == "SUCCESS") {
-        console.log(response);
+      if (response.data.status === "SUCCESS") {
       } else {
         toast.error(`전체 실행에 실패하였습니다. `, {
           position: "top-center",
@@ -169,9 +156,9 @@ export default function RunPage() {
   };
 
   const handleUpdateProject = () => {
-    setUpdatedProject({...selectedProject});
+    setUpdatedProject({ ...selectedProject });
     navigate("/update/project");
-  }
+  };
 
   return (
     <>
@@ -198,10 +185,7 @@ export default function RunPage() {
                 className={styles.btnIcon}
               />
             </div>
-            <div
-              className={styles.edit}
-              onClick={handleUpdateProject}
-            >
+            <div className={styles.edit} onClick={handleUpdateProject}>
               수정{" "}
               <img
                 src={edit}
@@ -228,34 +212,38 @@ export default function RunPage() {
           <div>
             <div className={styles.text}>프로젝트 전체 실행</div>
             <div className={styles.runButton}>
-              {checkProceed.allRunning == "Run" && (
+              {checkProceed.allRunning === "Run" && (
                 <div>
                   <img
                     src={restart}
-                    width="40px"
+                    className={styles.runButtonIcon}
+                    alt=""
                     onClick={() =>
                       handleProjectStart(selectedProject.projectId)
                     }
                   ></img>
                   <img
                     src={stop}
-                    width="40px"
+                    className={styles.stopButtonIcon}
+                    alt=""
                     onClick={() => handleProjectStop(selectedProject.projectId)}
                   ></img>
                 </div>
               )}
-              {checkProceed.allRunning == "Stop" && (
+              {checkProceed.allRunning === "Stop" && (
                 <div>
                   <img
                     src={run}
-                    width="40px"
+                    className={styles.runButtonIcon}
+                    alt=""
                     onClick={() =>
                       handleProjectStart(selectedProject.projectId)
                     }
                   ></img>
                   <img
                     src={stop}
-                    width="40px"
+                    alt=""
+                    className={styles.stopButtonIcon}
                     onClick={() => handleProjectStop(selectedProject.projectId)}
                   ></img>
                 </div>
@@ -291,7 +279,7 @@ export default function RunPage() {
             </div>
           </div>
         </div>
-        {checkProceed.allRunning == "Run" && (
+        {checkProceed.allRunning === "Run" && (
           <RunProjectList setContent={setContent} />
         )}
       </div>

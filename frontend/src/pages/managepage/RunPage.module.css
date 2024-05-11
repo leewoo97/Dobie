@@ -152,8 +152,26 @@
   cursor: pointer;
 }
 
+.runButtonIcon {
+  width: 2.4vw;
+}
+.runButtonIcon:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+  transition: 0.3s ease-in-out;
+}
+
+.stopButtonIcon {
+  width: 2.4vw;
+}
+
+.stopButtonIcon:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+  transition: 0.3s ease-in-out;
+}
+
 .mid {
-  /* background-color: yellow; */
   display: inline-flex;
   align-items: center;
   padding: 0 8%;
@@ -169,7 +187,7 @@
   display: inline-flex;
 }
 
-.btnIcon{
+.btnIcon {
   height: 4vh;
 }
 
