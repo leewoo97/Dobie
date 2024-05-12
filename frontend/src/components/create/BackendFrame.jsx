@@ -101,15 +101,18 @@ export default function BackendFrame() {
 
   return (
     <div className={styles.page}>
-      {Object.keys(tempProject.backendMap).map((key, index) => {
-        return (
-          <div key={index}>
-            <button onClick={() => clickKeyHandler(key)}>{index + 1}</button>
-            <button onClick={() => clickDeleteHandler(key)}> x </button>
-          </div>
-        );
-      })}
-      <button onClick={addEmptyBackend}>+</button>
+      <div className={styles.tapBox}>
+        {Object.keys(tempProject.backendMap).map((key, index) => {
+          return (
+            <div key={index} className={key === selectedKey ? styles.selectedTap : styles.tap}>
+              <button onClick={() => clickKeyHandler(key)}>{index + 1}</button>
+              <button onClick={() => clickDeleteHandler(key)}> x </button>
+            </div>
+          );
+        })}
+        <button onClick={addEmptyBackend}>+</button>
+      </div>
+      
 
       {/* <div>{selectedKey}</div> */}
 
@@ -124,7 +127,7 @@ export default function BackendFrame() {
       <InputSelectBox
         keyName={"언어버전"}
         list={versionList}
-        value={selectedBackend.language+" "+selectedBackend.version}
+        value={version}
         onChange={changeVersionHandler}
       />
       <DescBox desc={"Backend 서비스의 언어 버전을 선택하세요"} />

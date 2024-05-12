@@ -6,3 +6,19 @@
   left: 20%;
   margin-bottom: 8%;
 }
+
+.tapBox {
+  width: 85%;
+  margin: 3% auto;
+  display: flex;
+}
+
+.selectedTap {
+  padding: 3px;
+  background-color: red;
+}
+
+.tap {
+  padding: 3px;
+  background-color: blue;
+}
