@@ -16,10 +16,10 @@ export default function ProjectFrame() {
         valueName={selectedProject.git.accessToken}
       />
       {/* <GetBox keyName={"자동 배포 웹훅 설정"} valueName={"webHook"} /> */}
-      {/* <GetBox
+      <GetBox
         keyName={"브랜치"}
         valueName={selectedProject.backendMap.branch}
-      /> */}
+      />
     </div>
   );
 }
