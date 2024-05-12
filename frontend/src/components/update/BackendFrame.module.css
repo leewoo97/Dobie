@@ -1,11 +1,11 @@
-/* .page{
-    height: 120%;
+.page{
+    height: 130%;
     width: 80%;
     position: relative;
-    top: 8%;
+    top: 15%;
     left: 20%;
     margin-bottom: 8%;
-} */
+}
 
 .descFrame{
     display: flex;
