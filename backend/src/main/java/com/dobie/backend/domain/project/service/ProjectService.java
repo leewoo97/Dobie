@@ -2,6 +2,7 @@ package com.dobie.backend.domain.project.service;
 
 import com.dobie.backend.domain.project.dto.*;
 
+import com.dobie.backend.domain.project.entity.ProjectWithFile;
 import java.util.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,8 @@ public interface ProjectService {
     Map<String, DatabaseGetResponseDto> getAllDatabases(String projectId);
 
     void updateProject(String projectId, ProjectRequestDto dto);
+
+    void updateProjectWithFile(String projectId, ProjectWithFileUpdateRequestDto dto, List<MultipartFile> files);
 
     void deleteProject(String projectId);
 

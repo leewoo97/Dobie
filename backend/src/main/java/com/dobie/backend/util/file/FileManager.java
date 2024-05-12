@@ -47,4 +47,17 @@ public class FileManager {
             throw new SaveFileFailedException(e.getMessage());
         }
     }
+
+    public boolean deleteFile(String path, String filename) {
+        // 파일 객체 생성
+        File file = new File(path, filename);
+
+        // 파일 존재 여부 확인 및 삭제 시도
+        if (file.exists()) {
+            return file.delete();
+        } else {
+            System.out.println("File does not exist.");
+            return false;
+        }
+    }
 }

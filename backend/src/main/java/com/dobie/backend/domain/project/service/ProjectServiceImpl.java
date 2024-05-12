@@ -48,6 +48,20 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public String createProjectWithFile(ProjectWithFileRequestDto dto, List<MultipartFile> files) {
+        String projectId = UUID.randomUUID().toString();
+
+        Map<String, FileRequestDto> fileMap = new HashMap<>();
+        for(int i = 0;i<files.size();i++){
+            fileMap.put(String.valueOf(i), new FileRequestDto(dto.getFilePathList().get(i), files.get(i).getName()));
+        }
+
+        ProjectWithFile project = new ProjectWithFile(projectId, dto, fileMap);
+        projectRepository.upsertProjectWithFile(project);
+        return projectId;
+    }
+
+    @Override
     public Map<String, ProjectGetResponseDto> getAllProjects() {
         Map<String, Project> map = projectRepository.selectProjects();
         Map<String, ProjectGetResponseDto> resultMap = new HashMap<>();
@@ -116,6 +130,47 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = new Project(projectId, dto);
         projectRepository.upsertProject(project);
     }
+
+    @Override
+    public void updateProjectWithFile(String projectId, ProjectWithFileUpdateRequestDto dto, List<MultipartFile> files) {
+
+        // 여기서 기존에는 있었는데 수정하면서 사라진 파일들을 삭제해야함
+        // dto의 파일리스트에서 아이디만 빼서 set에 저장
+        Set<String> idSet = new HashSet<>();
+        for(FileUpdateDto ff : dto.getFilePathList()){
+            idSet.add(ff.getFileId());
+        }
+
+        // 기존의 파일들을 조회해서 리스트로 저장하자
+        ProjectWithFileGetResponseDto projectGetResponseDto = getProjectWithFile(projectId);
+        List<FileCheckDto> fileList = new ArrayList<>();
+        projectGetResponseDto.getFileMap().forEach((key, value) -> {
+            fileList.add(new FileCheckDto(value, false));
+        });
+
+        // 입력 dto에 있는 파일이면 FileCheckDto의 isExist를 true로 변경
+        for(int i = 0;i<fileList.size();i++){
+            if(idSet.contains(fileList.get(i).getFileId())){
+                fileList.get(i).setExist(true);
+            }
+        }
+
+        // 다시 반복문 돌아서 isExist가 false이면 파일 삭제
+        for(int i = 0;i<fileList.size();i++){
+            if(!fileList.get(i).isExist()){
+                fileManager.deleteFile(fileList.get(i).getFilePath(), fileList.get(i).getFileName());
+            }
+        }
+
+        Map<String, FileRequestDto> fileMap = new HashMap<>();
+        for(int i = 0;i<files.size();i++){
+            fileMap.put(String.valueOf(i), new FileRequestDto(dto.getFilePathList().get(i).getFilePath(), files.get(i).getName()));
+        }
+
+        ProjectWithFile project = new ProjectWithFile(projectId, dto, fileMap);
+        projectRepository.upsertProjectWithFile(project);
+    }
+
 
     @Override
     public void deleteProject(String projectId) {
@@ -249,20 +304,6 @@ public class ProjectServiceImpl implements ProjectService {
         if (!verifyComposeUpSuccess(path)) {
             throw new ProjectStartFailedException("Verify compose up failed.");
         }
-    }
-
-    @Override
-    public String createProjectWithFile(ProjectWithFileRequestDto dto, List<MultipartFile> files) {
-        String projectId = UUID.randomUUID().toString();
-
-        Map<String, FileRequestDto> fileMap = new HashMap<>();
-        for(int i = 0;i<files.size();i++){
-            fileMap.put(String.valueOf(i), new FileRequestDto(dto.getFilePathList().get(i), files.get(i).getName()));
-        }
-
-        ProjectWithFile project = new ProjectWithFile(projectId, dto, fileMap);
-        projectRepository.upsertProjectWithFile(project);
-        return projectId;
     }
 
     @Override

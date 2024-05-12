@@ -3,7 +3,9 @@ package com.dobie.backend.domain.project.controller;
 import com.dobie.backend.domain.project.dto.ProjectRequestDto;
 import com.dobie.backend.domain.project.dto.ProjectGetResponseDto;
 import com.dobie.backend.domain.project.dto.ProjectWithFileRequestDto;
+import com.dobie.backend.domain.project.dto.ProjectWithFileUpdateRequestDto;
 import com.dobie.backend.domain.project.dto.TestDto;
+import com.dobie.backend.domain.project.dto.TestDto2;
 import com.dobie.backend.domain.project.service.ProjectService;
 import com.dobie.backend.exception.exception.build.ProjectStartFailedException;
 import com.dobie.backend.exception.format.code.ApiResponse;
@@ -59,6 +61,15 @@ public class ProjectController {
         return response.success(ResponseCode.PROJECT_INFO_UPDATED, dto);
     }
 
+    @Operation(summary = "gitignore 파일 첨부 있는 프로젝트 수정", description = "프로젝트 수정")
+    @PutMapping("/updatewithfile/{projectId}")
+    public ResponseEntity<?> updateProjectWithFile(@RequestPart ProjectWithFileUpdateRequestDto dto, @RequestPart("files") List<MultipartFile> files) {
+        projectService.updateProjectWithFile(dto.getProjectId(), dto, files);
+        projectService.buildTotalServiceWithFile(projectId, dto.getFilePathList(), files);
+
+        return response.success(ResponseCode.PROJECT_INFO_UPDATED, dto);
+    }
+
     @Operation(summary = "프로젝트 빌드", description = "등록된 프로젝트(백, 프론트, db) 정보를 바탕으로 build파일 생성")
     @PostMapping("/build/{projectId}")
     public ResponseEntity<?> buildTotalProject(@PathVariable String projectId) {
@@ -74,6 +85,15 @@ public class ProjectController {
         projectService.buildTotalService(projectId);
         return response.success(ResponseCode.PROJECT_BUILD_SUCCESS);
     }
+
+    @Operation(summary = "gitignore 파일 첨부 있는 프로젝트 등록, 빌드", description = "프로젝트 정보(gitignore 파일 포함)를 등록한 후 정보 기반으로 빌드파일 생성")
+    @PostMapping(value = "/registwithfile",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> registerProjectWithFile(@RequestPart ProjectWithFileRequestDto dto, @RequestPart("files") List<MultipartFile> files) {
+        String projectId = projectService.createProjectWithFile(dto, files);
+        projectService.buildTotalServiceWithFile(projectId, dto.getFilePathList(), files);
+        return response.success(ResponseCode.PROJECT_BUILD_SUCCESS);
+    }
+
 
     @Operation(summary = "프로젝트 삭제", description = "프로젝트 삭제")
     @DeleteMapping("/delete/{projectId}")
@@ -120,7 +140,7 @@ public class ProjectController {
         return response.success(ResponseCode.PROJECT_REBUILD_AND_START_SUCCESS);
     }
 
-    @Operation(summary = "파일첨부(리스트)", description = "gitignore에 존재하는 파일 첨부")
+    @Operation(summary = "파일첨부(리스트) 테스트", description = "gitignore에 존재하는 파일 첨부")
     @PostMapping(value="/upload", consumes = "multipart/form-data")
     public ResponseEntity<?> uploadFile(@RequestParam("files") List<MultipartFile> files) {
         if (files.isEmpty()) {
@@ -146,14 +166,6 @@ public class ProjectController {
         return response.success(ResponseCode.FILE_UPLOAD_SUCCESS);
     }
 
-    @Operation(summary = "파일첨부 있는 프로젝트 등록, 빌드", description = "프로젝트 정보를 등록한 후 정보 기반으로 빌드파일 생성")
-    @PostMapping(value = "/registwithfile",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> registerProjectWithFile(@RequestPart ProjectWithFileRequestDto dto, @RequestPart("files") List<MultipartFile> files) {
-        String projectId = projectService.createProjectWithFile(dto, files);
-        projectService.buildTotalServiceWithFile(projectId, dto.getFilePathList(), files);
-        return response.success(ResponseCode.PROJECT_BUILD_SUCCESS);
-    }
-
     @Operation(summary = "TEST", description = "TEST")
     @PostMapping(value = "/test",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> test(@RequestPart TestDto dto, @RequestPart("files") List<MultipartFile> files) {
@@ -161,6 +173,31 @@ public class ProjectController {
         System.out.println(dto.getName());
 
         for(MultipartFile file : files){
+            System.out.println("파일도착");
+            try (InputStream inputStream = file.getInputStream()) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+
+            } catch (IOException e) {
+                return ResponseEntity.status(500).body("Failed to read file: " + e.getMessage());
+            }
+            System.out.println();
+        }
+
+
+        return response.success(ResponseCode.PROJECT_BUILD_SUCCESS);
+    }
+
+    @Operation(summary = "TEST", description = "TEST")
+    @PostMapping(value = "/test2",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> test2(@RequestPart("dto") TestDto2 dto) {
+        System.out.println(dto.getId());
+        System.out.println(dto.getName());
+
+        for(MultipartFile file : dto.getFileList()){
             System.out.println("파일도착");
             try (InputStream inputStream = file.getInputStream()) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
