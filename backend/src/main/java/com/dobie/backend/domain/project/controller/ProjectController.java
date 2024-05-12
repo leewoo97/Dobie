@@ -120,7 +120,7 @@ public class ProjectController {
         return response.success(ResponseCode.PROJECT_REBUILD_AND_START_SUCCESS);
     }
 
-    @Operation(summary = "파일첨부", description = "gitignore에 존재하는 파일 첨부")
+    @Operation(summary = "파일첨부(리스트)", description = "gitignore에 존재하는 파일 첨부")
     @PostMapping(value="/upload", consumes = "multipart/form-data")
     public ResponseEntity<?> uploadFile(@RequestParam("files") List<MultipartFile> files) {
         if (files.isEmpty()) {
@@ -129,6 +129,7 @@ public class ProjectController {
 
         for(MultipartFile file : files){
             System.out.println("파일도착");
+            System.out.println(file.getOriginalFilename());
             try (InputStream inputStream = file.getInputStream()) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;

@@ -88,6 +88,26 @@ public class ProjectRepository {
         return null;
     }
 
+    public ProjectWithFile searchProjectWithFile(String projectId){
+        try{
+            // 파일 읽기
+            File file = new File(FILE_PATH);
+            System.out.println("파일읽기" + projectId);
+            // mapper class 지정
+            MapType mapType =
+                mapper.getTypeFactory().constructMapType(Map.class, String.class, ProjectWithFile.class);
+            System.out.println("맵어찌구");
+            // projectMap 불러오기
+            Map<String, ProjectWithFile> projectMap = mapper.readValue(file, mapType);
+            System.out.println("왜안돼");
+            return projectMap.get(projectId);
+        } catch (IOException e){
+            e.getStackTrace();
+        }
+
+        return null;
+    }
+
     public Map<String, Backend> selectBackends(String projectId) {
         try{
             // 파일 읽기

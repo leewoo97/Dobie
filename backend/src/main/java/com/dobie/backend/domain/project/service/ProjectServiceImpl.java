@@ -63,6 +63,16 @@ public class ProjectServiceImpl implements ProjectService {
         return new ProjectGetResponseDto(project);
     }
 
+    public ProjectWithFileGetResponseDto getProjectWithFile(String projectId) {
+        System.out.println("여기가 바로 프로젝트 아이디가 없다느 오류에오");
+        ProjectWithFile project = projectRepository.searchProjectWithFile(projectId);
+        System.out.println("여깁니다");
+        if(project==null){
+            System.out.println("널임");
+        }
+        return new ProjectWithFileGetResponseDto(project);
+    }
+
     @Override
     public List<BackendGetResponseDto> getAllBackends(String projectId) {
         Map<String, Backend> backendMap = projectRepository.selectBackends(projectId);
@@ -257,7 +267,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void buildTotalServiceWithFile(String projectId, List<String> filePathList, List<MultipartFile> files) {
-        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
+        ProjectWithFileGetResponseDto projectGetResponseDto = getProjectWithFile(projectId);
 
         // git clone
         GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
@@ -277,41 +287,41 @@ public class ProjectServiceImpl implements ProjectService {
         saveFile(projectGetResponseDto.getProjectName(), filePathList, files);
 
 
-        // dockerfile 생성
-        // 백엔드
-        Map<String, BackendGetResponseDto> backendInfo = projectGetResponseDto.getBackendMap();
-        backendInfo.forEach((key, value) -> {
-            if (value.getFramework().equals("SpringBoot(gradle)")) {
-                dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
-            } else if (value.getFramework().equals("SpringBoot(maven)")) {
-                dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
-            }
-        });
-
-
-        // 프론트엔드
-        FrontendGetResponseDto frontendInfo = projectGetResponseDto.getFrontend();
-        if (frontendInfo.getFramework().equals("React")) {
-            dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
-        } else if (frontendInfo.getFramework().equals("Vue")) {
-            dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
-        }
-
-        // docker-compose 파일 생성
-        dockerComposeService.createDockerComposeFile(projectGetResponseDto);
-
-        //nginx proxy config 파일생성
-        nginxConfigService.saveProxyNginxConfig(projectId);
-
-        if(frontendInfo.isUsingNginx()){
-            try {
-                //frontend nginx config 파일 저장
-                nginxConfigService.saveFrontNginxConfigFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getProjectName());
-            } catch (IOException e) {
-                log.error(e.getMessage());
-                throw new SaveFileFailedException("front nginx config 파일 저장에 실패했습니다."); //예외처리
-            }
-        }
+//        // dockerfile 생성
+//        // 백엔드
+//        Map<String, BackendGetResponseDto> backendInfo = projectGetResponseDto.getBackendMap();
+//        backendInfo.forEach((key, value) -> {
+//            if (value.getFramework().equals("SpringBoot(gradle)")) {
+//                dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
+//            } else if (value.getFramework().equals("SpringBoot(maven)")) {
+//                dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
+//            }
+//        });
+//
+//
+//        // 프론트엔드
+//        FrontendGetResponseDto frontendInfo = projectGetResponseDto.getFrontend();
+//        if (frontendInfo.getFramework().equals("React")) {
+//            dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
+//        } else if (frontendInfo.getFramework().equals("Vue")) {
+//            dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
+//        }
+//
+//        // docker-compose 파일 생성
+//        dockerComposeService.createDockerComposeFile(projectGetResponseDto);
+//
+//        //nginx proxy config 파일생성
+//        nginxConfigService.saveProxyNginxConfig(projectId);
+//
+//        if(frontendInfo.isUsingNginx()){
+//            try {
+//                //frontend nginx config 파일 저장
+//                nginxConfigService.saveFrontNginxConfigFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getProjectName());
+//            } catch (IOException e) {
+//                log.error(e.getMessage());
+//                throw new SaveFileFailedException("front nginx config 파일 저장에 실패했습니다."); //예외처리
+//            }
+//        }
 
     }
 
@@ -334,7 +344,7 @@ public class ProjectServiceImpl implements ProjectService {
 
             // ec2 서버에서 깃클론하는 경로로 수정하기
             String filePath = "./" + projectName + filePaths.get(i);
-            fileManager.saveFile(filePath, files.get(i).getName(), ignoreFile);
+            fileManager.createFolder(filePath, files.get(i).getOriginalFilename(), ignoreFile);
 
         }
     }
