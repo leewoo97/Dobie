@@ -1,8 +1,7 @@
 import "./App.css";
 import { Outlet } from "react-router-dom";
 import axios from "axios";
-import { useEffect } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 axios.defaults.withCredentials = true;
 

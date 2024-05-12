@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// const url = "http://localhost:8080/api/user";
 const url = process.env.REACT_APP_SERVER + "/user";
 
 //로그인
@@ -8,7 +7,6 @@ export async function login(user) {
   try {
     localStorage.clear();
 
-    //   const response = await axios.post(BASE_URL + "/login", user);
     const response = await axios.post(url + "/login", user);
     return response;
   } catch (error) {
@@ -23,7 +21,6 @@ export async function signup(user) {
     const response = await axios.post(url + "/update", user);
     return response;
   } catch (error) {
-    // console.log("회원가입 실패: " + error);
     throw error;
   }
 }
@@ -34,7 +31,6 @@ export async function getUser() {
     const response = await axios.get(url);
     return response;
   } catch (error) {
-    // console.log("회원가입 실패: " + error);
     throw error;
   }
 }
