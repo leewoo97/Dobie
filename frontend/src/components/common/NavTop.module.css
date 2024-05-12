@@ -1,26 +1,25 @@
-.nav{
-    margin: 0 auto;
-    height: 8%;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    z-index: 1;
-    background-color: #6096B4;
+.nav {
+  margin: 0 auto;
+  height: 8%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  background-color: #6096b4;
 }
 
 .title {
-    height: 100%;
-    display: flex;
-    justify-content:start;
-    margin-left: 2%;
-    align-items: center;
-    
-  }
-  
-  .dobie {
-    color: white;
-    font-size: 5vh;
-    font-weight: 900;
-    margin-left: 10px;
-    cursor: pointer;
-  }
+  height: 100%;
+  display: flex;
+  justify-content: start;
+  margin-left: 2%;
+  align-items: center;
+}
+
+.dobie {
+  color: white;
+  font-size: 5vh;
+  font-weight: 900;
+  margin-left: 1vw;
+  cursor: pointer;
+}

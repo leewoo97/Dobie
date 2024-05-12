@@ -11,17 +11,17 @@ export default function FrameworkImg({ framework, databaseType }) {
   return (
     <>
       <div className={styles.iconimage}>
-        {(framework == "SpringBoot(gradle)" ||
-          framework == "SpringBoot(maven)") && (
-          <img src={springIcon} ></img>
+        {(framework === "SpringBoot(gradle)" ||
+          framework === "SpringBoot(maven)") && (
+          <img alt="spring" src={springIcon}></img>
         )}
-        {framework == "Django" && <img src={djangoIcon} ></img>}
-        {framework == "React" && <img src={reactIcon}></img>}
-        {framework == "Vue" && <img src={vueIcon}></img>}
-        {databaseType == "Mysql" && <img src={mysqlIcon}></img>}
-        {databaseType == "Redis" && <img src={redisIcon}></img>}
-        {databaseType == "Mongodb" && (
-          <img src={mongodbIcon} ></img>
+        {framework === "Django" && <img alt="django" src={djangoIcon}></img>}
+        {framework === "React" && <img alt="react" src={reactIcon}></img>}
+        {framework === "Vue" && <img alt="vue" src={vueIcon}></img>}
+        {databaseType === "Mysql" && <img alt="mysql" src={mysqlIcon}></img>}
+        {databaseType === "Redis" && <img alt="redis" src={redisIcon}></img>}
+        {databaseType === "Mongodb" && (
+          <img alt="mongodb" src={mongodbIcon}></img>
         )}
       </div>
     </>

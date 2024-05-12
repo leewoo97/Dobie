@@ -1,58 +1,58 @@
 .top {
-    /* background-color: red; */
-    display: flex;
-    padding: 2% 8%;
-    justify-content: space-between;
+  /* background-color: red; */
+  display: flex;
+  padding: 2% 8%;
+  justify-content: space-between;
 }
 
-.text{
-    margin-right: 1vh;
+.text {
+  margin-right: 1vh;
 }
 
-.projectName{
-    font-size: 5vh;
-    font-weight: 600;
+.projectName {
+  font-size: 5vh;
+  font-weight: 600;
 }
 
-.buttons{
-    display: inline-flex;
-    align-items: flex-end;
+.buttons {
+  display: inline-flex;
+  align-items: flex-end;
 }
 
-.buttons > div{
-    display: inline-flex;
-    align-items: center;
+.buttons > div {
+  display: inline-flex;
+  align-items: center;
 }
 
-.buttons > div > img{
-    margin-left: 1vh;
+.buttons > div > img {
+  margin-left: 1vh;
 }
 
-.edit{
-    height: 40%;
-    color: white;
-    font-weight: 600;
-    background-color: #6096B4;
-    border-radius: 10px;
-    padding: 1vh 1vw;
-    margin: 0 0.5vw;
-    cursor: pointer;
+.edit {
+  height: 40%;
+  color: white;
+  font-weight: 600;
+  background-color: #6096b4;
+  border-radius: 10px;
+  padding: 1vh 1vw;
+  margin: 0 0.5vw;
+  cursor: pointer;
 }
 
-.remove{
-    height: 40%;
-    color: white;
-    font-weight: 600;
-    background-color: #4A7A94;
-    border-radius: 10px;
-    padding: 1vh 1vw;
-    cursor: pointer;
+.remove {
+  height: 40%;
+  color: white;
+  font-weight: 600;
+  background-color: #4a7a94;
+  border-radius: 10px;
+  padding: 1vh 1vw;
+  cursor: pointer;
 }
 
 .edit > img {
-    height: 3.5vh;
+  height: 3.5vh;
 }
 
 .remove > img {
-    height: 3.5vh;
+  height: 3.5vh;
 }
