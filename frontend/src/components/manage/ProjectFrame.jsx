@@ -10,14 +10,13 @@ export default function ProjectFrame() {
   return (
     <div className={styles.page}>
       <ProjectTop projectName={selectedProject.projectName} />
-      <GetBox keyName={"url"} valueName={selectedProject.git.gitUrl} />
+      <GetBox keyName={"Git URL"} valueName={selectedProject.git.gitUrl} />
       <GetSecretBox
-        keyName={"액세스 토큰"}
+        keyName={"Access Token"}
         valueName={selectedProject.git.accessToken}
       />
-      {/* <GetBox keyName={"자동 배포 웹훅 설정"} valueName={"webHook"} /> */}
       <GetBox
-        keyName={"브랜치"}
+        keyName={"Branch"}
         valueName={selectedProject.backendMap.branch}
       />
     </div>

@@ -15,34 +15,39 @@ export default function GetSecretBox({ keyName, valueName }) {
     alert("Copy Success");
   };
 
+  const displayValue = () => {
+    if (!valueName) {
+      return "입력 정보가 없습니다.";
+    } else if (showToken) {
+      return valueName;
+    } else {
+      return "••••••••••";
+    }
+  };
+
   return (
     <div className={styles.page}>
       {/* <p>박스</p> */}
       <div className={styles.boxFrame}>
         <p className={styles.key}>{keyName}</p>
-        <p className={styles.value}>{showToken ? valueName : "••••••••••"}</p>
+        <p className={styles.value}>{displayValue()}</p>
         <div className={styles.iconBox}>
-          {showToken ? (
-            <img
-              className={styles.icon}
-              src={HideIcon}
-              alt="Hide"
-              onClick={toggleTokenVisibility}
-            />
-          ) : (
-            <img
-              className={styles.icon}
-              src={ShowIcon}
-              alt="Show"
-              onClick={toggleTokenVisibility}
-            />
+          {valueName && (
+            <>
+              <img
+                className={styles.icon}
+                src={showToken ? HideIcon : ShowIcon}
+                alt={showToken ? "Hide" : "Show"}
+                onClick={toggleTokenVisibility}
+              />
+              <img
+                className={styles.icon}
+                src={CopyIcon}
+                alt="Copy"
+                onClick={copyToClipboard}
+              />
+            </>
           )}
-          <img
-            className={styles.icon}
-            src={CopyIcon}
-            alt="Copy"
-            onClick={copyToClipboard}
-          />
         </div>
       </div>
     </div>
