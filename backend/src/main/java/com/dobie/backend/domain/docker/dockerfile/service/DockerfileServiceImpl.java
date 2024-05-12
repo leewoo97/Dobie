@@ -291,7 +291,65 @@ public class DockerfileServiceImpl implements DockerfileService {
                 errorContainer.append(" 컨테이너가 종료되어있어 실행할 수 없습니다.");
             }
 //            System.out.println("결과값 : "+ analyzeContainer);
-            return errorContainer.toString();
+            if(errorContainer.toString().equals("")){
+                return "Pass";
+            }else{
+                return errorContainer.toString();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            throw new DockerContainerFrameworkErrorException();
+        }
+    }
+
+    @Override
+    public String checkBackendContainer(String projectId) {
+        try {
+            ArrayList<String> analyzeList = AnalyzeProjectContainer(projectId);
+            HashMap<String,String> frameworkMap = AnalyzeProjectContainerFramework(projectId); //key : 컨테이너 서비스id, value : 프레임 워크
+            String dockerOutput = readProceedingDockerContainer();
+            HashMap<String,String> containerStatus = parseDockerPsOutput(dockerOutput); //key : 컨테이너 서비스id, value : 실행 상태
+
+            boolean gradleOn = false;
+            boolean mavenOn = false;
+            boolean djangoOn = false;
+            for(int i=0; i<analyzeList.size(); i++){
+                String currentContainerName = analyzeList.get(i);
+                String currentStatus = containerStatus.get(currentContainerName);
+                String currentFramework = frameworkMap.get(currentContainerName);
+                System.out.println("현재 실행중인 컨테이너 이름 : " + currentContainerName);
+                System.out.println("현재 실행중인 컨테이너 상태 : " + currentStatus);
+                System.out.println("현재 실행중인 컨테이너 프레임워크 : " + currentFramework);
+                if((currentStatus.equals("Running :)"))&&(currentFramework.equals("SpringBoot(gradle)"))&&(!gradleOn)){
+                    gradleOn=true;
+                }else if((currentStatus.equals("Running :)"))&&(currentFramework.equals("SpringBoot(maven)"))&&(!mavenOn)){
+                    mavenOn=true;
+                }else if((currentStatus.equals("Running :)"))&&(currentFramework.equals("Django"))&&(!djangoOn)){
+                    djangoOn=true;
+                }
+            }
+
+            StringBuilder errorContainer = new StringBuilder();
+            if(gradleOn) {
+                errorContainer.append("SpringBoot(gradle)").append(" , ");
+            }
+            if(mavenOn){
+                errorContainer.append("SpringBoot(maven)").append(" , ");
+            }
+            if(djangoOn){
+                errorContainer.append("Django").append(" , ");
+            }
+            if(gradleOn||mavenOn||djangoOn){
+                errorContainer.delete(errorContainer.length()-3,errorContainer.length());
+                errorContainer.append(" 컨테이너가 실행되고있어 종료할 수 없습니다.");
+            }
+//            System.out.println("결과값 : "+ analyzeContainer);
+            if(errorContainer.toString().equals("")){
+                return "Pass";
+            }else{
+                return errorContainer.toString();
+            }
         }
         catch (Exception e){
             e.printStackTrace();

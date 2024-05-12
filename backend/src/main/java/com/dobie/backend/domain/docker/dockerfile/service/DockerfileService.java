@@ -25,6 +25,8 @@ public interface DockerfileService {
     /* 실행중인 컨테이너 확인 메소드(프레임워크도 확인함) */
     String checkDBContainer(String projectId);
 
+    String checkBackendContainer(String projectId);
+
     /* 도커파일 위치 조회 메소드 */
     String makeDockerfilePathContent(String projectId, String serviceId, String type);
     /* 도커컴포즈 파일 위치 조회 메소드 */
