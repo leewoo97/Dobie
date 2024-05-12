@@ -194,6 +194,8 @@ public class ProjectServiceImpl implements ProjectService {
         if (!verifyComposeUpSuccess(path)) {
             throw new ProjectStartFailedException("Verify compose up failed.");
         }
+
+        commandService.restartNginx();
     }
 
     @Override
@@ -314,7 +316,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
     }
-
+    
     public void saveFile(String projectName, List<String> filePaths, List<MultipartFile> files){
 
         for(int i = 0;i<files.size();i++){

@@ -26,5 +26,7 @@ public interface CommandService {
 
     void dockerStart(String containerName);
 
+    void restartNginx();
+
 }
 
