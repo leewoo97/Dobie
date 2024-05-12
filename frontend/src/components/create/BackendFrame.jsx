@@ -54,6 +54,14 @@ export default function BackendFrame() {
     setTempProject({...tempProject});
   }
 
+  const changeVersionHandler = (value) => {
+    const splitValue = value.split(' ');
+    selectedBackend.language = splitValue[0];
+    selectedBackend.version = splitValue[1];
+    tempProject.backendMap[selectedKey] = {...selectedBackend};
+    setTempProject({...tempProject});
+  }
+
   const changePathHandler = (e) => {
     selectedBackend.path = e.target.value;
     tempProject.backendMap[selectedKey] = { ...selectedBackend };
@@ -116,8 +124,8 @@ export default function BackendFrame() {
       <InputSelectBox
         keyName={"언어버전"}
         list={versionList}
-        value={version}
-        onChange={versionSelect}
+        value={selectedBackend.language+" "+selectedBackend.version}
+        onChange={changeVersionHandler}
       />
       <DescBox desc={"Backend 서비스의 언어 버전을 선택하세요"} />
 
