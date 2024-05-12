@@ -75,7 +75,7 @@ const useProjectStore = create(
         });
       },
       setCreatedProject: (project) => {
-        set({ newProject: project });
+        set({ createdProject: project });
       },
       checkProceed: {},
       setCheckProceed: (checkProceed) => {

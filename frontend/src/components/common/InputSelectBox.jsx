@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styles from "./InputSelectBox.module.css";
 
-export default function InputSelectBox({ keyName, list, framework, onChange }) {
-  const [selectedValue, setSelectedValue] = useState(null);
+export default function InputSelectBox({ keyName, list, value, onChange }) {
+  const [selectedValue, setSelectedValue] = useState(value);
 
   const handleSelect = (value) => {
     if (selectedValue !== value) {

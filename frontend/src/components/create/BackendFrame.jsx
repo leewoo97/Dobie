@@ -48,6 +48,12 @@ export default function BackendFrame() {
     setTempProject({ ...tempProject });
   };
 
+  const changeFrameworkHandler = (value) => {
+    selectedBackend.framework = value;
+    tempProject.backendMap[selectedKey] = {...selectedBackend};
+    setTempProject({...tempProject});
+  }
+
   const changePathHandler = (e) => {
     selectedBackend.path = e.target.value;
     tempProject.backendMap[selectedKey] = { ...selectedBackend };
@@ -102,8 +108,8 @@ export default function BackendFrame() {
       <InputSelectBox
         keyName={"프레임워크"}
         list={frameworkList}
-        value={framework}
-        onChange={frameworkSelect}
+        value={selectedBackend.framework}
+        onChange={changeFrameworkHandler}
       />
       <DescBox desc={"Backend 서비스의 프레임워크를 선택하세요"} />
 
