@@ -1,29 +1,8 @@
-.page{
-    height: 130%;
-    width: 80%;
-    position: relative;
-    top: 15%;
-    left: 20%;
-    margin-bottom: 8%;
-}
-
-.descFrame{
-    display: flex;
-    flex-direction: row;
-    background-color: #EEE9DA;
-    width: 80%;
-    margin: 0 auto;
-    padding: 0 3%;
-    border-radius: 10px;
-    align-items: center;
-}
-
-.key{
-    flex: 30;
-    
-}
-
-.desc {
-    flex: 70;
-    
+.page {
+  height: 130%;
+  width: 80%;
+  position: relative;
+  top: 15%;
+  left: 20%;
+  margin-bottom: 8%;
 }

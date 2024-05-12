@@ -9,7 +9,6 @@ import useProjectStore from "../../stores/projectStore";
 export default function ProjectFrame() {
   // const [url, setUrl] = useState(null);
   // const [accessToken, setAccessToken] = useState(null);
-  // const [webHook, setWebHook] = useState(null);
   // const [branch, setBranch] = useState(null);
 
   const [gittype, setGittype] = useState("gitlab");
@@ -105,7 +104,6 @@ export default function ProjectFrame() {
       {/* <ProjectTopCreate /> */}
       {/* <GetBox keyName={"url"} valueName={url} onChange={(e) => setUrl(e.target.value)}/>
             <GetBox keyName={"액세스 토큰"} valueName={accessToken} onChange={(e)=> setAccessToken(e.target.value)}/>
-            <GetBox keyName={"자동 배포 웹훅 설정"} valueName={webHook} onChange={(e)=> setWebHook(e.target.value)}/>
             <GetBox keyName={"브랜치"} valueName={branch} onChange={(e)=>setBranch(e.target.value)}/> */}
       <InputBox
         keyName={"프로젝트명"}
@@ -122,7 +120,7 @@ export default function ProjectFrame() {
       />
       <DescBox
         desc={
-          "GitLab 또는 GitHub 의 프로젝트를 클론하기 위한 URL을 등록하세요 \n Git Hub : Personal Access Token \n Git Lab : Project Access Token"
+          "GitLab 또는 GitHub 의 프로젝트를 Git Clone하기 위한 URL을 등록하세요"
         }
       />
       <InputBox
