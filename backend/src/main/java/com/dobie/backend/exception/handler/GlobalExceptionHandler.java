@@ -91,6 +91,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    @ExceptionHandler(NginxRestartFailedException.class)
+    protected ResponseEntity<?> handle(NginxRestartFailedException e) {
+        log.error("NginxRestartFailedException = {}", e.getErrorCode().getMessage());
+        log.error("Error Message = {}", e.getErrorMessage());
+        log.error("Error Detail = {}", e.getErrorDetail());
+        return response.error(e.getErrorCode());
+    }
+
     /* Git */
     @ExceptionHandler(GitCheckoutFailedException.class)
     protected ResponseEntity<?> handle(GitCheckoutFailedException e) {
