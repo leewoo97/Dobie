@@ -75,12 +75,10 @@
   cursor: pointer;
 }
 
-.selectedTap p, .tap p {
-  position: relative;
-  margin: 0;
-  /* padding-left: 3px; */
-}
-
 .hide {
   display: none;
+}
+
+.xMark{
+  margin-left: 15px;
 }

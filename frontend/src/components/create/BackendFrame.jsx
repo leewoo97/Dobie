@@ -34,19 +34,13 @@ export default function BackendFrame() {
   };
 
   const clickDeleteHandler = (key) => {
-    // if(window.confirm("삭제하시겠습니까?") === true){
-    //   const removeKeyIndex = Object.keys(tempProject.backendMap).indexOf(key);
-    //   const moveKeyIndex = removeKeyIndex === 0 ? 0 : removeKeyIndex - 1;
-    //   delete tempProject.backendMap[key];
-    //   setSelectedKey(Object.keys(tempProject.backendMap).at(moveKeyIndex));
-    //   setTempProject({ ...tempProject });
-    // }
-
-    const removeKeyIndex = Object.keys(tempProject.backendMap).indexOf(key);
-    const moveKeyIndex = removeKeyIndex === 0 ? 0 : removeKeyIndex - 1;
-    delete tempProject.backendMap[key];
-    setSelectedKey(Object.keys(tempProject.backendMap)[moveKeyIndex]);
-    setTempProject({ ...tempProject });
+    if(window.confirm("삭제하시겠습니까?") === true){
+      const removeKeyIndex = Object.keys(tempProject.backendMap).indexOf(key);
+      const moveKeyIndex = removeKeyIndex === 0 ? 0 : removeKeyIndex - 1;
+      delete tempProject.backendMap[key];
+      setSelectedKey(Object.keys(tempProject.backendMap).at(moveKeyIndex));
+      setTempProject({ ...tempProject });
+    }
   };
 
   const addEmptyBackend = () => {
@@ -100,11 +94,11 @@ export default function BackendFrame() {
         {Object.keys(tempProject.backendMap).map((key, index) => {
           return (
             <div key={index} className={key === selectedKey ? styles.selectedTap : styles.tap} onClick={() => clickKeyHandler(key)}>
-              <p>{index + 1}</p>
-              <p onClick={(event) => {
+              <div>{index + 1}</div>
+              <div className={styles.xMark} onClick={(event) => {
                 event.stopPropagation();
                 clickDeleteHandler(key);
-                }}> x </p>
+                }}> x </div>
             </div>
           );
         })}
