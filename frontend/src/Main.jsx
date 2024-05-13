@@ -23,8 +23,6 @@ import UpdateBackendPage from "./pages/updatePage/UpdateBackendPage";
 import UpdateFrontendPage from "./pages/updatePage/UpdateFrontendPage";
 import UpdateDatabasePage from "./pages/updatePage/UpdateDatabasePage";
 
-import OverviewFrame from "./components/guide/OverviewFrame";
-
 function Main() {
   return (
     <Router>

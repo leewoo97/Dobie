@@ -1,9 +1,9 @@
-import React, { forwardRef } from "react";
-import styles from "./OverviewFrame.module.css";
-export default function OverviewFrame() {
+import React from "react";
+import styles from "./DobieFrame.module.css";
+export default function DobieFrame() {
   // 컴포넌트 로직
   return (
-    <div id="overview">
+    <div id="dobie">
       <div>gd</div>
       <div>gd</div>
       <div>gd</div>
@@ -31,7 +31,6 @@ export default function OverviewFrame() {
       <div>gd</div>
       <div>gd</div>
       <div>gd</div>
-      <div id="overview1">gd</div>
       <div>gd</div>
       <div>gd</div>
       <div>gd</div>
@@ -79,7 +78,6 @@ export default function OverviewFrame() {
       <div>gdddddddddddddd</div>
       <div>gdddddddddddddd</div>
       <div>gdddddddddddddd</div>
-      <div id="regist">gdddddddddddddd</div>
       <div>gdddddddddddddd</div>
       <div>gdddddddddddddd</div>
       <div>gdddddddddddddd</div>

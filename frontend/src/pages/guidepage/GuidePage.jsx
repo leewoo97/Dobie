@@ -1,8 +1,11 @@
 import styles from "./GuidePage.module.css";
 import NavTop from "../../components/common/NavTop";
-import OverviewFrame from "../../components/guide/OverviewFrame";
+import DobieFrame from "../../components/guide/DobieFrame";
 import NavLeftGuide from "../../components/common/NavLeftGuide";
 import SupportFrame from "../../components/guide/SupportFrame";
+import RegistFrame from "../../components/guide/RegistFrame";
+import RunStopFrame from "../../components/guide/RunStopFrame";
+import KeyFeaturesFrame from "../../components/guide/KeyFeaturesFrame";
 
 export default function GuidePage() {
   const scrollToId = (id) => {
@@ -19,8 +22,11 @@ export default function GuidePage() {
     <>
       <NavTop />
       <div className={styles.page}>
-        <OverviewFrame />
+        <DobieFrame />
         <SupportFrame />
+        <RegistFrame />
+        <RunStopFrame />
+        <KeyFeaturesFrame />
       </div>
       <NavLeftGuide scrollToId={scrollToId} />
     </>
