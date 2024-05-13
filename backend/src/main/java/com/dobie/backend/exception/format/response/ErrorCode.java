@@ -63,7 +63,8 @@ public enum ErrorCode {
     PROJECT_PATH_NOT_FOUND(HttpStatus.NOT_FOUND, "frontend 파일 경로 찾기를 실패했습니다."),
     NGINX_CONFIG_NOT_FOUND(HttpStatus.NOT_FOUND, "nginx config 파일 경로 찾기를 실패했습니다."),
     NGINX_CONFIG_READ_FAILED(HttpStatus.BAD_REQUEST, "nginx 파일을 읽어올 수 없습니다."),
-    NGINX_RESTART_FAILED(HttpStatus.BAD_REQUEST, "nginx container를 재실행하는데 실패했습니다.")
+    NGINX_RESTART_FAILED(HttpStatus.BAD_REQUEST, "nginx container를 재실행하는데 실패했습니다."),
+    NGINX_CONF_DELETE_FAILED(HttpStatus.BAD_REQUEST, "nginx config 파일 삭제를 실패했습니다.")
     ;
     private final HttpStatus status;
     private final String message;
