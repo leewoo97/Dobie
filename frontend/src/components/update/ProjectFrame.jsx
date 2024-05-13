@@ -128,51 +128,6 @@ export default function ProjectFrame() {
 
             <InputBox keyName={"Branch"} valueName={"main"} value={tempProject.branck} onChange={changeBranchHandler}/>
             <DescBox desc={"서버에 반영할 브랜치명을 수정하세요 ('main' or 'master' or 임의의 브랜치) "} />
-
-            <div className={styles.fileFrame}>
-                <div className={styles.fileTop}>
-                    <div className={styles.key}>환경 설정 파일 추가</div>
-                    <div className={styles.desc}>
-                        <input type="file" multiple ref={fileInputRef} onChange={handleFileChange} style={{ display: "none" }} />
-                        <div className={styles.addfileButton} onClick={handleClick}>
-                            파일 선택
-                        </div>
-                    </div>
-                </div>
-
-                <div className={styles.fileBottom}>
-                    <div className={styles.key}></div>
-                    <div className={styles.desc}>
-                        <div>
-                            {files.map((file, index) => (
-                                <div className={styles.file} key={index}>
-                                    <input
-                                        className={styles.filePath}
-                                        type="text"
-                                        placeholder="/backend/src/main/resources"
-                                        value={paths[index]}
-                                        onChange={(event) => handlePathChange(index, event)}
-                                    />
-                                    {/* <input className={styles.value} type="text" placeholder="/backend/src/main/resources" value={paths[index]}/> */}
-                                    <div className={styles.fileName}>{file.name}</div>
-
-                                    <div
-                                        className={styles.fileRemove}
-                                        onClick={() => handleRemoveFile(index)}
-                                    >
-                                        X
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <DescBox
-                desc={
-                    ".gitignore에 등록한 .env, .yml 등 환경설정파일을 첨부하고 프로젝트 루트 경로로부터 해당 파일의 경로를 재업로드해주세요"
-                }
-            />
         </div>
     );
 }
