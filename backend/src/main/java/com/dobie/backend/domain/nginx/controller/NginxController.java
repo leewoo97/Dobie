@@ -42,18 +42,9 @@ public class NginxController {
     public ResponseEntity<?> getSsl(@RequestParam(name = "projectDomain") String projectDomain){
         String pythonScriptPath = "/sslConf/get_certificate.py"; // 파이썬 스크립트의 경로
 
-        // 사용자로부터 도메인 입력 받기
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Enter domain:");
-        String domain = null;
-        try {
-            domain = reader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         // 파이썬 스크립트를 실행하면서 도메인 전달
-        if (domain != null && !domain.isEmpty()) {
+        if (projectDomain != null && !projectDomain.isEmpty()) {
             try {
                 Process process = Runtime.getRuntime().exec("python " + pythonScriptPath + " " + projectDomain);
 
