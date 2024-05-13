@@ -84,7 +84,7 @@ public class ProjectRepository {
 
             // mapper class 지정
             MapType mapType =
-                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, ProjectWithFile.class);
 
             return mapper.readValue(file, mapType);
 
@@ -160,10 +160,10 @@ public class ProjectRepository {
 
             // mapper class 지정
             MapType mapType =
-                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, ProjectWithFile.class);
 
             // project map 불러오기
-            Map<String, Project> projects = mapper.readValue(file, mapType);
+            Map<String, ProjectWithFile> projects = mapper.readValue(file, mapType);
 
             return projects.get(projectId).getBackendMap();
         }catch (IOException e){
@@ -180,10 +180,10 @@ public class ProjectRepository {
 
             // mapper class 지정
             MapType mapType =
-                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, ProjectWithFile.class);
 
             // project map 불러오기
-            Map<String, Project> projects = mapper.readValue(file, mapType);
+            Map<String, ProjectWithFile> projects = mapper.readValue(file, mapType);
 
             //
             Map<String, Backend> backendMap = projects.get(projectId).getBackendMap();
@@ -203,10 +203,10 @@ public class ProjectRepository {
 
             // mapper class 지정
             MapType mapType =
-                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, ProjectWithFile.class);
 
             // project map 불러오기
-            Map<String, Project> projects = mapper.readValue(file, mapType);
+            Map<String, ProjectWithFile> projects = mapper.readValue(file, mapType);
 
             return projects.get(projectId).getFrontend();
         }catch (IOException e){
@@ -223,10 +223,10 @@ public class ProjectRepository {
 
             // mapper class 지정
             MapType mapType =
-                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, ProjectWithFile.class);
 
             // project map 불러오기
-            Map<String, Project> projects = mapper.readValue(file, mapType);
+            Map<String, ProjectWithFile> projects = mapper.readValue(file, mapType);
 
             return projects.get(projectId).getDatabaseMap();
         }catch (IOException e){
@@ -242,10 +242,10 @@ public class ProjectRepository {
 
             // mapper class 지정
             MapType mapType =
-                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, ProjectWithFile.class);
 
             // project map 불러오기
-            Map<String, Project> projects = mapper.readValue(file, mapType);
+            Map<String, ProjectWithFile> projects = mapper.readValue(file, mapType);
 
             return projects.get(projectId).getDatabaseMap()
                     .get(databaseId);
@@ -263,10 +263,10 @@ public class ProjectRepository {
 
             // mapper class 지정
             MapType mapType =
-                    mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, ProjectWithFile.class);
 
             // project map 불러오기
-            Map<String, Project> projects = mapper.readValue(file, mapType);
+            Map<String, ProjectWithFile> projects = mapper.readValue(file, mapType);
 
             // project 삭제
             projects.remove(projectId);
