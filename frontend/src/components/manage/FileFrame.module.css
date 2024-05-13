@@ -1,0 +1,66 @@
+.page {
+  width: 83%;
+  position: relative;
+  top: 10%;
+  left: 17%;
+}
+.top {
+  /* background-color: red; */
+  display: flex;
+  padding: 2% 8%;
+  justify-content: space-between;
+}
+
+.text {
+  margin-right: 1vh;
+}
+
+.projectName {
+  font-size: 5vh;
+  font-weight: 600;
+}
+.manual {
+  padding: 2% 8%;
+}
+
+.manualName {
+  font-size: 5vh;
+  font-weight: 600;
+  margin-bottom: 10vh;
+}
+
+.part {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10vh;
+}
+.left {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.webhooksImg {
+  width: 30vw;
+}
+
+.webhookbutton {
+  width: 20vw;
+}
+.webhookregist {
+  width: 35vw;
+}
+
+.right {
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 2vw;
+}
+.ment {
+  width: 100%;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  font-size: 2.5vh;
+  font-weight: 500;
+}

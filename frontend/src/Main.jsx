@@ -17,6 +17,7 @@ import CreateFrontendPage from "./pages/createPage/CreateFrontendPage";
 import CreateProjectPage from "./pages/createPage/CreateProjectPage";
 import GuidePage from "./pages/mainpage/GuidePage";
 import WebhookPage from "./pages/managepage/WebhookPage";
+import FilePage from "./pages/managepage/FilePage";
 
 import UpdateProjectPage from "./pages/updatePage/UpdateProjectPage";
 import UpdateBackendPage from "./pages/updatePage/UpdateBackendPage";
@@ -42,6 +43,7 @@ function Main() {
             <Route path="frontend" element={<FrontendPage />} />
             <Route path="database/:databaseId" element={<DatabasePage />} />
             <Route path="webhook" element={<WebhookPage/>}/>
+            <Route path="file" element={<FilePage/>}/>
           </Route>
           <Route path="create">
             <Route index path="project" element={<CreateProjectPage />} />
