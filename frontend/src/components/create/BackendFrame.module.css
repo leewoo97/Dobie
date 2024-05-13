@@ -75,7 +75,7 @@
   cursor: pointer;
 }
 
-.tapBox p {
+.selectedTap p, .tap p {
   position: relative;
   margin: 0;
   /* padding-left: 3px; */
