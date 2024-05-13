@@ -28,5 +28,7 @@ public interface CommandService {
 
     void restartNginx();
 
+    void deleteNginxProxyConf(String projectId);
+
 }
 

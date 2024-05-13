@@ -128,6 +128,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void deleteProject(String projectId) {
         projectRepository.deleteProject(projectId);
+        commandService.deleteNginxProxyConf(projectId); //nginx config파일 삭제
     }
 
 
