@@ -11,6 +11,7 @@ import stop from "../../assets/stop.png";
 import edit from "../../assets/editIcon.png";
 import remove from "../../assets/deleteIcon.png";
 import setting from "../../assets/settingIcon.png";
+import upload from "../../assets/uploadIcon.png";
 import document from "../../assets/documentIcon.png";
 import restart from "../../assets/restart.png";
 
@@ -200,6 +201,18 @@ export default function RunPage() {
               Webhook 설정{" "}
               <img
                 src={setting}
+                alt=""
+                decoding="async"
+                className={styles.btnIcon}
+              />
+            </div>
+            <div
+              className={styles.webhook}
+              onClick={() => navigate("/manage/file")}
+            >
+              환경설정 파일 추가/삭제{" "}
+              <img
+                src={upload}
                 alt=""
                 decoding="async"
                 className={styles.btnIcon}
