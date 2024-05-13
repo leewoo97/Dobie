@@ -44,21 +44,27 @@ export default function ProjectFrame() {
     };
 
     // 파일첨부
-    const [files, setFiles] = useState([]);
-    const [paths, setPaths] = useState([]);
+    const [files, setFiles] = useState([]); //업로드 할 파일 목록들
+    const [paths, setPaths] = useState([]); //업로드할 파일 각각의 경로들
 
-    const handleFileChange = () => {
-
-    }
     const fileInputRef = useRef();
     const handleClick = () => {
+        fileInputRef.current.click();
 
     }
-    const handlePathChange = () => {
-
+    const handleFileChange = (event) => {
+        const newFiles = Array.from(event.target.files);
+        setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+        setPaths((prevPaths) => [...prevPaths, ...newFiles.map(()=>"")]);
     }
-    const handleRemoveFile = () => {
-
+    const handlePathChange = (index, event) => {
+        const newPaths = [...paths];
+        newPaths[index] = event.target.value;
+        setPaths(newPaths);
+    }
+    const handleRemoveFile = (index) => {
+        setFiles((prevFiles) => prevFiles.filter((_, idx) => idx !== index));
+        setPaths((prevPaths) => prevPaths.filter((_, idx) => idx !== index));
     }
 
     console.log(tempProject);
@@ -121,7 +127,7 @@ export default function ProjectFrame() {
             </div>
 
             <InputBox keyName={"Branch"} valueName={"main"} value={tempProject.branck} onChange={changeBranchHandler}/>
-            <DescBox desc={"서버에 반영할 브랜치명을 입력하세요 ('main' or 'master' or 임의의 브랜치) "} />
+            <DescBox desc={"서버에 반영할 브랜치명을 수정하세요 ('main' or 'master' or 임의의 브랜치) "} />
 
             <div className={styles.fileFrame}>
                 <div className={styles.fileTop}>
