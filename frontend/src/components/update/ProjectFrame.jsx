@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import styles from "./ProjectFrame.module.css";
 import InputBox from "../common/InputBox";
 import DescBox from "../common/DescBox";
-import ProjectTopUpdate from "../common/ProjectTopUpdate";
 import githubImage from "../../assets/github.png";
 import gitlabImage from "../../assets/gitlab.png";
 import useProjectStore from "../../stores/projectStore";
@@ -50,7 +49,11 @@ export default function ProjectFrame() {
 
     return (
         <div className={styles.page}>
-            <ProjectTopUpdate updatedProject={updatedProject} />
+            {/* <ProjectTopUpdate updatedProject={updatedProject} /> */}
+            <div className={styles.top}>
+                <div className={styles.text}>프로젝트</div>
+                <div className={styles.projectName}>{updatedProject.projectName}</div>
+            </div>
 
             <InputBox keyName={"url"} value={tempProject.git.gitUrl} onChange={changeUrlHandler}/>
             <DescBox desc={"GitLab 또는 GitHub 의 프로젝트를 클론하기 위한 URL을 등록하세요 "} />
