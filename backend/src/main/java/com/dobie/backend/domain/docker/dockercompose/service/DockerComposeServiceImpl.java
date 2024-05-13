@@ -132,7 +132,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                 }
             }
             //React인지 vue인지 찾아서 :뒤에 포트번호 바꿀것 , 그냥 사용자가 지정한 프론트 포트번호로 바꿀것
-            sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:").append(frontInternalPort).append("\n");
+            sb.append("      CORS_ALLOWED_ORIGIN: http://43.201.252.66:").append(frontInternalPort).append("\n");
 
             // network
             sb.append("    networks:\n");
@@ -177,7 +177,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                 }
             }
             //React인지 vue인지 찾아서 :뒤에 포트번호 바꿀것 , 그냥 사용자가 지정한 프론트 포트번호로 바꿀것
-            sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:").append(frontInternalPort).append("\n");
+            sb.append("      CORS_ALLOWED_ORIGIN: http://43.201.252.66:").append(frontInternalPort).append("\n");
 
             // network
             sb.append("    networks:\n");
