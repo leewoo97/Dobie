@@ -32,7 +32,9 @@ public enum ResponseCode {
     NGINX_CONFIG_READ_SUCCESS(HttpStatus.OK, "niginx config파일을 성공적으로 조회했습니다."),
 
     /* gitignore 파일 첨부 */
-    FILE_UPLOAD_SUCCESS(HttpStatus.OK, "파일 업로드가 성공적으로 수행되었습니다.")
+    FILE_UPLOAD_SUCCESS(HttpStatus.OK, "파일이 성공적으로 저장되었습니다."),
+    FILE_LIST_FETCHED(HttpStatus.OK, "파일이 성공적으로 조회되었습니다."),
+    FILE_DELETE_SUCCESS(HttpStatus.OK, "파일이 성공적으로 삭제되었습니다.")
 
     ;
 

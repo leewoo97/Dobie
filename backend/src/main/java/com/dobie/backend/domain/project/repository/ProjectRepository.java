@@ -1,12 +1,15 @@
 package com.dobie.backend.domain.project.repository;
 
+import com.dobie.backend.domain.project.dto.file.FileGetDto;
 import com.dobie.backend.domain.project.entity.Backend;
 import com.dobie.backend.domain.project.entity.Database;
 import com.dobie.backend.domain.project.entity.Frontend;
 import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.entity.ProjectWithFile;
+import com.dobie.backend.domain.project.entity.SettingFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
+import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -50,6 +53,30 @@ public class ProjectRepository {
         }
     }
 
+    public void upsertProjectWithFile(Project project, Map<String, SettingFile> fileMap) {
+        try{
+            // 파일 읽기
+            File file = new File(FILE_PATH);
+
+            // mapper class 지정
+            MapType mapType =
+                mapper.getTypeFactory().constructMapType(Map.class, String.class, ProjectWithFile.class);
+
+            // project map 불러오기
+            Map<String, ProjectWithFile> projects = mapper.readValue(file, mapType);
+            ProjectWithFile projectWithFile = new ProjectWithFile(project, fileMap);
+
+            // project 생성
+            projects.put(String.valueOf(project.getProjectId()), projectWithFile);
+
+
+            mapper.writerWithDefaultPrettyPrinter()
+                  .writeValue(file, projects);
+        }catch (IOException e ){
+            e.getStackTrace();
+        }
+    }
+
     public Map<String, Project> selectProjects() {
         try{
             // 파일 읽기
@@ -58,6 +85,24 @@ public class ProjectRepository {
             // mapper class 지정
             MapType mapType =
                     mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+
+            return mapper.readValue(file, mapType);
+
+        }catch (IOException e ){
+            e.getStackTrace();
+        }
+
+        return null;
+    }
+
+    public Map<String, ProjectWithFile> selectProjectsWithFile() {
+        try{
+            // 파일 읽기
+            File file = new File(FILE_PATH);
+
+            // mapper class 지정
+            MapType mapType =
+                mapper.getTypeFactory().constructMapType(Map.class, String.class, ProjectWithFile.class);
 
             return mapper.readValue(file, mapType);
 
@@ -96,10 +141,10 @@ public class ProjectRepository {
             // mapper class 지정
             MapType mapType =
                 mapper.getTypeFactory().constructMapType(Map.class, String.class, ProjectWithFile.class);
-            System.out.println("맵어찌구");
+
             // projectMap 불러오기
             Map<String, ProjectWithFile> projectMap = mapper.readValue(file, mapType);
-            System.out.println("왜안돼");
+
             return projectMap.get(projectId);
         } catch (IOException e){
             e.getStackTrace();
@@ -235,26 +280,23 @@ public class ProjectRepository {
         }
     }
 
-    public void upsertProjectWithFile(ProjectWithFile project) {
-        try{
+    public Map<String, SettingFile> selectFiles(String projectId) {
+        try {
             // 파일 읽기
             File file = new File(FILE_PATH);
 
             // mapper class 지정
             MapType mapType =
-                mapper.getTypeFactory().constructMapType(Map.class, String.class, Project.class);
+                mapper.getTypeFactory().constructMapType(Map.class, String.class, ProjectWithFile.class);
 
             // project map 불러오기
             Map<String, ProjectWithFile> projects = mapper.readValue(file, mapType);
 
-            // project 생성
-            projects.put(String.valueOf(project.getProjectId()), project);
-
-
-            mapper.writerWithDefaultPrettyPrinter()
-                  .writeValue(file, projects);
-        }catch (IOException e ){
+            return projects.get(projectId).getFileMap();
+        }catch (IOException e){
             e.getStackTrace();
         }
+        return null;
     }
+
 }

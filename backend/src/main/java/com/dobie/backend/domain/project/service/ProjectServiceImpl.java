@@ -4,11 +4,15 @@ import com.dobie.backend.domain.docker.dockercompose.service.DockerComposeServic
 import com.dobie.backend.domain.docker.dockerfile.service.DockerfileService;
 import com.dobie.backend.domain.nginx.service.NginxConfigService;
 import com.dobie.backend.domain.project.dto.*;
+import com.dobie.backend.domain.project.dto.file.FileGetDto;
+import com.dobie.backend.domain.project.dto.file.FilePostDto;
+import com.dobie.backend.domain.project.dto.file.FilePutDto;
 import com.dobie.backend.domain.project.entity.Backend;
 import com.dobie.backend.domain.project.entity.Database;
 import com.dobie.backend.domain.project.entity.Frontend;
 import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.entity.ProjectWithFile;
+import com.dobie.backend.domain.project.entity.SettingFile;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
 import com.dobie.backend.exception.exception.build.*;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
@@ -18,7 +22,6 @@ import com.dobie.backend.util.file.FileManager;
 import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -43,27 +46,21 @@ public class ProjectServiceImpl implements ProjectService {
     public String createProject(ProjectRequestDto dto) {
         String projectId = UUID.randomUUID().toString();
         Project project = new Project(projectId, dto);
-        projectRepository.upsertProject(project);
-        return projectId;
-    }
-
-    @Override
-    public String createProjectWithFile(ProjectWithFileRequestDto dto, List<MultipartFile> files) {
-        String projectId = UUID.randomUUID().toString();
-
-        Map<String, FileRequestDto> fileMap = new HashMap<>();
-        for(int i = 0;i<files.size();i++){
-            fileMap.put(String.valueOf(i), new FileRequestDto(dto.getFilePathList().get(i), files.get(i).getName()));
-        }
-
-        ProjectWithFile project = new ProjectWithFile(projectId, dto, fileMap);
-        projectRepository.upsertProjectWithFile(project);
+        Map<String, SettingFile> fileMap = new HashMap<>();
+        projectRepository.upsertProjectWithFile(project, fileMap);
         return projectId;
     }
 
     @Override
     public Map<String, ProjectGetResponseDto> getAllProjects() {
-        Map<String, Project> map = projectRepository.selectProjects();
+//        Map<String, Project> map = projectRepository.selectProjects();
+//        Map<String, ProjectGetResponseDto> resultMap = new HashMap<>();
+//        map.forEach((key, value) -> {
+//            resultMap.put(key, new ProjectGetResponseDto(value));
+//        });
+//        return resultMap;
+
+        Map<String, ProjectWithFile> map = projectRepository.selectProjectsWithFile();
         Map<String, ProjectGetResponseDto> resultMap = new HashMap<>();
         map.forEach((key, value) -> {
             resultMap.put(key, new ProjectGetResponseDto(value));
@@ -73,18 +70,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectGetResponseDto getProject(String projectId) {
-        Project project = projectRepository.searchProject(projectId);
-        return new ProjectGetResponseDto(project);
-    }
-
-    public ProjectWithFileGetResponseDto getProjectWithFile(String projectId) {
-        System.out.println("여기가 바로 프로젝트 아이디가 없다느 오류에오");
-        ProjectWithFile project = projectRepository.searchProjectWithFile(projectId);
-        System.out.println("여깁니다");
-        if(project==null){
-            System.out.println("널임");
-        }
-        return new ProjectWithFileGetResponseDto(project);
+        ProjectWithFile projectWithFile = projectRepository.searchProjectWithFile(projectId);
+        return new ProjectGetResponseDto(projectWithFile);
     }
 
     @Override
@@ -126,51 +113,17 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void updateProject(String projectId, ProjectRequestDto dto) {
-        Project project = new Project(projectId, dto);
-        projectRepository.upsertProject(project);
+    public Map<String, SettingFile> getAllFiles(String projectId) {
+        Map<String, SettingFile> fileMap = projectRepository.selectFiles(projectId);
+        return fileMap;
     }
 
     @Override
-    public void updateProjectWithFile(String projectId, ProjectWithFileUpdateRequestDto dto, List<MultipartFile> files) {
-
-        // 여기서 기존에는 있었는데 수정하면서 사라진 파일들을 삭제해야함
-        // dto의 파일리스트에서 아이디만 빼서 set에 저장
-        Set<String> idSet = new HashSet<>();
-        for(FileUpdateDto ff : dto.getFilePathList()){
-            idSet.add(ff.getFileId());
-        }
-
-        // 기존의 파일들을 조회해서 리스트로 저장하자
-        ProjectWithFileGetResponseDto projectGetResponseDto = getProjectWithFile(projectId);
-        List<FileCheckDto> fileList = new ArrayList<>();
-        projectGetResponseDto.getFileMap().forEach((key, value) -> {
-            fileList.add(new FileCheckDto(value, false));
-        });
-
-        // 입력 dto에 있는 파일이면 FileCheckDto의 isExist를 true로 변경
-        for(int i = 0;i<fileList.size();i++){
-            if(idSet.contains(fileList.get(i).getFileId())){
-                fileList.get(i).setExist(true);
-            }
-        }
-
-        // 다시 반복문 돌아서 isExist가 false이면 파일 삭제
-        for(int i = 0;i<fileList.size();i++){
-            if(!fileList.get(i).isExist()){
-                fileManager.deleteFile(fileList.get(i).getFilePath(), fileList.get(i).getFileName());
-            }
-        }
-
-        Map<String, FileRequestDto> fileMap = new HashMap<>();
-        for(int i = 0;i<files.size();i++){
-            fileMap.put(String.valueOf(i), new FileRequestDto(dto.getFilePathList().get(i).getFilePath(), files.get(i).getName()));
-        }
-
-        ProjectWithFile project = new ProjectWithFile(projectId, dto, fileMap);
-        projectRepository.upsertProjectWithFile(project);
+    public void updateProject(String projectId, ProjectRequestDto dto) {
+        Project project = new Project(projectId, dto);
+        Map<String, SettingFile> fileMap = getAllFiles(projectId);
+        projectRepository.upsertProjectWithFile(project, fileMap);
     }
-
 
     @Override
     public void deleteProject(String projectId) {
@@ -307,68 +260,20 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void buildTotalServiceWithFile(String projectId, List<String> filePathList, List<MultipartFile> files) {
-        ProjectWithFileGetResponseDto projectGetResponseDto = getProjectWithFile(projectId);
+    public void addFile(FilePostDto dto, List<MultipartFile> files) {
 
-        // git clone
-        GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
+        Map<String, SettingFile> fileMap = new HashMap<>();
 
-        if (gitInfo == null) {
-            throw new GitInfoNotFoundException();
-        }
+        // 파일 저장
+        for(int i = 0;i<dto.getFileList().size();i++){
 
-        // git type 확인, gitLab인지 gitHub인지
-        // 1이면 gitLab
-        if (!commandService.checkIsCloned("./" + projectGetResponseDto.getProjectName())) {
-            // gitLab clone
-            commandService.gitClone(gitInfo.getGitUrl(), gitInfo.getAccessToken());
-        }
+            String uuid = UUID.randomUUID().toString();
+            fileMap.put(uuid, new SettingFile(uuid, dto.getFileList().get(i).getFilePath(), dto.getFileList().get(i).getFileName()));
 
-        // gitignore에 등록한 파일 저장해주기
-        saveFile(projectGetResponseDto.getProjectName(), filePathList, files);
+            // 이미 저장되어있는 파일은 files가 null 이기 때문에 넘억가기
+            if(files.get(i)==null)  continue;
 
-
-//        // dockerfile 생성
-//        // 백엔드
-//        Map<String, BackendGetResponseDto> backendInfo = projectGetResponseDto.getBackendMap();
-//        backendInfo.forEach((key, value) -> {
-//            if (value.getFramework().equals("SpringBoot(gradle)")) {
-//                dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
-//            } else if (value.getFramework().equals("SpringBoot(maven)")) {
-//                dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
-//            }
-//        });
-//
-//
-//        // 프론트엔드
-//        FrontendGetResponseDto frontendInfo = projectGetResponseDto.getFrontend();
-//        if (frontendInfo.getFramework().equals("React")) {
-//            dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
-//        } else if (frontendInfo.getFramework().equals("Vue")) {
-//            dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
-//        }
-//
-//        // docker-compose 파일 생성
-//        dockerComposeService.createDockerComposeFile(projectGetResponseDto);
-//
-//        //nginx proxy config 파일생성
-//        nginxConfigService.saveProxyNginxConfig(projectId);
-//
-//        if(frontendInfo.isUsingNginx()){
-//            try {
-//                //frontend nginx config 파일 저장
-//                nginxConfigService.saveFrontNginxConfigFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getProjectName());
-//            } catch (IOException e) {
-//                log.error(e.getMessage());
-//                throw new SaveFileFailedException("front nginx config 파일 저장에 실패했습니다."); //예외처리
-//            }
-//        }
-
-    }
-
-    public void saveFile(String projectName, List<String> filePaths, List<MultipartFile> files){
-
-        for(int i = 0;i<files.size();i++){
+            // 파일 StringBuilder 에 넣고 저장하기
             StringBuilder sb = new StringBuilder();
             try (InputStream inputStream = files.get(i).getInputStream()) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -377,19 +282,36 @@ public class ProjectServiceImpl implements ProjectService {
                     sb.append(line).append("\n");
                 }
 
-            } catch (IOException e) {
-
-            }
-
+            } catch (IOException e) {}
             String ignoreFile = sb.toString();
 
             // ec2 서버에서 깃클론하는 경로로 수정하기
-            String filePath = "./" + projectName + filePaths.get(i);
+            String filePath = "./" + dto.getProjectName() + dto.getFileList().get(i).getFilePath();
             fileManager.createFolder(filePath, files.get(i).getOriginalFilename(), ignoreFile);
-
         }
+
+        // project.json 파일 수정
+        ProjectWithFile projectWithFile = projectRepository.searchProjectWithFile(dto.getProjectId());
+        Project project = new Project(projectWithFile);
+        projectRepository.upsertProjectWithFile(project, fileMap);
+
     }
 
+    @Override
+    public Map<String, FileGetDto> getFile(String projectId) {
+        Map<String, SettingFile> fileMap = getAllFiles(projectId);
+        Map<String, FileGetDto> result = new HashMap<>();
+        fileMap.forEach((key, value) ->{
+            result.put(key, new FileGetDto((value)));
+        });
+        return result;
+    }
+
+    @Override
+    public void deleteFile(FilePutDto dto) {
+        String filePath = "./" + dto.getProjectName() + dto.getFilePath();
+        fileManager.deleteFile(filePath, dto.getFileName());
+    }
 
     @Override
     public void stopService(String containerName) {
