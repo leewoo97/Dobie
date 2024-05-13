@@ -118,7 +118,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             sb.append("    environment:\n");
             if (mysql || redis) {
                 if (mysql) {
-                    sb.append("      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/").append(databaseName)
+                    sb.append("      SPRING_DATASOURCE_URL: jdbc:mysql://43.201.252.66:3306/").append(databaseName)
                             .append("?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC\n");
                     sb.append("      SPRING_DATASOURCE_USERNAME: ").append(username).append("\n");
                     sb.append("      SPRING_DATASOURCE_PASSWORD: ").append(password).append("\n");
