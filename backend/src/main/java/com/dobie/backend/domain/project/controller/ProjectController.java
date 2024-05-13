@@ -129,8 +129,7 @@ public class ProjectController {
     @Operation(summary = "프로젝트 환경설정 파일 조회", description = "gitignore에 존재하는 파일 첨부")
     @GetMapping(value="/file/{projectId}")
     public ResponseEntity<?> getFile(@PathVariable String projectId) {
-        Map<String, FileGetDto> fileMap = projectService.getFile(projectId);
-
+        List<FileGetDto> fileMap = projectService.getFile(projectId);
         return response.success(ResponseCode.FILE_LIST_FETCHED, fileMap);
     }
 
