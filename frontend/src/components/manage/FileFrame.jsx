@@ -190,6 +190,7 @@ export default function FileFrame() {
           ".gitignore에 등록한 .env, .yml 등 환경설정파일을 첨부하고 \n\n 프로젝트 루트 경로로부터 해당 파일의 경로를 작성해주세요 \n\n\n 파일을 등록 또는 삭제 한 후 프로젝트를 전체 중지하고 다시 실행해주세요"
         }
       />
+      
       <div className={styles.whiteSpace}></div>
     </div>
   );
