@@ -73,3 +73,54 @@ export async function startProject(projectId) {
     throw error;
   }
 }
+
+// 파일 저장
+export async function addFile(dto, files) {
+  const formData = new FormData();
+
+  // 프로젝트 데이터 JSON 추가 (Content-Type 포함)
+  formData.append('dto', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+
+  // 파일들 추가
+  files.forEach((file, index) => {
+    if (file === null) {
+      // 빈 Blob 객체를 전송
+      formData.append('files', new Blob(), `placeholder-${index}`);
+    } else {
+      formData.append('files', file, file.name);
+    }
+  });
+
+
+
+  try {
+    const response = await axios.post(`${projectUrl}/file`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// 파일 조회
+export async function getFile(projectId) {
+  try {
+    const response = await axios.get(`${projectUrl}/file/${projectId}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// 파일 삭제
+export async function deleteFile(dto) {
+  try {
+    const response = await axios.put(`${projectUrl}/file`, dto);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
