@@ -2,6 +2,10 @@ package com.dobie.backend.domain.project.service;
 
 import com.dobie.backend.domain.project.dto.*;
 
+import com.dobie.backend.domain.project.dto.file.FileGetDto;
+import com.dobie.backend.domain.project.dto.file.FilePostDto;
+import com.dobie.backend.domain.project.dto.file.FilePutDto;
+import com.dobie.backend.domain.project.entity.SettingFile;
 import java.util.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +28,8 @@ public interface ProjectService {
 
     Map<String, DatabaseGetResponseDto> getAllDatabases(String projectId);
 
+    Map<String, SettingFile> getAllFiles(String projectId);
+
     void updateProject(String projectId, ProjectRequestDto dto);
 
     void deleteProject(String projectId);
@@ -42,9 +48,12 @@ public interface ProjectService {
 
     void rebuildAndStartProject(String projectId);
 
-    String createProjectWithFile(ProjectWithFileRequestDto dto, List<MultipartFile> files);
+    void addFile(FilePostDto dto, List<MultipartFile> files);
 
-    void buildTotalServiceWithFile(String projectId, List<String> filePathList, List<MultipartFile> files);
+    Map<String, FileGetDto> getFile(String projectId);
+
+    void deleteFile(FilePutDto dto);
+
 
 //    void buildFrontService(String projectId, ProjectRequestDto dto)
 

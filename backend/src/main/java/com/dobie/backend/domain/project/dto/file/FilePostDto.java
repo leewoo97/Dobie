@@ -1,6 +1,6 @@
-package com.dobie.backend.domain.project.dto;
+package com.dobie.backend.domain.project.dto.file;
 
-import com.dobie.backend.domain.project.entity.Backend;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,9 +12,10 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestDto {
+public class FilePostDto {
 
-    private String id;
-    private String name;
+    private String projectId;
+    private String projectName;
+    private List<FileGetDto> fileList;
 
 }

@@ -3,6 +3,7 @@ package com.dobie.backend.domain.nginx.service;
 import com.dobie.backend.domain.project.dto.NginxConfigDto;
 import com.dobie.backend.domain.project.dto.NginxProxyDto;
 import com.dobie.backend.domain.project.entity.Project;
+import com.dobie.backend.domain.project.entity.ProjectWithFile;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
 import com.dobie.backend.exception.exception.file.NginxFileNotFoundException;
 import com.dobie.backend.exception.format.response.ErrorCode;
@@ -209,7 +210,7 @@ public class NginxConfigServiceImpl implements NginxConfigService {
 
     public NginxConfigDto getNginxConfigDto(String projectId) {
         // 프로젝트 찾기
-        Project project = projectRepository.searchProject(projectId);
+        ProjectWithFile project = projectRepository.searchProjectWithFile(projectId);
 
         // NginxConfigDto 생성
         NginxConfigDto dto = NginxConfigDto.builder()

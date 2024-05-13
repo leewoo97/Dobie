@@ -1,8 +1,8 @@
 {
-  "ce415a8c-b1bf-4134-9763-eeab0c81b690" : {
-    "projectId" : "ce415a8c-b1bf-4134-9763-eeab0c81b690",
+  "3382ed21-6bd0-4e82-ba8b-ce24472f7093" : {
+    "projectId" : "3382ed21-6bd0-4e82-ba8b-ce24472f7093",
     "projectName" : "S10P22B106",
-    "projectDomain" : "43.201.252.66",
+    "projectDomain" : "13.124.154.154",
     "usingHttps" : false,
     "git" : {
       "gitType" : 1,
@@ -10,8 +10,8 @@
       "accessToken" : "cxuT2a9N9aauynAEpZj2"
     },
     "backendMap" : {
-      "41edf38d-0b24-44f1-a790-3735304bd44f" : {
-        "serviceId" : "41edf38d-0b24-44f1-a790-3735304bd44f",
+      "bb38d0c4-6475-4d4f-82fc-66b7d81aa814" : {
+        "serviceId" : "bb38d0c4-6475-4d4f-82fc-66b7d81aa814",
         "serviceName" : "backend",
         "language" : "java",
         "version" : "17",
@@ -24,7 +24,7 @@
       }
     },
     "frontend" : {
-      "serviceId" : "99a5e7e7-3c0d-4222-9cea-cad890979c4c",
+      "serviceId" : "a316579f-c7e9-4673-acbc-cd0f58531511",
       "serviceName" : "frontend",
       "language" : "node",
       "version" : "20.11",
@@ -37,8 +37,8 @@
       "usingNginx" : false
     },
     "databaseMap" : {
-      "98ce2b16-2265-4d2b-938e-853837d7591e" : {
-        "databaseId" : "98ce2b16-2265-4d2b-938e-853837d7591e",
+      "3f5e3bc5-b248-46c7-9383-9923a7f02f8b" : {
+        "databaseId" : "3f5e3bc5-b248-46c7-9383-9923a7f02f8b",
         "databaseType" : "Mysql",
         "databaseName" : "test_db",
         "schemaPath" : "/path/to/mysql/schema.sql",
@@ -46,6 +46,18 @@
         "password" : "ssafy",
         "externalPort" : 3306,
         "internalPort" : 3306
+      }
+    },
+    "fileMap" : {
+      "95a15461-108e-4737-9a12-7a95a00e2f3a" : {
+        "fileId" : "95a15461-108e-4737-9a12-7a95a00e2f3a",
+        "filePath" : "/backend/src/main/resources",
+        "fileName" : "application-filter.yml"
+      },
+      "1cc4bff6-a640-4b08-a26f-da13e973d2a4" : {
+        "fileId" : "1cc4bff6-a640-4b08-a26f-da13e973d2a4",
+        "filePath" : "/backend/src/main/resources",
+        "fileName" : "application-dev.yml"
       }
     }
   }

@@ -45,4 +45,17 @@ public class Project {
         });
 
     }
+
+    public Project(ProjectWithFile projectWithFile){
+        this.projectId = projectWithFile.getProjectId();
+        this.projectName = projectWithFile.getProjectName();
+
+        this.projectDomain = projectWithFile.getProjectDomain();
+        this.usingHttps = projectWithFile.isUsingHttps();
+
+        this.git = projectWithFile.getGit();
+        this.backendMap = projectWithFile.getBackendMap();
+        this.frontend = projectWithFile.getFrontend();
+        this.databaseMap = projectWithFile.getDatabaseMap();
+    }
 }
