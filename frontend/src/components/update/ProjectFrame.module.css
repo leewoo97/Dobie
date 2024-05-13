@@ -1,8 +1,8 @@
 .page{
-    height: 110%;
+    height: 100%;
     width: 80%;
     position: relative;
-    top: 8%;
+    top: 12%;
     left: 20%;
 }
 
@@ -50,4 +50,16 @@
 .selection > img {
     margin: 0 1%;
     cursor: pointer;
+}
+.text{
+    margin-right: 1vh;
+}
+
+.projectName{
+    font-size: 5vh;
+    font-weight: 600;
+}
+.top {
+    margin-left: 8%;
+    margin-bottom: 2%;
 }

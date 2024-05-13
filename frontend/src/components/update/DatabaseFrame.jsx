@@ -3,7 +3,6 @@ import styles from "./DatabaseFrame.module.css";
 import InputBox from "../common/InputBox";
 import InputSelectBox from "../common/InputSelectBox";
 import DescBox from "../common/DescBox";
-import ProjectTopUpdate from "../common/ProjectTopUpdate";
 import useProjectStore from "../../stores/projectStore";
 import {v4 as uuidv4} from "uuid";
 

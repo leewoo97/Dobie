@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import NavTop from "../../components/common/NavTop";
 import NavLeft from "../../components/common/NavLeft";
 
+import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import styles from "./RunPage.module.css";
 import run from "../../assets/run.png";
@@ -60,24 +61,44 @@ export default function RunPage() {
 
   //프로젝트 삭제
   const handleDelete = async (projectId) => {
-    try {
-      const response = await deleteProject(projectId);
-      if (response.data.status === "SUCCESS") {
-        navigate("/main");
-        toast.success(`프로젝트를 삭제했습니다`, {
-          position: "top-center",
-        });
-      } else {
-        toast.error(`프로젝트 삭제를 실패했습니다.`, {
-          position: "top-center",
+    // SweetAlert로 사용자에게 확인 받기
+    Swal.fire({
+      title: '프로젝트를 삭제하시겠습니까?',
+      // text: "이 작업은 되돌릴 수 없습니다!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#4FC153',
+      cancelButtonColor: '#FF5370',
+      confirmButtonText: '예, 삭제합니다!',
+      cancelButtonText: '아니요, 취소합니다!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // 사용자가 '예'를 클릭했을 때만 삭제 처리 진행
+        deleteProject(projectId).then(response => {
+          if (response.data.status === "SUCCESS") {
+            navigate("/main");
+            Swal.fire(
+              '삭제 완료!',
+              '프로젝트가 성공적으로 삭제되었습니다.',
+              'success'
+            );
+          } else {
+            Swal.fire(
+              '삭제 실패!',
+              '프로젝트를 삭제할 수 없습니다.',
+              'error'
+            );
+          }
+        }).catch(error => {
+          console.error("프로젝트 삭제 실패: ", error);
+          Swal.fire(
+            '오류 발생!',
+            '프로젝트 삭제 중 문제가 발생했습니다.',
+            'error'
+          );
         });
       }
-    } catch (error) {
-      console.log("프로젝트 삭제 실패: " + error);
-      toast.error(`프로젝트 삭제를 실패했습니다.`, {
-        position: "top-center",
-      });
-    }
+    });
   };
 
   //nginx config 조회

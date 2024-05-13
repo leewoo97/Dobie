@@ -5,6 +5,7 @@ import InputSelectBox from "../common/InputSelectBox";
 import DescBox from "../common/DescBox";
 import {v4 as uuidv4} from "uuid";
 import useProjectStore from "../../stores/projectStore";
+import Swal from "sweetalert2";
 
 export default function BackendFrame() {
 
@@ -13,8 +14,8 @@ export default function BackendFrame() {
     const [selectedKey, setSelectedKey] = useState(Object.keys(tempProject.backendMap).at(0));
     const [selectedBackend, setSelectedBackend] = useState({...tempProject.backendMap[selectedKey]});
 
-    console.log(selectedBackend);
-    // console.log(tempProject);
+    // console.log(selectedBackend);
+    console.log(tempProject.backendMap);
     const clickKeyHandler = (key) => {
         setSelectedKey(key);
     }
@@ -91,6 +92,7 @@ export default function BackendFrame() {
 
     return (
         <div className={styles.page}>
+            
             {Object.keys(tempProject.backendMap).map((key, index) => {
                 return <div key={index}>
                     <button onClick={()=>clickKeyHandler(key)}>{index+1}</button>
