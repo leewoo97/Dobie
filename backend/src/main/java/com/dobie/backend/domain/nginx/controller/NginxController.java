@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 import java.io.IOException;
 
@@ -33,5 +35,32 @@ public class NginxController {
         }
 
         return response.success(ResponseCode.NGINX_CONFIG_READ_SUCCESS, nginxConfFile);
+    }
+
+    @Operation(summary = "ssl 인증서 발급", description = "https를 위한 ssl 인증서 발급")
+    @GetMapping ("/ssl")
+    public ResponseEntity<?> getSsl(@RequestParam(name = "projectDomain") String projectDomain){
+        String pythonScriptPath = "/sslConf/get_certificate.py"; // 파이썬 스크립트의 경로
+
+
+        // 파이썬 스크립트를 실행하면서 도메인 전달
+        if (projectDomain != null && !projectDomain.isEmpty()) {
+            try {
+                Process process = Runtime.getRuntime().exec("python " + pythonScriptPath + " " + projectDomain);
+
+                // 실행 결과 출력
+                BufferedReader outputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line;
+                while ((line = outputReader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Domain is empty or null.");
+        }
+
+        return response.success(ResponseCode.NGINX_CONFIG_READ_SUCCESS);
     }
 }
