@@ -23,6 +23,8 @@ import UpdateBackendPage from "./pages/updatePage/UpdateBackendPage";
 import UpdateFrontendPage from "./pages/updatePage/UpdateFrontendPage";
 import UpdateDatabasePage from "./pages/updatePage/UpdateDatabasePage";
 
+import OverviewFrame from "./components/guide/OverviewFrame";
+
 function Main() {
   return (
     <Router>
@@ -33,7 +35,9 @@ function Main() {
           <Route path="login" element={<LoginPage />} />
           <Route path="main">
             <Route index element={<MainPage />} />
-            <Route path="guide" element={<GuidePage />} />
+          </Route>
+          <Route path="guide">
+            <Route index element={<GuidePage />} />
           </Route>
           <Route path="manage">
             <Route index element={<RunPage />} />

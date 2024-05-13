@@ -29,10 +29,7 @@ export default function MainPage() {
             className={styles.btnIcon}
           />
         </div>
-        <div
-          className={styles.guideBtn}
-          onClick={() => navigate("/main/guide")}
-        >
+        <div className={styles.guideBtn} onClick={() => navigate("/guide")}>
           도비 가이드
           <img
             src={guideIcon}

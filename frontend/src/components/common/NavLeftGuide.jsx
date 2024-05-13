@@ -6,7 +6,12 @@ import useProjectStore from "../../stores/projectStore";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 
-export default function NavLeftGuide({ num }) {
+export default function NavLeftGuide({
+  scrollToSection,
+  overviewRef,
+  supportRef,
+  registRef,
+}) {
   const navigate = useNavigate();
   const { selectedProject } = useProjectStore();
 
@@ -45,25 +50,16 @@ export default function NavLeftGuide({ num }) {
     <div className={s(styles.container)}>
       <div className={styles.list}>
         <p
-          className={num === 1 ? styles.text2 : styles.text}
-          onClick={() => navigate("/manage")}
+          className={styles.text2}
+          onClick={() => scrollToSection(overviewRef)}
         >
-          Run
+          Dobie Overview
         </p>
-        <p
-          className={num === 2 ? styles.text2 : styles.text}
-          onClick={() => navigate("/manage/project")}
-        >
-          Project
+        <p className={styles.text2} onClick={() => scrollToSection(supportRef)}>
+          Support
         </p>
         <div>
-          <p
-            className={num === 3 ? styles.text2 : styles.text}
-            onClick={changeStateBE}
-          >
-            Backend
-          </p>
-          {/* 여기는 BackendMap */}
+          <p className={styles.text2}>Regist Project</p>
           {Object.values(selectedProject.backendMap).map((backendProject) => (
             <div
               className={[
@@ -74,24 +70,12 @@ export default function NavLeftGuide({ num }) {
               onClick={() =>
                 navigate(`/manage/backend/${backendProject.serviceId}`)
               }
-            >
-              {backendProject.framework}
-            </div>
+            ></div>
           ))}
         </div>
-        <p
-          className={num === 4 ? styles.text2 : styles.text}
-          onClick={() => navigate("/manage/frontend")}
-        >
-          Frontend
-        </p>
+        <p className={styles.text2}>Run Project</p>
         <div>
-          <p
-            className={num === 5 ? styles.text2 : styles.text}
-            onClick={changeStateDB}
-          >
-            DB
-          </p>
+          <p className={styles.text2}>Key Features</p>
           {/* 여기는 DatabaseMap */}
           {Object.values(selectedProject.databaseMap).map((databaseProject) => (
             <div
@@ -103,9 +87,7 @@ export default function NavLeftGuide({ num }) {
               onClick={() =>
                 navigate(`/manage/database/${databaseProject.databaseId}`)
               }
-            >
-              {databaseProject.databaseType}
-            </div>
+            ></div>
           ))}
         </div>
       </div>
@@ -119,7 +101,6 @@ export default function NavLeftGuide({ num }) {
             className={styles.homeIcon}
           />
         </div>
-        {/* <img src={mainBtn} alt="search_icon" onClick={() => navigate("/main")} className={styles.img}/> */}
       </div>
     </div>
   );
