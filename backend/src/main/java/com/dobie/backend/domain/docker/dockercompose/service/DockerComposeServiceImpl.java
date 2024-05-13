@@ -47,16 +47,24 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                     password = mysql.getPassword();
                 }
                 //Framework가 SpringBoot(gradle)이면 gradle, SpringBoot(Maven)이면 Maven
-                dockercompose.append(createSpringDockerComposeFile(backendGetResponseDto.getFramework(), backendSeq, backendGetResponseDto.getServiceId(), backendGetResponseDto.getPath(),
+                dockercompose.append(createSpringDockerComposeFile(projectGetResponseDto.getProjectDomain() ,
+                        backendGetResponseDto.getFramework(),
+                        backendSeq, backendGetResponseDto.getServiceId(),
+                        backendGetResponseDto.getPath(),
                         backendGetResponseDto.getExternalPort(),
-                        backendGetResponseDto.getInternalPort(), mysql != null,
-                        redis != null, databaseName, username, password, projectGetResponseDto.getFrontend().getInternalPort()));
+                        backendGetResponseDto.getInternalPort(),
+                        mysql != null,
+                        redis != null, databaseName, username, password,
+                        projectGetResponseDto.getFrontend().getInternalPort()));
             } else if (backendGetResponseDto.getFramework().equals("Django")) {
 
             }
         }
 
-        dockercompose.append(createReactDockerComposeFile(projectGetResponseDto.getFrontend().getFramework(), projectGetResponseDto.getFrontend().getServiceId(),projectGetResponseDto.getFrontend().getPath(),
+        dockercompose.append(createReactDockerComposeFile(projectGetResponseDto.getProjectDomain(),
+                projectGetResponseDto.getFrontend().getFramework(),
+                projectGetResponseDto.getFrontend().getServiceId(),
+                projectGetResponseDto.getFrontend().getPath(),
                 projectGetResponseDto.getFrontend().getExternalPort(),
                 projectGetResponseDto.getFrontend().getInternalPort()));
 
@@ -91,7 +99,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     }
 
     @Override
-    public String createSpringDockerComposeFile(String frameWork, String seq, String serviceId, String path, int externalPort, int internalPort, boolean mysql,
+    public String createSpringDockerComposeFile(String domain, String frameWork, String seq, String serviceId, String path, int externalPort, int internalPort, boolean mysql,
                                                 boolean redis, String databaseName, String username, String password, int frontInternalPort) {
         StringBuilder sb = new StringBuilder();
         //Framework가 SpringBoot(gradle)이면 gradle, SpringBoot(maven)이면 maven
@@ -132,7 +140,8 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                 }
             }
             //React인지 vue인지 찾아서 :뒤에 포트번호 바꿀것 , 그냥 사용자가 지정한 프론트 포트번호로 바꿀것
-            sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:").append(frontInternalPort).append("\n");
+//            sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:").append(frontInternalPort).append("\n");
+            sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
 
             // network
             sb.append("    networks:\n");
@@ -177,7 +186,8 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                 }
             }
             //React인지 vue인지 찾아서 :뒤에 포트번호 바꿀것 , 그냥 사용자가 지정한 프론트 포트번호로 바꿀것
-            sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:").append(frontInternalPort).append("\n");
+//            sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:").append(frontInternalPort).append("\n");
+            sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
 
             // network
             sb.append("    networks:\n");
@@ -191,7 +201,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     }
 
     @Override
-    public String createReactDockerComposeFile(String frameWork, String serviceId, String path, int externalPort, int internalPort) {
+    public String createReactDockerComposeFile(String domain, String frameWork, String serviceId, String path, int externalPort, int internalPort) {
         if(frameWork.equals("React")) {
             StringBuilder sb = new StringBuilder();
             sb.append("  react:\n");
@@ -200,6 +210,8 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             sb.append("      context: .").append(path).append("\n");
             sb.append("    ports:\n");
             sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
+            sb.append("    environment:\n");
+            sb.append("      - BACKEND_HOST=http://").append(domain).append(":").append(internalPort).append("\"\n");
 
             // network
             sb.append("    networks:\n");
@@ -214,6 +226,8 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             sb.append("      context: .").append(path).append("\n");
             sb.append("    ports:\n");
             sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
+            sb.append("    environment:\n");
+            sb.append("      - BACKEND_HOST=http://").append(domain).append(":").append(internalPort).append("\"\n");
 
             // network
             sb.append("    networks:\n");
