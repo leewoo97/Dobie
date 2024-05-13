@@ -1,5 +1,6 @@
 package com.dobie.backend.util.command;
 
+import com.dobie.backend.exception.exception.build.NginxRestartFailedException;
 import com.dobie.backend.exception.exception.build.ServiceStopFailedException;
 import com.dobie.backend.exception.exception.git.GitCheckoutFailedException;
 import com.dobie.backend.exception.exception.git.GitCloneFailedException;
@@ -221,6 +222,22 @@ public class CommandServiceImpl implements CommandService {
         } catch (Exception e) {
             String result = outputStream.toString().trim();
             throw new ServiceStopFailedException(e.getMessage(), result);
+        }
+    }
+
+    @Override
+    public void restartNginx() {
+        sb = new StringBuilder();
+        sb.append("docker restart nginx");
+        CommandLine commandLine = CommandLine.parse(sb.toString());
+        executor.setStreamHandler(streamHandler);
+        try {
+            executor.execute(commandLine);
+            String result = outputStream.toString().trim();
+            System.out.println("restartNginx success : " + result);
+        }catch (Exception e) {
+            String result = outputStream.toString().trim();
+            throw new NginxRestartFailedException(e.getMessage(), result);
         }
     }
 }

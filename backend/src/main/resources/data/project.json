@@ -1,6 +1,6 @@
 {
-  "b15185c5-0166-4306-b3c3-dc35ea040b7d" : {
-    "projectId" : "b15185c5-0166-4306-b3c3-dc35ea040b7d",
+  "3382ed21-6bd0-4e82-ba8b-ce24472f7093" : {
+    "projectId" : "3382ed21-6bd0-4e82-ba8b-ce24472f7093",
     "projectName" : "S10P22B106",
     "projectDomain" : "13.124.154.154",
     "usingHttps" : false,
@@ -10,8 +10,8 @@
       "accessToken" : "cxuT2a9N9aauynAEpZj2"
     },
     "backendMap" : {
-      "0be69af0-4e7a-4393-94de-e2c18a11a691" : {
-        "serviceId" : "0be69af0-4e7a-4393-94de-e2c18a11a691",
+      "bb38d0c4-6475-4d4f-82fc-66b7d81aa814" : {
+        "serviceId" : "bb38d0c4-6475-4d4f-82fc-66b7d81aa814",
         "serviceName" : "backend",
         "language" : "java",
         "version" : "17",
@@ -24,7 +24,7 @@
       }
     },
     "frontend" : {
-      "serviceId" : "d214a979-ac47-4bc3-8e2e-aa6dc66ca046",
+      "serviceId" : "a316579f-c7e9-4673-acbc-cd0f58531511",
       "serviceName" : "frontend",
       "language" : "node",
       "version" : "20.11",
@@ -37,8 +37,8 @@
       "usingNginx" : false
     },
     "databaseMap" : {
-      "86bbfc05-91aa-4f2d-99f1-689720ef7e32" : {
-        "databaseId" : "86bbfc05-91aa-4f2d-99f1-689720ef7e32",
+      "3f5e3bc5-b248-46c7-9383-9923a7f02f8b" : {
+        "databaseId" : "3f5e3bc5-b248-46c7-9383-9923a7f02f8b",
         "databaseType" : "Mysql",
         "databaseName" : "test_db",
         "schemaPath" : "/path/to/mysql/schema.sql",
@@ -49,13 +49,13 @@
       }
     },
     "fileMap" : {
-      "6dcb4d05-753d-43f7-bff6-9c1c83e35929" : {
-        "fileId" : "6dcb4d05-753d-43f7-bff6-9c1c83e35929",
+      "95a15461-108e-4737-9a12-7a95a00e2f3a" : {
+        "fileId" : "95a15461-108e-4737-9a12-7a95a00e2f3a",
         "filePath" : "/backend/src/main/resources",
         "fileName" : "application-filter.yml"
       },
-      "5f7fd725-9108-4ae0-bb2e-336cafa8b2ee" : {
-        "fileId" : "5f7fd725-9108-4ae0-bb2e-336cafa8b2ee",
+      "1cc4bff6-a640-4b08-a26f-da13e973d2a4" : {
+        "fileId" : "1cc4bff6-a640-4b08-a26f-da13e973d2a4",
         "filePath" : "/backend/src/main/resources",
         "fileName" : "application-dev.yml"
       }
