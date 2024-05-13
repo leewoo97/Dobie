@@ -38,7 +38,7 @@ export default function NavLeftCreate({ num }) {
       <div className={styles.buttons}>
         <div className={styles.add}>
           프로젝트 등록{" "}
-          <img src={add} alt="" decoding="async" className={styles.addIcon} onClickc={createProject}/>
+          <img src={add} alt="" decoding="async" className={styles.addIcon} onClick={createProject}/>
         </div>
         <div className={styles.home} onClick={() => navigate("/main")}>
           메인페이지{" "}
