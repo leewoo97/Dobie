@@ -101,7 +101,7 @@ export default function ProjectFrame() {
 
   return (
     <div className={styles.page}>
-      {/* <ProjectTopCreate /> */}
+  
       {/* <GetBox keyName={"url"} valueName={url} onChange={(e) => setUrl(e.target.value)}/>
             <GetBox keyName={"액세스 토큰"} valueName={accessToken} onChange={(e)=> setAccessToken(e.target.value)}/>
             <GetBox keyName={"브랜치"} valueName={branch} onChange={(e)=>setBranch(e.target.value)}/> */}

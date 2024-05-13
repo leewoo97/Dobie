@@ -1,8 +1,19 @@
 import styles from "./ProjectTop.module.css";
 import edit from "../../assets/editIcon.png";
 import remove from "../../assets/deleteIcon.png";
+import useProjectStore from "../../stores/projectStore";
+import { useNavigate } from "react-router-dom";
 
 export default function ProjectTop({ projectName }) {
+
+    const {updatedProject, setUpdatedProject, selectedProject} = useProjectStore();
+    const navigate = useNavigate();
+    
+    const handleUpdateProject = () => {
+      setUpdatedProject({...selectedProject});
+      navigate("/update/project");
+    }
+  
   return (
     <div className={styles.top}>
       <div>
@@ -10,7 +21,7 @@ export default function ProjectTop({ projectName }) {
         <div className={styles.projectName}>{projectName}</div>
       </div>
       <div className={styles.buttons}>
-        <div className={styles.edit}>
+        <div className={styles.edit} onClick={handleUpdateProject}>
           수정{" "}
           <img src={edit} alt="" decoding="async" className={styles.btnIcon} />
         </div>

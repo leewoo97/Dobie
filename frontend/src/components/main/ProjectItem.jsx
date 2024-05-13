@@ -92,6 +92,10 @@ export default function ProjectItem({ project }) {
     }
   };
 
+  const linkGit = () => {
+    window.open(project.git.gitUrl);
+  }
+
   return (
     <>
       <div className={styles.content} onClick={() => handleSubmit()}>
@@ -122,6 +126,7 @@ export default function ProjectItem({ project }) {
             src={project.git.gitType === 1 ? gitlab : github}
             alt=""
             className={styles.gitImage}
+            onClick={linkGit}
           />
         </div>
       </div>
