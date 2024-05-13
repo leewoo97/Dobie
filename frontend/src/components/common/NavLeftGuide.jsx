@@ -1,23 +1,100 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./NavLeftGuide.module.css";
-import s from "classnames";
 import home2 from "../../assets/homeIcon2.png";
+import { useState } from "react";
 
 export default function NavLeftGuide({ scrollToId }) {
   const navigate = useNavigate();
+  const [showDetail, setShowDetail] = useState("");
+
+  const toggleDetail = (current) => {
+    setShowDetail(current);
+  };
+
+  const handleClick = (sectionId) => {
+    toggleDetail(sectionId);
+    scrollToId(sectionId);
+    if (sectionId === showDetail) {
+      setShowDetail("");
+    }
+  };
 
   return (
-    <div className={s(styles.container)}>
+    <div className={styles.container}>
       <div className={styles.list}>
-        <p className={styles.text2} onClick={() => scrollToId("overview")}>
-          Dobie Overview
+        <p className={styles.text} onClick={() => handleClick("dobie")}>
+          Dobie
         </p>
-        <p className={styles.text2} onClick={() => scrollToId("overview1")}>
-          Dobie Overview1
-        </p>
-        <p className={styles.text2} onClick={() => scrollToId("support")}>
+        {showDetail === "dobie" && (
+          <>
+            <p className={styles.text2} onClick={() => scrollToId("overview")}>
+              Overview
+            </p>
+            <p className={styles.text2} onClick={() => scrollToId("structure")}>
+              Structure
+            </p>
+          </>
+        )}
+        <p className={styles.text} onClick={() => handleClick("support")}>
           Support
         </p>
+        <p className={styles.text} onClick={() => handleClick("regist")}>
+          Regist Project
+        </p>
+        {showDetail === "regist" && (
+          <>
+            <p className={styles.text2} onClick={() => scrollToId("registBE")}>
+              Backend
+            </p>
+            <p className={styles.text2} onClick={() => scrollToId("registFE")}>
+              Frontend
+            </p>
+            <p className={styles.text2} onClick={() => scrollToId("registDB")}>
+              DB
+            </p>
+            <p className={styles.text2} onClick={() => scrollToId("registAWS")}>
+              AWS
+            </p>
+          </>
+        )}
+        <p className={styles.text} onClick={() => handleClick("run")}>
+          Run & Stop
+        </p>
+        {showDetail === "run" && (
+          <>
+            <p className={styles.text2} onClick={() => scrollToId("entire")}>
+              Backend
+            </p>
+            <p
+              className={styles.text2}
+              onClick={() => scrollToId("individual")}
+            >
+              Frontend
+            </p>
+          </>
+        )}
+        <p className={styles.text} onClick={() => handleClick("feature")}>
+          Key Features
+        </p>
+        {showDetail === "feature" && (
+          <>
+            <p className={styles.text2} onClick={() => scrollToId("info")}>
+              Project Info
+            </p>
+            <p className={styles.text2} onClick={() => scrollToId("log")}>
+              Log
+            </p>
+            <p className={styles.text2} onClick={() => scrollToId("docker")}>
+              Docker
+            </p>
+            <p className={styles.text2} onClick={() => scrollToId("compose")}>
+              Docker Compose
+            </p>
+            <p className={styles.text2} onClick={() => scrollToId("webhook")}>
+              Webhooks
+            </p>
+          </>
+        )}
       </div>
       <div className={styles.buttons}>
         <div className={styles.home} onClick={() => navigate("/main")}>
