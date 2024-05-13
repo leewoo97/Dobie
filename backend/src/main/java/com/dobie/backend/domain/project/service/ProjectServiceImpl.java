@@ -298,11 +298,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Map<String, FileGetDto> getFile(String projectId) {
+    public List<FileGetDto> getFile(String projectId) {
         Map<String, SettingFile> fileMap = getAllFiles(projectId);
-        Map<String, FileGetDto> result = new HashMap<>();
+        List<FileGetDto> result = new ArrayList<>();
         fileMap.forEach((key, value) ->{
-            result.put(key, new FileGetDto((value)));
+            result.add(new FileGetDto((value)));
         });
         return result;
     }

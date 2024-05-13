@@ -50,7 +50,7 @@ public interface ProjectService {
 
     void addFile(FilePostDto dto, List<MultipartFile> files);
 
-    Map<String, FileGetDto> getFile(String projectId);
+    List<FileGetDto> getFile(String projectId);
 
     void deleteFile(FilePutDto dto);
 
