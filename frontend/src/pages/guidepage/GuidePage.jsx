@@ -2,18 +2,14 @@ import styles from "./GuidePage.module.css";
 import NavTop from "../../components/common/NavTop";
 import OverviewFrame from "../../components/guide/OverviewFrame";
 import NavLeftGuide from "../../components/common/NavLeftGuide";
-import { useRef } from "react";
 import SupportFrame from "../../components/guide/SupportFrame";
 
 export default function GuidePage() {
-  const overviewRef = useRef(null);
-  const supportRef = useRef(null);
-  const registRef = useRef(null);
-
-  const scrollToSection = (sectionRef) => {
-    if (sectionRef && sectionRef.current) {
+  const scrollToId = (id) => {
+    const section = document.getElementById(id);
+    if (section) {
       window.scrollTo({
-        top: sectionRef.current.offsetTop, // 오타 수정: offssetTop -> offsetTop
+        top: section.offsetTop,
         behavior: "smooth",
       });
     }
@@ -23,15 +19,10 @@ export default function GuidePage() {
     <>
       <NavTop />
       <div className={styles.page}>
-        <OverviewFrame ref={overviewRef} />
-        <SupportFrame ref={supportRef} />
+        <OverviewFrame />
+        <SupportFrame />
       </div>
-      <NavLeftGuide
-        scrollToSection={scrollToSection}
-        overviewRef={overviewRef}
-        supportRef={supportRef}
-        registRef={registRef}
-      />
+      <NavLeftGuide scrollToId={scrollToId} />
     </>
   );
 }

@@ -1,9 +1,9 @@
-import { forwardRef } from "react";
+import React, { forwardRef } from "react";
 import styles from "./OverviewFrame.module.css";
-const OverviewFrame = forwardRef((props, ref) => {
+export default function OverviewFrame() {
   // 컴포넌트 로직
   return (
-    <div ref={ref}>
+    <div id="overview">
       <div>gd</div>
       <div>gd</div>
       <div>gd</div>
@@ -31,6 +31,7 @@ const OverviewFrame = forwardRef((props, ref) => {
       <div>gd</div>
       <div>gd</div>
       <div>gd</div>
+      <div id="overview1">gd</div>
       <div>gd</div>
       <div>gd</div>
       <div>gd</div>
@@ -46,8 +47,49 @@ const OverviewFrame = forwardRef((props, ref) => {
       <div>gd</div>
       <div>gd</div>
       <div>gd</div>
+      <div>gd</div>
+      <div>gd</div>
+      <div>gd</div>
+      <div>gd</div>
+      <div>gd</div>
+      <div>gd</div>
+      <div>gd</div>
+      <div>gd</div>
+      <div>gd</div>
+      <div>gd</div>
+      <div>gd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
+      <div>gdddddddddddddd</div>
     </div>
   );
-});
-
-export default OverviewFrame;
+}
