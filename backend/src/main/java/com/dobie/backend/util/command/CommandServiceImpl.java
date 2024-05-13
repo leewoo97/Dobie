@@ -1,12 +1,9 @@
 package com.dobie.backend.util.command;
 
-import com.dobie.backend.exception.exception.build.NginxRestartFailedException;
-import com.dobie.backend.exception.exception.build.ServiceStopFailedException;
+import com.dobie.backend.exception.exception.build.*;
 import com.dobie.backend.exception.exception.git.GitCheckoutFailedException;
 import com.dobie.backend.exception.exception.git.GitCloneFailedException;
 import com.dobie.backend.exception.exception.git.GitPullFailedException;
-import com.dobie.backend.exception.exception.build.ProjectStartFailedException;
-import com.dobie.backend.exception.exception.build.ProjectStopFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
@@ -238,6 +235,22 @@ public class CommandServiceImpl implements CommandService {
         }catch (Exception e) {
             String result = outputStream.toString().trim();
             throw new NginxRestartFailedException(e.getMessage(), result);
+        }
+    }
+
+    @Override
+    public void deleteNginxProxyConf(String projectId) {
+        sb = new StringBuilder();
+        sb.append("rm -f /var/dobie/nginx/").append(projectId).append(".conf");
+        CommandLine commandLine = CommandLine.parse(sb.toString());
+        executor.setStreamHandler(streamHandler);
+        try {
+            executor.execute(commandLine);
+            String result = outputStream.toString().trim();
+            System.out.println("deleteNginxConf success : " + result);
+        }catch (Exception e) {
+            String result = outputStream.toString().trim();
+            throw new NginxConfDeleteFailedException(e.getMessage(), result);
         }
     }
 }
