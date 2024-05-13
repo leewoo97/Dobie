@@ -127,15 +127,15 @@ public class ProjectController {
     }
 
     @Operation(summary = "프로젝트 환경설정 파일 조회", description = "gitignore에 존재하는 파일 첨부")
-    @GetMapping(value="/file/{projectId}")
+    @GetMapping("/file/{projectId}")
     public ResponseEntity<?> getFile(@PathVariable String projectId) {
         List<FileGetDto> fileMap = projectService.getFile(projectId);
         return response.success(ResponseCode.FILE_LIST_FETCHED, fileMap);
     }
 
     @Operation(summary = "프로젝트 환경설정 파일 삭제", description = "첨부한 파일 삭제")
-    @PutMapping(value="/file", consumes = "multipart/form-data")
-    public ResponseEntity<?> deleteFile(@RequestPart FilePutDto dto) {
+    @PutMapping(value="/file")
+    public ResponseEntity<?> deleteFile(@RequestBody FilePutDto dto) {
         projectService.deleteFile(dto);
         return response.success(ResponseCode.FILE_DELETE_SUCCESS);
     }
