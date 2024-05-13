@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./ProjectFrame.module.css";
 import InputBox from "../common/InputBox";
 import DescBox from "../common/DescBox";
@@ -8,44 +8,63 @@ import useProjectStore from "../../stores/projectStore";
 
 export default function ProjectFrame() {
 
-    const {updatedProject, setUpdatedProject} = useProjectStore();
+    const { updatedProject, setUpdatedProject } = useProjectStore();
     const [gittype, setGittype] = useState("gitlab");
-    const [tempProject, setTempProject] = useState({...updatedProject});
+    const [tempProject, setTempProject] = useState({ ...updatedProject });
 
     const changeUrlHandler = (e) => {
-       setTempProject(prev => ({
-        ...prev,
-        git : {
-            ...prev.git,
-            gitUrl: e.target.value
-        }
-       }));
+        setTempProject(prev => ({
+            ...prev,
+            git: {
+                ...prev.git,
+                gitUrl: e.target.value
+            }
+        }));
     };
 
     const changeTokenHandler = (e) => {
         setTempProject(prev => ({
             ...prev,
-            git : {
+            git: {
                 ...prev.git,
-                accessToken : e.target.value
+                accessToken: e.target.value
             }
         }));
     };
 
-    // const changeBranchHandler = (e) => {
-    //     // setUrl(e.target.value);
-    //     setUpdatedProject(prev => ({
-    //         ...prev,
-    //         git: {
-    //             ...prev.git,
-    //             accessToken: e.target.value
-    //         }
-    //     }));
-    // };
+    const changeBranchHandler = (e) => {
+        // setUrl(e.target.value);
+        setUpdatedProject(prev => ({
+            ...prev,
+            git: {
+                ...prev.git,
+                accessToken: e.target.value
+            }
+        }));
+    };
 
+    // 파일첨부
+    const [files, setFiles] = useState([]);
+    const [paths, setPaths] = useState([]);
+
+    const handleFileChange = () => {
+
+    }
+    const fileInputRef = useRef();
+    const handleClick = () => {
+
+    }
+    const handlePathChange = () => {
+
+    }
+    const handleRemoveFile = () => {
+
+    }
+
+    console.log(tempProject);
     useEffect(() => {
         setUpdatedProject(tempProject);
-    },[tempProject]);
+    }, [tempProject]);
 
     return (
         <div className={styles.page}>
@@ -55,9 +74,9 @@ export default function ProjectFrame() {
                 <div className={styles.projectName}>{updatedProject.projectName}</div>
             </div>
 
-            <InputBox keyName={"url"} value={tempProject.git.gitUrl} onChange={changeUrlHandler}/>
-            <DescBox desc={"GitLab 또는 GitHub 의 프로젝트를 클론하기 위한 URL을 등록하세요 "} />
-            <InputBox keyName={"액세스 토큰"} value={tempProject.git.accessToken} onChange={changeTokenHandler} />
+            <InputBox keyName={"Git CLONE URL"} value={tempProject.git.gitUrl} onChange={changeUrlHandler} />
+            <DescBox desc={"GitLab 또는 GitHub 의 프로젝트를 클론하기 위한 URL을 수정하세요 "} />
+            <InputBox keyName={"Access Token"} value={tempProject.git.accessToken} onChange={changeTokenHandler} />
             <DescBox desc={"Git 저장소에 접근하기 위한 엑세스 토큰을 발급하여 등록하세요 "} />
 
             <div className={styles.boxFrame}>
@@ -101,11 +120,53 @@ export default function ProjectFrame() {
                 </div>
             </div>
 
-            <div>
+            <InputBox keyName={"Branch"} valueName={"main"} value={tempProject.branck} onChange={changeBranchHandler}/>
+            <DescBox desc={"서버에 반영할 브랜치명을 입력하세요 ('main' or 'master' or 임의의 브랜치) "} />
 
+            <div className={styles.fileFrame}>
+                <div className={styles.fileTop}>
+                    <div className={styles.key}>환경 설정 파일 추가</div>
+                    <div className={styles.desc}>
+                        <input type="file" multiple ref={fileInputRef} onChange={handleFileChange} style={{ display: "none" }} />
+                        <div className={styles.addfileButton} onClick={handleClick}>
+                            파일 선택
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.fileBottom}>
+                    <div className={styles.key}></div>
+                    <div className={styles.desc}>
+                        <div>
+                            {files.map((file, index) => (
+                                <div className={styles.file} key={index}>
+                                    <input
+                                        className={styles.filePath}
+                                        type="text"
+                                        placeholder="/backend/src/main/resources"
+                                        value={paths[index]}
+                                        onChange={(event) => handlePathChange(index, event)}
+                                    />
+                                    {/* <input className={styles.value} type="text" placeholder="/backend/src/main/resources" value={paths[index]}/> */}
+                                    <div className={styles.fileName}>{file.name}</div>
+
+                                    <div
+                                        className={styles.fileRemove}
+                                        onClick={() => handleRemoveFile(index)}
+                                    >
+                                        X
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <InputBox keyName={"브랜치"} valueName={"branch"} />
+            <DescBox
+                desc={
+                    ".gitignore에 등록한 .env, .yml 등 환경설정파일을 첨부하고 프로젝트 루트 경로로부터 해당 파일의 경로를 재업로드해주세요"
+                }
+            />
         </div>
     );
 }
