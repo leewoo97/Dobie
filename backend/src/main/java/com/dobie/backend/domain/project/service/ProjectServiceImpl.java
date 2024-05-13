@@ -270,8 +270,12 @@ public class ProjectServiceImpl implements ProjectService {
             String uuid = UUID.randomUUID().toString();
             fileMap.put(uuid, new SettingFile(uuid, dto.getFileList().get(i).getFilePath(), dto.getFileList().get(i).getFileName()));
 
-            // 이미 저장되어있는 파일은 files가 null 이기 때문에 넘억가기
-            if(files.get(i)==null)  continue;
+            // 이미 저장되어 있는 파일은 파일명이 placeholder로 시작해서 조사해서 건너뛰기
+            if (files.get(i).getOriginalFilename().startsWith("placeholder-")) {
+                // 이 파일은 플레이스홀더
+                System.out.println(i + "번 파일은 플레이스홀더입니다.");
+                continue;
+            }
 
             // 파일 StringBuilder 에 넣고 저장하기
             StringBuilder sb = new StringBuilder();
@@ -309,8 +313,20 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void deleteFile(FilePutDto dto) {
+
+        // 파일 삭제
         String filePath = "./" + dto.getProjectName() + dto.getFilePath();
         fileManager.deleteFile(filePath, dto.getFileName());
+
+        // prject.json 파일 수정
+        Map<String, SettingFile> fileMap = getAllFiles(dto.getProjectId());
+        fileMap.remove(dto.getFileId());
+
+        ProjectWithFile projectWithFile = projectRepository.searchProjectWithFile(dto.getProjectId());
+        Project project = new Project(projectWithFile);
+        projectRepository.upsertProjectWithFile(project, fileMap);
+
+
     }
 
     @Override
