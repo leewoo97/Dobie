@@ -34,11 +34,13 @@ export default function BackendFrame() {
   };
 
   const clickDeleteHandler = (key) => {
-    const removeKeyIndex = Object.keys(tempProject.backendMap).indexOf(key);
-    const moveKeyIndex = removeKeyIndex === 0 ? 0 : removeKeyIndex - 1;
-    delete tempProject.backendMap[key];
-    setSelectedKey(Object.keys(tempProject.backendMap).at(moveKeyIndex));
-    setTempProject({ ...tempProject });
+    if(window.confirm("삭제하시겠습니까?") === true){
+      const removeKeyIndex = Object.keys(tempProject.backendMap).indexOf(key);
+      const moveKeyIndex = removeKeyIndex === 0 ? 0 : removeKeyIndex - 1;
+      delete tempProject.backendMap[key];
+      setSelectedKey(Object.keys(tempProject.backendMap).at(moveKeyIndex));
+      setTempProject({ ...tempProject });
+    }
   };
 
   const addEmptyBackend = () => {
@@ -91,20 +93,23 @@ export default function BackendFrame() {
       <div className={styles.tapBox}>
         {Object.keys(tempProject.backendMap).map((key, index) => {
           return (
-            <div key={index} className={key === selectedKey ? styles.selectedTap : styles.tap}>
-              <p onClick={() => clickKeyHandler(key)}>{index + 1}</p>
-              <p onClick={() => clickDeleteHandler(key)}> x </p>
+            <div key={index} className={key === selectedKey ? styles.selectedTap : styles.tap} onClick={() => clickKeyHandler(key)}>
+              <div>{index + 1}</div>
+              <div className={styles.xMark} onClick={(event) => {
+                event.stopPropagation();
+                clickDeleteHandler(key);
+                }}> x </div>
             </div>
           );
         })}
         <p onClick={addEmptyBackend} className={styles.tapPlus}>+</p>
       </div>
 
-      <div className={Object.keys(tempProject.backendMap).length !== 0 && styles.hide}>
+      <div className={Object.keys(tempProject.backendMap).length !== 0 ? styles.hide : ""}>
         test
       </div>
 
-      <div className={Object.keys(tempProject.backendMap).length === 0 && styles.hide}>
+      <div className={Object.keys(tempProject.backendMap).length === 0 ? styles.hide : ""}>
         {/* <div>{selectedKey}</div> */}
 
         <InputSelectBox

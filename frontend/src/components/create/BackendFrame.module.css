@@ -1,15 +1,14 @@
 .page {
-  height: 130%;
+  height: 82%;
   width: 80%;
   position: relative;
-  top: 15%;
+  top: 8%;
   left: 20%;
-  margin-bottom: 8%;
 }
 
 .tapBox {
   width: 85%;
-  margin: 3% auto;
+  margin: 2% auto;
   display: flex;
   border-bottom: 1px solid #e0e0e0;
 }
@@ -75,12 +74,10 @@
   cursor: pointer;
 }
 
-.selectedTap p, .tap p {
-  position: relative;
-  margin: 0;
-  /* padding-left: 3px; */
-}
-
 .hide {
   display: none;
+}
+
+.xMark{
+  margin-left: 15px;
 }

@@ -3,6 +3,7 @@ import styles from "./NavLeftCreate.module.css";
 import s from "classnames";
 import add from "../../assets/createIcon.png";
 import home2 from "../../assets/homeIcon2.png";
+import { createProject } from "../../api/Project";
 
 export default function NavLeftCreate({ num }) {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export default function NavLeftCreate({ num }) {
       <div className={styles.buttons}>
         <div className={styles.add}>
           프로젝트 등록{" "}
-          <img src={add} alt="" decoding="async" className={styles.addIcon} />
+          <img src={add} alt="" decoding="async" className={styles.addIcon} onClick={createProject}/>
         </div>
         <div className={styles.home} onClick={() => navigate("/main")}>
           메인페이지{" "}
