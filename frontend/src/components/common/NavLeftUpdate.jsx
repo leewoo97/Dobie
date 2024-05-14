@@ -5,6 +5,7 @@ import add from "../../assets/createIcon.png";
 import home2 from "../../assets/homeIcon2.png";
 import useProjectStore from "../../stores/projectStore";
 import { updateProject } from "../../api/Project";
+import Swal from "sweetalert2";
 
 export default function NavLeftUpdate({ num }) {
 
@@ -13,6 +14,8 @@ export default function NavLeftUpdate({ num }) {
 
   const handleUpdateProject = () => {
     updateProject(updatedProject);
+    navigate("/main");
+    Swal.fire('성공', '프로젝트가 성공적으로 수정되었습니다.', 'success');
   }
 
   return (
