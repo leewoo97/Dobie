@@ -5,7 +5,7 @@ import FrameworkImg from "../common/FrameworkImg";
 import toast from "react-hot-toast";
 import LogMadal from "../modal/LogModal";
 
-import { getDockerFile, getLog } from "../../api/Docker";
+import { getDockerFile, getLog, checkDbContainer, checkBackendContainer } from "../../api/Docker";
 import { stopService } from "../../api/Project";
 import { startService } from "../../api/Project";
 import { useNavigate } from "react-router-dom";
@@ -22,9 +22,9 @@ export default function RunProjectItem({ container, type, setContent }) {
   const { setLoadingModal } = useModalStore();
   const { setAction } = useModalStore();
   const { setFileType } = useModalStore();
-  const { modalOpen, setModalOpen } = useModalStore();
+  const { modalOpen, setModalOpen, logModalOpen, setLogModalOpen, logContent, setLogContent } = useModalStore();
 
-  const [ log, setLog ] = useState("");
+  // const [logContent, setLogContent] = useState("");
 
   const navigate = useNavigate();
 
@@ -46,8 +46,20 @@ export default function RunProjectItem({ container, type, setContent }) {
     }
   };
 
+
   //개별 서비스 중지
   const handleStopService = async (containerName) => {
+    // Db 개별 중지 전 확인
+    if (type === "Database") {
+      const response = await checkBackendContainer(selectedProject.projectId);
+      if (!(response.data.data === "pass")) {
+        toast.error(`백엔드 컨테이너가 실행중이어서 DB를 종료할 수 없습니다. `, {
+          position: "top-center",
+        });
+        return;
+      }
+    }
+
     try {
       if (checkProceed[containerName] === "Running :)") {
         setAction("stop");
@@ -66,6 +78,17 @@ export default function RunProjectItem({ container, type, setContent }) {
 
   //개별 서비스 실행
   const handleStartService = async (containerName) => {
+    // 백엔드 개벌 실행 전 확인
+    if (type === "Backend") {
+      const response = await checkDbContainer(selectedProject.projectId);
+      if (!(response.data.data === "pass")) {
+        toast.error(`데이터베이스 컨테이너가 정지중이어서 백엔드를 실행할 수 없습니다. `, {
+          position: "top-center",
+        });
+        return;
+      }
+    }
+
     try {
       setAction("run");
       setLoadingModal(true);
@@ -88,14 +111,15 @@ export default function RunProjectItem({ container, type, setContent }) {
   const handleLogModal = async (serviceId) => {
     try {
       const response = await getLog(serviceId);
-      if (response.data.status === "SUCCESS") {
-        setModalOpen(true);
-        setLog(response.data.data);
+      if (response.status === 200) {
+        setLogContent(response.data);
+        setLogModalOpen(true);
       } else {
-        toast.error("로그 조회 실패", {
+        toast.error(`로그 조회 실패`, {
           position: "top-center",
         });
       }
+      console.log(response.data);
     } catch (error) {
       console.log("로그 조회 실패: " + error);
     }
@@ -189,16 +213,19 @@ export default function RunProjectItem({ container, type, setContent }) {
             <div
               className={
                 checkProceed[container.serviceId || container.databaseId] ===
-                "Running :)"
+                  "Running :)"
                   ? styles.running
                   : styles.stopped
               }
             >
               {checkProceed[container.serviceId || container.databaseId]}
             </div>
-            <div className={styles.log} onClick={() =>
-                handleLogModal(container.serviceId)
-              }>
+            <div className={styles.log}
+              onClick={(event) => {
+                event.stopPropagation();
+                // handleLogModal(container.serviceId);
+                handleLogModal(container.serviceId || container.databaseId);
+              }}>
               <img
                 src={log}
                 alt=""
@@ -210,7 +237,7 @@ export default function RunProjectItem({ container, type, setContent }) {
           </div>
         </div>
       </div>
-      {modalOpen && <LogMadal content={log}/>}
+      {logModalOpen && <LogMadal content={logContent} />}
     </>
   );
 }

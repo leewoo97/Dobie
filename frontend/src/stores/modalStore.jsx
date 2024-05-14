@@ -20,6 +20,16 @@ const useModalStore = create(
       setFileType: (fileType) => {
         set({ fileType: fileType });
       },
+
+      logModalOpen: false,
+      setLogModalOpen: (logModalOpen) => {
+        set({ logModalOpen: logModalOpen });
+      },
+
+      logContent: "",
+      setLogContent: (logContent) => {
+        set({ logContent: logContent });
+      },
     }),
     {
       name: "modal-storage", // 저장될 localStorage의 key 이름
