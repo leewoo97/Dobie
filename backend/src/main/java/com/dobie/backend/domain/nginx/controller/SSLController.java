@@ -38,7 +38,7 @@ public class SSLController {
         try {
             // Let's Encrypt 서버에 도메인 인증 요청
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(leUrl + "/acme/new-order"))
+                    .uri(URI.create("https://acme-v02.api.letsencrypt.org/acme/new-order"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(payload))
                     .build();
