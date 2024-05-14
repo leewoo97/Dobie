@@ -1,5 +1,7 @@
 package com.dobie.backend.domain.nginx.controller;
 
+import com.dobie.backend.exception.format.code.ApiResponse;
+import com.dobie.backend.exception.format.response.ResponseCode;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -23,13 +25,15 @@ import java.net.http.HttpResponse;
 @RequiredArgsConstructor
 @RequestMapping("/api/ssl")
 public class SSLController {
+    private final ApiResponse response;
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("")
-    public ResponseEntity<String> getCertificate(@RequestParam (name = "domain")String domain) {
+    public ResponseEntity<?> getCertificate(@RequestParam (name = "domain")String domain) {
         String bearerToken = System.getenv("BEARER_TOKEN"); // 예시: 시스템 환경 변수에서 토큰을 가져옴
+        if(bearerToken != null) {return response.success(ResponseCode.NGINX_CONFIG_READ_SUCCESS, bearerToken);}
         System.out.println("Bearer Token: " + bearerToken);
         // Let's Encrypt ACME v2 API URL
         String leUrl = "https://acme-v02.api.letsencrypt.org/directory";
