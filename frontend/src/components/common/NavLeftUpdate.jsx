@@ -3,9 +3,18 @@ import styles from "./NavLeftUpdate.module.css";
 import s from "classnames";
 import add from "../../assets/createIcon.png";
 import home2 from "../../assets/homeIcon2.png";
+import useProjectStore from "../../stores/projectStore";
+import { updateProject } from "../../api/Project";
 
 export default function NavLeftUpdate({ num }) {
+
   const navigate = useNavigate();
+  const {updatedProject} = useProjectStore();
+
+  const handleUpdateProject = () => {
+    updateProject(updatedProject);
+  }
+
   return (
     <div className={s(styles.container)}>
       <div className={styles.list}>
@@ -35,9 +44,9 @@ export default function NavLeftUpdate({ num }) {
         </p>
       </div>
       <div className={styles.buttons}>
-        <div className={styles.add}>
+        <div className={styles.add}  onClick={handleUpdateProject}>
           프로젝트 수정{" "}
-          <img src={add} alt="" decoding="async" className={styles.addIcon} />
+          <img src={add} alt="" decoding="async" className={styles.addIcon}/>
         </div>
         <div className={styles.home} onClick={() => navigate("/main")}>
           메인페이지{" "}

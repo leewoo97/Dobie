@@ -26,8 +26,8 @@ export default function BackendFrame() {
     path: "",
     branch: "",
     location: "",
-    externalPort: "",
-    internalPort: "",
+    externalPort: 0,
+    internalPort: 0,
   };
 
   const clickKeyHandler = (key) => {

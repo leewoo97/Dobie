@@ -44,8 +44,8 @@ const useProjectStore = create(
                 path: "",
                 branch: "",
                 location: "",
-                externalPort: "",
-                internalPort: ""
+                externalPort: 0,
+                internalPort: 0
               }
             },
             frontend: {
@@ -56,8 +56,8 @@ const useProjectStore = create(
               path: "",
               branch: "",
               location: "",
-              externalPort: "",
-              internalPort: "",
+              externalPort: 0,
+              internalPort: 0,
               usingNginx: false
             },
             databaseMap: {
@@ -67,8 +67,8 @@ const useProjectStore = create(
                 schemaPath: "",
                 username: "",
                 password: "",
-                externalPort: "",
-                internalPort: "",
+                externalPort: 0,
+                internalPort: 0,
               },
             },
           },

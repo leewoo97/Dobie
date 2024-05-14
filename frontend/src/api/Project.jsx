@@ -55,6 +55,17 @@ export async function createProject(project) {
   }
 }
 
+//프로젝트 수정
+export async function updateProject(project) {
+  // console.log(project);
+  try{
+    const response = await axios.put(`${projectUrl}/update`,project);
+    return response;
+  }catch(error){
+    throw error;
+  }
+}
+
 //프로젝트 전체중지
 export async function stopProject(projectId) {
   try {
