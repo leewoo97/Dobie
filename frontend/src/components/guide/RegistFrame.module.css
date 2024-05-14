@@ -45,6 +45,7 @@
   width: 60vw;
 }
 .caption {
+  width: 100%;
   font-size: 0.8vw;
   font-weight: 600;
   color: #898989;
@@ -53,4 +54,7 @@
 .smallSection {
   margin-top: 1vh;
   font-weight: 600;
+}
+.aws {
+  width: 40vw;
 }
