@@ -10,6 +10,10 @@ export default function NavLeftCreate({ num }) {
   const navigate = useNavigate();
 
   const {createdProject} = useProjectStore();
+  const handleCreatProject = () => {
+    createProject(createdProject);
+    navigate("/main");
+  }
   
   return (
     <div className={s(styles.container)}>
@@ -40,9 +44,9 @@ export default function NavLeftCreate({ num }) {
         </p>
       </div>
       <div className={styles.buttons}>
-        <div className={styles.add}>
+        <div className={styles.add} onClick={handleCreatProject}>
           프로젝트 등록{" "}
-          <img src={add} alt="" decoding="async" className={styles.addIcon} onClick={()=>createProject(createdProject)}/>
+          <img src={add} alt="" decoding="async" className={styles.addIcon} />
         </div>
         <div className={styles.home} onClick={() => navigate("/main")}>
           메인페이지{" "}

@@ -22,8 +22,8 @@ export default function DatabaseFrame() {
     schemaPath: "",
     username: "",
     password: "",
-    externalPort: "",
-    internalPort: "",
+    externalPort: 0,
+    internalPort: 0,
   }
 
   const clickKeyHandler = (key) => {

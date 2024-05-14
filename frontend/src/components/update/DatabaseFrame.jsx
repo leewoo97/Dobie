@@ -60,7 +60,7 @@ export default function DatabaseFrame() {
         schemaPath: "",
         username: "",
         password: "",
-        internalPort: ""
+        internalPort: 0
     }
     const addEmptyDatabase = () => {
         const newKey = uuidv4();
