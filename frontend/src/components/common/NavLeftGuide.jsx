@@ -91,7 +91,7 @@ export default function NavLeftGuide({ scrollToId }) {
               Docker Compose
             </p>
             <p className={styles.text2} onClick={() => scrollToId("webhook")}>
-              Webhooks
+              Webhooks(CD)
             </p>
           </>
         )}

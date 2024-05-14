@@ -23,11 +23,11 @@ export default function WebhookFrame() {
         </div>
       </div>
       <GetBox
-        keyName={"git"}
-        valueName={selectedProject.git.gitType === 1 ? "gitLab" : "gitHub"}
+        keyName={"Git"}
+        valueName={selectedProject.git.gitType === 1 ? "GitLab" : "GitHub"}
       />
       <GetLinkBox
-        keyName={"git URL"}
+        keyName={"Git URL"}
         valueName={selectedProject.git.gitUrl}
         linkValue={selectedProject.git.gitUrl}
       />
@@ -55,7 +55,11 @@ export default function WebhookFrame() {
         </div>
         <div className={styles.part}>
           <div className={styles.left}>
-            <img src={webhookbutton} className={styles.webhookbutton} />
+            <img
+              src={webhookbutton}
+              alt="webhook"
+              className={styles.webhookbutton}
+            />
           </div>
           <div className={styles.right}>
             <div className={styles.ment}>
@@ -65,7 +69,11 @@ export default function WebhookFrame() {
         </div>
         <div className={styles.part}>
           <div className={styles.left}>
-            <img src={webhookregist} className={styles.webhookregist} />
+            <img
+              src={webhookregist}
+              alt="webhook"
+              className={styles.webhookregist}
+            />
           </div>
           <div className={styles.right}>
             <div className={styles.ment}>등록 URL의 URL을 입력합니다.</div>
