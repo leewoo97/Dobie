@@ -150,7 +150,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             return sb.toString();
         }
         else if(frameWork.equals("SpringBoot(maven)")){
-            sb.append("  spring-boot-maven)").append(seq).append(":\n");
+            sb.append("  spring-boot-maven").append(seq).append(":\n");
             sb.append("    container_name: ").append(serviceId).append("\n");
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
