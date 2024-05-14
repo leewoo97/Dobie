@@ -49,7 +49,7 @@ public class SSLController {
 
             HttpResponse<String> newAccountResponse = httpClient.send(newAccountRequest, HttpResponse.BodyHandlers.ofString());
 
-            if (newAccountResponse.statusCode() != 201) {
+            if (newAccountResponse.statusCode() != 200) {
                 return ResponseEntity.badRequest().body("Failed to create new account: " + newAccountResponse.body());
             }
             // 새로운 계정 생성 후 토큰을 받아옴
