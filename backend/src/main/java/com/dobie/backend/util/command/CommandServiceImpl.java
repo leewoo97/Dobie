@@ -11,9 +11,7 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 @Service
 @Slf4j
@@ -253,5 +251,41 @@ public class CommandServiceImpl implements CommandService {
             throw new NginxConfDeleteFailedException(e.getMessage(), result);
         }
     }
+    @Override
+    public String getSSL(String domain){
+        try {
+            // 명령어 및 옵션 배열로 설정
+            String[] command = {"sudo", "certbot", "certonly", "--standalone", "--dry-run", "--email", "test@test.com", "--agree-tos", "--no-eff-email", "--keep-until-expiring", "-d", domain};
+
+            // ProcessBuilder를 사용하여 외부 명령 실행
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            processBuilder.redirectErrorStream(true);
+            Process process = processBuilder.start();
+
+            // 외부 명령의 출력 스트림을 가져옴
+            InputStream inputStream = process.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            // 외부 명령 실행 결과를 읽어옴
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println(line); // 출력 로그를 출력하거나 원하는 대로 처리
+            }
+
+            // 외부 명령 실행 결과 확인
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("Command executed successfully");
+            } else {
+                System.out.println("Command failed with exit code " + exitCode);
+            }
+            return line;
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return  null;
+        }
+    }
+
 }
 
