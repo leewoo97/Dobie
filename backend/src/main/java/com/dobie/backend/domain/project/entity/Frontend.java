@@ -39,4 +39,18 @@ public class Frontend {
         this.internalPort = dto.getInternalPort();
         this.usingNginx = dto.isUsingNginx();
     }
+
+    public Frontend(FrontendRequestDto dto){
+        this.serviceId = dto.getServiceId();
+        this.serviceName = dto.getServiceName();
+        this.language = dto.getLanguage();
+        this.version = dto.getVersion();
+        this.framework = dto.getFramework();
+        this.path = dto.getPath();
+        this.branch = dto.getBranch();
+        this.location = dto.getLocation();
+        this.externalPort = dto.getExternalPort();
+        this.internalPort = dto.getInternalPort();
+        this.usingNginx = dto.isUsingNginx();
+    }
 }
