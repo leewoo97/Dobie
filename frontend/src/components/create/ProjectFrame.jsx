@@ -15,6 +15,15 @@ export default function ProjectFrame() {
   const { createdProject, setCreatedProject } = useProjectStore();
   const [tempProject, setTempProject] = useState({ ...createdProject });
 
+  
+  const changeNameHandler = (e) => {
+    setTempProject((prev) => ({
+      ...prev,
+      projectName: e.target.value,
+    }));
+  };
+  console.log(tempProject);
+
   const changeUrlHandler = (e) => {
     setTempProject((prev) => ({
       ...prev,
@@ -32,6 +41,17 @@ export default function ProjectFrame() {
         ...prev.git,
         accessToken: e.target.value,
       },
+    }));
+  };
+
+  const changeBranchHandler = (e) => {
+    // setUrl(e.target.value);
+    setTempProject(prev => ({
+      ...prev,
+      git: {
+        ...prev.git,
+        branch: e.target.value
+      }
     }));
   };
 
@@ -101,15 +121,15 @@ export default function ProjectFrame() {
 
   return (
     <div className={styles.page}>
-  
+
       {/* <GetBox keyName={"url"} valueName={url} onChange={(e) => setUrl(e.target.value)}/>
             <GetBox keyName={"액세스 토큰"} valueName={accessToken} onChange={(e)=> setAccessToken(e.target.value)}/>
             <GetBox keyName={"브랜치"} valueName={branch} onChange={(e)=>setBranch(e.target.value)}/> */}
       <InputBox
         keyName={"프로젝트명"}
         valueName={"S10P31B101"}
-        onChange={changeUrlHandler}
-        value={tempProject.git.gitUrl}
+        onChange={changeNameHandler}
+        value={tempProject.projectName}
       />
       <DescBox desc={"Git 저장소의 프로젝트 최상단 폴더명을 작성하세요"} />
       <InputBox
@@ -145,18 +165,16 @@ export default function ProjectFrame() {
                 src={gitlabImage}
                 alt="GitLab Logo"
                 width="15%"
-                className={`${styles.logo} ${
-                  gittype === "gitlab" ? styles.selected : styles.unselected
-                }`}
+                className={`${styles.logo} ${gittype === "gitlab" ? styles.selected : styles.unselected
+                  }`}
                 onClick={() => setGittype("gitlab")}
               />
               <img
                 src={githubImage}
                 alt="GitHub Logo"
                 width="15%"
-                className={`${styles.logo} ${
-                  gittype === "github" ? styles.selected : styles.unselected
-                }`}
+                className={`${styles.logo} ${gittype === "github" ? styles.selected : styles.unselected
+                  }`}
                 onClick={() => setGittype("github")}
               />
             </div>
@@ -184,7 +202,7 @@ export default function ProjectFrame() {
           )}
         </div>
       </div>
-      <InputBox keyName={"브랜치"} valueName={"main"} />
+      <InputBox keyName={"Branch"} valueName={"main"} value={tempProject.git.branch} onChange={changeBranchHandler} />
       <DescBox
         desc={
           "서버에 반영할 브랜치명을 입력하세요 ('main' or 'master' or 임의의 브랜치) "
