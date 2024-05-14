@@ -30,7 +30,7 @@ public interface ProjectService {
 
     Map<String, SettingFile> getAllFiles(String projectId);
 
-    void updateProject(String projectId, ProjectRequestDto dto);
+    void updateProject(ProjectRequestDto dto);
 
     void deleteProject(String projectId);
 

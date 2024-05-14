@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BackendRequestDto {
+    private String serviceId;
     private String serviceName;
 
     private String language;

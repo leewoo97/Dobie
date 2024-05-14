@@ -111,9 +111,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void updateProject(String projectId, ProjectRequestDto dto) {
-        Project project = new Project(projectId, dto);
-        Map<String, SettingFile> fileMap = getAllFiles(projectId);
+    public void updateProject(ProjectRequestDto dto) {
+        Project project = new Project(dto);
+        Map<String, SettingFile> fileMap = getAllFiles(dto.getProjectId());
         project.updateFileMap(fileMap);
         projectRepository.upsertProject(project);
     }

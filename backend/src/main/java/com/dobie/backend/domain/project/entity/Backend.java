@@ -36,4 +36,17 @@ public class Backend {
         this.externalPort = dto.getExternalPort();
         this.internalPort = dto.getInternalPort();
     }
+
+    public Backend(BackendRequestDto dto){
+        this.serviceId = dto.getServiceId();
+        this.serviceName = dto.getServiceName();
+        this.language = dto.getLanguage();
+        this.version = dto.getVersion();
+        this.framework = dto.getFramework();
+        this.path = dto.getPath();
+        this.branch = dto.getBranch();
+        this.location = dto.getLocation();
+        this.externalPort = dto.getExternalPort();
+        this.internalPort = dto.getInternalPort();
+    }
 }

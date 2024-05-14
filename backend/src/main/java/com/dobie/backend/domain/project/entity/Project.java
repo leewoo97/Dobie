@@ -47,6 +47,24 @@ public class Project {
         });
     }
 
+    public Project(ProjectRequestDto dto){
+        this.projectId = dto.getProjectId();
+        this.projectName = dto.getProjectName();
+        this.projectDomain = dto.getProjectDomain();
+        this.usingHttps = dto.isUsingHttps();
+
+        this.git = new Git(dto.getGit());
+        this.backendMap = new HashMap<>();
+        dto.getBackendMap().forEach((key, value) -> {
+            this.backendMap.put(key, new Backend(value));
+        });
+        this.frontend = new Frontend(dto.getFrontend());
+        this.databaseMap = new HashMap<>();
+        dto.getDatabaseMap().forEach((key,value) -> {
+            this.databaseMap.put(key, new Database(value));
+        });
+    }
+
     public void updateFileMap(Map<String, SettingFile> fileMap) {
         this.fileMap = fileMap;
     }

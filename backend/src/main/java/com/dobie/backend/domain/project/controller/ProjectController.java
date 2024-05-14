@@ -50,9 +50,9 @@ public class ProjectController {
     }
 
     @Operation(summary = "프로젝트 수정", description = "프로젝트 수정")
-    @PutMapping("/update/{projectId}")
-    public ResponseEntity<?> updateProject(@PathVariable String projectId, @RequestBody ProjectRequestDto dto) {
-        projectService.updateProject(projectId, dto);
+    @PutMapping("/update")
+    public ResponseEntity<?> updateProject(@RequestBody ProjectRequestDto dto) {
+        projectService.updateProject(dto);
 
         return response.success(ResponseCode.PROJECT_INFO_UPDATED, dto);
     }

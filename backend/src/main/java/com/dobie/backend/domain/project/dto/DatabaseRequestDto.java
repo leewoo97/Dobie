@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DatabaseRequestDto {
+    private String databaseId;
     private String databaseType;
     private String databaseName;
 

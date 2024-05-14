@@ -10,6 +10,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 public class ProjectRequestDto {
+    private String projectId;
     private String projectName;
 
     private String projectDomain;

@@ -32,4 +32,15 @@ public class Database {
         this.externalPort = dto.getExternalPort();
         this.internalPort = dto.getInternalPort();
     }
+
+    public Database(DatabaseRequestDto dto){
+        this.databaseId = dto.getDatabaseId();
+        this.databaseType = dto.getDatabaseType();
+        this.databaseName = dto.getDatabaseName();
+        this.schemaPath = dto.getSchemaPath();
+        this.username = dto.getUsername();
+        this.password = dto.getPassword();
+        this.externalPort = dto.getExternalPort();
+        this.internalPort = dto.getInternalPort();
+    }
 }
