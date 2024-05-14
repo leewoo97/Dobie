@@ -1,6 +1,10 @@
 .guideFrame {
   margin-left: 5vw;
 }
+
+.header {
+  margin-bottom: 2vh;
+}
 .section {
   margin-top: 2vw;
   margin-bottom: 2vw;
@@ -31,6 +35,7 @@
 li {
   margin-left: 1vw;
   font-size: 1vw;
+  line-height: 170%;
 }
 
 .structureImg {

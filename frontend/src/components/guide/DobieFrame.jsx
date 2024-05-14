@@ -7,9 +7,11 @@ export default function DobieFrame() {
   // 컴포넌트 로직
   return (
     <div id="dobie" className={styles.guideFrame}>
-      <div className={styles.title}>
-        <img src={DobieIcon} className={styles.dobieIcon} alt="icon"></img>
-        Dobie Guide
+      <div className={styles.header}>
+        <div className={styles.title}>
+          <img src={DobieIcon} className={styles.dobieIcon} alt="icon"></img>
+          Dobie Guide
+        </div>
       </div>
       <div id="overview" className="section">
         <div className={styles.normal}>
@@ -42,8 +44,8 @@ export default function DobieFrame() {
           />
           <div>Dobie는 사용자의 인스턴스에서 작동합니다. </div>
           <div>
-            Dobie를 사용하기 위해 사용자는 자신의 인스턴스에 Dobie를 설치해야
-            합니다.
+            Dobie를 사용하기 위해 사용자는 <b>자신의 인스턴스에 Dobie를 설치</b>
+            해야 합니다.
           </div>
           <a
             href=""
@@ -53,6 +55,9 @@ export default function DobieFrame() {
           >
             설치하기 위한 Git 링크
           </a>
+          <div>
+            사용자는 Dobie에 <b>프로젝트를 등록</b> 후 프로젝트를 실행합니다.
+          </div>
         </div>
       </div>
     </div>
