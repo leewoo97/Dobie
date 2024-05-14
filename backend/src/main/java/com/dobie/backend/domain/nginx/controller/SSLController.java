@@ -30,6 +30,7 @@ public class SSLController {
     @GetMapping("")
     public ResponseEntity<String> getCertificate(@RequestParam (name = "domain")String domain) {
         String bearerToken = System.getenv("BEARER_TOKEN"); // 예시: 시스템 환경 변수에서 토큰을 가져옴
+        System.out.println("Bearer Token: " + bearerToken);
         // Let's Encrypt ACME v2 API URL
         String leUrl = "https://acme-v02.api.letsencrypt.org/directory";
 
