@@ -9,7 +9,7 @@ export default function ProjectFrame() {
 
   return (
     <div className={styles.page}>
-      <ProjectTop projectName={selectedProject.projectName} />
+      <ProjectTop projectName={selectedProject.projectName} page={"project"}/>
       <GetBox keyName={"Git URL"} valueName={selectedProject.git.gitUrl} />
       <GetSecretBox
         keyName={"Access Token"}

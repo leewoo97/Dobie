@@ -4,14 +4,14 @@ import remove from "../../assets/deleteIcon.png";
 import useProjectStore from "../../stores/projectStore";
 import { useNavigate } from "react-router-dom";
 
-export default function ProjectTop({ projectName }) {
+export default function ProjectTop({ projectName, page }) {
 
     const {updatedProject, setUpdatedProject, selectedProject} = useProjectStore();
     const navigate = useNavigate();
     
     const handleUpdateProject = () => {
       setUpdatedProject({...selectedProject});
-      navigate("/update/project");
+      navigate(`/update/${page}`);
     }
   
   return (
