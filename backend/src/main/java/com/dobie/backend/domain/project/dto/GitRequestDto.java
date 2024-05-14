@@ -10,5 +10,6 @@ import lombok.*;
 public class GitRequestDto {
     private int gitType;
     private String gitUrl;
+    private String branch;
     private String accessToken;
 }
