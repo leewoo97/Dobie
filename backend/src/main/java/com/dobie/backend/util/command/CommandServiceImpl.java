@@ -256,7 +256,7 @@ public class CommandServiceImpl implements CommandService {
         try {
             // 명령어 및 옵션 배열로 설정
             sb = new StringBuilder();
-            sb.append("certbot certonly --standalone --dry-run --email test@test.com --agree-tos --no-eff-email --keep-until-expiring -d ").append(domain);
+            sb.append("/usr/bin/certbot certonly --standalone --dry-run --email test@test.com --agree-tos --no-eff-email --keep-until-expiring -d ").append(domain);
 
             String command = sb.toString();
 
