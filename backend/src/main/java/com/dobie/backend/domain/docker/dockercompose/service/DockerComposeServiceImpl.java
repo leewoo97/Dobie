@@ -211,7 +211,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             sb.append("    ports:\n");
             sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
             sb.append("    environment:\n");
-            sb.append("      - BACKEND_HOST=http://").append(domain).append(":").append(internalPort).append("\"\n");
+            sb.append("      - BACKEND_HOST=http://").append(domain).append(":").append(8080).append("\n");
 
             // network
             sb.append("    networks:\n");
@@ -227,7 +227,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             sb.append("    ports:\n");
             sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
             sb.append("    environment:\n");
-            sb.append("      - BACKEND_HOST=http://").append(domain).append(":").append(internalPort).append("\"\n");
+            sb.append("      - BACKEND_HOST=http://").append(domain).append(":").append(8080).append("\n");
 
             // network
             sb.append("    networks:\n");
