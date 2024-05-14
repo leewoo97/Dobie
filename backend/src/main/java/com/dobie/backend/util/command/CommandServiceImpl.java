@@ -255,7 +255,7 @@ public class CommandServiceImpl implements CommandService {
     public String getSSL(String domain){
         try {
             // 명령어 실행
-            Process process = Runtime.getRuntime().exec("certbot certonly --standalone --dry-run --email test@test.com --agree-tos --no-eff-email --keep-until-expiring -d " + domain);
+            Process process = Runtime.getRuntime().exec("/usr/bin/certbot certonly --standalone --dry-run --email test@test.com --agree-tos --no-eff-email --keep-until-expiring -d " + domain);
 
             // 외부 명령의 출력 스트림을 가져옴
             InputStream inputStream = process.getInputStream();
