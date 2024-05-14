@@ -16,7 +16,6 @@
   line-height: 150%;
   margin-bottom: 2vh;
 }
-
 .normal {
   font-size: 1.2vw;
   font-weight: 500;
@@ -31,19 +30,15 @@
   font-weight: 600;
   line-height: 180%;
 }
-.strengthLight {
-  margin-top: 2vh;
-  font-size: 1.4vw;
-  font-weight: 600;
-  line-height: 180%;
-}
 .imgBox {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   width: 60vw;
 }
-.gitLabNameImg {
+.runImg {
+  margin-top: 3vh;
+  margin-bottom: 3vh;
   width: 60vw;
 }
 .caption {
@@ -53,10 +48,18 @@
   color: #898989;
   text-align: center;
 }
-.smallSection {
-  margin-top: 1vh;
-  font-weight: 600;
-}
-.aws {
+.loadingImg {
   width: 40vw;
+}
+.runIcon {
+  width: 2vw;
+}
+
+.textWithImg {
+  display: flex;
+  gap: 0.5vw;
+}
+
+.runStatusImg {
+  width: 50vw;
 }

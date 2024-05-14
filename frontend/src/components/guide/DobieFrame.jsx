@@ -15,7 +15,7 @@ export default function DobieFrame() {
       </div>
       <div id="overview" className="section">
         <div className={styles.normal}>
-          <div className={styles.strength}>Dobie</div>
+          <div className={styles.strength}>1. Dobie</div>
           <div>
             Dobie는 초보자도 쉽게 사용할 수 있는 인프라 서비스 플랫폼입니다.
           </div>
@@ -35,7 +35,7 @@ export default function DobieFrame() {
       </div>
       <div id="structure" className={styles.section}>
         <div className={styles.normal}>
-          <div className={styles.strength}>Dobie 구조</div>
+          <div className={styles.strength}>2. Dobie 구조</div>
           <div>Dobie는 다음과 같은 구조를 가집니다.</div>
           <img
             src={structure}
