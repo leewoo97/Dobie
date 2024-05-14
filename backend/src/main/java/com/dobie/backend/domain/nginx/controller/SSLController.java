@@ -32,9 +32,7 @@ public class SSLController {
 
     @GetMapping("")
     public ResponseEntity<?> getCertificate(@RequestParam (name = "domain")String domain) {
-        String bearerToken = System.getenv("BEARER_TOKEN"); // 예시: 시스템 환경 변수에서 토큰을 가져옴
-        if(bearerToken != null) {return response.success(ResponseCode.NGINX_CONFIG_READ_SUCCESS, bearerToken);}
-        System.out.println("Bearer Token: " + bearerToken);
+//        String bearerToken = System.getenv("BEARER_TOKEN"); // 예시: 시스템 환경 변수에서 토큰을 가져옴
         // Let's Encrypt ACME v2 API URL
         String leUrl = "https://acme-v02.api.letsencrypt.org/directory";
 
@@ -42,6 +40,23 @@ public class SSLController {
         String payload = "{\"identifiers\":[{\"type\":\"dns\",\"value\":\"" + domain + "\"}]}";
 
         try {
+            // 새로운 계정 생성 요청
+            HttpRequest newAccountRequest = HttpRequest.newBuilder()
+                    .uri(URI.create("https://acme-v02.api.letsencrypt.org/acme/new-acct"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString("{\"termsOfServiceAgreed\": true}"))
+                    .build();
+
+            HttpResponse<String> newAccountResponse = httpClient.send(newAccountRequest, HttpResponse.BodyHandlers.ofString());
+
+            if (newAccountResponse.statusCode() != 201) {
+                return ResponseEntity.badRequest().body("Failed to create new account: " + newAccountResponse.body());
+            }
+            // 새로운 계정 생성 후 토큰을 받아옴
+            String bearerToken = newAccountResponse.headers().firstValue("Location").orElse(null);
+            if (bearerToken == null) {
+                return ResponseEntity.badRequest().body("Bearer token not found in response.");
+            }
             // Let's Encrypt 서버에 도메인 인증 요청
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://acme-v02.api.letsencrypt.org/acme/new-order"))
