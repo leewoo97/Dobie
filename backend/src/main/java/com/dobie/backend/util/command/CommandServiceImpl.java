@@ -255,7 +255,10 @@ public class CommandServiceImpl implements CommandService {
     public String getSSL(String domain){
         try {
             // 명령어 및 옵션 배열로 설정
-            String[] command = {"certbot", "certonly", "--standalone", "--dry-run", "--email", "test@test.com", "--agree-tos", "--no-eff-email", "--keep-until-expiring", "-d", domain};
+            sb = new StringBuilder();
+            sb.append("certbot certonly --standalone --dry-run --email test@test.com --agree-tos --no-eff-email --keep-until-expiring -d ").append(domain);
+
+            String command = sb.toString();
 
             // ProcessBuilder를 사용하여 외부 명령 실행
             ProcessBuilder processBuilder = new ProcessBuilder(command);
