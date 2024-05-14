@@ -43,6 +43,9 @@ export default function NavLeftGuide({ scrollToId }) {
         </p>
         {showDetail === "regist" && (
           <>
+            <p className={styles.text2} onClick={() => scrollToId("registPJ")}>
+              Project
+            </p>
             <p className={styles.text2} onClick={() => scrollToId("registBE")}>
               Backend
             </p>
