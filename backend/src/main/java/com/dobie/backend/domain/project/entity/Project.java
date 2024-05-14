@@ -24,6 +24,8 @@ public class Project {
     private Frontend frontend;
     private Map<String, Database> databaseMap;
 
+    private Map<String, SettingFile> fileMap;
+
     public Project(String projectId, ProjectRequestDto dto){
         this.projectId = projectId;
         this.projectName = dto.getProjectName();
@@ -43,19 +45,9 @@ public class Project {
             String uuid = UUID.randomUUID().toString();
             this.databaseMap.put(uuid, new Database(uuid, value));
         });
-
     }
 
-    public Project(ProjectWithFile projectWithFile){
-        this.projectId = projectWithFile.getProjectId();
-        this.projectName = projectWithFile.getProjectName();
-
-        this.projectDomain = projectWithFile.getProjectDomain();
-        this.usingHttps = projectWithFile.isUsingHttps();
-
-        this.git = projectWithFile.getGit();
-        this.backendMap = projectWithFile.getBackendMap();
-        this.frontend = projectWithFile.getFrontend();
-        this.databaseMap = projectWithFile.getDatabaseMap();
+    public void updateFileMap(Map<String, SettingFile> fileMap) {
+        this.fileMap = fileMap;
     }
 }

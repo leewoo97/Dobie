@@ -11,7 +11,6 @@ import com.dobie.backend.domain.project.entity.Backend;
 import com.dobie.backend.domain.project.entity.Database;
 import com.dobie.backend.domain.project.entity.Frontend;
 import com.dobie.backend.domain.project.entity.Project;
-import com.dobie.backend.domain.project.entity.ProjectWithFile;
 import com.dobie.backend.domain.project.entity.SettingFile;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
 import com.dobie.backend.exception.exception.build.*;
@@ -47,20 +46,14 @@ public class ProjectServiceImpl implements ProjectService {
         String projectId = UUID.randomUUID().toString();
         Project project = new Project(projectId, dto);
         Map<String, SettingFile> fileMap = new HashMap<>();
-        projectRepository.upsertProjectWithFile(project, fileMap);
+        project.updateFileMap(fileMap);
+        projectRepository.upsertProject(project);
         return projectId;
     }
 
     @Override
     public Map<String, ProjectGetResponseDto> getAllProjects() {
-//        Map<String, Project> map = projectRepository.selectProjects();
-//        Map<String, ProjectGetResponseDto> resultMap = new HashMap<>();
-//        map.forEach((key, value) -> {
-//            resultMap.put(key, new ProjectGetResponseDto(value));
-//        });
-//        return resultMap;
-
-        Map<String, ProjectWithFile> map = projectRepository.selectProjectsWithFile();
+        Map<String, Project> map = projectRepository.selectProjects();
         Map<String, ProjectGetResponseDto> resultMap = new HashMap<>();
         map.forEach((key, value) -> {
             resultMap.put(key, new ProjectGetResponseDto(value));
@@ -70,8 +63,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectGetResponseDto getProject(String projectId) {
-        ProjectWithFile projectWithFile = projectRepository.searchProjectWithFile(projectId);
-        return new ProjectGetResponseDto(projectWithFile);
+        Project project = projectRepository.searchProject(projectId);
+        return new ProjectGetResponseDto(project);
     }
 
     @Override
@@ -114,15 +107,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Map<String, SettingFile> getAllFiles(String projectId) {
-        Map<String, SettingFile> fileMap = projectRepository.selectFiles(projectId);
-        return fileMap;
+        return projectRepository.selectFiles(projectId);
     }
 
     @Override
     public void updateProject(String projectId, ProjectRequestDto dto) {
         Project project = new Project(projectId, dto);
         Map<String, SettingFile> fileMap = getAllFiles(projectId);
-        projectRepository.upsertProjectWithFile(project, fileMap);
+        project.updateFileMap(fileMap);
+        projectRepository.upsertProject(project);
     }
 
     @Override
@@ -296,9 +289,9 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         // project.json 파일 수정
-        ProjectWithFile projectWithFile = projectRepository.searchProjectWithFile(dto.getProjectId());
-        Project project = new Project(projectWithFile);
-        projectRepository.upsertProjectWithFile(project, fileMap);
+        Project project = projectRepository.searchProject(dto.getProjectId());
+        project.updateFileMap(fileMap);
+        projectRepository.upsertProject(project);
 
     }
 
@@ -323,9 +316,9 @@ public class ProjectServiceImpl implements ProjectService {
         Map<String, SettingFile> fileMap = getAllFiles(dto.getProjectId());
         fileMap.remove(dto.getFileId());
 
-        ProjectWithFile projectWithFile = projectRepository.searchProjectWithFile(dto.getProjectId());
-        Project project = new Project(projectWithFile);
-        projectRepository.upsertProjectWithFile(project, fileMap);
+        Project project = projectRepository.searchProject(dto.getProjectId());
+        project.updateFileMap(fileMap);
+        projectRepository.upsertProject(project);
 
 
     }
