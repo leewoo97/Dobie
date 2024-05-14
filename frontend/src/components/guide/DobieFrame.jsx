@@ -56,7 +56,8 @@ export default function DobieFrame() {
             설치하기 위한 Git 링크
           </a>
           <div>
-            사용자는 Dobie에 <b>프로젝트를 등록</b> 후 프로젝트를 실행합니다.
+            사용자가 Dobie에 <b>프로젝트를 등록</b> 한 후 Dobie는 프로젝트에
+            맞는 이미지를 빌드합니다.
           </div>
         </div>
       </div>

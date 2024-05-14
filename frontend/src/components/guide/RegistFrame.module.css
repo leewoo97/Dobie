@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   gap: 1vw;
-  font-size: 3vw;
+  font-size: 2.5vw;
   font-weight: 800;
   line-height: 150%;
   margin-bottom: 2vh;
@@ -20,9 +20,37 @@
   font-weight: 500;
   line-height: 180%;
 }
-
+.section {
+  margin-top: 2vw;
+  margin-bottom: 2vw;
+}
 .strength {
   font-size: 2vw;
   font-weight: 600;
   line-height: 180%;
+}
+.strengthLight {
+  margin-top: 2vh;
+  font-size: 1.4vw;
+  font-weight: 600;
+  line-height: 180%;
+}
+.imgBox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 60vw;
+}
+.gitLabNameImg {
+  width: 60vw;
+}
+.caption {
+  font-size: 0.8vw;
+  font-weight: 600;
+  color: #898989;
+  text-align: center;
+}
+.smallSection {
+  margin-top: 1vh;
+  font-weight: 600;
 }
