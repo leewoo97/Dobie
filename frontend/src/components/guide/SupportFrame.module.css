@@ -1,0 +1,46 @@
+.guideFrame {
+  margin-left: 5vw;
+}
+.header {
+  margin-bottom: 2vh;
+}
+.title {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  font-size: 2.5vw;
+  font-weight: 800;
+  line-height: 150%;
+  margin-bottom: 2vh;
+}
+.strength {
+  font-size: 2vw;
+  font-weight: 600;
+  line-height: 180%;
+}
+.normal {
+  font-size: 1.2vw;
+  font-weight: 500;
+  line-height: 180%;
+}
+.frameworks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5vw;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+.frameworkBlock {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  border: 0.1vw solid;
+  border-color: #898989;
+  padding: 1vw;
+  width: 7vw;
+  border-radius: 1vw;
+}
+.annotaion {
+  font-weight: 600;
+  font-size: 1vw;
+}

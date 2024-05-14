@@ -1,0 +1,77 @@
+.container {
+  width: 17%;
+  background-color: #d9e1e8;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  position: fixed;
+  top: 8%;
+  height: 92%;
+}
+.list {
+  text-align: left;
+  margin-left: 20%;
+  color: #93bfcf;
+  cursor: pointer;
+}
+
+.text {
+  margin-bottom: 0.3rem;
+  font-size: calc(0.6vw + 1rem);
+  color: #6096b4;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.text:hover {
+  transform: scale(1.05); /* 5% 확대 */
+  transition: 0.3s ease-in-out; /* 부드러운 전환 효과 */
+}
+
+.text2 {
+  color: #6096b4;
+  font-weight: bold;
+  cursor: default;
+  cursor: pointer;
+  margin-left: 1vw;
+}
+
+.text2:hover {
+  transform: scale(1.05); /* 5% 확대 */
+  transition: 0.3s ease-in-out; /* 부드러운 전환 효과 */
+}
+.hide {
+  display: none;
+}
+
+.home:hover {
+  opacity: 0.8;
+  transform: scale(1.05); /* 5% 확대 */
+  transition: 0.3s ease-in-out; /* 부드러운 전환 효과 */
+  cursor: default;
+}
+
+.buttons {
+  width: 70%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.home {
+  color: white;
+  font-weight: bold;
+  background-color: #6096b4;
+  border-radius: 1vw;
+  margin: 3% 0;
+  padding: 4% 10%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.homeIcon {
+  height: 4vh;
+  margin-left: 5%;
+}
