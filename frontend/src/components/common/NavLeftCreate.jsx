@@ -5,6 +5,7 @@ import add from "../../assets/createIcon.png";
 import home2 from "../../assets/homeIcon2.png";
 import { createProject } from "../../api/Project";
 import useProjectStore from "../../stores/projectStore";
+import Swal from "sweetalert2";
 
 export default function NavLeftCreate({ num }) {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ export default function NavLeftCreate({ num }) {
   const handleCreatProject = () => {
     createProject(createdProject);
     navigate("/main");
+    Swal.fire('성공', '프로젝트를 성공적으로 등록했습니다.', 'success');
   }
   
   return (

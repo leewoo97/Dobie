@@ -22,7 +22,6 @@ export default function ProjectFrame() {
       projectName: e.target.value,
     }));
   };
-  console.log(tempProject);
 
   const changeUrlHandler = (e) => {
     setTempProject((prev) => ({
@@ -55,66 +54,6 @@ export default function ProjectFrame() {
     }));
   };
 
-  // 파일첨부
-  const [files, setFiles] = useState([]);
-  const [paths, setPaths] = useState([]);
-
-  const handleFileChange = (event) => {
-    const newFiles = Array.from(event.target.files);
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-    setPaths((prevPaths) => [...prevPaths, ...newFiles.map(() => "")]); // 새 파일에 대한 빈 경로 추가
-  };
-
-  const handlePathChange = (index, event) => {
-    const newPaths = [...paths];
-    newPaths[index] = event.target.value;
-    setPaths(newPaths);
-  };
-
-  const handleUpload = async () => {
-    const formData = new FormData();
-    files.forEach((file, index) => {
-      formData.append("files", file);
-      formData.append("paths", paths[index]); // 경로 정보도 함께 전송
-    });
-
-    try {
-      const response = await fetch("/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const text = await response.text();
-      alert(text);
-      setFiles([]); // Upload 후 파일과 경로 리스트 초기화
-      setPaths([]);
-    } catch (error) {
-      console.error("Upload error:", error);
-      alert("Upload failed");
-    }
-  };
-
-  const handleRemoveFile = (index) => {
-    setFiles((prevFiles) => prevFiles.filter((_, idx) => idx !== index));
-    setPaths((prevPaths) => prevPaths.filter((_, idx) => idx !== index)); // 파일과 함께 경로도 삭제
-  };
-
-  const printFileNames = () => {
-    console.log("Selected files:");
-    files.forEach((file) => {
-      console.log(file.name);
-    });
-    paths.forEach((path) => {
-      console.log(path);
-    });
-  };
-
-  const fileInputRef = useRef();
-  const handleClick = () => {
-    fileInputRef.current.click();
-  };
-
-  // 파일첨부
-
   useEffect(() => {
     setCreatedProject(tempProject);
   }, [tempProject]);
@@ -122,9 +61,6 @@ export default function ProjectFrame() {
   return (
     <div className={styles.page}>
 
-      {/* <GetBox keyName={"url"} valueName={url} onChange={(e) => setUrl(e.target.value)}/>
-            <GetBox keyName={"액세스 토큰"} valueName={accessToken} onChange={(e)=> setAccessToken(e.target.value)}/>
-            <GetBox keyName={"브랜치"} valueName={branch} onChange={(e)=>setBranch(e.target.value)}/> */}
       <InputBox
         keyName={"프로젝트명"}
         valueName={"S10P31B101"}
