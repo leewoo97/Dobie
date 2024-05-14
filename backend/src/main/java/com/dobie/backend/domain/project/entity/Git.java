@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 public class Git {
     private int gitType;
     private String gitUrl;
+    private String branch;
     private String accessToken;
 
     public Git(GitRequestDto dto){
         this.gitType = dto.getGitType();
         this.gitUrl = dto.getGitUrl();
+        this.branch = dto.getBranch();
         this.accessToken = dto.getAccessToken();
     }
 }
