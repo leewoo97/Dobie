@@ -65,14 +65,11 @@ export default function NavLeftGuide({ scrollToId }) {
         </p>
         {showDetail === "run" && (
           <>
-            <p className={styles.text2} onClick={() => scrollToId("entire")}>
-              Backend
+            <p className={styles.text2} onClick={() => scrollToId("all")}>
+              All Services
             </p>
-            <p
-              className={styles.text2}
-              onClick={() => scrollToId("individual")}
-            >
-              Frontend
+            <p className={styles.text2} onClick={() => scrollToId("each")}>
+              Each Service
             </p>
           </>
         )}

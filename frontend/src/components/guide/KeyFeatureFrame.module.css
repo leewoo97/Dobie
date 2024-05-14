@@ -4,6 +4,7 @@
   margin-bottom: 10vh;
 }
 .header {
+  margin-top: 3vh;
   margin-bottom: 2vh;
 }
 .title {
@@ -15,34 +16,34 @@
   line-height: 150%;
   margin-bottom: 2vh;
 }
-.strength {
-  font-size: 2vw;
-  font-weight: 600;
-  line-height: 180%;
-}
 .normal {
   font-size: 1.2vw;
   font-weight: 500;
   line-height: 180%;
 }
-.frameworks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5vw;
-  margin-top: 2vh;
-  margin-bottom: 2vh;
+.section {
+  margin-top: 2vw;
+  margin-bottom: 2vw;
 }
-.frameworkBlock {
+.strength {
+  font-size: 2vw;
+  font-weight: 600;
+  line-height: 180%;
+}
+.navbarImg {
+  width: 20vw;
+}
+.imgBox {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  border: 0.1vw solid;
-  border-color: #898989;
-  padding: 1vw;
-  width: 7vw;
-  border-radius: 1vw;
+  width: 60vw;
 }
-.annotaion {
+
+.caption {
+  width: 100%;
+  font-size: 0.8vw;
   font-weight: 600;
-  font-size: 1vw;
+  color: #898989;
+  text-align: center;
 }
