@@ -24,6 +24,8 @@ import UpdateBackendPage from "./pages/updatePage/UpdateBackendPage";
 import UpdateFrontendPage from "./pages/updatePage/UpdateFrontendPage";
 import UpdateDatabasePage from "./pages/updatePage/UpdateDatabasePage";
 
+import TestPage from "./pages/TestPage";
+
 function Main() {
   return (
     <Router>
@@ -32,6 +34,7 @@ function Main() {
           <Route index element={<WelcomePage />} />
           <Route path="sginup" element={<SignUpPage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route path="test" element={<TestPage />} />
           <Route path="main">
             <Route index element={<MainPage />} />
             <Route path="guide" element={<GuidePage />} />
