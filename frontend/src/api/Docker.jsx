@@ -25,3 +25,15 @@ export async function getDockerFile(projectId, serviceId, type) {
     throw error;
   }
 }
+
+//로그보기 조회
+export async function getLog(serviceId) {
+  try {
+    const response = await axios.get(dockerUrl + "/docker-container-logs", {
+      params: { serviceId },
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}

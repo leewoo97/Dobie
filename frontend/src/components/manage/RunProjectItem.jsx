@@ -3,8 +3,9 @@ import document from "../../assets/documentIcon.png";
 import log from "../../assets/logIcon.png";
 import FrameworkImg from "../common/FrameworkImg";
 import toast from "react-hot-toast";
+import LogMadal from "../modal/LogModal";
 
-import { getDockerFile } from "../../api/Docker";
+import { getDockerFile, getLog } from "../../api/Docker";
 import { stopService } from "../../api/Project";
 import { startService } from "../../api/Project";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ import useProjectStore from "../../stores/projectStore";
 import useModalStore from "../../stores/modalStore";
 import RunButton from "./RunButton";
 import StopButton from "./StopButton";
+import { useState } from "react";
 
 export default function RunProjectItem({ container, type, setContent }) {
   const { selectedProject } = useProjectStore();
@@ -20,7 +22,9 @@ export default function RunProjectItem({ container, type, setContent }) {
   const { setLoadingModal } = useModalStore();
   const { setAction } = useModalStore();
   const { setFileType } = useModalStore();
-  const { setModalOpen } = useModalStore();
+  const { modalOpen, setModalOpen } = useModalStore();
+
+  const [ log, setLog ] = useState("");
 
   const navigate = useNavigate();
 
@@ -77,6 +81,23 @@ export default function RunProjectItem({ container, type, setContent }) {
       }
     } catch (error) {
       console.log("개별실행 실패: " + error);
+    }
+  };
+
+  // 로그 보기
+  const handleLogModal = async (serviceId) => {
+    try {
+      const response = await getLog(serviceId);
+      if (response.data.status === "SUCCESS") {
+        setModalOpen(true);
+        setLog(response.data.data);
+      } else {
+        toast.error("로그 조회 실패", {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      console.log("로그 조회 실패: " + error);
     }
   };
 
@@ -175,7 +196,9 @@ export default function RunProjectItem({ container, type, setContent }) {
             >
               {checkProceed[container.serviceId || container.databaseId]}
             </div>
-            <div className={styles.log}>
+            <div className={styles.log} onClick={() =>
+                handleLogModal(container.serviceId)
+              }>
               <img
                 src={log}
                 alt=""
@@ -187,6 +210,7 @@ export default function RunProjectItem({ container, type, setContent }) {
           </div>
         </div>
       </div>
+      {modalOpen && <LogMadal content={log}/>}
     </>
   );
 }
