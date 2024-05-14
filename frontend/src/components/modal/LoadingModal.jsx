@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./LoadingModal.module.css";
 import Animaion from "../common/Animaion";
 import StopAnimaion from "../common/StopAnimaion";
+import SaveAnimaion from "../common/SaveAnimaion";
 import useModalStore from "../../stores/modalStore";
 
 export default function Madal() {
@@ -32,6 +33,13 @@ export default function Madal() {
           <div className={styles.modalContent}>
             <StopAnimaion />
             <div className={styles.stoptext}>Stopping...</div>
+            <div className={styles.modalhead}></div>
+          </div>
+        )}
+        {action === "save" && (
+          <div className={styles.modalContent}>
+            <SaveAnimaion />
+            <div className={styles.savetext}>Saving...</div>
             <div className={styles.modalhead}></div>
           </div>
         )}
