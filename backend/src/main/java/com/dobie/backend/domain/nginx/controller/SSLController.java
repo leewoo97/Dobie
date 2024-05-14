@@ -43,7 +43,7 @@ public class SSLController {
             // 새로운 계정 생성 요청
             HttpRequest newAccountRequest = HttpRequest.newBuilder()
                     .uri(URI.create("https://acme-v02.api.letsencrypt.org/acme/new-acct"))
-                    .header("Content-Type", "application/json")
+                    .header("Content-Type", "application/jose+json")
                     .POST(HttpRequest.BodyPublishers.ofString("{\"termsOfServiceAgreed\": true}"))
                     .build();
 
