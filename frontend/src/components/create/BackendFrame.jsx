@@ -5,6 +5,7 @@ import InputBox from "../common/InputBox";
 import InputSelectBox from "../common/InputSelectBox";
 import DescBox from "../common/DescBox";
 import useProjectStore from "../../stores/projectStore";
+import Swal from "sweetalert2";
 
 export default function BackendFrame() {
   const { createdProject, setCreatedProject } = useProjectStore();
@@ -34,14 +35,40 @@ export default function BackendFrame() {
   };
 
   const clickDeleteHandler = (key) => {
-    if(window.confirm("삭제하시겠습니까?") === true){
-      const removeKeyIndex = Object.keys(tempProject.backendMap).indexOf(key);
-      const moveKeyIndex = removeKeyIndex === 0 ? 0 : removeKeyIndex - 1;
-      delete tempProject.backendMap[key];
-      setSelectedKey(Object.keys(tempProject.backendMap).at(moveKeyIndex));
-      setTempProject({ ...tempProject });
-    }
-  };
+    Swal.fire({
+      icon: 'warning',
+      title: '프로젝트 삭제',
+      text: '해당 프로젝트를 삭제 하시면 복구시킬 수 없습니다.',
+      showCancelButton: true,
+      confirmButtonColor: '#4FC153',
+      cancelButtonColor: '#FF5370',
+      confirmButtonText: '예, 삭제합니다!',
+      cancelButtonText: '아니요, 취소합니다!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const removeKeyIndex = Object.keys(tempProject.backendMap).indexOf(key);
+        const moveKeyIndex = removeKeyIndex === 0 ? 0 : removeKeyIndex - 1;
+        delete tempProject.backendMap[key];
+        setSelectedKey(Object.keys(tempProject.backendMap).at(moveKeyIndex));
+        setTempProject({ ...tempProject });
+        Swal.fire({
+          title: '삭제 완료!',
+          text: '해당 백엔드 프로젝트가 성공적으로 삭제되었습니다.',
+          icon: 'success',
+          confirmButtonColor: '#4FC153',
+          showCancelButton: false,
+          confirmButtonText: 'OK'
+        })
+      }
+    }).catch((error) => {
+      console.error("삭제 중 오류 발생: ", error);
+      Swal.fire(
+        '삭제 오류!',
+        '삭제 처리 중 문제가 발생했습니다.',
+        'error'
+      );
+    });
+  }
 
   const addEmptyBackend = () => {
     const newKey = uuidv4();
@@ -52,16 +79,16 @@ export default function BackendFrame() {
 
   const changeFrameworkHandler = (value) => {
     selectedBackend.framework = value;
-    tempProject.backendMap[selectedKey] = {...selectedBackend};
-    setTempProject({...tempProject});
+    tempProject.backendMap[selectedKey] = { ...selectedBackend };
+    setTempProject({ ...tempProject });
   }
 
   const changeVersionHandler = (value) => {
     const splitValue = value.split(' ');
     selectedBackend.language = splitValue[0];
     selectedBackend.version = splitValue[1];
-    tempProject.backendMap[selectedKey] = {...selectedBackend};
-    setTempProject({...tempProject});
+    tempProject.backendMap[selectedKey] = { ...selectedBackend };
+    setTempProject({ ...tempProject });
   }
 
   const changePathHandler = (e) => {
@@ -98,7 +125,7 @@ export default function BackendFrame() {
               <div className={styles.xMark} onClick={(event) => {
                 event.stopPropagation();
                 clickDeleteHandler(key);
-                }}> x </div>
+              }}> x </div>
             </div>
           );
         })}
@@ -123,7 +150,7 @@ export default function BackendFrame() {
         <InputSelectBox
           keyName={"언어버전"}
           list={versionList}
-          value={selectedBackend.language+" "+selectedBackend.version}
+          value={selectedBackend.language + " " + selectedBackend.version}
           onChange={changeVersionHandler}
         />
         <DescBox desc={"Backend 서비스의 언어 버전을 선택하세요"} />

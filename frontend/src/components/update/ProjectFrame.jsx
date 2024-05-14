@@ -34,11 +34,11 @@ export default function ProjectFrame() {
 
     const changeBranchHandler = (e) => {
         // setUrl(e.target.value);
-        setUpdatedProject(prev => ({
+        setTempProject(prev => ({
             ...prev,
             git: {
                 ...prev.git,
-                accessToken: e.target.value
+                branch: e.target.value
             }
         }));
     };
@@ -74,13 +74,12 @@ export default function ProjectFrame() {
 
     return (
         <div className={styles.page}>
-            {/* <ProjectTopUpdate updatedProject={updatedProject} /> */}
             <div className={styles.top}>
                 <div className={styles.text}>프로젝트</div>
                 <div className={styles.projectName}>{updatedProject.projectName}</div>
             </div>
 
-            <InputBox keyName={"Git CLONE URL"} value={tempProject.git.gitUrl} onChange={changeUrlHandler} />
+            <InputBox keyName={"Git Clone URL"} value={tempProject.git.gitUrl} onChange={changeUrlHandler} />
             <DescBox desc={"GitLab 또는 GitHub 의 프로젝트를 클론하기 위한 URL을 수정하세요 "} />
             <InputBox keyName={"Access Token"} value={tempProject.git.accessToken} onChange={changeTokenHandler} />
             <DescBox desc={"Git 저장소에 접근하기 위한 엑세스 토큰을 발급하여 등록하세요 "} />
@@ -126,7 +125,7 @@ export default function ProjectFrame() {
                 </div>
             </div>
 
-            <InputBox keyName={"Branch"} valueName={"main"} value={tempProject.branck} onChange={changeBranchHandler}/>
+            <InputBox keyName={"Branch"} valueName={"main"} value={tempProject.git.branch} onChange={changeBranchHandler}/>
             <DescBox desc={"서버에 반영할 브랜치명을 수정하세요 ('main' or 'master' or 임의의 브랜치) "} />
         </div>
     );

@@ -1,37 +1,84 @@
-.page{
-    height: 80%;
+.page {
+    height: 82%;
     width: 80%;
     position: relative;
     top: 8%;
     left: 20%;
-}
-
-.page{
-    height: 130%;
-    width: 80%;
-    position: relative;
-    top: 15%;
-    left: 20%;
     margin-bottom: 8%;
-}
-
-.descFrame{
+  }
+  
+  .tapBox {
+    width: 85%;
+    margin: 2% auto;
     display: flex;
-    flex-direction: row;
-    background-color: #EEE9DA;
-    width: 80%;
-    margin: 0 auto;
-    padding: 0 3%;
-    border-radius: 10px;
-    align-items: center;
-}
-
-.key{
-    flex: 30;
-    
-}
-
-.desc {
-    flex: 70;
-    
-}
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .selectedTap {
+    background: #fff;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    border: 1px solid #d4d4d4;
+    border-bottom: 1px solid #fff;
+    color: #E5AA17;
+    text-shadow: 0 1px 0 rgba(255,255,255, 0.75);
+    padding: 6px 18px; margin: 0 5px -1px 0;
+    margin-top: -4px;
+    padding-top: 10px;
+    /* Border Radius */
+      -webkit-border-top-left-radius: 10px;
+      -webkit-border-top-right-radius: 10px;
+      -moz-border-radius-topleft: 10px;
+      -moz-border-radius-topright: 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      text-decoration:none;
+  }
+  
+  .tap {
+    background: #f6f6f6;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    border: 1px solid #e0e0e0;
+    color: #909090;
+    text-shadow: 0 1px 0 rgba(255,255,255, 0.75);
+    padding: 6px 18px; margin: 0 5px -1px 0;
+    /* Border Radius */
+      -webkit-border-top-left-radius: 10px;
+      -webkit-border-top-right-radius: 10px;
+      -moz-border-radius-topleft: 10px;
+      -moz-border-radius-topright: 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      text-decoration:none;
+  }
+  
+  .tapPlus{
+    background: #f6f6f6;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    border: 1px solid #e0e0e0;
+    color: #909090;
+    text-shadow: 0 1px 0 rgba(255,255,255, 0.75);
+    padding: 6px 18px; margin: 0 5px -1px 0;
+    /* Border Radius */
+      -webkit-border-top-left-radius: 10px;
+      -webkit-border-top-right-radius: 10px;
+      -moz-border-radius-topleft: 10px;
+      -moz-border-radius-topright: 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      text-decoration:none;
+    cursor: pointer;
+  }
+  
+  .hide {
+    display: none;
+  }
+  
+  .xMark{
+    margin-left: 15px;
+  }
