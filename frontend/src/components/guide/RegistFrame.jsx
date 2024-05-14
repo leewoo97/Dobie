@@ -3,6 +3,7 @@ import gitLabName from "../../assets/guide/projectNameGitLab.png";
 import gitHubName from "../../assets/guide/ProjectNameGitHub.png";
 import gitHubToken from "../../assets/guide/GitHubToken.png";
 import gitLabToken from "../../assets/guide/GitLabToken.png";
+import folderBE from "../../assets/guide/FolderBE.png";
 export default function RegistFrame() {
   return (
     <div id="regist" className={styles.guideFrame}>
@@ -77,14 +78,37 @@ export default function RegistFrame() {
           <div>서버에 반영할 브랜치명을 입력합니다.</div>
           <div>ex) main, master or 임의의 브랜치</div>
         </div>
-        <div id="registBE" className={styles.strength}>
-          Backend
+        {/* 백엔드 */}
+        <div id="registBE" className={styles.section}>
+          <div className={styles.strength}>Backend</div>
+          <div>Backend는 여러개를 등록할 수 있습니다.</div>
+          <div className={styles.strengthLight}>1. 프레임워크</div>
+          <div>Backend 서비스의 프레임워크 정보를 입력하세요</div>
+          <div>SpringBoot는 Gradle, Maven으로 나누어져 있습니다.</div>
+          <div className={styles.strengthLight}>2. 언어버젼</div>
+          <div>프레임 워크에서 사용하는 언어 버젼을 입력해주세요</div>
+          <div className={styles.strengthLight}>3. 폴더 경로</div>
+          <figure className={styles.imgBox}>
+            <img alt="name" src={folderBE} className={styles.gitLabNameImg} />
+            <figcaption className={styles.caption}>
+              Backend Folder Path
+            </figcaption>
+          </figure>
+          <div> Backend 서비스의 폴더 경로를 입력해주세요</div>
+          <div>
+            폴더 경로는 프로젝트 루트 경로로 부터의 서비스 폴더 경로로 위와 같은
+            상황에서는 <b>/backend</b>가 됩니다.
+          </div>
+          <div className={styles.strengthLight}>4. 내부 포트 번호</div>
+          <div>Backend가 사용할 포트번호를 입력해주세요</div>
         </div>
-        <div id="registFE" className={styles.strength}>
-          Frontend
+        {/* 프론트엔드 */}
+        <div id="registFE" className={styles.section}>
+          <div className={styles.strength}>Frontend</div>
         </div>
-        <div id="registDB" className={styles.strength}>
-          DB
+        {/* DB */}
+        <div id="registDB" className={styles.section}>
+          <div className={styles.strength}>DB</div>
         </div>
       </div>
     </div>
