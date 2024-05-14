@@ -28,7 +28,8 @@ public class SSLController {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("")
-    public ResponseEntity<String> getCertificate(@RequestParam String domain) {
+    public ResponseEntity<String> getCertificate(@RequestParam (name = "domain")String domain) {
+        String bearerToken = System.getenv("BEARER_TOKEN"); // 예시: 시스템 환경 변수에서 토큰을 가져옴
         // Let's Encrypt ACME v2 API URL
         String leUrl = "https://acme-v02.api.letsencrypt.org/directory";
 
@@ -40,6 +41,7 @@ public class SSLController {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://acme-v02.api.letsencrypt.org/acme/new-order"))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + bearerToken)
                     .POST(HttpRequest.BodyPublishers.ofString(payload))
                     .build();
 
