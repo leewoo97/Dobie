@@ -7,7 +7,7 @@ export default function FrontendFrame() {
   const { selectedProject } = useProjectStore();
   return (
     <div className={styles.page}>
-      <ProjectTop projectName={selectedProject.projectName} />
+      <ProjectTop projectName={selectedProject.projectName} page={"frontend"}/>
       <GetBox
         keyName={"프레임워크"}
         valueName={selectedProject.frontend.framework}

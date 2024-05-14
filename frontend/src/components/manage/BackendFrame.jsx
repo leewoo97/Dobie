@@ -13,9 +13,10 @@ export default function BackendFrame() {
     Object.entries(selectedProject.backendMap)
   ).get(serviceId);
 
+
   return (
     <div className={styles.page}>
-      <ProjectTop projectName={selectedProject.projectName} />
+      <ProjectTop projectName={selectedProject.projectName} page={"backend"}/>
       <GetBox keyName={"프레임워크"} valueName={selectedBackend.framework} />
       <GetBox
         keyName={"언어 버전"}

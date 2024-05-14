@@ -17,7 +17,7 @@ export default function DatabaseFrame() {
   ).get(serviceId);
   return (
     <div className={styles.page}>
-      <ProjectTop projectName={selectedProject.projectName} />
+      <ProjectTop projectName={selectedProject.projectName} page={"database"}/>
       <GetBox
         keyName={"프레임워크"}
         valueName={selectedDatabase.databaseType}
