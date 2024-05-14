@@ -23,7 +23,7 @@ export default function BackendFrame() {
         Swal.fire({
             icon: 'warning',
             title: '프로젝트 삭제',
-            text: '해당 프로젝트를 삭제 하시면 복구시킬 수',
+            text: '해당 프로젝트를 삭제 하시면 복구시킬 수 없습니다.',
             showCancelButton: true,
             confirmButtonColor: '#4FC153',
             cancelButtonColor: '#FF5370',
@@ -119,6 +119,10 @@ export default function BackendFrame() {
         setSelectedBackend({ ...tempProject.backendMap[selectedKey] });
     }, [selectedKey]);
 
+    const [showToken, setShowToken] = useState(false);
+    const toggleTokenVisibility = () => {
+      setShowToken(!showToken);
+    };
     return (
         <div className={styles.page}>
 
@@ -131,6 +135,7 @@ export default function BackendFrame() {
                                 event.stopPropagation();
                                 clickDeleteHandler(key);
                             }}> x </div>
+                            
                         </div>
                     );
                 })}
