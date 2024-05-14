@@ -1,6 +1,7 @@
 package com.dobie.backend.util.file;
 
 import com.dobie.backend.exception.exception.build.DockerComposeCreateFailedException;
+import com.dobie.backend.exception.exception.file.DeleteFileFailedException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 
 import java.io.File;
@@ -48,16 +49,15 @@ public class FileManager {
         }
     }
 
-    public boolean deleteFile(String path, String filename) {
+    public void deleteFile(String path, String filename) {
         // 파일 객체 생성
         File file = new File(path, filename);
 
         // 파일 존재 여부 확인 및 삭제 시도
         if (file.exists()) {
-            return file.delete();
+            boolean result = file.delete();
         } else {
-            System.out.println("File does not exist.");
-            return false;
+            throw new DeleteFileFailedException();
         }
     }
 }

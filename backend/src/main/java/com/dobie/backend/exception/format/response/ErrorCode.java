@@ -26,6 +26,7 @@ public enum ErrorCode {
 
     /* 파일 생성 */
     SAVE_FILE_FAILED(HttpStatus.BAD_REQUEST, "파일 생성에 실패했습니다."),
+    DELETE_FILE_FAILED(HttpStatus.BAD_REQUEST, "파일 삭제에 실패했습니다."),
 
     /* json을 map으로 변환 */
     JSON_TO_MAP_ERROR(HttpStatus.BAD_REQUEST, "json파일을 map으로 변환하는 과정에 오류가 발생했습니다."),
