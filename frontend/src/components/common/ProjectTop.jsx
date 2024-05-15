@@ -25,7 +25,7 @@ export default function ProjectTop({ projectName, page }) {
           수정{" "}
           <img src={edit} alt="" decoding="async" className={styles.btnIcon} />
         </div>
-        <div className={styles.remove}>
+        {/* <div className={styles.remove}>
           삭제{" "}
           <img
             src={remove}
@@ -33,7 +33,7 @@ export default function ProjectTop({ projectName, page }) {
             decoding="async"
             className={styles.btnIcon}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
