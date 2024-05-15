@@ -211,8 +211,9 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
             return sb.toString();
         } else {
-            throw new FrontendFrameWorkNotFoundException();
+            return "";
         }
+
     }
 
     @Override
