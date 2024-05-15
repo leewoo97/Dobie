@@ -14,7 +14,7 @@ export default function InputSelectBox({ keyName, list, value, onChange }) {
                 framework === value ? styles.selectedValue : styles.value
               }
               key={framework}
-              onClick={() => onChange(framework)}
+              onClick={() => onChange((framework === value ? "" : framework))}
             >
               {framework}
             </div>
