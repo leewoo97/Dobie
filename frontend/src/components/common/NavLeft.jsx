@@ -4,7 +4,7 @@ import s from "classnames";
 import home2 from "../../assets/homeIcon2.png";
 import useProjectStore from "../../stores/projectStore";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function NavLeft({ num }) {
   const navigate = useNavigate();
@@ -18,6 +18,12 @@ export default function NavLeft({ num }) {
   const [spreadDatabase, setSpreadDatabase] = useState(
     databaseId ? true : false
   );
+
+  // useEffect(()=>{
+  //   if(!serviceId){
+  //     navigate("/manage/frontend");
+  //   }
+  // },[serviceId]);
 
   const changeStateBE = () => {
     if (!spreadBackend) {

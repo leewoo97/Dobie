@@ -9,6 +9,7 @@ export default function BackendFrame() {
   const params = useParams();
 
   const serviceId = params.serviceId;
+  console.log(serviceId);
   const selectedBackend = new Map(
     Object.entries(selectedProject.backendMap)
   ).get(serviceId);
