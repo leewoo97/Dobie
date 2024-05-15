@@ -142,7 +142,7 @@ public class DockerfileServiceImpl implements DockerfileService {
 
     @Override
     public void checkBuildGradle(String filepath) {
-        System.out.println("백엔드 오류 잡기 위한 파일 패스 : " + filepath);
+//        System.out.println("백엔드 오류 잡기 위한 파일 패스 : " + filepath);
         File directory = new File(filepath); // 디렉토리 경로 지정
         File[] filesList = directory.listFiles(); // 디렉토리의 모든 파일 및 폴더 목록 얻기
         boolean correctPath = false;
@@ -518,7 +518,7 @@ public class DockerfileServiceImpl implements DockerfileService {
 //        System.out.println("프로젝트 내부 서비스 아이디 목록 : " + analyzeList);
         executor.execute(commandLine);
         String dockerOutput = outputStream.toString();
-        System.out.println("docker ps -a결과: \n" + dockerOutput);
+//        System.out.println("docker ps -a결과: \n" + dockerOutput);
         return dockerOutput;
     }
 
@@ -675,11 +675,11 @@ public class DockerfileServiceImpl implements DockerfileService {
 //            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
             Map<String, Object> projectJsonMap = ReadJsonFromDocker();
             Map<String, Object> backendMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "backendMap");
-            System.out.println("backendMap : " + backendMap);
+//            System.out.println("backendMap : " + backendMap);
             String frontendId = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend", "serviceId");
-            System.out.println("frontendId : " + frontendId);
+//            System.out.println("frontendId : " + frontendId);
             Map<String, Object> databaseMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "databaseMap");
-            System.out.println("databaseMap : " + databaseMap);
+//            System.out.println("databaseMap : " + databaseMap);
             if(backendMap!=null) {
                 result.addAll(backendMap.keySet());
             }
@@ -706,11 +706,11 @@ public class DockerfileServiceImpl implements DockerfileService {
 //            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
             Map<String, Object> projectJsonMap = ReadJsonFromDocker();
             Map<String, Object> backendMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "backendMap");
-            System.out.println("backendMap : " + backendMap);
+//            System.out.println("backendMap : " + backendMap);
             String frontendId = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend", "serviceId");
-            System.out.println("frontendId : " + frontendId);
+//            System.out.println("frontendId : " + frontendId);
             Map<String, Object> databaseMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "databaseMap");
-            System.out.println("databaseMap : " + databaseMap);
+//            System.out.println("databaseMap : " + databaseMap);
             HashMap<String,String> result = new HashMap<>();
             if(backendMap!=null) {
                 for (String key : backendMap.keySet()) {
@@ -746,11 +746,11 @@ public class DockerfileServiceImpl implements DockerfileService {
     Map<String, Object> ReadJsonFromDocker(){
         try {
             String jsonContent = getJsonContentFromDocker("dobie-be", "/data/project.json");
-            System.out.println("JSON Content: " + jsonContent);
+//            System.out.println("JSON Content: " + jsonContent);
 
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> jsonMap = mapper.readValue(jsonContent, Map.class);
-            System.out.println("Map Content: " + jsonMap);
+//            System.out.println("Map Content: " + jsonMap);
             return jsonMap;
         } catch (Exception e) {
             e.printStackTrace();
