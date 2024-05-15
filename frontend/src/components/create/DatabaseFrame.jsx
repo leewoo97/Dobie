@@ -94,8 +94,20 @@ export default function DatabaseFrame() {
     setTempProject({ ...tempProject });
   };
 
+  const changeDatabaseNameHandler = (e) => {
+    selectedDatabase.databaseName = e.target.value;
+    tempProject.databaseMap[selectedKey] = { ...selectedDatabase };
+    setTempProject({ ...tempProject });
+  };
+
   const changeSchemaPathHandler = (e) => {
     selectedDatabase.schemaPath = e.target.value;
+    tempProject.databaseMap[selectedKey] = { ...selectedDatabase };
+    setTempProject({ ...tempProject });
+  };
+
+  const changeExternalPortHandler = (e) => {
+    selectedDatabase.externalPort = e.target.value;
     tempProject.databaseMap[selectedKey] = { ...selectedDatabase };
     setTempProject({ ...tempProject });
   };
@@ -175,16 +187,32 @@ export default function DatabaseFrame() {
         <DescBox desc={"데이터베이스에 설정한 Password를 작성해주세요"} />
 
         <InputBox
+          keyName={"데이터베이스명"}
+          valueName={"projectDB"}
+          value={selectedDatabase.databaseName}
+          onChange={changeDatabaseNameHandler}
+        />
+        <DescBox desc={"사용할 데이터베이스명을 입력하세요"} />
+
+        <InputBox
           keyName={"초기 데이터 파일 경로"}
-          valueName={"/DB"}
+          valueName={"/DB/init.sql"}
           value={selectedDatabase.schemaPath}
           onChange={changeSchemaPathHandler}
         />
         <DescBox
           desc={
-            "init.sql 등 초기데이터 스키마 파일이 있다면 해당 파일 폴더 경로를 작성하세요"
+            "init.sql 등 초기데이터 스키마 파일이 있다면 해당 파일 폴더 경로와 파일명까지 작성하세요"
           }
         />
+
+        <InputBox
+          keyName={"외부 포트 번호"}
+          valueName={"3306"}
+          value={selectedDatabase.externalPort}
+          onChange={changeExternalPortHandler}
+        />
+        <DescBox desc={"해당 프레임워크가 사용할 외부 포트 번호를 지정해주세요"} />
 
         <InputBox
           keyName={"내부 포트 번호"}
@@ -192,7 +220,7 @@ export default function DatabaseFrame() {
           value={selectedDatabase.internalPort}
           onChange={changeInternalPortHandler}
         />
-        <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
+        <DescBox desc={"해당 프레임워크가 사용할 내부 포트 번호를 지정해주세요"} />
       </div>
     </div>
   );
