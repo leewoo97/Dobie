@@ -238,7 +238,8 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         sb.append("      - mysql-data:/var/lib/mysql\n");
 
         //DB init경로를 구성합니다. //dbInit[0]은 파일경로 dbInit[1]은 파일명
-        if(schemaPath!=null) {
+        System.out.println("스키마패스 : " + schemaPath);
+        if(schemaPath.equals("")) {
             String[] dbInit = schemaPathCut(schemaPath);
             sb.append("      - ").append(dbInit[0]).append(dbInit[1]).append(":/docker-entrypoint-initdb.d").append(dbInit[1]).append("\n");
         }
