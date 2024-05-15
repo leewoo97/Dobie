@@ -4,13 +4,14 @@ import com.dobie.backend.domain.project.dto.BackendGetResponseDto;
 import com.dobie.backend.domain.project.dto.DatabaseGetResponseDto;
 import com.dobie.backend.domain.project.dto.FrontendGetResponseDto;
 import com.dobie.backend.domain.project.dto.ProjectGetResponseDto;
-import com.dobie.backend.exception.exception.Environment.BackendFrameWorkNotFoundException;
-import com.dobie.backend.exception.exception.Environment.FrontendFrameWorkNotFoundException;
+import com.dobie.backend.exception.exception.Environment.*;
 import com.dobie.backend.exception.exception.build.DockerComposeCreateFailedException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.util.file.FileManager;
 
 import org.springframework.stereotype.Service;
+
+import java.io.File;
 
 @Service
 public class DockerComposeServiceImpl implements DockerComposeService {
@@ -71,7 +72,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             dockercompose.append(
                 createMysqlDockerComposeFile(mysql.getDatabaseId(), mysql.getDatabaseName(), mysql.getUsername(),
                                              mysql.getPassword(), mysql.getExternalPort(),
-                                             mysql.getInternalPort()));
+                                             mysql.getInternalPort(), mysql.getSchemaPath()));
         }
         if (redis != null) {
             dockercompose.append(
@@ -216,10 +217,11 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
     }
 
+    //수정중
     @Override
     public String createMysqlDockerComposeFile(String databaseId, String databaseName, String username, String password,
                                                int externalPort,
-                                               int internalPort) {
+                                               int internalPort, String schemaPath) {
 
         StringBuilder sb = new StringBuilder();
         sb.append("  mysql:\n");
@@ -234,6 +236,10 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
         sb.append("    volumes:\n");
         sb.append("      - mysql-data:/var/lib/mysql\n");
+
+        //DB init경로를 구성합니다. //dbInit[0]은 파일경로 dbInit[1]은 파일명
+        String[] dbInit = schemaPathCut(schemaPath);
+        sb.append("      - ").append(dbInit[0]).append(dbInit[1]).append(":/docker-entrypoint-initdb.d").append(dbInit[1]).append("\n");
 
         // network
         sb.append("    networks:\n");
@@ -280,5 +286,51 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         sb.append("      - ").append("dobie").append("\n");
 
         return sb.toString();
+    }
+
+//--------------------------------------------------------------------------------------------------------
+    public String[] schemaPathCut(String schemaPath) {
+        // 마지막 '/'의 위치를 찾습니다.
+        int lastIndex = schemaPath.lastIndexOf('/');
+
+        // '/' 앞의 부분을 추출합니다.
+        String directory = schemaPath.substring(0, lastIndex);
+
+        // '/' 뒤의 부분을 추출합니다.
+        String filename = schemaPath.substring(lastIndex);
+
+//         결과를 출력합니다.
+//        System.out.println("Directory: " + directory);
+//        System.out.println("Filename: " + filename);
+
+        //경로와 DB초기화 파일이 실제로 존재하는지 조회
+        checkDbInit(directory,filename);
+        String[] returnArray = new String[2];
+        returnArray[0] = directory;
+        returnArray[1] = filename;
+        return returnArray;
+    }
+
+    public void checkDbInit(String filepath, String dbInitFile) {
+//        System.out.println("백엔드 오류 잡기 위한 파일 패스 : " + filepath);
+        File directory = new File(filepath); // 디렉토리 경로 지정
+        File[] filesList = directory.listFiles(); // 디렉토리의 모든 파일 및 폴더 목록 얻기
+        boolean correctPath = false;
+        if (filesList != null) {
+            for (File file : filesList) {
+                if (file.getName().equals(dbInitFile)) {
+//                    System.out.println("Name: " + file.getName()); // 파일 또는 디렉토리 이름 출력
+                    correctPath = true;
+                    break;
+                }
+            }
+            if (!correctPath) {
+//                System.out.println("파일 경로에 bulid.gradle이 존재하지않습니다.");
+                throw new DbInitNotFoundException();
+            }
+        } else {
+//            System.out.println("파일 경로 자체가 잘못되었음.");
+            throw new DbInitPathNotExistException();
+        }
     }
 }

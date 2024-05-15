@@ -15,7 +15,7 @@ public interface DockerComposeService {
     String createReactDockerComposeFile(String domain, String frameWork, String serviceId, String path, int externalPort, int internalPort);
 
     String createMysqlDockerComposeFile(String databaseId, String databaseName, String username, String password, int externalPort,
-                                        int internalPort);
+                                        int internalPort, String schemaPath);
 
     String createMongodbDockerComposeFile(String databaseId, String databaseName, String username, String password, int externalPort, int internalPort);
 

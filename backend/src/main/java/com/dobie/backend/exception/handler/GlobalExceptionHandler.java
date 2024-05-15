@@ -198,6 +198,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    @ExceptionHandler(DbInitNotFoundException.class)
+    protected ResponseEntity<?> handle(DbInitNotFoundException e) {
+        log.error("DbInitNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
     @ExceptionHandler(BackendFilePathNotExistException.class)
     protected ResponseEntity<?> handle(BackendFilePathNotExistException e) {
         log.error("FilePathNotExistException = {}", e.getErrorCode().getMessage());
@@ -207,6 +213,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(FrontendFilePathNotExistException.class)
     protected ResponseEntity<?> handle(FrontendFilePathNotExistException e) {
         log.error("FrontendFilePathNotExistException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(DbInitPathNotExistException.class)
+    protected ResponseEntity<?> handle(DbInitPathNotExistException e) {
+        log.error("DbInitPathNotExistException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 
