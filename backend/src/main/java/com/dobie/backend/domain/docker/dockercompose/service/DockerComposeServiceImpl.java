@@ -2,6 +2,7 @@ package com.dobie.backend.domain.docker.dockercompose.service;
 
 import com.dobie.backend.domain.project.dto.BackendGetResponseDto;
 import com.dobie.backend.domain.project.dto.DatabaseGetResponseDto;
+import com.dobie.backend.domain.project.dto.FrontendGetResponseDto;
 import com.dobie.backend.domain.project.dto.ProjectGetResponseDto;
 import com.dobie.backend.exception.exception.Environment.BackendFrameWorkNotFoundException;
 import com.dobie.backend.exception.exception.Environment.FrontendFrameWorkNotFoundException;
@@ -17,17 +18,20 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     FileManager fileManager = new FileManager();
 
     @Override
-    public void createDockerComposeFile(ProjectGetResponseDto projectGetResponseDto) {
+    public void createDockerComposeFile(ProjectGetResponseDto projectDto) {
 
         DatabaseGetResponseDto mysql = null;
         DatabaseGetResponseDto redis = null;
+        DatabaseGetResponseDto mongodb = null;
 
-        for (String databaseSeq : projectGetResponseDto.getDatabaseMap().keySet()) {
-            DatabaseGetResponseDto databaseGetResponseDto = projectGetResponseDto.getDatabaseMap().get(databaseSeq);
-            if (databaseGetResponseDto.getDatabaseType().equals("Mysql")) {
-                mysql = databaseGetResponseDto;
-            } else if (databaseGetResponseDto.getDatabaseType().equals("Redis")) {
-                redis = databaseGetResponseDto;
+        for (String databaseSeq : projectDto.getDatabaseMap().keySet()) {
+            DatabaseGetResponseDto databaseDto = projectDto.getDatabaseMap().get(databaseSeq);
+            if (databaseDto.getDatabaseType().equals("Mysql")) {
+                mysql = databaseDto;
+            } else if (databaseDto.getDatabaseType().equals("Redis")) {
+                redis = databaseDto;
+            } else if (databaseDto.getDatabaseType().equals("Mongodb")) {
+                mongodb = databaseDto;
             }
         }
 
@@ -35,54 +39,58 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         dockercompose.append("version: \"3.8\"\n");
         dockercompose.append("services:\n");
 
-        for (String backendSeq : projectGetResponseDto.getBackendMap().keySet()) {
-            BackendGetResponseDto backendGetResponseDto = projectGetResponseDto.getBackendMap().get(backendSeq);
-            if (backendGetResponseDto.getFramework().equals("SpringBoot(gradle)") || backendGetResponseDto.getFramework().equals("SpringBoot(maven)")) {
-                String databaseName = null;
-                String username = null;
-                String password = null;
-                if (mysql != null) {
-                    databaseName = mysql.getDatabaseName();
-                    username = mysql.getUsername();
-                    password = mysql.getPassword();
-                }
-                //Framework가 SpringBoot(gradle)이면 gradle, SpringBoot(Maven)이면 Maven
-                dockercompose.append(createSpringDockerComposeFile(projectGetResponseDto.getProjectDomain() ,
-                        backendGetResponseDto.getFramework(),
-                        backendSeq, backendGetResponseDto.getServiceId(),
-                        backendGetResponseDto.getPath(),
-                        backendGetResponseDto.getExternalPort(),
-                        backendGetResponseDto.getInternalPort(),
-                        mysql != null,
-                        redis != null, databaseName, username, password,
-                        projectGetResponseDto.getFrontend().getInternalPort()));
-            } else if (backendGetResponseDto.getFramework().equals("Django")) {
+        for (String backendSeq : projectDto.getBackendMap().keySet()) {
+            BackendGetResponseDto backendDto = projectDto.getBackendMap().get(backendSeq);
+            if (backendDto.getFramework().equals("SpringBoot(gradle)") || backendDto.getFramework().equals("SpringBoot(maven)")) {
 
+                //Framework가 SpringBoot(gradle)이면 gradle, SpringBoot(Maven)이면 Maven
+                dockercompose.append(createSpringDockerComposeFile(projectDto.getProjectDomain(),
+                                                                   backendDto.getFramework(),
+                                                                   backendSeq, backendDto.getServiceId(),
+                                                                   backendDto.getPath(),
+                                                                   backendDto.getExternalPort(),
+                                                                   backendDto.getInternalPort(),
+                                                                   mysql, mongodb, redis,
+                                                                   projectDto.getFrontend().getInternalPort()));
+            } else if (backendDto.getFramework().equals("Django")) {
+
+            } else {
+                throw new BackendFrameWorkNotFoundException();
             }
         }
 
-        dockercompose.append(createReactDockerComposeFile(projectGetResponseDto.getProjectDomain(),
-                projectGetResponseDto.getFrontend().getFramework(),
-                projectGetResponseDto.getFrontend().getServiceId(),
-                projectGetResponseDto.getFrontend().getPath(),
-                projectGetResponseDto.getFrontend().getExternalPort(),
-                projectGetResponseDto.getFrontend().getInternalPort()));
+        dockercompose.append(createReactDockerComposeFile(projectDto.getProjectDomain(),
+                                                          projectDto.getFrontend().getFramework(),
+                                                          projectDto.getFrontend().getServiceId(),
+                                                          projectDto.getFrontend().getPath(),
+                                                          projectDto.getFrontend().getExternalPort(),
+                                                          projectDto.getFrontend().getInternalPort()));
 
         // database 설정 추가
         if (mysql != null) {
             dockercompose.append(
-                    createMysqlDockerComposeFile(mysql.getDatabaseId(), mysql.getDatabaseName(), mysql.getUsername(),
-                            mysql.getPassword(), mysql.getExternalPort(),
-                            mysql.getInternalPort()));
+                createMysqlDockerComposeFile(mysql.getDatabaseId(), mysql.getDatabaseName(), mysql.getUsername(),
+                                             mysql.getPassword(), mysql.getExternalPort(),
+                                             mysql.getInternalPort()));
         }
         if (redis != null) {
             dockercompose.append(
-                    createRedisDockerComposeFile(redis.getDatabaseId(), redis.getExternalPort(), redis.getInternalPort()));
+                createRedisDockerComposeFile(redis.getDatabaseId(), redis.getExternalPort(), redis.getInternalPort()));
+        }
+        if (mongodb != null) {
+            dockercompose.append(
+                createMongodbDockerComposeFile(mongodb.getDatabaseId(), mongodb.getDatabaseName(), mongodb.getUsername(),
+                                               mongodb.getPassword(), mongodb.getExternalPort(), mongodb.getInternalPort()));
         }
 
-        if (mysql != null) {
+        if (mysql != null || mongodb != null) {
             dockercompose.append("volumes:\n");
-            dockercompose.append("  mysql-data:\n");
+            if (mysql != null) {
+                dockercompose.append("  mysql-data:\n");
+            }
+            if(mongodb != null) {
+                dockercompose.append("  mongodb-data:\n");
+            }
         }
 
         dockercompose.append("networks: \n");
@@ -90,7 +98,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         dockercompose.append("    external: true ");
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
-        String filePath = "./" + projectGetResponseDto.getProjectName();
+        String filePath = "./" + projectDto.getProjectName();
         try {
             fileManager.saveFile(filePath, "docker-compose.yml", dockercompose.toString());
         } catch (SaveFileFailedException e) {
@@ -99,110 +107,78 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     }
 
     @Override
-    public String createSpringDockerComposeFile(String domain, String frameWork, String seq, String serviceId, String path, int externalPort, int internalPort, boolean mysql,
-                                                boolean redis, String databaseName, String username, String password, int frontInternalPort) {
+    public String createSpringDockerComposeFile(String domain, String frameWork, String seq, String serviceId, String path,
+                                                int externalPort, int internalPort,
+                                                DatabaseGetResponseDto mysql, DatabaseGetResponseDto mongodb,
+                                                DatabaseGetResponseDto redis, int frontInternalPort) {
         StringBuilder sb = new StringBuilder();
+
         //Framework가 SpringBoot(gradle)이면 gradle, SpringBoot(maven)이면 maven
-        if(frameWork.equals("SpringBoot(gradle)")) {
+        if (frameWork.equals("SpringBoot(gradle)")) {
             sb.append("  spring-boot-gradle").append(seq).append(":\n");
-            sb.append("    container_name: ").append(serviceId).append("\n");
-            sb.append("    build:\n");
-            sb.append("      context: .").append(path).append("\n");
-            sb.append("    ports:\n");
-            sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
-            sb.append("    volumes:\n");
-            sb.append("      - /var/run/docker.sock:/var/run/docker.sock\n");
-
-            if (mysql || redis) {
-                sb.append("    depends_on:\n");
-                if (mysql) {
-                    sb.append("      - mysql\n");
-                }
-                if (redis) {
-                    sb.append("      - redis\n");
-                }
-            }
-
-            sb.append("    environment:\n");
-            if (mysql || redis) {
-                if (mysql) {
-                    sb.append("      SPRING_DATASOURCE_URL: jdbc:mysql://mysql/").append(databaseName)
-                            .append("?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC\n");
-                    sb.append("      SPRING_DATASOURCE_USERNAME: ").append(username).append("\n");
-                    sb.append("      SPRING_DATASOURCE_PASSWORD: ").append(password).append("\n");
-//                    아래는 jpa내용. 입력하지않으면 백엔드 코드기반으로 알아서 돌아감
-//                    sb.append("      SPRING_JPA_HIBERNATE_DDL_AUTO: update\n");
-//                    sb.append("      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect\n");
-                }
-                if (redis) {
-                    sb.append("      SPRING_DATA_REDIS_HOST: redis\n");
-                    sb.append("      SPRING_DATA_REDIS_PORT: 6379\n");
-                }
-            }
-            //React인지 vue인지 찾아서 :뒤에 포트번호 바꿀것 , 그냥 사용자가 지정한 프론트 포트번호로 바꿀것
-//            sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:").append(frontInternalPort).append("\n");
-            sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
-
-            // network
-            sb.append("    networks:\n");
-            sb.append("      - ").append("dobie").append("\n");
-
-            return sb.toString();
-        }
-        else if(frameWork.equals("SpringBoot(maven)")){
+        } else if (frameWork.equals("SpringBoot(maven)")) {
             sb.append("  spring-boot-maven").append(seq).append(":\n");
-            sb.append("    container_name: ").append(serviceId).append("\n");
-            sb.append("    build:\n");
-            sb.append("      context: .").append(path).append("\n");
-            sb.append("    ports:\n");
-            sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
-            sb.append("    volumes:\n");
-            sb.append("      - /var/run/docker.sock:/var/run/docker.sock\n");
+        }
 
-            if (mysql || redis) {
-                sb.append("    depends_on:\n");
-                if (mysql) {
-                    sb.append("      - mysql\n");
-                }
-                if (redis) {
-                    sb.append("      - redis\n");
-                }
+        sb.append("    container_name: ").append(serviceId).append("\n");
+        sb.append("    build:\n");
+        sb.append("      context: .").append(path).append("\n");
+        sb.append("    ports:\n");
+        sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
+        sb.append("    volumes:\n");
+        sb.append("      - /var/run/docker.sock:/var/run/docker.sock\n");
+
+        if (mysql != null || redis != null || mongodb != null) {
+            sb.append("    depends_on:\n");
+            if (mysql != null) {
+                sb.append("      - mysql\n");
             }
+            if (redis != null) {
+                sb.append("      - redis\n");
+            }
+            if (mongodb != null) {
+                sb.append("      - mongodb\n");
+            }
+        }
 
-            sb.append("    environment:\n");
-            if (mysql || redis) {
-                if (mysql) {
-                    sb.append("      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/").append(databaseName)
-                            .append("?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC\n");
-                    sb.append("      SPRING_DATASOURCE_USERNAME: ").append(username).append("\n");
-                    sb.append("      SPRING_DATASOURCE_PASSWORD: ").append(password).append("\n");
+        sb.append("    environment:\n");
+        if (mysql != null || redis != null || mongodb != null) {
+            if (mysql != null) {
+                sb.append("      SPRING_DATASOURCE_URL: jdbc:mysql://mysql/").append(mysql.getDatabaseName())
+                  .append("?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC\n");
+                sb.append("      SPRING_DATASOURCE_USERNAME: ").append(mysql.getUsername()).append("\n");
+                sb.append("      SPRING_DATASOURCE_PASSWORD: ").append(mysql.getPassword()).append("\n");
 //                    아래는 jpa내용. 입력하지않으면 백엔드 코드기반으로 알아서 돌아감
 //                    sb.append("      SPRING_JPA_HIBERNATE_DDL_AUTO: update\n");
 //                    sb.append("      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect\n");
-                }
-                if (redis) {
-                    sb.append("      SPRING_DATA_REDIS_HOST: redis\n");
-                    sb.append("      SPRING_DATA_REDIS_PORT: 6379\n");
-                }
             }
-            //React인지 vue인지 찾아서 :뒤에 포트번호 바꿀것 , 그냥 사용자가 지정한 프론트 포트번호로 바꿀것
-//            sb.append("      CORS_ALLOWED_ORIGIN: http://localhost:").append(frontInternalPort).append("\n");
-            sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
-
-            // network
-            sb.append("    networks:\n");
-            sb.append("      - ").append("dobie").append("\n");
-
-            return sb.toString();
-
-        }else{
-            throw new BackendFrameWorkNotFoundException();
+            if (redis != null) {
+                sb.append("      SPRING_DATA_REDIS_HOST: redis\n");
+                sb.append("      SPRING_DATA_REDIS_PORT: 6379\n");
+            }
+            if (mongodb != null) {
+                sb.append("      SPRING_DATA_MONGODB_URI: mongodb://").append(mongodb.getUsername()).append(":")
+                  .append(mongodb.getPassword()).append("@mongodb:").append(mongodb.getExternalPort()).append("/")
+                  .append(mongodb.getDatabaseName()).append("\n");
+                sb.append("      MONGO_INITDB_ROOT_USERNAME: ").append(mongodb.getUsername()).append("\n");
+                sb.append("      MONGO_INITDB_ROOT_PASSWORD: ").append(mongodb.getPassword()).append("\n");
+            }
         }
+
+        sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
+
+        // network
+        sb.append("    networks:\n");
+        sb.append("      - ").append("dobie").append("\n");
+
+        return sb.toString();
+
     }
 
     @Override
-    public String createReactDockerComposeFile(String domain, String frameWork, String serviceId, String path, int externalPort, int internalPort) {
-        if(frameWork.equals("React")) {
+    public String createReactDockerComposeFile(String domain, String frameWork, String serviceId, String path, int externalPort,
+                                               int internalPort) {
+        if (frameWork.equals("React")) {
             StringBuilder sb = new StringBuilder();
             sb.append("  react:\n");
             sb.append("    container_name: ").append(serviceId).append("\n");
@@ -218,7 +194,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             sb.append("      - ").append("dobie").append("\n");
 
             return sb.toString();
-        }else if(frameWork.equals("Vue")){
+        } else if (frameWork.equals("Vue")) {
             StringBuilder sb = new StringBuilder();
             sb.append("  vue:\n");
             sb.append("    container_name: ").append(serviceId).append("\n");
@@ -234,13 +210,14 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             sb.append("      - ").append("dobie").append("\n");
 
             return sb.toString();
-        }else{
+        } else {
             throw new FrontendFrameWorkNotFoundException();
         }
     }
 
     @Override
-    public String createMysqlDockerComposeFile(String databaseId, String databaseName, String username, String password, int externalPort,
+    public String createMysqlDockerComposeFile(String databaseId, String databaseName, String username, String password,
+                                               int externalPort,
                                                int internalPort) {
 
         StringBuilder sb = new StringBuilder();
@@ -265,7 +242,29 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     }
 
     @Override
-    public String createRedisDockerComposeFile(String databaseId,int externalPort, int internalPort) {
+    public String createMongodbDockerComposeFile(String databaseId, String databaseName, String username, String password,
+                                                 int externalPort, int internalPort) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("  mongodb:\n");
+        sb.append("    container_name: ").append(databaseId).append("\n");
+        sb.append("    image: mongo:latest\n");
+        sb.append("    environment:\n");
+        sb.append("      MONGO_INITDB_ROOT_USERNAME: ").append(username).append("\n");
+        sb.append("      MONGO_INITDB_ROOT_PASSWORD: ").append(password).append("\n");
+        sb.append("    ports:\n");
+        sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
+        sb.append("    volumes:\n");
+        sb.append("      - mongodb-data:/var/lib/mongodb\n");
+
+        // network
+        sb.append("    networks:\n");
+        sb.append("      - ").append("dobie").append("\n");
+
+        return sb.toString();
+    }
+
+    @Override
+    public String createRedisDockerComposeFile(String databaseId, int externalPort, int internalPort) {
 
         StringBuilder sb = new StringBuilder();
         sb.append("  redis:\n");
