@@ -23,8 +23,8 @@ export default function BackendFrame() {
     const clickDeleteHandler = (key) => {
         Swal.fire({
             icon: 'warning',
-            title: '프로젝트 삭제',
-            text: '해당 프로젝트를 삭제 하시면 복구시킬 수 없습니다.',
+            title: 'Backend 삭제',
+            text: '해당 Backend를 삭제 하시면 복구시킬 수 없습니다.',
             showCancelButton: true,
             confirmButtonColor: '#4FC153',
             cancelButtonColor: '#FF5370',
@@ -39,7 +39,7 @@ export default function BackendFrame() {
                 setTempProject({ ...tempProject });
                 Swal.fire({
                     title: '삭제 완료!',
-                    text: '해당 백엔드 프로젝트가 성공적으로 삭제되었습니다.',
+                    text: '해당 Backend가 성공적으로 삭제되었습니다.',
                     icon: 'success',
                     confirmButtonColor: '#4FC153',
                     showCancelButton: false,

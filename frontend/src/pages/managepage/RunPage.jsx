@@ -64,8 +64,8 @@ export default function RunPage() {
   const handleDelete = async (projectId) => {
     // SweetAlert로 사용자에게 확인 받기
     Swal.fire({
-      title: '프로젝트를 삭제하시겠습니까?',
-      // text: "이 작업은 되돌릴 수 없습니다!",
+      title: '프로젝트 삭제',
+      text: "이 작업은 되돌릴 수 없습니다!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#4FC153',
@@ -78,17 +78,20 @@ export default function RunPage() {
         deleteProject(projectId).then(response => {
           if (response.data.status === "SUCCESS") {
             navigate("/main");
-            Swal.fire(
-              '삭제 완료!',
-              '프로젝트가 성공적으로 삭제되었습니다.',
-              'success'
-            );
+            Swal.fire({
+              title:'삭제 완료!',
+              text: '프로젝트가 성공적으로 삭제되었습니다.',
+              icon: 'success',
+              confirmButtonColor: '#4FC153',
+              showCancelButton: false,
+              confirmButtonText: 'OK'
+          });
           } else {
             Swal.fire(
               '삭제 실패!',
               '프로젝트를 삭제할 수 없습니다.',
               'error'
-            );
+          );
           }
         }).catch(error => {
           console.error("프로젝트 삭제 실패: ", error);
