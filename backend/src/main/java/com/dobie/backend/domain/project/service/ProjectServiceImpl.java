@@ -206,6 +206,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (!verifyComposeUpSuccess(path)) {
             throw new ProjectStartFailedException("Verify compose up failed.");
         }
+        commandService.restartNginx();
     }
 
     @Override
