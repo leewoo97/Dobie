@@ -13,7 +13,6 @@ export default function BackendFrame() {
     Object.entries(selectedProject.backendMap)
   ).get(serviceId);
 
-
   return (
     <div className={styles.page}>
       <ProjectTop projectName={selectedProject.projectName} page={"backend"}/>

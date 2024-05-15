@@ -10,13 +10,19 @@ import Swal from "sweetalert2";
 export default function NavLeftCreate({ num }) {
   const navigate = useNavigate();
 
-  const {createdProject} = useProjectStore();
+  const { createdProject } = useProjectStore();
   const handleCreatProject = () => {
-    createProject(createdProject);
-    navigate("/main");
-    Swal.fire('성공', '프로젝트를 성공적으로 등록했습니다.', 'success');
-  }
-  
+    createProject(createdProject).then(() => {
+      Swal.fire('성공', '프로젝트를 성공적으로 등록했습니다.', 'success')
+        .then(() => {
+          navigate("/main");
+        });
+    }).catch((error) => {
+      console.error("프로젝트 등록 실패", error);
+      Swal.fire('실패', '프로젝트 등록에 실패했습니다.', 'error');
+    });
+  };
+
   return (
     <div className={s(styles.container)}>
       <div className={styles.list}>

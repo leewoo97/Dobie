@@ -17,7 +17,7 @@ export default function ProjectFrame() {
       />
       <GetBox
         keyName={"Branch"}
-        valueName={selectedProject.backendMap.branch}
+        valueName={selectedProject.git.branch}
       />
     </div>
   );

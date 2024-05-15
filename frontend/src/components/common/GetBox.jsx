@@ -2,7 +2,7 @@ import styles from "./GetBox.module.css";
 
 export default function GetBox({ keyName, valueName }) {
   const displayValue = () => {
-    if (!valueName && valueName !== 0) {
+    if (!valueName || valueName === " ") {
       return "입력정보가 없습니다.";
     } else {
       return valueName;
