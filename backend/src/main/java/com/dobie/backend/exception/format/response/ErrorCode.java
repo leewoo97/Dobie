@@ -40,8 +40,10 @@ public enum ErrorCode {
     BUILD_GRADLE_NOT_FOUND(HttpStatus.NOT_FOUND, "build.gradle이 해당 경로에 존재하지않습니다."),
     POM_XML_NOT_FOUND(HttpStatus.NOT_FOUND, "pom.xml이 해당 경로에 존재하지않습니다."),
     PACKAGE_JSON_NOT_FOUND(HttpStatus.NOT_FOUND, "package.json이 해당 경로에 존재하지않습니다."),
+    DBINIT_NOT_FOUND(HttpStatus.NOT_FOUND, "DB초기화 파일이 해당 경로에 존재하지않습니다."),
     BACKEND_FILE_PATH_NOT_EXIST(HttpStatus.NOT_FOUND, "명시하신 백엔드 경로는 존재하지 않는 경로입니다."),
     FRONTEND_FILE_PATH_NOT_EXIST(HttpStatus.NOT_FOUND, "명시하신 프론트엔드 경로는 존재하지 않는 경로입니다."),
+    DBINIT_FILE_PATH_NOT_EXIST(HttpStatus.NOT_FOUND, "명시하신 DB초기화 파일 경로는 존재하지 않는 경로입니다."),
     CURRENT_STATUS_NOT_FOUND(HttpStatus.NOT_FOUND, "현재 상태를 조회할 수 없습니다."),
     PORT_NUMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "외부 또는 내부 포트번호가 존재하지않습니다."),
 
