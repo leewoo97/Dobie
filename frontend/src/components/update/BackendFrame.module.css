@@ -81,3 +81,12 @@
   .xMark{
     margin-left: 15px;
   }
+
+  .notFound {
+    width: 40%;
+  }
+  .notHide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

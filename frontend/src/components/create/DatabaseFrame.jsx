@@ -6,6 +6,7 @@ import InputSelectBox from "../common/InputSelectBox";
 import DescBox from "../common/DescBox";
 import useProjectStore from "../../stores/projectStore";
 import Swal from "sweetalert2";
+import notFound from "../../assets/notFound.PNG";
 
 export default function DatabaseFrame() {
   const { createdProject, setCreatedProject } = useProjectStore();
@@ -144,49 +145,55 @@ export default function DatabaseFrame() {
         </p>
       </div>
 
-      <InputSelectBox
-        keyName={"데이터베이스"}
-        list={databaseList}
-        value={selectedDatabase.databaseType}
-        onChange={changeDatabaseHandler}
-      />
-      <DescBox desc={"Database 서비스의 프레임워크를 선택하세요"} />
+      <div className={Object.keys(tempProject.databaseMap).length !== 0 ? styles.hide : styles.notHide} >
+        <img src={notFound} className={styles.notFound} />
+      </div>
 
-      <InputBox
-        keyName={"Username"}
-        valueName={"root"}
-        value={selectedDatabase.username}
-        onChange={changeUsernameHandler}
-      />
-      <DescBox desc={"데이터베이스에 설정한 Username을 작성해주세요"} />
+      <div className={Object.keys(tempProject.databaseMap).length === 0 ? styles.hide : ""}>
+        <InputSelectBox
+          keyName={"데이터베이스"}
+          list={databaseList}
+          value={selectedDatabase.databaseType}
+          onChange={changeDatabaseHandler}
+        />
+        <DescBox desc={"Database 서비스의 프레임워크를 선택하세요"} />
 
-      <InputBox
-        keyName={"Password"}
-        valueName={"ssafy"}
-        value={selectedDatabase.password}
-        onChange={changePasswordHandler}
-      />
-      <DescBox desc={"데이터베이스에 설정한 Password를 작성해주세요"} />
+        <InputBox
+          keyName={"Username"}
+          valueName={"root"}
+          value={selectedDatabase.username}
+          onChange={changeUsernameHandler}
+        />
+        <DescBox desc={"데이터베이스에 설정한 Username을 작성해주세요"} />
 
-      <InputBox
-        keyName={"초기 데이터 파일 경로"}
-        valueName={"/DB"}
-        value={selectedDatabase.schemaPath}
-        onChange={changeSchemaPathHandler}
-      />
-      <DescBox
-        desc={
-          "init.sql 등 초기데이터 스키마 파일이 있다면 해당 파일 폴더 경로를 작성하세요"
-        }
-      />
+        <InputBox
+          keyName={"Password"}
+          valueName={"ssafy"}
+          value={selectedDatabase.password}
+          onChange={changePasswordHandler}
+        />
+        <DescBox desc={"데이터베이스에 설정한 Password를 작성해주세요"} />
 
-      <InputBox
-        keyName={"내부 포트 번호"}
-        valueName={"3306"}
-        value={selectedDatabase.internalPort}
-        onChange={changeInternalPortHandler}
-      />
-      <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
+        <InputBox
+          keyName={"초기 데이터 파일 경로"}
+          valueName={"/DB"}
+          value={selectedDatabase.schemaPath}
+          onChange={changeSchemaPathHandler}
+        />
+        <DescBox
+          desc={
+            "init.sql 등 초기데이터 스키마 파일이 있다면 해당 파일 폴더 경로를 작성하세요"
+          }
+        />
+
+        <InputBox
+          keyName={"내부 포트 번호"}
+          valueName={"3306"}
+          value={selectedDatabase.internalPort}
+          onChange={changeInternalPortHandler}
+        />
+        <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
+      </div>
     </div>
   );
 }

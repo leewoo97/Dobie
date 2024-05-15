@@ -6,6 +6,7 @@ import InputSelectBox from "../common/InputSelectBox";
 import DescBox from "../common/DescBox";
 import useProjectStore from "../../stores/projectStore";
 import Swal from "sweetalert2";
+import notFound from "../../assets/notFound.PNG";
 
 export default function BackendFrame() {
   const { createdProject, setCreatedProject } = useProjectStore();
@@ -132,12 +133,11 @@ export default function BackendFrame() {
         <p onClick={addEmptyBackend} className={styles.tapPlus}>+</p>
       </div>
 
-      <div className={Object.keys(tempProject.backendMap).length !== 0 ? styles.hide : ""}>
-        test
+      <div className={Object.keys(tempProject.backendMap).length !== 0 ? styles.hide : styles.notHide} >
+        <img src={notFound} className={styles.notFound} />
       </div>
 
       <div className={Object.keys(tempProject.backendMap).length === 0 ? styles.hide : ""}>
-        {/* <div>{selectedKey}</div> */}
 
         <InputSelectBox
           keyName={"프레임워크"}

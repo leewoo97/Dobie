@@ -6,6 +6,7 @@ import DescBox from "../common/DescBox";
 import { v4 as uuidv4 } from "uuid";
 import useProjectStore from "../../stores/projectStore";
 import Swal from "sweetalert2";
+import notFound from "../../assets/notFound.PNG";
 
 export default function BackendFrame() {
 
@@ -121,7 +122,7 @@ export default function BackendFrame() {
 
     const [showToken, setShowToken] = useState(false);
     const toggleTokenVisibility = () => {
-      setShowToken(!showToken);
+        setShowToken(!showToken);
     };
     return (
         <div className={styles.page}>
@@ -135,34 +136,37 @@ export default function BackendFrame() {
                                 event.stopPropagation();
                                 clickDeleteHandler(key);
                             }}> x </div>
-                            
+
                         </div>
                     );
                 })}
                 <p onClick={addEmptyBackend} className={styles.tapPlus}>+</p>
             </div>
 
-            <div className={Object.keys(tempProject.backendMap).length !== 0 ? styles.hide : ""}>
-                프로젝트가 모두 삭제되었습니다. 백엔드 프로젝트를 등록해주세요.
+            <div className={Object.keys(tempProject.backendMap).length !== 0 ? styles.hide : styles.notHide} >
+                <img src={notFound} className={styles.notFound}/>
             </div>
 
-            <InputSelectBox keyName={"프레임워크"} list={frameworkList} value={selectedBackend.framework} onChange={changeFrameworkHandler} />
-            <DescBox desc={"Backend 서비스의 프레임워크를 선택하세요"} />
+            <div className={Object.keys(tempProject.backendMap).length === 0 ? styles.hide : ""}>
 
-            <InputSelectBox keyName={"언어버전"} list={versionList} value={selectedBackend.language + " " + selectedBackend.version} onChange={changeVersionHandler} />
-            <DescBox desc={"Backend 서비스의 언어 버전을 선택하세요"} />
+                <InputSelectBox keyName={"프레임워크"} list={frameworkList} value={selectedBackend.framework} onChange={changeFrameworkHandler} />
+                <DescBox desc={"Backend 서비스의 프레임워크를 선택하세요"} />
 
-            <InputBox keyName={"폴더 경로"} value={selectedBackend.path} valueName={"/frontend"} onChange={changePathHandler} />
-            <DescBox desc={"프로젝트 루트 경로로부터 해당 프레임워크 폴더 경로를 작성하세요"} />
+                <InputSelectBox keyName={"언어버전"} list={versionList} value={selectedBackend.language + " " + selectedBackend.version} onChange={changeVersionHandler} />
+                <DescBox desc={"Backend 서비스의 언어 버전을 선택하세요"} />
 
-            {/* <InputBox keyName={"브랜치"} valueName={"dev-be"} />
+                <InputBox keyName={"폴더 경로"} value={selectedBackend.path} valueName={"/frontend"} onChange={changePathHandler} />
+                <DescBox desc={"프로젝트 루트 경로로부터 해당 프레임워크 폴더 경로를 작성하세요"} />
+
+                {/* <InputBox keyName={"브랜치"} valueName={"dev-be"} />
             <DescBox desc={"해당 프레임워크를 빌드 시킬 브랜치명을 작성하세요"} /> */}
 
-            <InputBox keyName={"내부 포트 번호"} value={selectedBackend.internalPort} valueName={"8080"} onChange={changeInternalPortHandler} />
-            <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
+                <InputBox keyName={"내부 포트 번호"} value={selectedBackend.internalPort} valueName={"8080"} onChange={changeInternalPortHandler} />
+                <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
 
-            {/* <InputBox keyName={"외부 포트 번호"} valueName={"8080"} />
+                {/* <InputBox keyName={"외부 포트 번호"} valueName={"8080"} />
             <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} /> */}
+            </div>
         </div>
     );
 }
