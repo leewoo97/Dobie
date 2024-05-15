@@ -160,7 +160,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             if (mongodb != null) {
                 sb.append("      SPRING_DATA_MONGODB_URI: mongodb://").append(mongodb.getUsername()).append(":")
                   .append(mongodb.getPassword()).append("@mongodb:").append(mongodb.getExternalPort()).append("/")
-                  .append(mongodb.getDatabaseName()).append("\n");
+                  .append(mongodb.getDatabaseName()).append("?authSource=admin&authMechanism=SCRAM-SHA-1\n");
                 sb.append("      MONGO_INITDB_ROOT_USERNAME: ").append(mongodb.getUsername()).append("\n");
                 sb.append("      MONGO_INITDB_ROOT_PASSWORD: ").append(mongodb.getPassword()).append("\n");
             }
@@ -257,9 +257,11 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         sb.append("  mongodb:\n");
         sb.append("    container_name: ").append(databaseId).append("\n");
         sb.append("    image: mongo:latest\n");
+        sb.append("    restart: always\n");
         sb.append("    environment:\n");
         sb.append("      MONGO_INITDB_ROOT_USERNAME: ").append(username).append("\n");
         sb.append("      MONGO_INITDB_ROOT_PASSWORD: ").append(password).append("\n");
+        sb.append("      MONGO_INITDB_DATABASE: ").append(databaseName).append("\n");
         sb.append("    ports:\n");
         sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
         sb.append("    volumes:\n");
