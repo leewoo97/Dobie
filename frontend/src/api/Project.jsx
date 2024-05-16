@@ -48,7 +48,7 @@ export async function startService(containerName) {
 //프로젝트 등록
 export async function createProject(project) {
   try {
-    const response = await axios.post(`${projectUrl}/regist`, project);
+    const response = await axios.post(`${projectUrl}/create`, project);
     return response;
   } catch (error) {
     throw error;
@@ -58,10 +58,10 @@ export async function createProject(project) {
 //프로젝트 수정
 export async function updateProject(project) {
   // console.log(project);
-  try{
-    const response = await axios.put(`${projectUrl}/update`,project);
+  try {
+    const response = await axios.put(`${projectUrl}/update`, project);
     return response;
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 }
@@ -75,6 +75,16 @@ export async function stopProject(projectId) {
     throw error;
   }
 }
+
+export async function buildProject(projectId) {
+  try {
+    const response = await axios.post(`${projectUrl}/build/${projectId}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 //프로젝트 전체실행
 export async function startProject(projectId) {
   try {
@@ -90,24 +100,25 @@ export async function addFile(dto, files) {
   const formData = new FormData();
 
   // 프로젝트 데이터 JSON 추가 (Content-Type 포함)
-  formData.append('dto', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+  formData.append(
+    "dto",
+    new Blob([JSON.stringify(dto)], { type: "application/json" })
+  );
 
   // 파일들 추가
   files.forEach((file, index) => {
     if (file === null) {
       // 빈 Blob 객체를 전송
-      formData.append('files', new Blob(), `placeholder-${index}`);
+      formData.append("files", new Blob(), `placeholder-${index}`);
     } else {
-      formData.append('files', file, file.name);
+      formData.append("files", file, file.name);
     }
   });
-
-
 
   try {
     const response = await axios.post(`${projectUrl}/file`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
