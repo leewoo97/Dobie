@@ -39,12 +39,12 @@ public class NginxController {
 
         return response.success(ResponseCode.NGINX_CONFIG_READ_SUCCESS, nginxConfFile);
     }
-    @Operation(summary = "ssl 인증서 발급", description = "ssl 인증서 발급")
-    @GetMapping ("/ssl")
-    public ResponseEntity<?> getSSLCertificate(@RequestParam(name = "domain") String domain){
-        commandService.getSSL(domain);
-        return response.success(ResponseCode.NGINX_CONFIG_READ_SUCCESS);
-    }
+//    @Operation(summary = "ssl 인증서 발급", description = "ssl 인증서 발급")
+//    @GetMapping ("/ssl")
+//    public ResponseEntity<?> getSSLCertificate(@RequestParam(name = "domain") String domain){
+//        commandService.getSSL(domain);
+//        return response.success(ResponseCode.NGINX_CONFIG_READ_SUCCESS);
+//    }
     @Operation(summary = "ssl", description = "ssl")
     @GetMapping ("/ssltest")
     public ResponseEntity<?> getSSLCertificateTest(@RequestParam(name = "domain") String domain){
