@@ -1,6 +1,7 @@
 package com.dobie.backend.util.command;
 
 import com.dobie.backend.exception.exception.build.*;
+import com.dobie.backend.exception.exception.file.DeleteFileFailedException;
 import com.dobie.backend.exception.exception.git.GitCheckoutFailedException;
 import com.dobie.backend.exception.exception.git.GitCloneFailedException;
 import com.dobie.backend.exception.exception.git.GitPullFailedException;
@@ -81,13 +82,6 @@ public class CommandServiceImpl implements CommandService {
     // git pull
     @Override
     public void gitPull(String path) {
-        try {
-            CommandLine commandLine1 = CommandLine.parse("pwd");
-            executor.execute(commandLine1);
-
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
 
         sb = new StringBuilder();
         sb.append("git -C ").append(path).append(" pull");
@@ -158,7 +152,7 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public void dockerComposeUp(String path) {
         sb = new StringBuilder();
-        sb.append("docker compose -f ").append(path+"/docker-compose.yml").append(" up --build -d");
+        sb.append("docker compose -f ").append(path + "/docker-compose.yml").append(" up --build -d");
 
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
@@ -175,7 +169,7 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public void dockerComposeDown(String path) {
         sb = new StringBuilder();
-        sb.append("docker compose -f ").append(path+"/docker-compose.yml").append(" down --rmi all");
+        sb.append("docker compose -f ").append(path + "/docker-compose.yml").append(" down --rmi all");
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
@@ -230,7 +224,7 @@ public class CommandServiceImpl implements CommandService {
             executor.execute(commandLine);
             String result = outputStream.toString().trim();
             System.out.println("restartNginx success : " + result);
-        }catch (Exception e) {
+        } catch (Exception e) {
             String result = outputStream.toString().trim();
             throw new NginxRestartFailedException(e.getMessage(), result);
         }
@@ -246,11 +240,12 @@ public class CommandServiceImpl implements CommandService {
             executor.execute(commandLine);
             String result = outputStream.toString().trim();
             System.out.println("deleteNginxConf success : " + result);
-        }catch (Exception e) {
+        } catch (Exception e) {
             String result = outputStream.toString().trim();
             throw new NginxConfDeleteFailedException(e.getMessage(), result);
         }
     }
+
     @Override
     public void getSSL(String domain){
         sb = new StringBuilder();

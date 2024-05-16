@@ -1,12 +1,14 @@
 package com.dobie.backend.domain.docker.dockerfile.service;
 
 import com.dobie.backend.domain.docker.readjson.service.ReadJsonService;
+import com.dobie.backend.exception.exception.build.FastApiBuildFailedException;
 import com.dobie.backend.exception.exception.docker.DockerPsErrorException;
 import com.dobie.backend.exception.exception.Environment.*;
 import com.dobie.backend.exception.exception.build.BackendBuildFailedException;
 import com.dobie.backend.exception.exception.build.FrontendBuildFailedException;
 import com.dobie.backend.exception.exception.docker.DockerPsLinePartsErrorException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
+import com.dobie.backend.util.command.CommandService;
 import com.dobie.backend.util.file.FileManager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +22,9 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +35,7 @@ import java.util.Map;
 public class DockerfileServiceImpl implements DockerfileService {
 
     private final ReadJsonService readJsonService;
-
+    private final CommandService commandService;
     FileManager fileManager = new FileManager();
 
     @Override
@@ -55,6 +60,13 @@ public class DockerfileServiceImpl implements DockerfileService {
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
+
+        // 이미 경로에 Dockerfile이 있다면 삭제하는 코드
+        Path existDockerFile = Paths.get(filePath, "Dockerfile");
+        if(Files.exists(existDockerFile)) {
+            commandService.deleteFile("Dockerfile", filePath);
+        }
+
         // 경로에 build.Gradle이 존재X 또는 경로 자체가 잘못되었다면 오류 발생
         checkBuildGradle(filePath);
         try {
@@ -82,6 +94,13 @@ public class DockerfileServiceImpl implements DockerfileService {
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
+
+        // 이미 경로에 Dockerfile이 있다면 삭제하는 코드
+        Path existDockerFile = Paths.get(filePath, "Dockerfile");
+        if(Files.exists(existDockerFile)) {
+            commandService.deleteFile("Dockerfile", filePath);
+        }
+
         checkBuildPom(filePath);
         try {
             fileManager.saveFile(filePath, "Dockerfile", dockerfile);
@@ -106,6 +125,13 @@ public class DockerfileServiceImpl implements DockerfileService {
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
+
+        // 이미 경로에 Dockerfile이 있다면 삭제하는 코드
+        Path existDockerFile = Paths.get(filePath, "Dockerfile");
+        if(Files.exists(existDockerFile)) {
+            commandService.deleteFile("Dockerfile", filePath);
+        }
+
         checkBuildPackageJson(filePath);
         try {
             fileManager.saveFile(filePath, "Dockerfile", dockerfile);
@@ -132,6 +158,13 @@ public class DockerfileServiceImpl implements DockerfileService {
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
+
+        // 이미 경로에 Dockerfile이 있다면 삭제하는 코드
+        Path existDockerFile = Paths.get(filePath, "Dockerfile");
+        if(Files.exists(existDockerFile)) {
+            commandService.deleteFile("Dockerfile", filePath);
+        }
+
         checkBuildPackageJson(filePath);
         try {
             fileManager.saveFile(filePath, "Dockerfile", dockerfile);
@@ -141,8 +174,34 @@ public class DockerfileServiceImpl implements DockerfileService {
     }
 
     @Override
+    public void createFastApiDockerfile(String projectName, String version, String path) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("FROM python:").append(version).append("\n");
+        sb.append("WORKDIR /rec\n");
+        sb.append("COPY ./requirements.txt /rec/requirements.txt\n");
+        sb.append("COPY ./.env.dev /rec/.env.dev\n");
+        sb.append("COPY ./.env.prod /rec/.env.prod\n");
+        sb.append("COPY ./.env /rec/.env\n");
+        sb.append("RUN pip install -r requirements.txt\n");
+        sb.append("COPY ./app /rec/app\n");
+        sb.append("WORKDIR /rec/app\n");
+        sb.append("CMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]\n");
+        String dockerfile = sb.toString();
+
+        // ec2 서버에서 깃클론하는 경로로 수정하기
+        String filePath = "./" + projectName + path;
+        checkRequirementsTxt(filePath);
+        try {
+            fileManager.saveFile(filePath, "Dockerfile", dockerfile);
+        } catch (SaveFileFailedException e) {
+            throw new FastApiBuildFailedException(e.getErrorMessage());
+        }
+    }
+
+    @Override
     public void checkBuildGradle(String filepath) {
-        System.out.println("백엔드 오류 잡기 위한 파일 패스 : " + filepath);
+//        System.out.println("백엔드 오류 잡기 위한 파일 패스 : " + filepath);
         File directory = new File(filepath); // 디렉토리 경로 지정
         File[] filesList = directory.listFiles(); // 디렉토리의 모든 파일 및 폴더 목록 얻기
         boolean correctPath = false;
@@ -201,12 +260,35 @@ public class DockerfileServiceImpl implements DockerfileService {
                 }
             }
             if (!correctPath) {
-//                System.out.println("파일 경로에 pom.xml이 존재하지않습니다.");
+//                System.out.println("파일 경로에 package.json이 존재하지않습니다.");
                 throw new PackageJsonNotFoundException();
             }
         } else {
 //            System.out.println("파일 경로 자체가 잘못되었음.");
             throw new FrontendFilePathNotExistException();
+        }
+    }
+
+    @Override
+    public void checkRequirementsTxt(String filepath) {
+        File directory = new File(filepath); // 디렉토리 경로 지정
+        File[] filesList = directory.listFiles(); // 디렉토리의 모든 파일 및 폴더 목록 얻기
+        boolean correctPath = false;
+        if (filesList != null) {
+            for (File file : filesList) {
+                if (file.getName().equals("requirements.txt")) {
+//                    System.out.println("Name: " + file.getName()); // 파일 또는 디렉토리 이름 출력
+                    correctPath = true;
+                    break;
+                }
+            }
+            if (!correctPath) {
+//                System.out.println("파일 경로에 requirements.txt가 존재하지않습니다.");
+                throw new RequirementsTxtNotFoundException();
+            }
+        } else {
+//            System.out.println("파일 경로 자체가 잘못되었음.");
+            throw new FastApiFilePathNotExistException();
         }
     }
 
@@ -518,7 +600,7 @@ public class DockerfileServiceImpl implements DockerfileService {
 //        System.out.println("프로젝트 내부 서비스 아이디 목록 : " + analyzeList);
         executor.execute(commandLine);
         String dockerOutput = outputStream.toString();
-        System.out.println("docker ps -a결과: \n" + dockerOutput);
+//        System.out.println("docker ps -a결과: \n" + dockerOutput);
         return dockerOutput;
     }
 
@@ -675,11 +757,11 @@ public class DockerfileServiceImpl implements DockerfileService {
 //            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
             Map<String, Object> projectJsonMap = ReadJsonFromDocker();
             Map<String, Object> backendMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "backendMap");
-            System.out.println("backendMap : " + backendMap);
+//            System.out.println("backendMap : " + backendMap);
             String frontendId = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend", "serviceId");
-            System.out.println("frontendId : " + frontendId);
+//            System.out.println("frontendId : " + frontendId);
             Map<String, Object> databaseMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "databaseMap");
-            System.out.println("databaseMap : " + databaseMap);
+//            System.out.println("databaseMap : " + databaseMap);
             if(backendMap!=null) {
                 result.addAll(backendMap.keySet());
             }
@@ -706,11 +788,11 @@ public class DockerfileServiceImpl implements DockerfileService {
 //            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
             Map<String, Object> projectJsonMap = ReadJsonFromDocker();
             Map<String, Object> backendMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "backendMap");
-            System.out.println("backendMap : " + backendMap);
+//            System.out.println("backendMap : " + backendMap);
             String frontendId = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend", "serviceId");
-            System.out.println("frontendId : " + frontendId);
+//            System.out.println("frontendId : " + frontendId);
             Map<String, Object> databaseMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "databaseMap");
-            System.out.println("databaseMap : " + databaseMap);
+//            System.out.println("databaseMap : " + databaseMap);
             HashMap<String,String> result = new HashMap<>();
             if(backendMap!=null) {
                 for (String key : backendMap.keySet()) {
@@ -746,11 +828,11 @@ public class DockerfileServiceImpl implements DockerfileService {
     Map<String, Object> ReadJsonFromDocker(){
         try {
             String jsonContent = getJsonContentFromDocker("dobie-be", "/data/project.json");
-            System.out.println("JSON Content: " + jsonContent);
+//            System.out.println("JSON Content: " + jsonContent);
 
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> jsonMap = mapper.readValue(jsonContent, Map.class);
-            System.out.println("Map Content: " + jsonMap);
+//            System.out.println("Map Content: " + jsonMap);
             return jsonMap;
         } catch (Exception e) {
             e.printStackTrace();

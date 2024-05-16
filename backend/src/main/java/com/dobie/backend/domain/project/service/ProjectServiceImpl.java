@@ -139,15 +139,13 @@ public class ProjectServiceImpl implements ProjectService {
         // git clone
         GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
 
-        if (gitInfo == null) {
-            throw new GitInfoNotFoundException();
-        }
+        String path = "./"+projectGetResponseDto.getProjectName();
 
-        // git type 확인, gitLab인지 gitHub인지
-        // 1이면 gitLab
-        if (!commandService.checkIsCloned("./" + projectGetResponseDto.getProjectName())) {
-            // gitLab clone
+        // 이미 clone 되어있는지 check
+        if (!commandService.checkIsCloned(path)) {
             commandService.gitClone(gitInfo.getGitUrl(), gitInfo.getAccessToken());
+        }else {
+            commandService.gitPull(path);
         }
 
 
@@ -159,6 +157,8 @@ public class ProjectServiceImpl implements ProjectService {
                 dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
             } else if (value.getFramework().equals("SpringBoot(maven)")) {
                 dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
+            } else if (value.getFramework().equals("Fastapi")) {
+                dockerfileService.createFastApiDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
             }
         });
 

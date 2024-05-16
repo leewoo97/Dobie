@@ -10,7 +10,7 @@ public interface CommandService {
 
     void gitCheckout(String path, String branchName);
 
-    void gitPull(String path) throws IOException;
+    void gitPull(String path);
 
 //    void gitPull(String path, String branchName);
 
@@ -31,5 +31,6 @@ public interface CommandService {
     void deleteNginxProxyConf(String projectId);
     void getSSL(String domain);
 
+    void deleteFile(String fileName, String path);
 }
 

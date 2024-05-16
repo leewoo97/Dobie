@@ -57,7 +57,7 @@ public class FileManager {
         if (file.exists()) {
             boolean result = file.delete();
         } else {
-            throw new DeleteFileFailedException();
+            throw new DeleteFileFailedException("File Delete Failed");
         }
     }
 }

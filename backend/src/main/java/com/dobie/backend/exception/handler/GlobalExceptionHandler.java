@@ -50,6 +50,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    @ExceptionHandler(FastApiBuildFailedException.class)
+    protected ResponseEntity<?> handle(FastApiBuildFailedException e) {
+        log.error("FastApiBuildFailedException = {}", e.getErrorCode().getMessage());
+        log.error("Error Message = {}", e.getErrorMessage());
+        return response.error(e.getErrorCode());
+    }
+
     @ExceptionHandler(NginxCreateFailedException.class)
     protected ResponseEntity<?> handle(NginxCreateFailedException e) {
         log.error("NginxCreateFailedException = {}", e.getErrorCode().getMessage());
@@ -142,7 +149,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DeleteFileFailedException.class)
     protected ResponseEntity<?> handle(DeleteFileFailedException e) {
         log.error("DeleteFileFailedException = {}", e.getErrorCode().getMessage());
-//        log.error("Error Message = {}", e.getErrorMessage());
+        log.error("Error Message = {}", e.getErrorMessage());
+        log.error("Cause : {}", e.getCause().getMessage());
         return response.error(e.getErrorCode());
     }
 
@@ -198,6 +206,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    @ExceptionHandler(RequirementsTxtNotFoundException.class)
+    protected ResponseEntity<?> handle(RequirementsTxtNotFoundException e) {
+        log.error("RequirementsTxtNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(DbInitNotFoundException.class)
+    protected ResponseEntity<?> handle(DbInitNotFoundException e) {
+        log.error("DbInitNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
     @ExceptionHandler(BackendFilePathNotExistException.class)
     protected ResponseEntity<?> handle(BackendFilePathNotExistException e) {
         log.error("FilePathNotExistException = {}", e.getErrorCode().getMessage());
@@ -207,6 +227,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(FrontendFilePathNotExistException.class)
     protected ResponseEntity<?> handle(FrontendFilePathNotExistException e) {
         log.error("FrontendFilePathNotExistException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(FastApiFilePathNotExistException.class)
+    protected ResponseEntity<?> handle(FastApiFilePathNotExistException e) {
+        log.error("FastApiFilePathNotExistException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(DbInitPathNotExistException.class)
+    protected ResponseEntity<?> handle(DbInitPathNotExistException e) {
+        log.error("DbInitPathNotExistException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 
