@@ -267,6 +267,8 @@ public class CommandServiceImpl implements CommandService {
         sb = new StringBuilder();
         sb.append("echo \"sudo certbot certonly --standalone --email ys0403ab@naver.com --agree-tos --no-eff-email --keep-until-expiring -d ").append(domain).append("\" > /getSSL_pipe");
         CommandLine commandLine = CommandLine.parse(sb.toString());
+        System.out.println("실험용");
+        System.out.println(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
             executor.execute(commandLine);
