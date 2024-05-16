@@ -56,6 +56,7 @@ export default function DatabaseFrame() {
     }
 
     const emptyDatabase = {
+        databaseId:"",
         databaseType: "",
         databaseName: "",
         schemaPath: "",
@@ -66,6 +67,7 @@ export default function DatabaseFrame() {
     const addEmptyDatabase = () => {
         const newKey = uuidv4();
         tempProject.databaseMap[newKey] = emptyDatabase;
+        tempProject.databaseMap[newKey].databaseId = newKey;
         setSelectedKey(newKey);
         setTempProject({ ...tempProject });
     }

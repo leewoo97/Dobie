@@ -57,6 +57,7 @@ export default function BackendFrame() {
     }
 
     const emptyBackend = {
+        serviceId:"",
         serviceName: "",
         language: "",
         version: "",
@@ -71,6 +72,7 @@ export default function BackendFrame() {
     const addEmptyBackend = () => {
         const newKey = uuidv4();
         tempProject.backendMap[newKey] = emptyBackend;
+        tempProject.backendMap[newKey].serviceId = newKey;
         setSelectedKey(newKey);
         setTempProject({ ...tempProject });
     }
