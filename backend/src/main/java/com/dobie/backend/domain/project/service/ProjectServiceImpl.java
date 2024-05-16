@@ -163,6 +163,8 @@ public class ProjectServiceImpl implements ProjectService {
                 dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
             } else if (value.getFramework().equals("Fastapi")) {
                 dockerfileService.createFastApiDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
+            } else if (value.getFramework().equals("Django")){
+                dockerfileService.createDjangoDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath(), value.getInternalPort());
             }
         });
 
@@ -172,7 +174,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (frontendInfo.getFramework().equals("React")) {
             dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
         } else if (frontendInfo.getFramework().equals("Vue")) {
-            dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
+            dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath(), frontendInfo.getInternalPort());
         }
 
         // docker-compose 파일 생성
