@@ -213,7 +213,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         sb.append("    volumes:\n");
         sb.append("      - ./app:/rec/app\n");
         sb.append("    environment:\n");
-        sb.append("      - ENV_FILE=.env\n");
+        sb.append("      - ENV_FILE=.env.dev\n");
 
 
 //        sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
