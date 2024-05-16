@@ -186,7 +186,7 @@ public class DockerfileServiceImpl implements DockerfileService {
         sb.append("RUN pip install -r requirements.txt\n");
         sb.append("COPY ./app /rec/app\n");
         sb.append("WORKDIR /rec/app\n");
-        sb.append("CMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]\n");
+        sb.append("CMD [\"uvicorn\", \"app.main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]\n");
         String dockerfile = sb.toString();
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
