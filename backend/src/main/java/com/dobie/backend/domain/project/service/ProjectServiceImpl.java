@@ -124,6 +124,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void deleteProject(String projectId) {
+        // git clone한 디렉토리 삭제
+        Project project = projectRepository.searchProject(projectId);
+        commandService.deleteDirectory(project.getProjectName());
         projectRepository.deleteProject(projectId);
         commandService.deleteNginxProxyConf(projectId); //nginx config파일 삭제
     }

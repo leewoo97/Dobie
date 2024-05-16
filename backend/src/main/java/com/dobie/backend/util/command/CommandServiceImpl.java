@@ -278,6 +278,39 @@ public class CommandServiceImpl implements CommandService {
         }
     }
 
+    @Override
+    public void deleteDirectory(String directoryPath) {
+        // 디렉토리 객체 생성
+        File directory = new File(directoryPath);
+
+        // 디렉토리 존재 여부 확인
+        if (directory.exists()) {
+            StringBuilder sb = new StringBuilder();
+            // Linux/Unix 기반 시스템의 경우
+            sb.append("rm -rf ").append(directory.getAbsolutePath());
+            // Windows 기반 시스템의 경우 아래의 명령어를 사용
+            // sb.append("cmd /c rd /s /q ").append(directory.getAbsolutePath());
+
+            CommandLine commandLine = CommandLine.parse(sb.toString());
+
+            DefaultExecutor executor = new DefaultExecutor();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+            executor.setStreamHandler(streamHandler);
+
+            try {
+                executor.execute(commandLine);
+                String result = outputStream.toString().trim(); // 명령어 실행 결과를 문자열로 받음
+                System.out.println("Directory delete success: " + result);
+            } catch (Exception e) {
+                String result = outputStream.toString().trim();
+                throw new RuntimeException("Directory Delete Failed: " + e.getMessage() + ", " + result);
+            }
+        } else {
+            throw new RuntimeException("Directory not found: " + directoryPath);
+        }
+    }
+
 //    @Override
 //    public void getSSL(String domain){
 //        sb = new StringBuilder();

@@ -35,6 +35,8 @@ public interface CommandService {
 
     void deleteFile(String fileName, String path);
 
+    void deleteDirectory(String directoryPath);
+
     void getSSLTest(String domain) throws IOException;
 }
 
