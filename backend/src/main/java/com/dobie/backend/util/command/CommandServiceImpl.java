@@ -279,6 +279,7 @@ public class CommandServiceImpl implements CommandService {
             System.out.println("getSSL success: " + result);
         } catch (Exception e) {
             String result = outputStream.toString().trim();
+            System.out.println("SSL 에러");
             throw new NginxConfDeleteFailedException(e.getMessage(), result);
         }
     }
