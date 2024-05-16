@@ -124,11 +124,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void deleteProject(String projectId) {
+        // 프로젝트 중지 (이미지까지 삭제)
+        stopProject(projectId);
         // git clone한 디렉토리 삭제
         Project project = projectRepository.searchProject(projectId);
         commandService.deleteDirectory(project.getProjectName());
+        // Json에서 삭제
         projectRepository.deleteProject(projectId);
-        commandService.deleteNginxProxyConf(projectId); //nginx config파일 삭제
+        // nginx config 파일 삭제
+        commandService.deleteNginxProxyConf(projectId);
     }
 
 
