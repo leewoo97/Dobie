@@ -284,5 +284,26 @@ public class CommandServiceImpl implements CommandService {
         }
     }
 
+    @Override
+    public void getSSLTest(String domain) throws IOException {
+        // 호스트의 파이프 경로
+        String pipePath = "/getSSL_pipe";
+
+
+            // 호스트의 파이프에 쓰기 위한 BufferedWriter 생성
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pipePath)));
+
+            // 전달할 명령어
+            String command = "sudo certbot certonly --standalone --email test@naver.com --agree-tos --no-eff-email --keep-until-expiring -d houng.silvstone.xyz";
+
+            // 명령어를 파이프에 씀
+            writer.write(command);
+            writer.newLine();
+            writer.flush(); // 버퍼 비우기
+            writer.close(); // 파일 닫기
+
+            System.out.println("명령어를 성공적으로 파이프에 전달했습니다.");
+    }
+
 }
 
