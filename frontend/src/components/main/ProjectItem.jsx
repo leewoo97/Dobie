@@ -4,7 +4,12 @@ import useModalStore from "../../stores/modalStore";
 import toast from "react-hot-toast";
 import styles from "./ProjectItem.module.css";
 import useProjectStore from "../../stores/projectStore";
-import { buildProject, startProject, stopProject } from "../../api/Project";
+import {
+  buildProject,
+  getProject,
+  startProject,
+  stopProject,
+} from "../../api/Project";
 import { checkProceeding } from "../../api/CheckProcess";
 import LoadingModal from "../modal/LoadingModal";
 
@@ -29,18 +34,22 @@ export default function ProjectItem({ project }) {
 
   //실행상태 조회
   const handleCheckProceding = async () => {
-    try {
-      const response = await checkProceeding(project.projectId);
-      if (response.data.status === "SUCCESS") {
-        setCheckProceed(response.data.data);
-      } else {
-        setCheckProceed({ allRunning: "null" });
-        toast.error(`프로젝트 실행상태를 불러올수 없습니다.`, {
-          position: "top-center",
-        });
+    const res = await getProject();
+    if (res.data.data !== null) {
+      try {
+        const response = await checkProceeding(project.projectId);
+        if (response.data.status === "SUCCESS") {
+          setCheckProceed(response.data.data);
+        } else {
+          console.log(response.data);
+          setCheckProceed({ allRunning: "null" });
+          toast.error(`프로젝트 실행상태를 불러올수 없습니다.`, {
+            position: "top-center",
+          });
+        }
+      } catch (error) {
+        console.error("컨테이너 실행 확인 에러: ", error);
       }
-    } catch (error) {
-      console.error("컨테이너 실행 확인 에러: ", error);
     }
   };
 

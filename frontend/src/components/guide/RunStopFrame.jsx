@@ -3,7 +3,6 @@ import Run from "../../assets/run.png";
 import Build from "../../assets/settings.png";
 import Restart from "../../assets/restart.png";
 import RunAllServices1 from "../../assets/guide/RunAllServices1.png";
-import RunAllServices2 from "../../assets/guide/RunAllServices2.png";
 import RunAllServices3 from "../../assets/guide/RunAllServices3.png";
 import Building1 from "../../assets/guide/Building1.png";
 import RunLoading from "../../assets/guide/RunLoading.png";
