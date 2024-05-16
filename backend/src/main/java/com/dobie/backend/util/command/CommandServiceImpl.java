@@ -263,17 +263,25 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
-    public void getSSL(String domain){
-        sb = new StringBuilder();
-        sb.append("echo \"sudo certbot certonly --standalone --email ys0403ab@naver.com --agree-tos --no-eff-email --keep-until-expiring -d ").append(domain).append("\" > /getSSL_pipe");
-        CommandLine commandLine = CommandLine.parse(sb.toString());
+    public void getSSL(String domain) {
+        // 명령어 문자열 구성
+        String command = "echo";
+        String argument = "sudo certbot certonly --standalone --email test@test.com --agree-tos --no-eff-email --keep-until-expiring -d " + domain + " > /getSSL_pipe";
+
+        // CommandLine 객체 생성
+        CommandLine commandLine = new CommandLine(command);
+        commandLine.addArgument(argument, false);
+
+        // StreamHandler 설정
         executor.setStreamHandler(streamHandler);
+
         try {
+            // 명령어 실행
             executor.execute(commandLine);
             String result = outputStream.toString().trim();
             log.info("ssl인증서 받기를 시도했습니다.");
-            System.out.println("getSSL success : " + result);
-        }catch (Exception e) {
+            System.out.println("getSSL success: " + result);
+        } catch (Exception e) {
             String result = outputStream.toString().trim();
             throw new NginxConfDeleteFailedException(e.getMessage(), result);
         }
