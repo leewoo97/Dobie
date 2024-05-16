@@ -325,7 +325,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NginxConfDeleteFailedException.class)
     protected ResponseEntity<?> handle(NginxConfDeleteFailedException e) {
-        log.error("NginxRestartFailedException = {}", e.getErrorCode().getMessage());
+        log.error("NginxConfDeleteFailedException = {}", e.getErrorCode().getMessage());
+        log.error("Error Message = {}", e.getErrorMessage());
+        log.error("Error Detail = {}", e.getErrorDetail());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(GetSSLFailedException.class)
+    protected ResponseEntity<?> handle(GetSSLFailedException e) {
+        log.error("GetSSLFailedException = {}", e.getErrorCode().getMessage());
+        log.error("Error Message = {}", e.getErrorMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(NginxStopFailedException.class)
+    protected ResponseEntity<?> handle(NginxStopFailedException e) {
+        log.error("NginxStopFailedException = {}", e.getErrorCode().getMessage());
         log.error("Error Message = {}", e.getErrorMessage());
         log.error("Error Detail = {}", e.getErrorDetail());
         return response.error(e.getErrorCode());

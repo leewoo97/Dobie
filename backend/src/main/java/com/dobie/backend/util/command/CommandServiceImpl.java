@@ -231,6 +231,22 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
+    public void stopNginx() {
+        sb = new StringBuilder();
+        sb.append("docker stop nginx");
+        CommandLine commandLine = CommandLine.parse(sb.toString());
+        executor.setStreamHandler(streamHandler);
+        try {
+            executor.execute(commandLine);
+            String result = outputStream.toString().trim();
+            System.out.println("stopNginx success : " + result);
+        } catch (Exception e) {
+            String result = outputStream.toString().trim();
+            throw new NginxStopFailedException(e.getMessage(), result);
+        }
+    }
+
+    @Override
     public void deleteNginxProxyConf(String projectId) {
         sb = new StringBuilder();
         sb.append("rm -f /var/dobie/nginx/").append(projectId).append(".conf");
@@ -262,39 +278,37 @@ public class CommandServiceImpl implements CommandService {
         }
     }
 
-    @Override
-    public void getSSL(String domain){
-        sb = new StringBuilder();
-        sb.append("echo \"sudo certbot certonly --standalone --email ys0403ab@naver.com --agree-tos --no-eff-email --keep-until-expiring -d ").append(domain).append("\" > /getSSL_pipe");
-        CommandLine commandLine = CommandLine.parse(sb.toString());
-        System.out.println("실험용");
-        System.out.println(sb.toString());
-        executor.setStreamHandler(streamHandler);
-
-        try {
-            // 명령어 실행
-            executor.execute(commandLine);
-            String result = outputStream.toString().trim();
-            log.info("ssl인증서 받기를 시도했습니다.");
-            System.out.println("getSSL success: " + result);
-        } catch (Exception e) {
-            String result = outputStream.toString().trim();
-            System.out.println("SSL 에러");
-            throw new NginxConfDeleteFailedException(e.getMessage(), result);
-        }
-    }
+//    @Override
+//    public void getSSL(String domain){
+//        sb = new StringBuilder();
+//        sb.append("echo \"sudo certbot certonly --standalone --email ys0403ab@naver.com --agree-tos --no-eff-email --keep-until-expiring -d ").append(domain).append("\" > /getSSL_pipe");
+//        CommandLine commandLine = CommandLine.parse(sb.toString());
+//        System.out.println("실험용");
+//        System.out.println(sb.toString());
+//        executor.setStreamHandler(streamHandler);
+//
+//        try {
+//            // 명령어 실행
+//            executor.execute(commandLine);
+//            String result = outputStream.toString().trim();
+//            log.info("ssl인증서 받기를 시도했습니다.");
+//            System.out.println("getSSL success: " + result);
+//        } catch (Exception e) {
+//            String result = outputStream.toString().trim();
+//            System.out.println("SSL 에러");
+//            throw new NginxConfDeleteFailedException(e.getMessage(), result);
+//        }
+//    }
 
     @Override
     public void getSSLTest(String domain) throws IOException {
         // 호스트의 파이프 경로
         String pipePath = "/getSSL_pipe";
-
-
             // 호스트의 파이프에 쓰기 위한 BufferedWriter 생성
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pipePath)));
 
             // 전달할 명령어
-            String command = "sudo certbot certonly --standalone --email test@naver.com --agree-tos --no-eff-email --keep-until-expiring -d "+domain;
+            String command = "sudo certbot certonly --standalone --dry-run --email test@test.com --agree-tos --no-eff-email --keep-until-expiring -d "+domain;
 
             // 명령어를 파이프에 씀
             writer.write(command);
