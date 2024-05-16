@@ -270,12 +270,14 @@ public class CommandServiceImpl implements CommandService {
         System.out.println("실험용");
         System.out.println(sb.toString());
         executor.setStreamHandler(streamHandler);
+
         try {
+            // 명령어 실행
             executor.execute(commandLine);
             String result = outputStream.toString().trim();
             log.info("ssl인증서 받기를 시도했습니다.");
-            System.out.println("getSSL success : " + result);
-        }catch (Exception e) {
+            System.out.println("getSSL success: " + result);
+        } catch (Exception e) {
             String result = outputStream.toString().trim();
             throw new NginxConfDeleteFailedException(e.getMessage(), result);
         }
