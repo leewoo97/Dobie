@@ -4,6 +4,7 @@ import com.dobie.backend.domain.project.dto.NginxConfigDto;
 import com.dobie.backend.domain.project.dto.NginxProxyDto;
 import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
+import com.dobie.backend.exception.exception.build.GetSSLFailedException;
 import com.dobie.backend.exception.exception.file.NginxFileNotFoundException;
 import com.dobie.backend.exception.exception.build.ProjectPathNotFoundException;
 
@@ -11,6 +12,7 @@ import com.dobie.backend.exception.exception.build.ProjectPathNotFoundException;
 import com.dobie.backend.exception.exception.build.NginxCreateFailedException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 
+import com.dobie.backend.util.command.CommandService;
 import com.dobie.backend.util.file.FileManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -33,6 +35,7 @@ public class NginxConfigServiceImpl implements NginxConfigService {
 
 
     private final ProjectRepository projectRepository;
+    private final CommandService commandService;
     FileManager fileManager = new FileManager();
 
     //리버스프록시 nginx config 파일 생성 후 /nginx에 [projectName].conf 이름으로 저장
@@ -43,6 +46,13 @@ public class NginxConfigServiceImpl implements NginxConfigService {
 
         //https사용 유무 확인
         if (nginxConfig.isUsingHttps()) {
+            commandService.stopNginx(); //NGINX 중지
+            try {
+                commandService.getSSLTest(nginxConfig.getDomain()); //ssl 인증서 발급
+            } catch (IOException e){
+                log.error(e);
+                throw new GetSSLFailedException(e.getMessage());
+            }
             sb.append(withHttpsConfig(nginxConfig)); //https 사용시 config파일 생성
         } else {
             sb.append(withoutHttpsConfig(nginxConfig)); //https 미사용시 config파일 생성
@@ -117,8 +127,8 @@ public class NginxConfigServiceImpl implements NginxConfigService {
         sb.append("    server_name " + nginxConfig.getDomain() + ";\n"); // 사용할 도메인 설정
         sb.append("    index index.html index.htm index.nginx-debian.html;\n");
         sb.append("\n");
-        sb.append("    ssl_certificate " + nginxConfig.getSslCertificate() + "\n"); // SSL 인증서 설정
-        sb.append("    ssl_certificate_key " + nginxConfig.getSslCertificateKey() + "\n"); // SSL 인증서 키 설정
+        sb.append("    ssl_certificate /etc/letsencrypt/live/").append(nginxConfig.getDomain()).append( "/fullchain.pem;\n"); // SSL 인증서 설정
+        sb.append("    ssl_certificate_key /etc/letsencrypt/live/").append(nginxConfig.getDomain()).append( "/privkey.pem;\n"); // SSL 인증서 키 설정
         //보안 강화 추가
         sb.append("\n");
 

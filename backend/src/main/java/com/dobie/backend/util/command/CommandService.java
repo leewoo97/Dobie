@@ -28,8 +28,10 @@ public interface CommandService {
 
     void restartNginx();
 
+    void stopNginx();
+
     void deleteNginxProxyConf(String projectId);
-    void getSSL(String domain);
+//    void getSSL(String domain);
 
     void deleteFile(String fileName, String path);
 
