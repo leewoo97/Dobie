@@ -178,22 +178,14 @@ public class DockerfileServiceImpl implements DockerfileService {
     public void createFastApiDockerfile(String projectName, String version, String path) {
 
         StringBuilder sb = new StringBuilder();
-//        sb.append("FROM python:").append(version).append("\n");
-//        sb.append("WORKDIR /rec\n");
-//        sb.append("COPY ./requirements.txt /rec/requirements.txt\n");
-//        sb.append("COPY ./.env.dev /rec/.env.dev\n");
-//        sb.append("COPY ./.env.prod /rec/.env.prod\n");
-//        sb.append("COPY ./.env /rec/.env\n");
-//        sb.append("RUN pip install -r requirements.txt\n");
-//        sb.append("COPY ./app /rec/app\n");
-//        sb.append("WORKDIR /rec/app\n");
-//        sb.append("CMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]\n");
         sb.append("FROM python:").append(version).append("\n");
-        sb.append("WORKDIR /rec\n");
-        sb.append("COPY ./requirements.txt ./.env.dev ./.env.prod ./.env ./\n");
-        sb.append("RUN pip install -r requirements.txt\n");
-        sb.append("COPY ./app ./app\n");
-        sb.append("WORKDIR /rec/app\n");
+        sb.append("COPY ./requirements.txt /CATTALE/recommend-server/requirements.txt\n");
+        sb.append("RUN pip install -r /CATTALE/recommend-server/requirements.txt\n");
+        sb.append("COPY ./.env.dev /CATTALE/recommend-server/.env.dev\n");
+        sb.append("COPY ./.env.prod /CATTALE/recommend-server/.env.prod\n");
+        sb.append("COPY ./.env /CATTALE/recommend-server/.env\n");
+        sb.append("COPY ./app /CATTALE/recommend-server/app\n");
+        sb.append("WORKDIR /CATTALE/recommend-server/app\n");
         sb.append("CMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]\n");
 
         String dockerfile = sb.toString();
