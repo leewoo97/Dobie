@@ -1,6 +1,7 @@
 package com.dobie.backend.domain.docker.dockerfile.service;
 
 import com.dobie.backend.domain.docker.readjson.service.ReadJsonService;
+import com.dobie.backend.exception.exception.build.FastApiBuildFailedException;
 import com.dobie.backend.exception.exception.docker.DockerPsErrorException;
 import com.dobie.backend.exception.exception.Environment.*;
 import com.dobie.backend.exception.exception.build.BackendBuildFailedException;
@@ -174,6 +175,32 @@ public class DockerfileServiceImpl implements DockerfileService {
     }
 
     @Override
+    public void createFastApiDockerfile(String projectName, String version, String path) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("FROM python:").append(version).append("\n");
+        sb.append("WORKDIR /rec\n");
+        sb.append("COPY ./requirements.txt /rec/requirements.txt\n");
+        sb.append("COPY ./.env.dev /rec/.env.dev\n");
+        sb.append("COPY ./.env.prod /rec/.env.prod\n");
+        sb.append("COPY ./.env /rec/.env\n");
+        sb.append("RUN pip install -r requirements.txt\n");
+        sb.append("COPY ./app /rec/app\n");
+        sb.append("WORKDIR /rec/app\n");
+        sb.append("CMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]\n");
+        String dockerfile = sb.toString();
+
+        // ec2 서버에서 깃클론하는 경로로 수정하기
+        String filePath = "./" + projectName + path;
+        checkRequirementsTxt(filePath);
+        try {
+            fileManager.saveFile(filePath, "Dockerfile", dockerfile);
+        } catch (SaveFileFailedException e) {
+            throw new FastApiBuildFailedException(e.getErrorMessage());
+        }
+    }
+
+    @Override
     public void checkBuildGradle(String filepath) {
 //        System.out.println("백엔드 오류 잡기 위한 파일 패스 : " + filepath);
         File directory = new File(filepath); // 디렉토리 경로 지정
@@ -234,12 +261,35 @@ public class DockerfileServiceImpl implements DockerfileService {
                 }
             }
             if (!correctPath) {
-//                System.out.println("파일 경로에 pom.xml이 존재하지않습니다.");
+//                System.out.println("파일 경로에 package.json이 존재하지않습니다.");
                 throw new PackageJsonNotFoundException();
             }
         } else {
 //            System.out.println("파일 경로 자체가 잘못되었음.");
             throw new FrontendFilePathNotExistException();
+        }
+    }
+
+    @Override
+    public void checkRequirementsTxt(String filepath) {
+        File directory = new File(filepath); // 디렉토리 경로 지정
+        File[] filesList = directory.listFiles(); // 디렉토리의 모든 파일 및 폴더 목록 얻기
+        boolean correctPath = false;
+        if (filesList != null) {
+            for (File file : filesList) {
+                if (file.getName().equals("requirements.txt")) {
+//                    System.out.println("Name: " + file.getName()); // 파일 또는 디렉토리 이름 출력
+                    correctPath = true;
+                    break;
+                }
+            }
+            if (!correctPath) {
+//                System.out.println("파일 경로에 requirements.txt가 존재하지않습니다.");
+                throw new RequirementsTxtNotFoundException();
+            }
+        } else {
+//            System.out.println("파일 경로 자체가 잘못되었음.");
+            throw new FastApiFilePathNotExistException();
         }
     }
 

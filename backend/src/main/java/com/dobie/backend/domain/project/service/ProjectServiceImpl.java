@@ -157,6 +157,8 @@ public class ProjectServiceImpl implements ProjectService {
                 dockerfileService.createGradleDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
             } else if (value.getFramework().equals("SpringBoot(maven)")) {
                 dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
+            } else if (value.getFramework().equals("Fastapi")) {
+                dockerfileService.createFastApiDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
             }
         });
 
