@@ -252,33 +252,19 @@ public class CommandServiceImpl implements CommandService {
         }
     }
     @Override
-    public String getSSL(String domain){
+    public void getSSL(String domain){
+        sb = new StringBuilder();
+        sb.append("echo \"certbot certonly --standalone --dry-run --email ys0403ab@naver.com --agree-tos --no-eff-email --keep-until-expiring -d ").append(domain).append("\" > /getSSL_pipe");
+        CommandLine commandLine = CommandLine.parse(sb.toString());
+        executor.setStreamHandler(streamHandler);
         try {
-            // 명령어 실행
-            Process process = Runtime.getRuntime().exec("/usr/bin/certbot certonly --standalone --dry-run --email test@test.com --agree-tos --no-eff-email --keep-until-expiring -d " + domain);
-
-            // 외부 명령의 출력 스트림을 가져옴
-            InputStream inputStream = process.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            // 외부 명령 실행 결과를 읽어옴
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line); // 출력 로그를 출력하거나 원하는 대로 처리
-            }
-
-            // 외부 명령 실행 결과 확인
-            int exitCode = process.waitFor();
-            if (exitCode == 0) {
-                System.out.println("Command executed successfully");
-            } else {
-                System.out.println("Command failed with exit code " + exitCode);
-            }
-            return line;
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return  null;
+            executor.execute(commandLine);
+            String result = outputStream.toString().trim();
+            log.info("ssl인증서 받기를 시도했습니다.");
+            System.out.println("getSSL success : " + result);
+        }catch (Exception e) {
+            String result = outputStream.toString().trim();
+            throw new NginxConfDeleteFailedException(e.getMessage(), result);
         }
     }
 

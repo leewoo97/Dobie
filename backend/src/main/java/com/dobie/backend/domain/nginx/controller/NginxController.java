@@ -42,14 +42,7 @@ public class NginxController {
     @Operation(summary = "ssl 인증서 발급", description = "ssl 인증서 발급")
     @GetMapping ("/ssl")
     public ResponseEntity<?> getSSLCertificate(@RequestParam(name = "domain") String domain){
-        String result ="";
-        try {
-            result=commandService.getSSL(domain);
-
-        }catch(Exception error) {
-            return response.error(ErrorCode.NGINX_CONFIG_READ_FAILED);
-        }
-
-        return response.success(ResponseCode.NGINX_CONFIG_READ_SUCCESS,result);
+        commandService.getSSL(domain);
+        return response.success(ResponseCode.NGINX_CONFIG_READ_SUCCESS);
     }
 }
