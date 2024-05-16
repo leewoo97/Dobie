@@ -5,6 +5,7 @@ import ProjectTop from "../common/ProjectTop";
 
 import GetBox from "../common/GetBox";
 import GetSecretBox from "../common/GetSecretBox";
+import nopage from "../../assets/nopage.PNG";
 
 export default function DatabaseFrame() {
   const { selectedProject } = useProjectStore();
@@ -12,9 +13,26 @@ export default function DatabaseFrame() {
   const params = useParams();
 
   const serviceId = params.databaseId;
+
+  if(serviceId === "databaseProjectNotFound"){
+    return(
+      <>
+        <div className={styles.page}>
+          <ProjectTop projectName={selectedProject.projectName} page={"database"} />
+          <div className={styles.con}>
+            <img src={nopage} alt={"등록된 페이지 없음"} className={styles.img}/>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  console.log(selectedProject);
   const selectedDatabase = new Map(
     Object.entries(selectedProject.databaseMap)
   ).get(serviceId);
+  console.log(serviceId);
+
   return (
     <div className={styles.page}>
       <ProjectTop projectName={selectedProject.projectName} page={"database"}/>

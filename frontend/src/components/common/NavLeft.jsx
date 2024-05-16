@@ -11,39 +11,47 @@ export default function NavLeft({ num }) {
   const { selectedProject } = useProjectStore();
 
   const params = useParams();
-  const serviceId = params.serviceId;
-  const databaseId = params.databaseId;
+  let serviceId = params.serviceId;
+  let databaseId = params.databaseId;
 
   const [spreadBackend, setSpreadBackend] = useState(serviceId ? true : false);
-  const [spreadDatabase, setSpreadDatabase] = useState(
-    databaseId ? true : false
-  );
-
-  // useEffect(()=>{
-  //   if(!serviceId){
-  //     navigate("/manage/frontend");
-  //   }
-  // },[serviceId]);
+  const [spreadDatabase, setSpreadDatabase] = useState(databaseId ? true : false);
 
   const changeStateBE = () => {
-    if (!spreadBackend) {
+    if(Object.keys(selectedProject.backendMap).length === 0){
+      serviceId = "backendProjectNotFound";
+    }
+    if (serviceId !== "backendProjectNotFound") {
       setSpreadBackend(true);
+      console.log(serviceId);
       navigate(
         `/manage/backend/${
           Object.values(selectedProject.backendMap).at(0).serviceId
         }`
       );
     }
+    else {
+      setSpreadBackend(true);
+      navigate(
+        `/manage/backend/backendProjectNotFound`
+      );
+    }
   };
 
   const changeStateDB = () => {
-    if (!spreadDatabase) {
-      setSpreadBackend(true);
+    if(Object.keys(selectedProject.databaseMap).length === 0){
+      databaseId = "databaseProjectNotFound";
+    }
+    if (databaseId !== "databaseProjectNotFound") {
+      setSpreadDatabase(true);
       navigate(
         `/manage/database/${
           Object.values(selectedProject.databaseMap).at(0).databaseId
         }`
       );
+    }else {
+      setSpreadDatabase(true);
+      navigate(`/manage/database/databaseProjectNotFound`);
     }
   };
 
@@ -125,7 +133,6 @@ export default function NavLeft({ num }) {
             className={styles.homeIcon}
           />
         </div>
-        {/* <img src={mainBtn} alt="search_icon" onClick={() => navigate("/main")} className={styles.img}/> */}
       </div>
     </div>
   );
