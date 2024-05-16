@@ -14,6 +14,8 @@ public interface DockerfileService {
 
     void createFastApiDockerfile(String projectName, String version, String path);
 
+    void createDjangoDockerfile(String projectName, String version, String path, int internalPort);
+
     /* 경로 확인 메소드 */
     void checkBuildGradle(String filepath);
 

@@ -1,6 +1,7 @@
 package com.dobie.backend.domain.docker.dockerfile.service;
 
 import com.dobie.backend.domain.docker.readjson.service.ReadJsonService;
+import com.dobie.backend.exception.exception.build.DjangoBuildFailedException;
 import com.dobie.backend.exception.exception.build.FastApiBuildFailedException;
 import com.dobie.backend.exception.exception.docker.DockerPsErrorException;
 import com.dobie.backend.exception.exception.Environment.*;
@@ -197,6 +198,32 @@ public class DockerfileServiceImpl implements DockerfileService {
         } catch (SaveFileFailedException e) {
             throw new FastApiBuildFailedException(e.getErrorMessage());
         }
+    }
+
+    @Override
+    public void createDjangoDockerfile(String projectName, String version, String path, int internalPort) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("FROM python:").append(version).append("-slim\n");
+        sb.append("WORKDIR /app\n");
+        sb.append("ENV PYTHONDONTWRITEBYTECODE 1\n");
+        sb.append("ENV PYTHONUNBUFFERED 1\n");
+        sb.append("COPY requirements.txt /app/\n");
+        sb.append("RUN pip install --no-cache-dir -r requirements.txt\n");
+        sb.append("COPY . /app/\n");
+        sb.append("EXPOSE ").append(internalPort);
+        sb.append("CMD [\"python\", \"manage.py\", \"runserver\", \"0.0.0.0:").append(internalPort).append("\"]\n");
+        String dockerfile = sb.toString();
+
+        // ec2 서버에서 깃클론하는 경로로 수정하기
+        String filePath = "./" + projectName + path;
+        checkRequirementsTxt(filePath);
+        try {
+            fileManager.saveFile(filePath, "Dockerfile", dockerfile);
+        } catch (SaveFileFailedException e) {
+            throw new DjangoBuildFailedException(e.getErrorMessage());
+        }
+
     }
 
     @Override

@@ -60,7 +60,10 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                                                                    mysql, mongodb, redis,
                                                                    projectDto.getFrontend().getInternalPort()));
             } else if (backendDto.getFramework().equals("Django")) {
-
+                dockercompose.append(createDjangoComposeFile(projectDto.getProjectDomain(), backendSeq, backendDto.getServiceId(),
+                                                             backendDto.getPath(), backendDto.getExternalPort(),
+                                                             backendDto.getInternalPort(),
+                                                             mysql, mongodb, redis, projectDto.getFrontend().getInternalPort()));
             } else if (backendDto.getFramework().equals("Fastapi")) {
                 //Framework가 SpringBoot(gradle)이면 gradle, SpringBoot(Maven)이면 Maven
                 dockercompose.append(createFastApiComposeFile(
@@ -217,6 +220,30 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
 
 //        sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
+
+        // network
+        sb.append("    networks:\n");
+        sb.append("      - ").append("dobie").append("\n");
+
+        return sb.toString();
+    }
+
+    private String createDjangoComposeFile(String domain, String seq, String serviceId, String path,
+                                           int externalPort, int internalPort, DatabaseGetResponseDto mysql,
+                                           DatabaseGetResponseDto mongodb, DatabaseGetResponseDto redis,
+                                           int frontInternalPort) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("  django").append(seq).append(":\n");
+        sb.append("    container_name: ").append(serviceId).append("\n");
+        sb.append("    build:\n");
+        sb.append("      context: .").append(path).append("\n");
+        sb.append("    ports:\n");
+        sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
+        sb.append("    volumes:\n");
+        sb.append("      - /var/run/docker.sock:/var/run/docker.sock\n");
+        sb.append("    environment:\n");
+        sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
 
         // network
         sb.append("    networks:\n");
