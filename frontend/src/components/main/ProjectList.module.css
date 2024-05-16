@@ -6,7 +6,7 @@
 
 .colume {
   display: flex;
-  padding: 0vw 4.6vw;
+  padding: 0vw 4.5vw;
 }
 
 .colume div {
@@ -18,12 +18,15 @@
   flex-basis: 20%;
 }
 .colume > div:nth-child(2) {
-  flex-basis: 35%;
+  flex-basis: 30%;
 }
 .colume > div:nth-child(3) {
-  flex-basis: 35%;
+  flex-basis: 20%;
 }
 .colume > div:nth-child(4) {
+  flex-basis: 20%;
+}
+.colume > div:nth-child(5) {
   flex-basis: 10%;
 }
 
@@ -36,7 +39,7 @@
 .box {
   display: flex;
   margin: 30px 0;
-  border-radius: 10px;
+  border-radius: 1vw;
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.25);
   align-items: center;
   display: flex;

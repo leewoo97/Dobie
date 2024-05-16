@@ -4,7 +4,7 @@ import useModalStore from "../../stores/modalStore";
 import toast from "react-hot-toast";
 import styles from "./ProjectItem.module.css";
 import useProjectStore from "../../stores/projectStore";
-import { startProject, stopProject } from "../../api/Project";
+import { buildProject, startProject, stopProject } from "../../api/Project";
 import { checkProceeding } from "../../api/CheckProcess";
 import LoadingModal from "../modal/LoadingModal";
 
@@ -13,6 +13,7 @@ import github from "../../assets/github.png";
 import run from "../../assets/run.png";
 import stop from "../../assets/stop.png";
 import restart from "../../assets/restart.png";
+import build from "../../assets/settings.png";
 
 export default function ProjectItem({ project }) {
   const navigate = useNavigate();
@@ -49,6 +50,23 @@ export default function ProjectItem({ project }) {
       navigate("/manage");
     } catch (error) {
       console.error("프로젝트 store 저장 실패:", error);
+    }
+  };
+
+  // 프로젝트 빌드
+  const handleProjectBuild = async (projectId) => {
+    try {
+      setAction("build");
+      setLoadingModal(true);
+      const response = await buildProject(projectId);
+      if (response.data.status === "SUCCESS") {
+        setLoadingModal(false);
+        toast.success("빌드파일이 성공적으로 생성되었습니다.");
+      } else {
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.log("에러발생", error);
     }
   };
 
@@ -94,13 +112,24 @@ export default function ProjectItem({ project }) {
 
   const linkGit = () => {
     window.open(project.git.gitUrl);
-  }
+  };
 
   return (
     <>
       <div className={styles.content} onClick={() => handleSubmit()}>
         <div key={project.projectName}>{project.projectName}</div>
         <div key={project.projectDomain}>{project.projectDomain}</div>
+        <div className={styles.buildIcon}>
+          <img
+            src={build}
+            className={styles.build}
+            alt=""
+            onClick={(event) => {
+              event.stopPropagation();
+              handleProjectBuild(project.projectId);
+            }}
+          />
+        </div>
         <div className={styles.runButton}>
           <img
             src={checkProceed.allRunning === "Run" ? restart : run}

@@ -25,7 +25,7 @@ export default function Madal() {
         {action === "run" && (
           <div className={styles.modalContent}>
             <Animaion />
-            <div className={styles.runtext}>Building...</div>
+            <div className={styles.runtext}>Running...</div>
             <div className={styles.modalhead}></div>
           </div>
         )}
@@ -40,6 +40,13 @@ export default function Madal() {
           <div className={styles.modalContent}>
             <SaveAnimaion />
             <div className={styles.savetext}>Saving...</div>
+            <div className={styles.modalhead}></div>
+          </div>
+        )}
+        {action === "build" && (
+          <div className={styles.modalContent}>
+            <SaveAnimaion />
+            <div className={styles.savetext}>Building...</div>
             <div className={styles.modalhead}></div>
           </div>
         )}

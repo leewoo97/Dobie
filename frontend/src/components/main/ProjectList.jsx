@@ -30,6 +30,7 @@ export default function ProjectList() {
       <div className={styles.colume}>
         <div>프로젝트명</div>
         <div>도메인주소</div>
+        <div>빌드</div>
         <div>실행</div>
         <div>Git Link</div>
       </div>
