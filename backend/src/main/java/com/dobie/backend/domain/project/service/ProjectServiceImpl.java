@@ -21,6 +21,7 @@ import com.dobie.backend.util.file.FileManager;
 import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -112,6 +113,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void updateProject(ProjectRequestDto dto) {
+        if(dto.getProjectId() == null){
+            dto.setProjectId(UUID.randomUUID().toString());
+        }
         Project project = new Project(dto);
         Map<String, SettingFile> fileMap = getAllFiles(dto.getProjectId());
         project.updateFileMap(fileMap);
