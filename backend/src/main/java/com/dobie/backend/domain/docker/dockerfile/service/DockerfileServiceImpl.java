@@ -178,16 +178,24 @@ public class DockerfileServiceImpl implements DockerfileService {
     public void createFastApiDockerfile(String projectName, String version, String path) {
 
         StringBuilder sb = new StringBuilder();
+//        sb.append("FROM python:").append(version).append("\n");
+//        sb.append("WORKDIR /rec\n");
+//        sb.append("COPY ./requirements.txt /rec/requirements.txt\n");
+//        sb.append("COPY ./.env.dev /rec/.env.dev\n");
+//        sb.append("COPY ./.env.prod /rec/.env.prod\n");
+//        sb.append("COPY ./.env /rec/.env\n");
+//        sb.append("RUN pip install -r requirements.txt\n");
+//        sb.append("COPY ./app /rec/app\n");
+//        sb.append("WORKDIR /rec/app\n");
+//        sb.append("CMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]\n");
         sb.append("FROM python:").append(version).append("\n");
         sb.append("WORKDIR /rec\n");
-        sb.append("COPY ./requirements.txt /rec/requirements.txt\n");
-        sb.append("COPY ./.env.dev /rec/.env.dev\n");
-        sb.append("COPY ./.env.prod /rec/.env.prod\n");
-        sb.append("COPY ./.env /rec/.env\n");
+        sb.append("COPY ./requirements.txt ./.env.dev ./.env.prod ./.env ./\n");
         sb.append("RUN pip install -r requirements.txt\n");
-        sb.append("COPY ./app /rec/app\n");
+        sb.append("COPY ./app ./app\n");
         sb.append("WORKDIR /rec/app\n");
         sb.append("CMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]\n");
+
         String dockerfile = sb.toString();
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
