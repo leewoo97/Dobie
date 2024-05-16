@@ -57,7 +57,7 @@ export default function BackendFrame() {
     }
 
     const emptyBackend = {
-        serviceId:"",
+        serviceId: "",
         serviceName: "",
         language: "",
         version: "",
@@ -107,6 +107,12 @@ export default function BackendFrame() {
         tempProject.backendMap[selectedKey] = { ...selectedBackend };
         setTempProject({ ...tempProject });
     }
+    
+    const changeLocationHandler = (e) => {
+        selectedBackend.location = e.target.value;
+        tempProject.backendMap[selectedKey] = { ...selectedBackend };
+        setTempProject({ ...tempProject });
+    }
 
     const changeInternalPortHandler = (e) => {
         selectedBackend.internalPort = Number(e.target.value);
@@ -146,7 +152,7 @@ export default function BackendFrame() {
             </div>
 
             <div className={Object.keys(tempProject.backendMap).length !== 0 ? styles.hide : styles.notHide} >
-                <img src={notFound} className={styles.notFound}/>
+                <img src={notFound} className={styles.notFound} />
             </div>
 
             <div className={Object.keys(tempProject.backendMap).length === 0 ? styles.hide : ""}>
@@ -157,11 +163,11 @@ export default function BackendFrame() {
                 <InputSelectBox keyName={"언어버전"} list={versionList} value={selectedBackend.language + " " + selectedBackend.version} onChange={changeVersionHandler} />
                 <DescBox desc={"Backend 서비스의 언어 버전을 선택하세요"} />
 
-                <InputBox keyName={"폴더 경로"} value={selectedBackend.path} valueName={"/frontend"} onChange={changePathHandler} />
+                <InputBox keyName={"폴더 경로"} value={selectedBackend.path} valueName={"/backend"} onChange={changePathHandler} />
                 <DescBox desc={"프로젝트 루트 경로로부터 해당 프레임워크 폴더 경로를 작성하세요"} />
 
-                {/* <InputBox keyName={"브랜치"} valueName={"dev-be"} />
-            <DescBox desc={"해당 프레임워크를 빌드 시킬 브랜치명을 작성하세요"} /> */}
+                <InputBox keyName={"Nginx location"} valueName={"/api"} value={selectedBackend.location} onChange={changeLocationHandler} />
+                <DescBox desc={"Nginx location을 작성하세요"} />
 
                 <InputBox keyName={"내부 포트 번호"} value={selectedBackend.internalPort} valueName={"8080"} onChange={changeInternalPortHandler} />
                 <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />

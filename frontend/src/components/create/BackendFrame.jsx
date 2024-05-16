@@ -98,6 +98,12 @@ export default function BackendFrame() {
     setTempProject({ ...tempProject });
   };
 
+  const changeLocationHandler = (e) => {
+    selectedBackend.location = e.target.value;
+    tempProject.backendMap[selectedKey] = { ...selectedBackend };
+    setTempProject({ ...tempProject });
+  };
+
   const changeInternalPortHandler = (e) => {
     selectedBackend.internalPort = Number(e.target.value);
     tempProject.backendMap[selectedKey] = { ...selectedBackend };
@@ -165,8 +171,8 @@ export default function BackendFrame() {
           desc={"프로젝트 루트 경로로부터 해당 프레임워크 폴더 경로를 작성하세요"}
         />
 
-        {/* <InputBox keyName={"브랜치"} valueName={"dev-be"} value={selectedBackend.branch}/>
-              <DescBox desc={"해당 프레임워크를 빌드 시킬 브랜치명을 작성하세요"} /> */}
+        <InputBox keyName={"Nginx location"} valueName={"/api"} value={selectedBackend.location} onChange={changeLocationHandler}/>
+        <DescBox desc={"Nginx location을 작성하세요"} />
 
         <InputBox
           keyName={"내부 포트 번호"}

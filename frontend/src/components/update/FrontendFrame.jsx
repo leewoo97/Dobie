@@ -44,6 +44,16 @@ export default function FrontendFrame() {
         }))
     }
 
+    const changeLocationHandler = (e) => {
+        setTempProject(prev => ({
+            ...prev,
+            frontend: {
+                ...prev.frontend,
+                location: e.target.value
+            }
+        }))
+    }
+
     const changeInternalPortHandler = (e) => {
         setTempProject(prev => ({
             ...prev,
@@ -69,6 +79,9 @@ export default function FrontendFrame() {
 
             <InputBox keyName={"폴더 경로"} value={tempProject.frontend.path} valueName={"/frontend"} onChange={changePathHandler} />
             <DescBox desc={"프로젝트 루트 경로로부터 해당 프레임워크 폴더 경로를 작성하세요"} />
+
+            <InputBox keyName={"Nginx location"} value={tempProject.frontend.location} valueName={"/api"} onChange={changeLocationHandler} />
+            <DescBox desc={"Nginx location을 작성하세요"} />
 
             <InputBox keyName={"내부 포트 번호"} value={tempProject.frontend.internalPort} valueName={"3000"} onChange={changeInternalPortHandler} />
             <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
