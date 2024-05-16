@@ -51,7 +51,7 @@ public class NginxController {
        try {
            commandService.getSSLTest(domain);
        }catch (IOException e) {
-           return response.error(ErrorCode.NGINX_CONFIG_READ_FAILED);
+           return response.error(ErrorCode.GET_SSL_FAILED);
        }
         return response.success(ResponseCode.NGINX_CONFIG_READ_SUCCESS);
     }

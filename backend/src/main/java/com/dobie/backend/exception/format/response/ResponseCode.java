@@ -28,10 +28,11 @@ public enum ResponseCode {
     /* 파일 내용 조회 */
     CHECK_DB_CONTAINER_STATUS_SUCCESS(HttpStatus.OK, "DB실행상태 조회가 성공적으로 완료되었습니다."),
     CHECK_BACKEND_CONTAINER_STATUS_SUCCESS(HttpStatus.OK, "백엔드실행상태 조회가 성공적으로 완료되었습니다."),
-    /* nginx config 파일 */
+    /* nginx */
     NGINX_CONFIG_READ_SUCCESS(HttpStatus.OK, "niginx config파일을 성공적으로 조회했습니다."),
     NGINX_RESTART_SUCCESS(HttpStatus.OK, "Nginx Container를 재실행하는데 성공했습니다."),
     NGINX_CONF_DELETE_SUCCESS(HttpStatus.OK, "Nginx Config 파일을 성공적으로 삭제했습니다."),
+    GET_SSL_SUCCESS(HttpStatus.OK, "SSL인증서를 성공적으로 발급받았습니다."),
 
     /* gitignore 파일 첨부 */
     FILE_UPLOAD_SUCCESS(HttpStatus.OK, "파일이 성공적으로 저장되었습니다."),
