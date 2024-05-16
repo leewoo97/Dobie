@@ -247,6 +247,22 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
+    public void deleteFile(String fileName, String path){
+        sb = new StringBuilder();
+        sb.append("rm -f ").append(path).append(fileName);
+        CommandLine commandLine = CommandLine.parse(sb.toString());
+        executor.setStreamHandler(streamHandler);
+        try {
+            executor.execute(commandLine);
+            String result = outputStream.toString().trim();
+            System.out.println("delete "+fileName+" success : " + result);
+        } catch (Exception e) {
+            String result = outputStream.toString().trim();
+            throw new DeleteFileFailedException(e.getMessage(), result);
+        }
+    }
+    
+    @Override
     public void getSSL(String domain){
         sb = new StringBuilder();
         sb.append("echo \"certbot certonly --standalone --dry-run --email ys0403ab@naver.com --agree-tos --no-eff-email --keep-until-expiring -d ").append(domain).append("\" > /getSSL_pipe");
