@@ -6,8 +6,17 @@ import lombok.Getter;
 @Getter
 public class DeleteFileFailedException extends RuntimeException {
     private final ErrorCode errorCode;
+    private final String errorMessage;
+    private String errorDetail;
 
-    public DeleteFileFailedException() {
+    public DeleteFileFailedException(String errorMessage) {
         this.errorCode = ErrorCode.DELETE_FILE_FAILED;
+        this.errorMessage = errorMessage;
+    }
+
+    public DeleteFileFailedException(String errorMessage, String errorDetail) {
+        this.errorCode = ErrorCode.DELETE_FILE_FAILED;
+        this.errorMessage = errorMessage;
+        this.errorDetail = errorDetail;
     }
 }

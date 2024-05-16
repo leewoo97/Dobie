@@ -142,7 +142,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DeleteFileFailedException.class)
     protected ResponseEntity<?> handle(DeleteFileFailedException e) {
         log.error("DeleteFileFailedException = {}", e.getErrorCode().getMessage());
-//        log.error("Error Message = {}", e.getErrorMessage());
+        log.error("Error Message = {}", e.getErrorMessage());
+        log.error("Cause : {}", e.getCause().getMessage());
         return response.error(e.getErrorCode());
     }
 

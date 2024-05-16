@@ -1,6 +1,7 @@
 package com.dobie.backend.util.command;
 
 import com.dobie.backend.exception.exception.build.*;
+import com.dobie.backend.exception.exception.file.DeleteFileFailedException;
 import com.dobie.backend.exception.exception.git.GitCheckoutFailedException;
 import com.dobie.backend.exception.exception.git.GitCloneFailedException;
 import com.dobie.backend.exception.exception.git.GitPullFailedException;
@@ -286,10 +287,10 @@ public class CommandServiceImpl implements CommandService {
         try {
             executor.execute(commandLine);
             String result = outputStream.toString().trim();
-            System.out.println("deleteNginxConf success : " + result);
+            System.out.println("delete "+fileName+" success : " + result);
         } catch (Exception e) {
             String result = outputStream.toString().trim();
-            throw new NginxConfDeleteFailedException(e.getMessage(), result);
+            throw new DeleteFileFailedException(e.getMessage(), result);
         }
     }
 
