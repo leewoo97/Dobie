@@ -45,4 +45,14 @@ public class NginxController {
         commandService.getSSL(domain);
         return response.success(ResponseCode.NGINX_CONFIG_READ_SUCCESS);
     }
+    @Operation(summary = "ssl", description = "ssl")
+    @GetMapping ("/ssltest")
+    public ResponseEntity<?> getSSLCertificateTest(@RequestParam(name = "domain") String domain){
+       try {
+           commandService.getSSLTest(domain);
+       }catch (IOException e) {
+           return response.error(ErrorCode.NGINX_CONFIG_READ_FAILED);
+       }
+        return response.success(ResponseCode.NGINX_CONFIG_READ_SUCCESS);
+    }
 }
