@@ -63,14 +63,12 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
             } else if (backendDto.getFramework().equals("Fastapi")) {
                 //Framework가 SpringBoot(gradle)이면 gradle, SpringBoot(Maven)이면 Maven
-                dockercompose.append(createSpringDockerComposeFile(projectDto.getProjectDomain(),
-                        backendDto.getFramework(),
+                dockercompose.append(createFastApiComposeFile(
                         backendSeq, backendDto.getServiceId(),
                         backendDto.getPath(),
                         backendDto.getExternalPort(),
-                        backendDto.getInternalPort(),
-                        mysql, mongodb, redis,
-                        projectDto.getFrontend().getInternalPort()));
+                        backendDto.getInternalPort()
+                        ));
             }
             else {
                 throw new BackendFrameWorkNotFoundException();
