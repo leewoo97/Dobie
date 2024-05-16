@@ -29,8 +29,7 @@ public interface CommandService {
     void restartNginx();
 
     void deleteNginxProxyConf(String projectId);
-
-    String getSSL(String domain);
+    void getSSL(String domain);
 
     void deleteFile(String fileName, String path);
 }
