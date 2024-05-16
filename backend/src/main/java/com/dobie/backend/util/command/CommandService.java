@@ -32,5 +32,7 @@ public interface CommandService {
     void getSSL(String domain);
 
     void deleteFile(String fileName, String path);
+
+    void getSSLTest(String domain) throws IOException;
 }
 
