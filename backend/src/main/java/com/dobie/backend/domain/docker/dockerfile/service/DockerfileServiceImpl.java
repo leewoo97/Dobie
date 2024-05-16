@@ -7,6 +7,7 @@ import com.dobie.backend.exception.exception.build.BackendBuildFailedException;
 import com.dobie.backend.exception.exception.build.FrontendBuildFailedException;
 import com.dobie.backend.exception.exception.docker.DockerPsLinePartsErrorException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
+import com.dobie.backend.util.command.CommandService;
 import com.dobie.backend.util.file.FileManager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +21,9 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +35,7 @@ public class DockerfileServiceImpl implements DockerfileService {
 
     private final ReadJsonService readJsonService;
 
+    CommandService commandService;
     FileManager fileManager = new FileManager();
 
     @Override
@@ -55,6 +60,13 @@ public class DockerfileServiceImpl implements DockerfileService {
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
+
+        // 이미 경로에 Dockerfile이 있다면 삭제하는 코드
+        Path existDockerFile = Paths.get(filePath, "Dockerfile");
+        if(Files.exists(existDockerFile)) {
+            commandService.deleteFile("Dockerfile", filePath);
+        }
+
         // 경로에 build.Gradle이 존재X 또는 경로 자체가 잘못되었다면 오류 발생
         checkBuildGradle(filePath);
         try {
@@ -82,6 +94,13 @@ public class DockerfileServiceImpl implements DockerfileService {
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
+
+        // 이미 경로에 Dockerfile이 있다면 삭제하는 코드
+        Path existDockerFile = Paths.get(filePath, "Dockerfile");
+        if(Files.exists(existDockerFile)) {
+            commandService.deleteFile("Dockerfile", filePath);
+        }
+
         checkBuildPom(filePath);
         try {
             fileManager.saveFile(filePath, "Dockerfile", dockerfile);
@@ -106,6 +125,13 @@ public class DockerfileServiceImpl implements DockerfileService {
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
+
+        // 이미 경로에 Dockerfile이 있다면 삭제하는 코드
+        Path existDockerFile = Paths.get(filePath, "Dockerfile");
+        if(Files.exists(existDockerFile)) {
+            commandService.deleteFile("Dockerfile", filePath);
+        }
+
         checkBuildPackageJson(filePath);
         try {
             fileManager.saveFile(filePath, "Dockerfile", dockerfile);
@@ -132,6 +158,13 @@ public class DockerfileServiceImpl implements DockerfileService {
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
+
+        // 이미 경로에 Dockerfile이 있다면 삭제하는 코드
+        Path existDockerFile = Paths.get(filePath, "Dockerfile");
+        if(Files.exists(existDockerFile)) {
+            commandService.deleteFile("Dockerfile", filePath);
+        }
+
         checkBuildPackageJson(filePath);
         try {
             fileManager.saveFile(filePath, "Dockerfile", dockerfile);

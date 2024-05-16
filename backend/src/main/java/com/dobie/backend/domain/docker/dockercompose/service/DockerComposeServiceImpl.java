@@ -7,16 +7,21 @@ import com.dobie.backend.domain.project.dto.ProjectGetResponseDto;
 import com.dobie.backend.exception.exception.Environment.*;
 import com.dobie.backend.exception.exception.build.DockerComposeCreateFailedException;
 import com.dobie.backend.exception.exception.file.SaveFileFailedException;
+import com.dobie.backend.util.command.CommandService;
 import com.dobie.backend.util.file.FileManager;
 
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class DockerComposeServiceImpl implements DockerComposeService {
 
     FileManager fileManager = new FileManager();
+    CommandService commandService;
 
     @Override
     public void createDockerComposeFile(ProjectGetResponseDto projectDto) {
@@ -100,6 +105,13 @@ public class DockerComposeServiceImpl implements DockerComposeService {
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectDto.getProjectName();
+
+        // 이미 경로에 Dockerfile이 있다면 삭제하는 코드
+        Path existDockerFile = Paths.get(filePath, "docker-compose.yml");
+        if(Files.exists(existDockerFile)) {
+            commandService.deleteFile("docker-compose.yml", filePath);
+        }
+
         try {
             fileManager.saveFile(filePath, "docker-compose.yml", dockercompose.toString());
         } catch (SaveFileFailedException e) {
