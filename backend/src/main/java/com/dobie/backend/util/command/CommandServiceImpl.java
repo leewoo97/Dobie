@@ -261,11 +261,11 @@ public class CommandServiceImpl implements CommandService {
             throw new DeleteFileFailedException(e.getMessage(), result);
         }
     }
-    
+
     @Override
     public void getSSL(String domain){
         sb = new StringBuilder();
-        sb.append("echo \"certbot certonly --standalone --dry-run --email ys0403ab@naver.com --agree-tos --no-eff-email --keep-until-expiring -d ").append(domain).append("\" > /getSSL_pipe");
+        sb.append("echo \"sudo certbot certonly --standalone --email ys0403ab@naver.com --agree-tos --no-eff-email --keep-until-expiring -d ").append(domain).append("\" > /getSSL_pipe");
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
