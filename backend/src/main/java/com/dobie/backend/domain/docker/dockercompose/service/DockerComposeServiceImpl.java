@@ -2,7 +2,6 @@ package com.dobie.backend.domain.docker.dockercompose.service;
 
 import com.dobie.backend.domain.project.dto.BackendGetResponseDto;
 import com.dobie.backend.domain.project.dto.DatabaseGetResponseDto;
-import com.dobie.backend.domain.project.dto.FrontendGetResponseDto;
 import com.dobie.backend.domain.project.dto.ProjectGetResponseDto;
 import com.dobie.backend.exception.exception.Environment.*;
 import com.dobie.backend.exception.exception.build.DockerComposeCreateFailedException;
@@ -10,6 +9,7 @@ import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.util.command.CommandService;
 import com.dobie.backend.util.file.FileManager;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -18,10 +18,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
+@RequiredArgsConstructor
 public class DockerComposeServiceImpl implements DockerComposeService {
 
     FileManager fileManager = new FileManager();
-    CommandService commandService;
+    private final CommandService commandService;
 
     @Override
     public void createDockerComposeFile(ProjectGetResponseDto projectDto) {

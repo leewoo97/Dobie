@@ -35,8 +35,7 @@ import java.util.Map;
 public class DockerfileServiceImpl implements DockerfileService {
 
     private final ReadJsonService readJsonService;
-
-    CommandService commandService;
+    private final CommandService commandService;
     FileManager fileManager = new FileManager();
 
     @Override
