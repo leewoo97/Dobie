@@ -52,7 +52,7 @@ export default function RunProjectItem({ container, type, setContent }) {
     // Db 개별 중지 전 확인
     if (type === "Database") {
       const response = await checkBackendContainer(selectedProject.projectId);
-      if (!(response.data.data === "pass")) {
+      if (!(response.data.data === "Pass")) {
         toast.error(`백엔드 컨테이너가 실행중이어서 DB를 종료할 수 없습니다. `, {
           position: "top-center",
         });
@@ -78,10 +78,10 @@ export default function RunProjectItem({ container, type, setContent }) {
 
   //개별 서비스 실행
   const handleStartService = async (containerName) => {
-    // 백엔드 개벌 실행 전 확인
+    // 백엔드 개별 실행 전 확인
     if (type === "Backend") {
       const response = await checkDbContainer(selectedProject.projectId);
-      if (!(response.data.data === "pass")) {
+      if (!(response.data.data === "Pass")) {
         toast.error(`데이터베이스 컨테이너가 정지중이어서 백엔드를 실행할 수 없습니다. `, {
           position: "top-center",
         });
