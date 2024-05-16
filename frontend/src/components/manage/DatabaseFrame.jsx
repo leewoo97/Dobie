@@ -46,6 +46,18 @@ export default function DatabaseFrame() {
         valueName={selectedDatabase.password}
       />
       <GetBox
+        keyName={"데이터베이스명"}
+        valueName={selectedDatabase.databaseName}
+      />
+      <GetBox
+        keyName={"초기 데이터 파일 경로"}
+        valueName={selectedDatabase.schemaPath}
+      />
+      <GetBox
+        keyName={"외부 포트 번호"}
+        valueName={selectedDatabase.externalPort}
+      />
+      <GetBox
         keyName={"내부 포트 번호"}
         valueName={selectedDatabase.internalPort}
       />
