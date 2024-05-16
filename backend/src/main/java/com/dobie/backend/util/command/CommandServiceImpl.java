@@ -294,7 +294,7 @@ public class CommandServiceImpl implements CommandService {
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pipePath)));
 
             // 전달할 명령어
-            String command = "sudo certbot certonly --standalone --email test@naver.com --agree-tos --no-eff-email --keep-until-expiring -d houng.silvstone.xyz";
+            String command = "sudo certbot certonly --standalone --email test@naver.com --agree-tos --no-eff-email --keep-until-expiring -d "+domain;
 
             // 명령어를 파이프에 씀
             writer.write(command);
