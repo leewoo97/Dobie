@@ -10,7 +10,7 @@ public interface DockerfileService {
 
     void createReactDockerfile(String projectName,String version, String path);
 
-    void createVueDockerfile(String projectName, String version, String path);
+    void createVueDockerfile(String projectName, String version, String path, int internalPort);
 
     void createFastApiDockerfile(String projectName, String version, String path);
 
