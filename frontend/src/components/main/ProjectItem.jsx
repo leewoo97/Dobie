@@ -34,22 +34,22 @@ export default function ProjectItem({ project }) {
 
   //실행상태 조회
   const handleCheckProceding = async () => {
-    const res = await getProject();
-    if (res.data.data !== null) {
-      try {
-        const response = await checkProceeding(project.projectId);
-        if (response.data.status === "SUCCESS") {
-          setCheckProceed(response.data.data);
-        } else {
-          console.log(response.data);
-          setCheckProceed({ allRunning: "null" });
+    try {
+      const response = await checkProceeding(project.projectId);
+      if (response.data.status === "SUCCESS") {
+        setCheckProceed(response.data.data);
+      } else {
+        console.log(response.data);
+        setCheckProceed({ allRunning: "null" });
+        const res = await getProject();
+        if (res.data.data !== null) {
           toast.error(`프로젝트 실행상태를 불러올수 없습니다.`, {
             position: "top-center",
           });
         }
-      } catch (error) {
-        console.error("컨테이너 실행 확인 에러: ", error);
       }
+    } catch (error) {
+      console.error("컨테이너 실행 확인 에러: ", error);
     }
   };
 
