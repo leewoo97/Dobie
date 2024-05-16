@@ -57,6 +57,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    @ExceptionHandler(DjangoBuildFailedException.class)
+    protected ResponseEntity<?> handle(DjangoBuildFailedException e) {
+        log.error("DjangoBuildFailedException = {}", e.getErrorCode().getMessage());
+        log.error("Error Message = {}", e.getErrorMessage());
+        return response.error(e.getErrorCode());
+    }
+
     @ExceptionHandler(NginxCreateFailedException.class)
     protected ResponseEntity<?> handle(NginxCreateFailedException e) {
         log.error("NginxCreateFailedException = {}", e.getErrorCode().getMessage());
@@ -233,6 +240,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(FastApiFilePathNotExistException.class)
     protected ResponseEntity<?> handle(FastApiFilePathNotExistException e) {
         log.error("FastApiFilePathNotExistException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(DjangoFilePathNotExistException.class)
+    protected ResponseEntity<?> handle(DjangoFilePathNotExistException e) {
+        log.error("DjangoFilePathNotExistException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 
