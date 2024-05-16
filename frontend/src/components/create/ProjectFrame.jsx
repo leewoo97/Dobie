@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./ProjectFrame.module.css";
 import InputBox from "../common/InputBox";
 import DescBox from "../common/DescBox";
+import ToggleBox from "../common/ToggleBox";
 import githubImage from "../../assets/github.png";
 import gitlabImage from "../../assets/gitlab.png";
 import useProjectStore from "../../stores/projectStore";
@@ -20,6 +21,12 @@ export default function ProjectFrame() {
     setTempProject((prev) => ({
       ...prev,
       projectName: e.target.value,
+    }));
+  };
+  const changeDomainHandler = (e) => {
+    setTempProject((prev) => ({
+      ...prev,
+      projectDomain: e.target.value,
     }));
   };
 
@@ -44,7 +51,6 @@ export default function ProjectFrame() {
   };
 
   const changeBranchHandler = (e) => {
-    // setUrl(e.target.value);
     setTempProject(prev => ({
       ...prev,
       git: {
@@ -53,7 +59,15 @@ export default function ProjectFrame() {
       }
     }));
   };
+  
+  const changeHttpsHandler = () => {
+    setTempProject(prev => ({
+      ...prev,
+      usingHttps: !prev.usingHttps,
+    }));
+  };
 
+  console.log(tempProject);
   useEffect(() => {
     setCreatedProject(tempProject);
   }, [tempProject]);
@@ -68,6 +82,13 @@ export default function ProjectFrame() {
         value={tempProject.projectName}
       />
       <DescBox desc={"Git 저장소의 프로젝트 최상단 폴더명을 작성하세요"} />
+      <InputBox
+        keyName={"도메인명"}
+        valueName={"dobie.xyz"}
+        onChange={changeDomainHandler}
+        value={tempProject.projectDomain}
+      />
+      <DescBox desc={"도메인명을 작성하세요"} />
       <InputBox
         keyName={"Git Clone URL"}
         valueName={"https://lab.ssafy.com/s10-final/YourProject.git"}
@@ -142,6 +163,12 @@ export default function ProjectFrame() {
       <DescBox
         desc={
           "서버에 반영할 브랜치명을 입력하세요 ('main' or 'master' or 임의의 브랜치) "
+        }
+      />
+      <ToggleBox keyName={"https"} valueName={"true / false"} value={tempProject.usingHttps} onChange={changeHttpsHandler} isToggle/>
+      <DescBox
+        desc={
+          "Https 사용 여부를 선택하세요 ('true'이면 사용, false'이면 미사용)"
         }
       />
     </div>

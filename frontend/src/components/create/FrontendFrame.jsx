@@ -7,8 +7,8 @@ import useProjectStore from "../../stores/projectStore";
 
 export default function FrontendFrame() {
 
-  const {createdProject, setCreatedProject} = useProjectStore();
-  const [tempProject, setTempProject] = useState({...createdProject});
+  const { createdProject, setCreatedProject } = useProjectStore();
+  const [tempProject, setTempProject] = useState({ ...createdProject });
 
   const frameworkList = ["React", "Vue"];
   const versionList = ["node 20.11.0"];
@@ -18,7 +18,7 @@ export default function FrontendFrame() {
       ...prev,
       frontend: {
         ...prev.frontend,
-        framework : value,
+        framework: value,
       },
     }));
   };
@@ -40,7 +40,17 @@ export default function FrontendFrame() {
       ...prev,
       frontend: {
         ...prev.frontend,
-        path : e.target.value,
+        path: e.target.value,
+      },
+    }));
+  };
+
+  const changeLocationHandler = (e) => {
+    setTempProject((prev) => ({
+      ...prev,
+      frontend: {
+        ...prev.frontend,
+        location: e.target.value,
       },
     }));
   };
@@ -50,14 +60,14 @@ export default function FrontendFrame() {
       ...prev,
       frontend: {
         ...prev.frontend,
-        internalPort : e.target.value,
+        internalPort: e.target.value,
       },
     }));
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     setCreatedProject(tempProject);
-  },[tempProject]);
+  }, [tempProject]);
 
   return (
     <div className={styles.page}>
@@ -72,17 +82,22 @@ export default function FrontendFrame() {
       <InputSelectBox
         keyName={"언어버전"}
         list={versionList}
-        value={tempProject.frontend.language+" "+tempProject.frontend.version}
+        value={tempProject.frontend.language + " " + tempProject.frontend.version}
         onChange={changeVersionHandler}
       />
       <DescBox desc={"Frontend 서비스의 언어 버전을 선택하세요"} />
 
-      <InputBox keyName={"폴더 경로"} valueName={"/frontend"} value={tempProject.frontend.path} onChange={changePathHandler}/>
+      <InputBox keyName={"폴더 경로"} valueName={"/frontend"} value={tempProject.frontend.path} onChange={changePathHandler} />
       <DescBox
         desc={"프로젝트 루트 경로로부터 해당 프레임워크 폴더 경로를 작성하세요"}
       />
 
-      <InputBox keyName={"내부 포트 번호"} valueName={"3000"} value={tempProject.frontend.internalPort} onChange={changeInternalPortHandler}/>
+      <InputBox keyName={"Nginx location"} valueName={"/api"} value={tempProject.frontend.location} onChange={changeLocationHandler} />
+      <DescBox
+        desc={"Nginx location을 작성하세요"}
+      />
+
+      <InputBox keyName={"내부 포트 번호"} valueName={"3000"} value={tempProject.frontend.internalPort} onChange={changeInternalPortHandler} />
       <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
 
     </div>

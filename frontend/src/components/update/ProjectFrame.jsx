@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./ProjectFrame.module.css";
 import InputBox from "../common/InputBox";
 import DescBox from "../common/DescBox";
+import ToggleBox from "../common/ToggleBox";
 import githubImage from "../../assets/github.png";
 import gitlabImage from "../../assets/gitlab.png";
 import useProjectStore from "../../stores/projectStore";
@@ -19,6 +20,13 @@ export default function ProjectFrame() {
                 ...prev.git,
                 gitUrl: e.target.value
             }
+        }));
+    };
+
+    const changeDomainHandler = (e) => {
+        setTempProject(prev => ({
+            ...prev,
+            projectDomain: e.target.value
         }));
     };
 
@@ -43,6 +51,13 @@ export default function ProjectFrame() {
         }));
     };
 
+    const changeHttpsHandler = () => {
+        setTempProject(prev => ({
+            ...prev,
+            usingHttps: !prev.usingHttps,
+        }));
+    };
+
     useEffect(() => {
         setUpdatedProject(tempProject);
     }, [tempProject]);
@@ -53,7 +68,8 @@ export default function ProjectFrame() {
                 <div className={styles.text}>프로젝트</div>
                 <div className={styles.projectName}>{updatedProject.projectName}</div>
             </div>
-
+            <InputBox keyName={"Domain Name"} value={tempProject.projectDomain} onChange={changeDomainHandler} />
+            <DescBox desc={"Domain Name을 수정하세요 "} />
             <InputBox keyName={"Git Clone URL"} value={tempProject.git.gitUrl} onChange={changeUrlHandler} />
             <DescBox desc={"GitLab 또는 GitHub 의 프로젝트를 클론하기 위한 URL을 수정하세요 "} />
             <InputBox keyName={"Access Token"} value={tempProject.git.accessToken} onChange={changeTokenHandler} />
@@ -100,8 +116,15 @@ export default function ProjectFrame() {
                 </div>
             </div>
 
-            <InputBox keyName={"Branch"} valueName={"main"} value={tempProject.git.branch} onChange={changeBranchHandler}/>
+            <InputBox keyName={"Branch"} valueName={"main"} value={tempProject.git.branch} onChange={changeBranchHandler} />
             <DescBox desc={"서버에 반영할 브랜치명을 수정하세요 ('main' or 'master' or 임의의 브랜치) "} />
+
+            <ToggleBox keyName={"https"} valueName={"true / false"} value={tempProject.usingHttps} onChange={changeHttpsHandler} isToggle />
+            <DescBox
+                desc={
+                    "Https 사용 여부를 선택하세요 ('true'이면 사용, false'이면 미사용)"
+                }
+            />
         </div>
     );
 }
