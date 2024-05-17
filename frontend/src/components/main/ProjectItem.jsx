@@ -28,10 +28,8 @@ export default function ProjectItem({ project }) {
   const { setAction } = useModalStore();
   const [checkProceed, setCheckProceed] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const { newModal, setNewModal } = useModalStore();
 
   useEffect(() => {
-    setNewModal(false);
     handleCheckProceding();
     setLoadingModal(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps

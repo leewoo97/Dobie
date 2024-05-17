@@ -1,7 +1,6 @@
 import { useRef } from "react";
 
 import styles from "./NewModal.module.css";
-import close from "../../assets/close2.png";
 import LottieAnimation from "../common/LoadingAnimation";
 
 import useModalStore from "../../stores/modalStore";
