@@ -8,7 +8,7 @@ public interface DockerfileService {
 
     void createMavenDockerfile(String projectName, String version, String path);
 
-    void createReactDockerfile(String projectName,String version, String path);
+    void createReactDockerfile(String projectName,String version, String path, boolean usingNginx);
 
     void createVueDockerfile(String projectName, String version, String path, int internalPort);
 
