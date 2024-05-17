@@ -17,6 +17,12 @@ export default function NavLeftUpdate({ num }) {
   const { setAction } = useModalStore();
 
   const handleUpdateProject = async () => {
+    if(!updatedProject.projectDomain || !updatedProject.git.gitUrl 
+      || !updatedProject.git.accessToken || !updatedProject.git.branch){
+      Swal.fire("필수 항목 누락!", "Project 정보를 모두 입력해주세요.", "warning");
+      return
+    }
+
     setAction("save");
     setLoadingModal(true);
     await updateProject(updatedProject).then(() => {

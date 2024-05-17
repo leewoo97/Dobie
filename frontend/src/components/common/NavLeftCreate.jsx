@@ -16,6 +16,12 @@ export default function NavLeftCreate({ num }) {
 
   const { createdProject } = useProjectStore();
   const handleCreatProject = async () => {
+    if(!createdProject.projectName || !createdProject.projectDomain || !createdProject.git.gitType 
+      || !createdProject.git.gitUrl || !createdProject.git.accessToken || !createdProject.git.branch){
+      Swal.fire("필수 항목 누락!", "Project 정보를 모두 입력해주세요.", "warning");
+      return
+    }
+
     setAction("save");
     setLoadingModal(true);
     await createProject(createdProject).then(() => {
