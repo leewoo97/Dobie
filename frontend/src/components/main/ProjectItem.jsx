@@ -19,6 +19,7 @@ import run from "../../assets/run.png";
 import stop from "../../assets/stop.png";
 import restart from "../../assets/restart.png";
 import build from "../../assets/settings.png";
+import NewModal from "../modal/NewModal";
 
 export default function ProjectItem({ project }) {
   const navigate = useNavigate();
@@ -27,9 +28,10 @@ export default function ProjectItem({ project }) {
   const { setAction } = useModalStore();
   const [checkProceed, setCheckProceed] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const { newModal, setNewModal } = useModalStore();
 
   useEffect(() => {
-    setAction("build");
+    setNewModal(false);
     handleCheckProceding();
     setLoadingModal(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -126,7 +128,7 @@ export default function ProjectItem({ project }) {
   return (
     <>
       {isLoading ? (
-        <LoadingModal />
+        <NewModal />
       ) : (
         <>
           <div className={styles.content} onClick={() => handleSubmit()}>

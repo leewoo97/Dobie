@@ -8,7 +8,7 @@ import useModalStore from "../../stores/modalStore";
 
 export default function NewMadal() {
   const modalBackground = useRef();
-  const { setNewModalOpen } = useModalStore();
+  const { setNewModal } = useModalStore();
 
   return (
     <>
@@ -17,12 +17,12 @@ export default function NewMadal() {
         ref={modalBackground}
         onClick={(e) => {
           if (e.target === modalBackground.current) {
-            setNewModalOpen(false);
+            setNewModal(false);
           }
         }}
       >
         <div className={styles.modalContent}>
-          <LottieAnimation/>
+          <LottieAnimation />
         </div>
       </div>
     </>
