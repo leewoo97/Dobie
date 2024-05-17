@@ -5,11 +5,11 @@ import com.dobie.backend.domain.project.dto.NginxConfigDto;
 import java.io.IOException;
 
 public interface NginxConfigService {
-    void saveProxyNginxConfig(String projectId);
+    void saveProxyNginxConfig(String projectId, boolean usingNginx, String frontServiceId);
 
-    String withHttpsConfig(NginxConfigDto nginxConfig);
+    String withHttpsConfig(NginxConfigDto nginxConfig,boolean usingNginx, String frontServiceId);
 
-    String withoutHttpsConfig(NginxConfigDto nginxConfig);
+    String withoutHttpsConfig(NginxConfigDto nginxConfig,boolean usingNginx, String frontServiceId);
 
     void saveFrontNginxConfigFile(String path, String projectName) throws IOException;
 

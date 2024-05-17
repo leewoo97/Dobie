@@ -198,7 +198,7 @@ public class ProjectServiceImpl implements ProjectService {
         dockerComposeService.createDockerComposeFile(projectGetResponseDto);
 
         //nginx proxy config 파일생성
-        nginxConfigService.saveProxyNginxConfig(projectId);
+        nginxConfigService.saveProxyNginxConfig(projectId, frontendInfo.isUsingNginx(), frontendInfo.getServiceId());
 
         if(frontendInfo.isUsingNginx()){
             try {
