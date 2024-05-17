@@ -3,16 +3,14 @@ import styles from "./ProjectFrame.module.css";
 import InputBox from "../common/InputBox";
 import DescBox from "../common/DescBox";
 import ToggleBox from "../common/ToggleBox";
+import RadioBox from "../common/RadioBox";
 import githubImage from "../../assets/github.png";
 import gitlabImage from "../../assets/gitlab.png";
 import useProjectStore from "../../stores/projectStore";
 
 export default function ProjectFrame() {
-  // const [url, setUrl] = useState(null);
-  // const [accessToken, setAccessToken] = useState(null);
-  // const [branch, setBranch] = useState(null);
 
-  const [gittype, setGittype] = useState("gitlab");
+  const [gittype, setGittype] = useState(null);
   const { createdProject, setCreatedProject } = useProjectStore();
   const [tempProject, setTempProject] = useState({ ...createdProject });
 
@@ -27,6 +25,17 @@ export default function ProjectFrame() {
     setTempProject((prev) => ({
       ...prev,
       projectDomain: e.target.value,
+    }));
+  };
+
+  const changeGitTypeHandler = (type) => {
+    setGittype(type);
+    setTempProject((prev) => ({
+      ...prev,
+      git: {
+        ...prev.git,
+        gitType: type,
+      },
     }));
   };
 
@@ -83,12 +92,20 @@ export default function ProjectFrame() {
       />
       <DescBox desc={"Git 저장소의 프로젝트 최상단 폴더명을 작성하세요"} />
       <InputBox
-        keyName={"도메인명"}
+        keyName={"Domain Name"}
         valueName={"dobie.xyz"}
         onChange={changeDomainHandler}
         value={tempProject.projectDomain}
       />
       <DescBox desc={"도메인명을 작성하세요"} />
+      <RadioBox
+        keyName={"Git Type"}
+        valueName={"github"}
+        onChange={changeGitTypeHandler}
+        value={tempProject.git.gitType}
+        isRadio
+      />
+      <DescBox desc={"Git 저장소의 타입을 선택하세요"} />
       <InputBox
         keyName={"Git Clone URL"}
         valueName={"https://lab.ssafy.com/s10-final/YourProject.git"}

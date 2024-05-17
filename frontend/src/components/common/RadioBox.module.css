@@ -1,0 +1,66 @@
+ 
+  .boxFrame {
+    display: flex;
+    flex-direction: row;
+    background-color: #eee9da;
+    width: 80%;
+    margin: 1% auto;
+    padding: 0 3%;
+    border-radius: 1vw;
+    align-items: center;
+  }
+  
+  .key {
+    flex: 30;
+    font-weight: 600;
+  }
+  
+  /* input 태그 */
+  .value {
+    flex: 70;
+  
+    width: calc(100% + 3%);
+    margin-left: -1%;
+    margin-right: -2%;
+    height: 90%;
+    border: 0px solid;
+    border-radius: 1vw;
+    outline: none;
+    padding: 1% 1%;
+    font-size: 100%;
+    font-weight: 500;
+  }
+  
+  .value::placeholder {
+    color: #d9e1e8;
+    opacity: 1;
+    font-size: 100%;
+    font-weight: 500;
+  }
+  
+  .radioGroup {
+    display: flex;
+    align-items: center;
+  }
+  
+  .radioLabel {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .radioIcon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  input[type="radio"] {
+    display: none;
+  }
+  
