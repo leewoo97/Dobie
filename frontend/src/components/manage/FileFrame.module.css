@@ -66,7 +66,6 @@
   font-weight: 500;
 }
 
-
 /* 파일 */
 
 .key {
@@ -95,13 +94,15 @@
   display: flex;
 }
 
-.saveFileButton{
+.saveFileButton {
   display: inline-flex;
   color: white;
-  background-color: #E5AA17;
-  border-radius: 10px;
+  background-color: #e5aa17;
+  border-radius: 0.5vw;
   padding: 1% 2%;
   width: 3%;
+  height: 2.2vh;
+  font-size: 1vw;
   text-align: center;
   justify-content: center;
   align-items: center;
@@ -123,7 +124,7 @@
   display: inline-flex;
   color: white;
   background-color: #93bfcf;
-  border-radius: 10px;
+  border-radius: 0.5vw;
   padding: 1.5% 2.5%;
   width: 15%;
   text-align: center;
@@ -146,7 +147,7 @@
   margin-right: 2%;
   height: 90%;
   border: 0px solid;
-  border-radius: 10px;
+  border-radius: 0.5vw;
   outline: none;
   padding: 1.2% 1%;
   font-size: 100%;
