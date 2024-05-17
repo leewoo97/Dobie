@@ -83,10 +83,11 @@ export default function ProjectItem({ project }) {
       if (checkProceed.allRunning === "Run") {
         setAction("stop");
         setLoadingModal(true);
-        await stopProject(projectId).then(() =>
-          setLoadingModal(false)
-        );
-        window.location.replace("/main");
+        await stopProject(projectId).then(() => setLoadingModal(false));
+        setCheckProceed({ allRunning: "null" });
+        toast.success(`성공적으로 중지되었습니다. `, {
+          position: "top-center",
+        });
       } else {
         toast.error(`이미 중지된 프로젝트 입니다. `, {
           position: "top-center",
@@ -102,18 +103,16 @@ export default function ProjectItem({ project }) {
     try {
       setAction("run");
       setLoadingModal(true);
-      const response = await startProject(projectId).then(() =>
-        setLoadingModal(false)
-      );
-      window.location.replace("/main");
-      if (response.data.status === "SUCCESS") {
-      } else {
-        toast.error(`전체 실행에 실패하였습니다. `, {
-          position: "top-center",
-        });
-      }
+      await startProject(projectId).then(() => setLoadingModal(false));
+      setCheckProceed({ allRunning: "Run" });
+      toast.success(`프로젝트가 정상적으로 실행되었습니다. `, {
+        position: "top-center",
+      });
     } catch (error) {
-      console.log("프로젝트 전체실행 실패");
+      setLoadingModal(false);
+      toast.error(`프로젝트 등록 후 빌드가 진행되어야 합니다. `, {
+        position: "top-center",
+      });
     }
   };
 
