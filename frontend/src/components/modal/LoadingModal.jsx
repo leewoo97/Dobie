@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
 import styles from "./LoadingModal.module.css";
 import Animaion from "../common/Animaion";
 import StopAnimaion from "../common/StopAnimaion";
@@ -7,9 +7,7 @@ import useModalStore from "../../stores/modalStore";
 
 export default function Madal() {
   const modalBackground = useRef();
-
-  const { loadingModal, setLoadingModal } = useModalStore();
-  const { action, setAction } = useModalStore();
+  const { action } = useModalStore();
 
   return (
     <>

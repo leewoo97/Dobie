@@ -7,8 +7,8 @@ import useModalStore from "../../stores/modalStore";
 
 export default function Madal({ content }) {
   const modalBackground = useRef();
-  const { fileType, setFileType } = useModalStore();
-  const { modalOpen, setModalOpen } = useModalStore();
+  const { fileType} = useModalStore();
+  const { setModalOpen } = useModalStore();
 
   return (
     <>
@@ -23,9 +23,9 @@ export default function Madal({ content }) {
       >
         <div className={styles.modalContent}>
           <div className={styles.modalhead}>
-            {fileType == "nginx" && <h2>Nginx Config File</h2>}
-            {fileType == "dockerCompose" && <h2>docker-compose File</h2>}
-            {fileType == "dockerFile" && <h2>docker File</h2>}
+            {fileType === "nginx" && <h2>Nginx Config File</h2>}
+            {fileType === "dockerCompose" && <h2>docker-compose File</h2>}
+            {fileType === "dockerFile" && <h2>docker File</h2>}
 
             <div
               className={styles.closeImg}

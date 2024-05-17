@@ -48,7 +48,7 @@ export default function DobieFrame() {
             해야 합니다.
           </div>
           <a
-            href=""
+            href="https://github.com/eunnseok/dobie-deploy"
             className={styles.link}
             target="_blank"
             rel="noopener noreferrer"

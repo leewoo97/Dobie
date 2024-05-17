@@ -7,7 +7,7 @@ import useModalStore from "../../stores/modalStore";
 
 export default function LogMadal({ content }) {
   const modalBackground = useRef();
-  const { logModalOpen, setLogModalOpen, logContent } = useModalStore();
+  const { setLogModalOpen, logContent } = useModalStore();
 
   return (
     <>

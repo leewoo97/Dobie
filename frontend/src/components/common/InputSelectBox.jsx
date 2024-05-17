@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import styles from "./InputSelectBox.module.css";
 
 export default function InputSelectBox({ keyName, list, value, onChange }) {

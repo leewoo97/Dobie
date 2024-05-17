@@ -41,6 +41,7 @@ export default function RunPage() {
   useEffect(() => {
     handleCheckProceding();
     setLoadingModal(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //실행상태 조회

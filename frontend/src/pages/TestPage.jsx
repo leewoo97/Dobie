@@ -1,8 +1,5 @@
 import { useState } from "react";
-import NavTop from "../components/common/NavTop";
-import NavLeft from "../components/common/NavLeft";
 import LogMadal from "../components/modal/LogModal";
-import { getLog } from "../api/Docker";
 import useModalStore from "../stores/modalStore";
 
 

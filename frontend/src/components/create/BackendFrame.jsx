@@ -112,10 +112,12 @@ export default function BackendFrame() {
 
   useEffect(() => {
     setCreatedProject({ ...tempProject });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tempProject]);
 
   useEffect(() => {
     setSelectedBackend({ ...tempProject.backendMap[selectedKey] });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedKey]);
 
   const frameworkList = ["SpringBoot(gradle)", "SpringBoot(maven)", "Django"];
@@ -140,7 +142,7 @@ export default function BackendFrame() {
       </div>
 
       <div className={Object.keys(tempProject.backendMap).length !== 0 ? styles.hide : styles.notHide} >
-        <img src={notFound} className={styles.notFound} />
+        <img src={notFound} alt="" className={styles.notFound} />
       </div>
 
       <div className={Object.keys(tempProject.backendMap).length === 0 ? styles.hide : ""}>

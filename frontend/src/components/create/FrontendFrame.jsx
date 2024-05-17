@@ -67,6 +67,7 @@ export default function FrontendFrame() {
 
   useEffect(() => {
     setCreatedProject(tempProject);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tempProject]);
 
   return (
