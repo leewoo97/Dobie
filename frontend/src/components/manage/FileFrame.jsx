@@ -133,7 +133,7 @@ export default function FileFrame() {
               multiple
               ref={fileInputRef}
               onChange={handleFileChange}
-              style={{ display: "none" }} // 숨김 처리
+              style={{ display: "none" }}
             />
             <div className={styles.addfileButton} onClick={handleClick}>
               파일 선택
