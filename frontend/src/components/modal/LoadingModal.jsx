@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import styles from "./LoadingModal.module.css";
-import Animaion from "../common/Animaion";
+import Animaion from "../common/RunAnimaion";
 import StopAnimaion from "../common/StopAnimaion";
 import SaveAnimaion from "../common/SaveAnimaion";
 import useModalStore from "../../stores/modalStore";
