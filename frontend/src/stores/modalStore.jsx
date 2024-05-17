@@ -12,6 +12,10 @@ const useModalStore = create(
       setLoadingModal: (loadingModal) => {
         set({ loadingModal: loadingModal });
       },
+      newModal: false,
+      setNewModal: (newModal) => {
+        set({ newModal: newModal });
+      },
       action: "",
       setAction: (action) => {
         set({ action: action });
