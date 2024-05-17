@@ -249,7 +249,7 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public void deleteNginxProxyConf(String projectId) {
         sb = new StringBuilder();
-        sb.append("sudo rm -f /var/dobie/nginx/").append(projectId).append(".conf");
+        sb.append("rm -f /var/dobie/nginx/").append(projectId).append(".conf");
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
