@@ -123,6 +123,8 @@ public class DockerfileServiceImpl implements DockerfileService {
         sb.append("RUN npm run build\n");
         if(usingNginx) {
             sb.append("FROM nginx:alpine\n");
+            sb.append("RUN rm -rf /etc/nginx/conf.d\n");
+            sb.append("COPY conf /etc/nginx\n");
             sb.append("COPY --from=build-stage /app/build /usr/share/nginx/html\n");
             sb.append("EXPOSE 80\n");
             sb.append("CMD [\"nginx\", \"-g\", \"daemon off;\"]\n");
