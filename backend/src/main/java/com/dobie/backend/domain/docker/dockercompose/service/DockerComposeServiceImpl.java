@@ -82,6 +82,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                                                           projectDto.getFrontend().getFramework(),
                                                           projectDto.getFrontend().getServiceId(),
                                                           projectDto.getFrontend().getPath(),
+                                                          projectDto.getFrontend().isUsingNginx(),
                                                           projectDto.getFrontend().getExternalPort(),
                                                           projectDto.getFrontend().getInternalPort()));
 
@@ -253,7 +254,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     }
 
     @Override
-    public String createReactDockerComposeFile(String domain, String frameWork, String serviceId, String path, int externalPort,
+    public String createReactDockerComposeFile(String domain, String frameWork, String serviceId, String path, boolean usingNginx, int externalPort,
                                                int internalPort) {
         if (frameWork.equals("React")) {
             StringBuilder sb = new StringBuilder();
@@ -262,7 +263,11 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
             sb.append("    ports:\n");
-            sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
+            if(usingNginx){
+                sb.append("      - \"").append(externalPort).append(":").append(80).append("\"\n");
+            }else {
+                sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
+            }
 //            sb.append("    environment:\n");
 //            sb.append("      - BACKEND_HOST=http://").append(domain).append(":").append(8080).append("\n");
 
@@ -278,10 +283,13 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             sb.append("    build:\n");
             sb.append("      context: .").append(path).append("\n");
             sb.append("    ports:\n");
-            sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
+            if(usingNginx){
+                sb.append("      - \"").append(externalPort).append(":").append(80).append("\"\n");
+            }else {
+                sb.append("      - \"").append(externalPort).append(":").append(internalPort).append("\"\n");
+            }
 //            sb.append("    environment:\n");
 //            sb.append("      - BACKEND_HOST=http://").append(domain).append(":").append(8080).append("\n");
-
             // network
             sb.append("    networks:\n");
             sb.append("      - ").append("dobie").append("\n");
