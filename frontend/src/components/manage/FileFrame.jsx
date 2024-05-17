@@ -1,4 +1,3 @@
-// import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { addFile, getFile, deleteFile } from "../../api/Project";
@@ -8,9 +7,7 @@ import useFileStore from "../../stores/fileStore";
 import DescBox from "../common/DescBox";
 import toast from "react-hot-toast";
 
-
 export default function FileFrame() {
-
   const navigate = useNavigate();
   const { selectedProject } = useProjectStore();
   const { fileList, setFileList } = useFileStore();
@@ -19,7 +16,7 @@ export default function FileFrame() {
   useEffect(() => {
     try {
       getFileList();
-    } catch (error) { }
+    } catch (error) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -27,26 +24,29 @@ export default function FileFrame() {
     try {
       const response = await getFile(selectedProject.projectId);
       setFileList(response.data.data);
-      const newUploadFile = Array.from({ length: response.data.data.length }, () => null);
+      const newUploadFile = Array.from(
+        { length: response.data.data.length },
+        () => null
+      );
       setUploadFile(newUploadFile);
     } catch (error) {
       console.log("파일 리스트 조회 실패 : ", error);
     }
-  }
+  };
 
   // 파일첨부
 
   // 파일이 추가될때마다 files, paths 새 배열 추가
   const handleFileChange = (event) => {
     const newFiles = Array.from(event.target.files);
-    setUploadFile(prevUploadFile => [...prevUploadFile, ...newFiles]);
+    setUploadFile((prevUploadFile) => [...prevUploadFile, ...newFiles]);
     const newFileList = [
       ...fileList,
       ...newFiles.map((file, index) => ({
         fileId: "",
         filePath: "",
-        fileName: file.name
-      }))
+        fileName: file.name,
+      })),
     ];
     setFileList(newFileList);
   };
@@ -60,12 +60,11 @@ export default function FileFrame() {
 
   // 파일 전송 API
   const handleSendFile = async () => {
-
     const dto = {
       projectId: selectedProject.projectId,
       projectName: selectedProject.projectName,
-      fileList: fileList
-    }
+      fileList: fileList,
+    };
 
     if (fileList.length === 0) {
       navigate(`..`);
@@ -83,18 +82,17 @@ export default function FileFrame() {
         console.log("파일 저장 실패: " + error);
       }
     }
-  }
+  };
 
   // 파일 삭제 API
   const handleRemoveFile = async (index) => {
-
     const dto = {
       projectId: selectedProject.projectId,
       projectName: selectedProject.projectName,
       fileId: fileList[index].fileId,
       filePath: fileList[index].filePath,
-      fileName: fileList[index].fileName
-    }
+      fileName: fileList[index].fileName,
+    };
 
     setUploadFile((prevFiles) => prevFiles.filter((_, idx) => idx !== index));
     const newFileList = fileList.filter((_, idx) => idx !== index);
@@ -105,7 +103,6 @@ export default function FileFrame() {
     } catch (error) {
       console.log("파일 삭제 실패: " + error);
     }
-
   };
 
   const fileInputRef = useRef();
@@ -150,17 +147,18 @@ export default function FileFrame() {
             <div>
               {fileList.map((file, index) => (
                 <div className={styles.file} key={index}>
-                  {uploadFile[index] == null
-                    ? <div className={styles.filePath}>{file.filePath}</div>
-                    : <input
+                  {uploadFile[index] == null ? (
+                    <div className={styles.filePath}>{file.filePath}</div>
+                  ) : (
+                    <input
                       className={styles.filePath}
                       type="text"
                       placeholder="/backend/src/main/resources"
                       onChange={(event) => handlePathChange(index, event)}
-                    />}
+                    />
+                  )}
                   {/* <input className={styles.value} type="text" placeholder="/backend/src/main/resources" value={paths[index]}/> */}
                   <div className={styles.fileName}>{file.fileName}</div>
-
                   <div
                     className={styles.fileRemove}
                     onClick={() => handleRemoveFile(index)}
@@ -175,7 +173,7 @@ export default function FileFrame() {
       </div>
       <DescBox
         desc={
-          ".gitignore에 등록한 .env, .yml 등 환경설정파일을 첨부하고 \n\n 프로젝트 루트 경로로부터 해당 파일의 경로를 작성해주세요 \n\n\n 파일을 등록 또는 삭제 한 후 프로젝트를 전체 중지하고 다시 실행해주세요"
+          ".gitignore에 등록한 .env, .yml 등 환경설정파일을 첨부하고 \n\n 프로젝트 루트 경로로부터 해당 파일의 경로를 작성해주세요 \n\n 파일을 등록 또는 삭제 한 후 프로젝트를 전체 중지하고 다시 실행해주세요"
         }
       />
 
