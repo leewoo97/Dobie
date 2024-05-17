@@ -68,4 +68,9 @@
   flex-direction: column;
   justify-content: flex-end;
   cursor: pointer;
+  margin-left: 0.5%;
+}
+
+.btnIcon{
+  height: 50%;
 }

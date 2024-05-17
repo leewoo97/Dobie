@@ -138,6 +138,7 @@ export default function RunProjectItem({ container, type, setContent }) {
       if (response.status === 200) {
         setLogContent(response.data);
         setLogModalOpen(true);
+        console.log(serviceId);
       } else {
         toast.error(`로그 조회 실패`, {
           position: "top-center",
@@ -264,7 +265,7 @@ export default function RunProjectItem({ container, type, setContent }) {
             </div>
           </div>
         )}
-      {logModalOpen && <LogMadal content={logContent} />}
+      {logModalOpen && <LogMadal serviceId={container.serviceId || container.databaseId} />}
     </>
   );
 }
