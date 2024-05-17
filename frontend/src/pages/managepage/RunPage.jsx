@@ -25,16 +25,17 @@ import useModalStore from "../../stores/modalStore";
 import RunProjectList from "../../components/manage/RunProjectList";
 import Modal from "../../components/modal/Modal";
 import LoadingModal from "../../components/modal/LoadingModal";
+import NewMadal from "../../components/modal/NewModal";
 
 export default function RunPage() {
   const [content, setContent] = useState("");
-
   const { setAction } = useModalStore();
   const { modalOpen, setModalOpen } = useModalStore();
   const { setFileType } = useModalStore();
   const { checkProceed, setCheckProceed } = useProjectStore();
   const { loadingModal, setLoadingModal } = useModalStore();
   const { selectedProject, setUpdatedProject } = useProjectStore();
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -50,6 +51,7 @@ export default function RunPage() {
       const response = await checkProceeding(selectedProject.projectId);
       if (response.data.status === "SUCCESS") {
         setCheckProceed(response.data.data);
+        setIsLoading(false);
       } else {
         setCheckProceed({ allRunning: "null" });
         toast.error(`프로젝트 실행상태를 불러올수 없습니다.`, {
@@ -65,43 +67,45 @@ export default function RunPage() {
   const handleDelete = async (projectId) => {
     // SweetAlert로 사용자에게 확인 받기
     Swal.fire({
-      title: '프로젝트 삭제',
+      title: "프로젝트 삭제",
       text: "이 작업은 되돌릴 수 없습니다!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#4FC153',
-      cancelButtonColor: '#FF5370',
-      confirmButtonText: '예, 삭제합니다!',
-      cancelButtonText: '아니요, 취소합니다!'
+      confirmButtonColor: "#4FC153",
+      cancelButtonColor: "#FF5370",
+      confirmButtonText: "예, 삭제합니다!",
+      cancelButtonText: "아니요, 취소합니다!",
     }).then((result) => {
       if (result.isConfirmed) {
         // 사용자가 '예'를 클릭했을 때만 삭제 처리 진행
-        deleteProject(projectId).then(response => {
-          if (response.data.status === "SUCCESS") {
-            navigate("/main");
-            Swal.fire({
-              title:'삭제 완료!',
-              text: '프로젝트가 성공적으로 삭제되었습니다.',
-              icon: 'success',
-              confirmButtonColor: '#4FC153',
-              showCancelButton: false,
-              confirmButtonText: 'OK'
-          });
-          } else {
+        deleteProject(projectId)
+          .then((response) => {
+            if (response.data.status === "SUCCESS") {
+              navigate("/main");
+              Swal.fire({
+                title: "삭제 완료!",
+                text: "프로젝트가 성공적으로 삭제되었습니다.",
+                icon: "success",
+                confirmButtonColor: "#4FC153",
+                showCancelButton: false,
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire(
+                "삭제 실패!",
+                "프로젝트를 삭제할 수 없습니다.",
+                "error"
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("프로젝트 삭제 실패: ", error);
             Swal.fire(
-              '삭제 실패!',
-              '프로젝트를 삭제할 수 없습니다.',
-              'error'
-          );
-          }
-        }).catch(error => {
-          console.error("프로젝트 삭제 실패: ", error);
-          Swal.fire(
-            '오류 발생!',
-            '프로젝트 삭제 중 문제가 발생했습니다.',
-            'error'
-          );
-        });
+              "오류 발생!",
+              "프로젝트 삭제 중 문제가 발생했습니다.",
+              "error"
+            );
+          });
       }
     });
   };
@@ -149,7 +153,10 @@ export default function RunPage() {
         setAction("stop");
         setLoadingModal(true);
         await stopProject(projectId).then(() => setLoadingModal(false));
-        window.location.replace("/manage");
+        setCheckProceed({ allRunning: "null" });
+        toast.success(`성공적으로 중지되었습니다. `, {
+          position: "top-center",
+        });
       } else {
         toast.error(`이미 중지된 프로젝트 입니다. `, {
           position: "top-center",
@@ -165,18 +172,16 @@ export default function RunPage() {
     try {
       setAction("run");
       setLoadingModal(true);
-      const response = await startProject(projectId).then(() =>
-        setLoadingModal(false)
-      );
-      window.location.replace("/manage");
-      if (response.data.status === "SUCCESS") {
-      } else {
-        toast.error(`전체 실행에 실패하였습니다. `, {
-          position: "top-center",
-        });
-      }
+      await startProject(projectId).then(() => setLoadingModal(false));
+      setCheckProceed({ allRunning: "Run" });
+      toast.success(`프로젝트가 정상적으로 실행되었습니다. `, {
+        position: "top-center",
+      });
     } catch (error) {
-      console.log("프로젝트 전체실행 실패");
+      setLoadingModal(false);
+      toast.error(`프로젝트 등록 후 빌드가 진행되어야 합니다. `, {
+        position: "top-center",
+      });
     }
   };
 
@@ -187,141 +192,135 @@ export default function RunPage() {
 
   return (
     <>
-      <NavTop />
-      <NavLeft num={1} />
-      <div className={styles.page}>
-        <div className={styles.top}>
-          <div>
-            <div className={styles.text}>프로젝트</div>
-            <div className={styles.projectName}>
-              {selectedProject.projectName}
-            </div>
-          </div>
-          <div className={styles.buttons}>
-            <div
-              className={styles.webhook}
-              onClick={() => navigate("/manage/webhook")}
-            >
-              Webhook 설정{" "}
-              <img
-                src={setting}
-                alt=""
-                decoding="async"
-                className={styles.btnIcon}
-              />
-            </div>
-            <div
-              className={styles.webhook}
-              onClick={() => navigate("/manage/file")}
-            >
-              환경설정 파일 추가/삭제{" "}
-              <img
-                src={upload}
-                alt=""
-                decoding="async"
-                className={styles.btnIcon}
-              />
-            </div>
-            <div className={styles.edit} onClick={handleUpdateProject}>
-              수정{" "}
-              <img
-                src={edit}
-                alt=""
-                decoding="async"
-                className={styles.btnIcon}
-              />
-            </div>
-            <div
-              className={styles.remove}
-              onClick={() => handleDelete(selectedProject.projectId)}
-            >
-              삭제{" "}
-              <img
-                src={remove}
-                alt=""
-                decoding="async"
-                className={styles.btnIcon}
-              />
-            </div>
-          </div>
-        </div>
-        <div className={styles.mid}>
-          <div>
-            <div className={styles.text}>프로젝트 전체 실행</div>
-            <div className={styles.runButton}>
-              {checkProceed.allRunning === "Run" && (
-                <div>
-                  <img
-                    src={restart}
-                    className={styles.runButtonIcon}
-                    alt=""
-                    onClick={() =>
-                      handleProjectStart(selectedProject.projectId)
-                    }
-                  ></img>
-                  <img
-                    src={stop}
-                    className={styles.stopButtonIcon}
-                    alt=""
-                    onClick={() => handleProjectStop(selectedProject.projectId)}
-                  ></img>
+      {isLoading ? (
+        <>
+          <NewMadal />
+          <NavTop />
+          <NavLeft num={1} />
+        </>
+      ) : (
+        <>
+          <NavTop />
+          <NavLeft num={1} />
+          <div className={styles.page}>
+            <div className={styles.top}>
+              <div>
+                <div className={styles.text}>프로젝트</div>
+                <div className={styles.projectName}>
+                  {selectedProject.projectName}
                 </div>
-              )}
-              {checkProceed.allRunning === "Stop" && (
-                <div>
+              </div>
+              <div className={styles.buttons}>
+                <div
+                  className={styles.webhook}
+                  onClick={() => navigate("/manage/webhook")}
+                >
+                  Webhook 설정{" "}
                   <img
-                    src={run}
-                    className={styles.runButtonIcon}
+                    src={setting}
                     alt=""
-                    onClick={() =>
-                      handleProjectStart(selectedProject.projectId)
-                    }
-                  ></img>
-                  <img
-                    src={stop}
-                    alt=""
-                    className={styles.stopButtonIcon}
-                    onClick={() => handleProjectStop(selectedProject.projectId)}
-                  ></img>
+                    decoding="async"
+                    className={styles.btnIcon}
+                  />
                 </div>
-              )}
+                <div
+                  className={styles.webhook}
+                  onClick={() => navigate("/manage/file")}
+                >
+                  환경설정 파일 추가/삭제{" "}
+                  <img
+                    src={upload}
+                    alt=""
+                    decoding="async"
+                    className={styles.btnIcon}
+                  />
+                </div>
+                <div className={styles.edit} onClick={handleUpdateProject}>
+                  수정{" "}
+                  <img
+                    src={edit}
+                    alt=""
+                    decoding="async"
+                    className={styles.btnIcon}
+                  />
+                </div>
+                <div
+                  className={styles.remove}
+                  onClick={() => handleDelete(selectedProject.projectId)}
+                >
+                  삭제{" "}
+                  <img
+                    src={remove}
+                    alt=""
+                    decoding="async"
+                    className={styles.btnIcon}
+                  />
+                </div>
+              </div>
             </div>
+            <div className={styles.mid}>
+              <div>
+                <div className={styles.text}>프로젝트 전체 실행</div>
+                <div className={styles.runButton}>
+                  <div>
+                    <img
+                      src={checkProceed.allRunning === "Run" ? restart : run}
+                      className={styles.runButtonIcon}
+                      alt=""
+                      onClick={() =>
+                        handleProjectStart(selectedProject.projectId)
+                      }
+                    />
+                    <img
+                      src={stop}
+                      className={styles.stopButtonIcon}
+                      alt=""
+                      onClick={() =>
+                        handleProjectStop(selectedProject.projectId)
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className={styles.buttons}>
+                <div
+                  className={styles.fileButton}
+                  onClick={() =>
+                    handleOpenNginxModal(selectedProject.projectId)
+                  }
+                >
+                  nginx.config 파일 조회{" "}
+                  <img
+                    src={document}
+                    alt=""
+                    decoding="async"
+                    className={styles.btnIcon}
+                  />
+                </div>
+                <div
+                  className={styles.fileButton}
+                  onClick={() =>
+                    handleDockerComposeModal(selectedProject.projectId)
+                  }
+                >
+                  docker-compose.yml 파일 조회{" "}
+                  <img
+                    src={document}
+                    alt=""
+                    decoding="async"
+                    className={styles.btnIcon}
+                  />
+                </div>
+              </div>
+            </div>
+            {checkProceed.allRunning === "Run" && (
+              <RunProjectList setContent={setContent} />
+            )}
           </div>
-          <div className={styles.buttons}>
-            <div
-              className={styles.fileButton}
-              onClick={() => handleOpenNginxModal(selectedProject.projectId)}
-            >
-              nginx.config 파일 조회{" "}
-              <img
-                src={document}
-                alt=""
-                decoding="async"
-                className={styles.btnIcon}
-              />
-            </div>
-            <div
-              className={styles.fileButton}
-              onClick={() =>
-                handleDockerComposeModal(selectedProject.projectId)
-              }
-            >
-              docker-compose.yml 파일 조회{" "}
-              <img
-                src={document}
-                alt=""
-                decoding="async"
-                className={styles.btnIcon}
-              />
-            </div>
-          </div>
-        </div>
-        {checkProceed.allRunning === "Run" && (
-          <RunProjectList setContent={setContent} />
-        )}
-      </div>
-      {loadingModal && <LoadingModal />}
-      {modalOpen && <Modal content={content} />}
+          {loadingModal && <LoadingModal />}
+          {modalOpen && <Modal content={content} />}
+        </>
+      )}
     </>
   );
 }
