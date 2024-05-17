@@ -15,7 +15,7 @@ public interface DockerComposeService {
     String createFastApiComposeFile(String seq, String serviceId, String path,
                                          int externalPort, int internalPort);
 
-    String createReactDockerComposeFile(String domain, String frameWork, String serviceId, String path, int externalPort, int internalPort);
+    String createReactDockerComposeFile(String domain, String frameWork, String serviceId, String path, boolean usingNginx, int externalPort, int internalPort);
 
     String createMysqlDockerComposeFile(String databaseId, String databaseName, String username, String password, int externalPort,
                                         int internalPort, String schemaPath);
