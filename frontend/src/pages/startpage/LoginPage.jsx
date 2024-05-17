@@ -10,7 +10,7 @@ import { login } from "../../api/Member";
 export default function LoginPage() {
   const navigate = useNavigate();
 
-  const { user, setUser } = useUserStore();
+  const { setUser } = useUserStore();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -29,7 +29,6 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     try {
       const response = await login(formData);
-      console.log(response);
       if (response.status === 200) {
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("tokenTimestamp", Date.now());

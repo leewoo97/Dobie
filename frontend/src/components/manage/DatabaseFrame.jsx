@@ -27,11 +27,9 @@ export default function DatabaseFrame() {
     )
   }
 
-  console.log(selectedProject);
   const selectedDatabase = new Map(
     Object.entries(selectedProject.databaseMap)
   ).get(serviceId);
-  console.log(serviceId);
 
   return (
     <div className={styles.page}>
