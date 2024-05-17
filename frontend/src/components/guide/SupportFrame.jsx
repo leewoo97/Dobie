@@ -18,6 +18,10 @@ export default function SupportFrame() {
             <div className={styles.annotaion}>Django</div>
           </div>
           <div className={styles.frameworkBlock}>
+            <FrameworkImg framework={"Fastapi"} />
+            <div className={styles.annotaion}>Fastapi</div>
+          </div>
+          <div className={styles.frameworkBlock}>
             <FrameworkImg framework={"React"} />
             <div className={styles.annotaion}>React</div>
           </div>
