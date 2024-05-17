@@ -22,6 +22,11 @@ export default function NavLeftCreate({ num }) {
       return
     }
 
+    if(!createdProject.frontend.framework || !createdProject.frontend.language || !createdProject.frontend.version ){
+      Swal.fire("필수 항목 누락!", "Frontend 정보를 모두 입력해주세요.", "warning");
+      return
+    }
+
     setAction("save");
     setLoadingModal(true);
     await createProject(createdProject).then(() => {
