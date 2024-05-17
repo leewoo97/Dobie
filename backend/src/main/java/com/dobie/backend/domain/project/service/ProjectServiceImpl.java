@@ -18,6 +18,7 @@ import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.exception.exception.git.GitInfoNotFoundException;
 import com.dobie.backend.util.command.CommandService;
 import com.dobie.backend.util.file.FileManager;
+import java.io.File;
 import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -124,11 +125,20 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void deleteProject(String projectId) {
-//        // 프로젝트 중지 (이미지까지 삭제)
-//        stopProject(projectId);
-//        // git clone한 디렉토리 삭제
-//        Project project = projectRepository.searchProject(projectId);
-//        commandService.deleteDirectory(project.getProjectName());
+        Project project = projectRepository.searchProject(projectId);
+        File directory = new File(project.getProjectName());
+
+        // 디렉토리 존재 여부 확인
+        if (directory.exists()) {
+            // 프로젝트 중지 (이미지까지 삭제)
+            String path = "./" + project.getProjectName();
+            commandService.dockerComposeDown(path);
+            System.out.println("프로젝트 삭제 시 컴포즈 다운 성공");
+            // git clone한 디렉토리 삭제
+            commandService.deleteDirectory(project.getProjectName());
+            System.out.println("프로젝트 삭제 시 디렉토리 삭제 성공");
+        }
+
         // Json에서 삭제
         projectRepository.deleteProject(projectId);
         // nginx config 파일 삭제
@@ -199,7 +209,7 @@ public class ProjectServiceImpl implements ProjectService {
                 throw new SaveFileFailedException("front nginx config 파일 저장에 실패했습니다."); //예외처리
             }
         }
-       
+
     }
 
     @Override
