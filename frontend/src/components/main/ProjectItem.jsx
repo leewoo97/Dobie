@@ -123,6 +123,11 @@ export default function ProjectItem({ project }) {
     window.open(project.git.gitUrl);
   };
 
+  const redirectByDomain = (e, domain) => {
+    e.stopPropagation();
+    window.open(`http://${domain}`);
+  }
+
   return (
     <>
       {isLoading ? (
@@ -131,7 +136,7 @@ export default function ProjectItem({ project }) {
         <>
           <div className={styles.content} onClick={() => handleSubmit()}>
             <div key={project.projectName}>{project.projectName}</div>
-            <div key={project.projectDomain}>{project.projectDomain}</div>
+            <div key={project.projectDomain} onClick={(event) => redirectByDomain(event, project.projectDomain)}>{project.projectDomain}</div>
             <div className={styles.buildIcon}>
               <img
                 src={build}
