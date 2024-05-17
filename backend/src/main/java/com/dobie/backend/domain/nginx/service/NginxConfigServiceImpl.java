@@ -40,7 +40,7 @@ public class NginxConfigServiceImpl implements NginxConfigService {
 
     //리버스프록시 nginx config 파일 생성 후 /nginx에 [projectName].conf 이름으로 저장
     @Override
-    public void saveProxyNginxConfig(String projectId) {
+    public void saveProxyNginxConfig(String projectId, boolean usingNginx, String frontServiceId) {
         NginxConfigDto nginxConfig = getNginxConfigDto(projectId); //projectId로 nginxConfigDto 찾아오기
         StringBuilder sb = new StringBuilder(); //config내용 저장할 StringBuilder
 
@@ -53,9 +53,9 @@ public class NginxConfigServiceImpl implements NginxConfigService {
                 log.error(e);
                 throw new GetSSLFailedException(e.getMessage());
             }
-            sb.append(withHttpsConfig(nginxConfig)); //https 사용시 config파일 생성
+            sb.append(withHttpsConfig(nginxConfig,usingNginx,frontServiceId)); //https 사용시 config파일 생성
         } else {
-            sb.append(withoutHttpsConfig(nginxConfig)); //https 미사용시 config파일 생성
+            sb.append(withoutHttpsConfig(nginxConfig,usingNginx,frontServiceId)); //https 미사용시 config파일 생성
         }
 
         String fileName = projectId + ".conf"; //파일이름 [projectName].conf로 만들어주기
@@ -92,11 +92,15 @@ public class NginxConfigServiceImpl implements NginxConfigService {
 
     //https 사용하는 nginx config 생성
     @Override
-    public String withHttpsConfig(NginxConfigDto nginxConfig) {
+    public String withHttpsConfig(NginxConfigDto nginxConfig,boolean usingNginx, String frontServiceId) {
         StringBuilder sb = new StringBuilder();
         for(NginxProxyDto proxyConfig : nginxConfig.getProxyList()){
             sb.append("upstream user_").append(proxyConfig.getServiceId()).append("_server {\n");
-            sb.append("    server ").append(proxyConfig.getServiceId()).append(":").append(proxyConfig.getPort()).append(";\n");
+            if(usingNginx && proxyConfig.getServiceId().equals(frontServiceId)){
+                sb.append("    server ").append(proxyConfig.getServiceId()).append(":80").append(";\n");
+            }else{
+                sb.append("    server ").append(proxyConfig.getServiceId()).append(":").append(proxyConfig.getPort()).append(";\n");
+            }
             sb.append("}\n");
         }
         // HTTP를 HTTPS로 리디렉션하는 서버 블록
@@ -158,11 +162,15 @@ public class NginxConfigServiceImpl implements NginxConfigService {
 
     //https 사용안하는 nginx config 생성
     @Override
-    public String withoutHttpsConfig(NginxConfigDto nginxConfig) {
+    public String withoutHttpsConfig(NginxConfigDto nginxConfig,boolean usingNginx, String frontServiceId) {
         StringBuilder sb = new StringBuilder();
         for(NginxProxyDto proxyConfig : nginxConfig.getProxyList()){
             sb.append("upstream user_").append(proxyConfig.getServiceId()).append("_server {\n");
-            sb.append("    server ").append(proxyConfig.getServiceId()).append(":").append(proxyConfig.getPort()).append(";\n");
+            if(usingNginx && proxyConfig.getServiceId().equals(frontServiceId)){
+                sb.append("    server ").append(proxyConfig.getServiceId()).append(":80").append(";\n");
+            }else{
+                sb.append("    server ").append(proxyConfig.getServiceId()).append(":").append(proxyConfig.getPort()).append(";\n");
+            }
             sb.append("}\n");
         }
         sb.append("server {\n");
