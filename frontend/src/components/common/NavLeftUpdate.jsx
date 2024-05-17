@@ -26,7 +26,6 @@ export default function NavLeftUpdate({ num }) {
           navigate("/main");
         });
     }).catch((error) => {
-      console.log("프로젝트 수정 실패", error);
       Swal.fire('수정 실패', '프로젝트 수정에 실패했습니다.', 'error');
     });
   };

@@ -4,7 +4,7 @@ import s from "classnames";
 import home2 from "../../assets/homeIcon2.png";
 import useProjectStore from "../../stores/projectStore";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function NavLeft({ num }) {
   const navigate = useNavigate();
@@ -23,7 +23,6 @@ export default function NavLeft({ num }) {
     }
     if (serviceId !== "backendProjectNotFound") {
       setSpreadBackend(true);
-      console.log(serviceId);
       navigate(
         `/manage/backend/${
           Object.values(selectedProject.backendMap).at(0).serviceId

@@ -9,8 +9,6 @@ import useProjectStore from "../../stores/projectStore";
 export default function ProjectFrame() {
   const { selectedProject } = useProjectStore();
 
-  console.log(selectedProject.usingHttps);
-
   return (
     <div className={styles.page}>
       <ProjectTop projectName={selectedProject.projectName} page={"project"}/>

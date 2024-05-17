@@ -14,7 +14,6 @@ import useProjectStore from "../../stores/projectStore";
 import useModalStore from "../../stores/modalStore";
 import RunButton from "./RunButton";
 import StopButton from "./StopButton";
-import { useState } from "react";
 
 export default function RunProjectItem({ container, type, setContent }) {
   const { selectedProject } = useProjectStore();
@@ -22,9 +21,7 @@ export default function RunProjectItem({ container, type, setContent }) {
   const { setLoadingModal } = useModalStore();
   const { setAction } = useModalStore();
   const { setFileType } = useModalStore();
-  const { modalOpen, setModalOpen, logModalOpen, setLogModalOpen, logContent, setLogContent } = useModalStore();
-
-  // const [logContent, setLogContent] = useState("");
+  const { setModalOpen, logModalOpen, setLogModalOpen, logContent, setLogContent } = useModalStore();
 
   const navigate = useNavigate();
 
@@ -119,7 +116,6 @@ export default function RunProjectItem({ container, type, setContent }) {
           position: "top-center",
         });
       }
-      console.log(response.data);
     } catch (error) {
       console.log("로그 조회 실패: " + error);
     }

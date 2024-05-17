@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Container from "../../components/common/Container";
 import styles from "./SignUpPage.module.css";
 import mascot from "../../assets/mascot.png";
 import { useNavigate } from "react-router-dom";
-import useUserStore from "../../stores/userStore";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 import { signup } from "../../api/Member";
-import axios from "axios";
 
 export default function SginUpPage() {
   const navigate = useNavigate();
-
-  const { user, setUser } = useUserStore();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -31,7 +27,7 @@ export default function SginUpPage() {
 
   const handleSubmit = async (e) => {
     try {
-      if (formData.password != formData.confirmPassword) {
+      if (formData.password !== formData.confirmPassword) {
         toast.error(`비밀번호가 일치하지 않습니다.`, {
           position: "top-center",
         });
@@ -46,7 +42,6 @@ export default function SginUpPage() {
         };
 
         const data = await signup(user);
-        console.log(data);
         if (data.status === 200) {
           setFormData({
             username: "",
@@ -58,7 +53,6 @@ export default function SginUpPage() {
             position: "top-center",
           });
         } else {
-          console.log(data);
           toast.error(`${data.message}`, {
             position: "top-center",
           });

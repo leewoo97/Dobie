@@ -30,6 +30,7 @@ export default function ProjectItem({ project }) {
   useEffect(() => {
     handleCheckProceding();
     setLoadingModal(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //실행상태 조회
@@ -39,7 +40,6 @@ export default function ProjectItem({ project }) {
       if (response.data.status === "SUCCESS") {
         setCheckProceed(response.data.data);
       } else {
-        console.log(response.data);
         setCheckProceed({ allRunning: "null" });
         const res = await getProject();
         if (res.data.data !== null) {
@@ -71,8 +71,6 @@ export default function ProjectItem({ project }) {
       if (response.data.status === "SUCCESS") {
         setLoadingModal(false);
         toast.success("빌드파일이 성공적으로 생성되었습니다.");
-      } else {
-        console.log(response.data);
       }
     } catch (error) {
       console.log("에러발생", error);
@@ -85,7 +83,7 @@ export default function ProjectItem({ project }) {
       if (checkProceed.allRunning === "Run") {
         setAction("stop");
         setLoadingModal(true);
-        const response = await stopProject(projectId).then(() =>
+        await stopProject(projectId).then(() =>
           setLoadingModal(false)
         );
         window.location.replace("/main");

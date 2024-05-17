@@ -15,8 +15,6 @@ export default function BackendFrame() {
     const [selectedKey, setSelectedKey] = useState(Object.keys(tempProject.backendMap).at(0));
     const [selectedBackend, setSelectedBackend] = useState({ ...tempProject.backendMap[selectedKey] });
 
-    // console.log(selectedBackend);
-    // console.log(tempProject.backendMap);
     const clickKeyHandler = (key) => {
         setSelectedKey(key);
     }
@@ -122,16 +120,14 @@ export default function BackendFrame() {
     // 컴포넌트가 업데이트 될 때마다 상위 스토어의 상태를 업데이트
     useEffect(() => {
         setUpdatedProject(tempProject);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tempProject]);
 
     useEffect(() => {
         setSelectedBackend({ ...tempProject.backendMap[selectedKey] });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedKey]);
 
-    const [showToken, setShowToken] = useState(false);
-    const toggleTokenVisibility = () => {
-        setShowToken(!showToken);
-    };
     return (
         <div className={styles.page}>
 
@@ -152,7 +148,7 @@ export default function BackendFrame() {
             </div>
 
             <div className={Object.keys(tempProject.backendMap).length !== 0 ? styles.hide : styles.notHide} >
-                <img src={notFound} className={styles.notFound} />
+                <img src={notFound} alt="" className={styles.notFound} />
             </div>
 
             <div className={Object.keys(tempProject.backendMap).length === 0 ? styles.hide : ""}>

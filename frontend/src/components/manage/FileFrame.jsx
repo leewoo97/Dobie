@@ -20,7 +20,7 @@ export default function FileFrame() {
     try {
       getFileList();
     } catch (error) { }
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getFileList = async (e) => {
@@ -38,7 +38,6 @@ export default function FileFrame() {
 
   // 파일이 추가될때마다 files, paths 새 배열 추가
   const handleFileChange = (event) => {
-    console.log(Array.isArray(fileList));
     const newFiles = Array.from(event.target.files);
     setUploadFile(prevUploadFile => [...prevUploadFile, ...newFiles]);
     const newFileList = [
@@ -68,19 +67,18 @@ export default function FileFrame() {
       fileList: fileList
     }
 
-    if (fileList.length == 0) {
+    if (fileList.length === 0) {
       navigate(`..`);
       toast.success(`[파일 저장 성공] 프로젝트를 꼭 재실행하세요 !`, {
         position: "top-center",
       });
     } else {
       try {
-        const response = await addFile(dto, uploadFile);
+        await addFile(dto, uploadFile);
         navigate(`..`);
         toast.success(`[파일 저장 성공] 프로젝트를 꼭 재실행하세요 !`, {
           position: "top-center",
         });
-        console.log(response);
       } catch (error) {
         console.log("파일 저장 실패: " + error);
       }
@@ -103,27 +101,11 @@ export default function FileFrame() {
     setFileList(newFileList);
 
     try {
-      const response = await deleteFile(dto);
-      console.log(response);
+      await deleteFile(dto);
     } catch (error) {
       console.log("파일 삭제 실패: " + error);
     }
 
-  };
-
-  //파일리스트 이름 출력 (테스트용)
-  const printFileNames = () => {
-    console.log("Selected files:");
-    uploadFile.forEach((file) => {
-      if (file != null) {
-        console.log(file.name);
-      } else {
-        console.log("null");
-      }
-    });
-    fileList.forEach((path) => {
-      console.log(path.fileName);
-    });
   };
 
   const fileInputRef = useRef();
