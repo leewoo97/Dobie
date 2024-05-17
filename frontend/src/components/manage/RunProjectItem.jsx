@@ -133,106 +133,108 @@ export default function RunProjectItem({ container, type, setContent }) {
 
   return (
     <>
-      <div className={styles.container}>
-        <div className={styles.containerButton}>
-          <div className={styles.runButton}>
-            <RunButton
-              type={type}
-              container={container}
-              isRunning={
-                checkProceed[container.serviceId || container.databaseId]
-              }
-              handleStartService={handleStartService}
-            />
+      {!(type === "Frontend" && !(container.framework === "React" || container.framework === "Vue")) && (
+        <div className={styles.container}>
+          <div className={styles.containerButton}>
+            <div className={styles.runButton}>
+              <RunButton
+                type={type}
+                container={container}
+                isRunning={
+                  checkProceed[container.serviceId || container.databaseId]
+                }
+                handleStartService={handleStartService}
+              />
 
-            <StopButton
-              type={type}
-              container={container}
-              handleStopService={handleStopService}
-            />
-          </div>
-          {(type === "Backend" || type === "Frontend") && (
-            <div
-              className={styles.fileButton}
-              onClick={() =>
-                handleDockerFileModal(
-                  selectedProject.projectId,
-                  container.serviceId,
-                  type
-                )
-              }
-            >
-              Dockerfile 파일 조회
-              <img
-                src={document}
-                alt=""
-                decoding="async"
-                className={styles.btnIcon}
+              <StopButton
+                type={type}
+                container={container}
+                handleStopService={handleStopService}
               />
             </div>
-          )}
-        </div>
-        <div className={styles.box} onClick={() => handleIntoContainer()}>
-          <div className={styles.boxTop}>
-            <table>
-              <tbody>
-                <tr>
-                  <td key={type} className={styles.serviceName}>
-                    {type}
-                  </td>
-                  <td key={container.externalPort}>
-                    외부포트 {container.externalPort}
-                  </td>
-                </tr>
-                <tr>
-                  {type === "Backend" || type === "Frontend" ? (
-                    <td key={container.framework}>{container.framework}</td>
-                  ) : (
-                    <td key={container.databaseType}>
-                      {container.databaseType}
+            {(type === "Backend" || type === "Frontend") && (
+              <div
+                className={styles.fileButton}
+                onClick={() =>
+                  handleDockerFileModal(
+                    selectedProject.projectId,
+                    container.serviceId,
+                    type
+                  )
+                }
+              >
+                Dockerfile 파일 조회
+                <img
+                  src={document}
+                  alt=""
+                  decoding="async"
+                  className={styles.btnIcon}
+                />
+              </div>
+            )}
+          </div>
+          <div className={styles.box} onClick={() => handleIntoContainer()}>
+            <div className={styles.boxTop}>
+              <table>
+                <tbody>
+                  <tr>
+                    <td key={type} className={styles.serviceName}>
+                      {type}
                     </td>
-                  )}
+                    <td key={container.externalPort}>
+                      외부포트 {container.externalPort}
+                    </td>
+                  </tr>
+                  <tr>
+                    {type === "Backend" || type === "Frontend" ? (
+                      <td key={container.framework}>{container.framework}</td>
+                    ) : (
+                      <td key={container.databaseType}>
+                        {container.databaseType}
+                      </td>
+                    )}
 
-                  <td key={container.internalPort}>
-                    내부포트 {container.internalPort}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <FrameworkImg
-              framework={container.framework}
-              databaseType={container.databaseType}
-            />
-          </div>
-          <div className={styles.line}></div>
-          <div className={styles.boxBottom}>
-            <div
-              className={
-                checkProceed[container.serviceId || container.databaseId] ===
-                  "Running :)"
-                  ? styles.running
-                  : styles.stopped
-              }
-            >
-              {checkProceed[container.serviceId || container.databaseId]}
-            </div>
-            <div className={styles.log}
-              onClick={(event) => {
-                event.stopPropagation();
-                // handleLogModal(container.serviceId);
-                handleLogModal(container.serviceId || container.databaseId);
-              }}>
-              <img
-                src={log}
-                alt=""
-                decoding="async"
-                className={styles.btnIcon}
+                    <td key={container.internalPort}>
+                      내부포트 {container.internalPort}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <FrameworkImg
+                framework={container.framework}
+                databaseType={container.databaseType}
               />
-              로그 보기
+            </div>
+            <div className={styles.line}></div>
+            <div className={styles.boxBottom}>
+              <div
+                className={
+                  checkProceed[container.serviceId || container.databaseId] ===
+                    "Running :)"
+                    ? styles.running
+                    : styles.stopped
+                }
+              >
+                {checkProceed[container.serviceId || container.databaseId]}
+              </div>
+              <div className={styles.log}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  // handleLogModal(container.serviceId);
+                  handleLogModal(container.serviceId || container.databaseId);
+                }}>
+                <img
+                  src={log}
+                  alt=""
+                  decoding="async"
+                  className={styles.btnIcon}
+                />
+                로그 보기
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )} 
       {logModalOpen && <LogMadal content={logContent} />}
     </>
   );
