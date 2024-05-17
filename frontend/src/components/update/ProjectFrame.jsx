@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import styles from "./ProjectFrame.module.css";
 import InputBox from "../common/InputBox";
 import DescBox from "../common/DescBox";
@@ -72,6 +72,7 @@ export default function ProjectFrame() {
 
     useEffect(() => {
         setUpdatedProject(tempProject);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tempProject]);
 
     return (

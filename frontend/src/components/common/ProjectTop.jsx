@@ -1,12 +1,11 @@
 import styles from "./ProjectTop.module.css";
 import edit from "../../assets/editIcon.png";
-import remove from "../../assets/deleteIcon.png";
 import useProjectStore from "../../stores/projectStore";
 import { useNavigate } from "react-router-dom";
 
 export default function ProjectTop({ projectName, page }) {
 
-    const {updatedProject, setUpdatedProject, selectedProject} = useProjectStore();
+    const {setUpdatedProject, selectedProject} = useProjectStore();
     const navigate = useNavigate();
     
     const handleUpdateProject = () => {

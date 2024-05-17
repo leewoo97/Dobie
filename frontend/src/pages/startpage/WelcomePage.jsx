@@ -14,6 +14,7 @@ export default function WelcomePage() {
     } catch (error) {
       console.error("유저정보 조회 실패 에러: ", error);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]); // navigate가 변경될 때마다 useEffect를 다시 실행하지 않도록
 
   const getUserInfo = async (e) => {

@@ -16,6 +16,7 @@ export default function LottieAnimation() {
       });
   
       return () => anim.destroy();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [animation]);
   
     return <div ref={animationContainer}></div>;

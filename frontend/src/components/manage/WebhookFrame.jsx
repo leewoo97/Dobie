@@ -44,7 +44,7 @@ export default function WebhookFrame() {
         <div className={styles.manualName}>webhook 메뉴얼</div>
         <div className={styles.part}>
           <div className={styles.left}>
-            <img src={webhooks} className={styles.webhooksImg} />
+            <img src={webhooks} alt="" className={styles.webhooksImg} />
           </div>
           <div className={styles.right}>
             <div className={styles.ment}>

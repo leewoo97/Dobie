@@ -14,6 +14,7 @@ export default function ProjectList() {
     } catch (error) {
       console.error("유저정보 조회 실패 에러: ", error);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getProjectList = async (e) => {

@@ -120,10 +120,12 @@ export default function DatabaseFrame() {
 
   useEffect(() => {
     setCreatedProject({ ...tempProject });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tempProject]);
 
   useEffect(() => {
     setSelectedDatabase({ ...tempProject.databaseMap[selectedKey] });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedKey]);
 
   const databaseList = ["Mysql", "Mongodb", "Redis"];
@@ -158,7 +160,7 @@ export default function DatabaseFrame() {
       </div>
 
       <div className={Object.keys(tempProject.databaseMap).length !== 0 ? styles.hide : styles.notHide} >
-        <img src={notFound} className={styles.notFound} />
+        <img src={notFound} alt="" className={styles.notFound} />
       </div>
 
       <div className={Object.keys(tempProject.databaseMap).length === 0 ? styles.hide : ""}>
