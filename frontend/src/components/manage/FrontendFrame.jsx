@@ -1,5 +1,6 @@
 import styles from "./FrontendFrame.module.css";
 import GetBox from "../common/GetBox";
+import GetToggleBox from "../common/GetToggleBox";
 import ProjectTop from "../common/ProjectTop";
 import useProjectStore from "../../stores/projectStore";
 
@@ -29,6 +30,8 @@ export default function FrontendFrame() {
         keyName={"내부 포트 번호"}
         valueName={selectedProject.frontend.internalPort}
       />
+
+      <GetToggleBox keyName={"Nginx 사용"} valueName={selectedProject.frontend.usingNginx} isToggle/>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import styles from "./FrontendFrame.module.css";
 import InputBox from "../common/InputBox";
 import InputSelectBox from "../common/InputSelectBox";
 import DescBox from "../common/DescBox";
+import ToggleBox from "../common/ToggleBox";
 import useProjectStore from "../../stores/projectStore";
 
 export default function FrontendFrame() {
@@ -64,6 +65,16 @@ export default function FrontendFrame() {
         }))
     }
 
+    const changeUsingNPortHandler = () => {
+        setTempProject(prev => ({
+            ...prev,
+            frontend: {
+                ...prev.frontend,
+                usingNginx: !prev.frontend.usingNginx,
+            },
+        }));
+    };
+
     useEffect(() => {
         setUpdatedProject(tempProject);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,7 +85,7 @@ export default function FrontendFrame() {
             <InputSelectBox keyName={"프레임워크"} list={frameworkList} value={tempProject.frontend.framework} onChange={changeFrameworkHandler} />
             <DescBox desc={"Frontend 서비스의 프레임워크를 선택하세요"} />
 
-            <InputSelectBox keyName={"언어버전"} list={versionList} value={tempProject.frontend.language+" "+tempProject.frontend.version} onChange={changeVersionHandler} />
+            <InputSelectBox keyName={"언어버전"} list={versionList} value={tempProject.frontend.language + " " + tempProject.frontend.version} onChange={changeVersionHandler} />
             <DescBox desc={"Frontend 서비스의 언어 버전을 선택하세요"} />
 
             <InputBox keyName={"폴더 경로"} value={tempProject.frontend.path} valueName={"/frontend"} onChange={changePathHandler} />
@@ -84,6 +95,9 @@ export default function FrontendFrame() {
             <DescBox desc={"Nginx location을 작성하세요"} />
 
             <InputBox keyName={"내부 포트 번호"} value={tempProject.frontend.internalPort} valueName={"3000"} onChange={changeInternalPortHandler} />
+            <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
+
+            <ToggleBox keyName={"Nginx 사용"} valueName={"true / false"} value={tempProject.frontend.usingNginx} onChange={changeUsingNPortHandler} isToggle />
             <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
 
         </div>

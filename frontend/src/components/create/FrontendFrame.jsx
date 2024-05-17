@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./FrontendFrame.module.css";
 import InputBox from "../common/InputBox";
+import ToggleBox from "../common/ToggleBox";
 import InputSelectBox from "../common/InputSelectBox";
 import DescBox from "../common/DescBox";
 import useProjectStore from "../../stores/projectStore";
@@ -65,6 +66,16 @@ export default function FrontendFrame() {
     }));
   };
 
+  const changeUsingNPortHandler = () => {
+    setTempProject(prev => ({
+      ...prev,
+      frontend: {
+        ...prev.frontend,
+        usingNginx: !prev.frontend.usingNginx,
+      },
+    }));
+  };
+
   useEffect(() => {
     setCreatedProject(tempProject);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -99,6 +110,9 @@ export default function FrontendFrame() {
       />
 
       <InputBox keyName={"내부 포트 번호"} valueName={"3000"} value={tempProject.frontend.internalPort} onChange={changeInternalPortHandler} />
+      <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
+
+      <ToggleBox keyName={"Nginx 사용"} valueName={"true / false"} value={tempProject.frontend.usingNginx} onChange={changeUsingNPortHandler} isToggle/>
       <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
 
     </div>
