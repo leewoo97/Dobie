@@ -120,7 +120,7 @@ export default function BackendFrame() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedKey]);
 
-  const frameworkList = ["SpringBoot(gradle)", "SpringBoot(maven)", "Django"];
+  const frameworkList = ["SpringBoot(gradle)", "SpringBoot(maven)", "Django", "Fastapi"];
 
   const versionList = ["java 8", "java 11", "java 17", "python 3.10"];
 

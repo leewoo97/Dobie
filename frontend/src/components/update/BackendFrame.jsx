@@ -79,6 +79,7 @@ export default function BackendFrame() {
         "SpringBoot(gradle)",
         "SpringBoot(maven)",
         "Django",
+        "Fastapi"
     ]
 
     const versionList = [
