@@ -26,8 +26,10 @@ export default function ProjectItem({ project }) {
   const { loadingModal, setLoadingModal } = useModalStore();
   const { setAction } = useModalStore();
   const [checkProceed, setCheckProceed] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setAction("build");
     handleCheckProceding();
     setLoadingModal(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -39,6 +41,7 @@ export default function ProjectItem({ project }) {
       const response = await checkProceeding(project.projectId);
       if (response.data.status === "SUCCESS") {
         setCheckProceed(response.data.data);
+        setIsLoading(false);
       } else {
         setCheckProceed({ allRunning: "null" });
         const res = await getProject();
@@ -122,50 +125,56 @@ export default function ProjectItem({ project }) {
 
   return (
     <>
-      <div className={styles.content} onClick={() => handleSubmit()}>
-        <div key={project.projectName}>{project.projectName}</div>
-        <div key={project.projectDomain}>{project.projectDomain}</div>
-        <div className={styles.buildIcon}>
-          <img
-            src={build}
-            className={styles.build}
-            alt=""
-            onClick={(event) => {
-              event.stopPropagation();
-              handleProjectBuild(project.projectId);
-            }}
-          />
-        </div>
-        <div className={styles.runButton}>
-          <img
-            src={checkProceed.allRunning === "Run" ? restart : run}
-            alt=""
-            className={styles.run}
-            onClick={(event) => {
-              event.stopPropagation();
-              handleProjectStart(project.projectId);
-            }}
-          />
-          <img
-            src={stop}
-            alt=""
-            className={styles.stop}
-            onClick={(event) => {
-              event.stopPropagation();
-              handleProjectStop(project.projectId);
-            }}
-          ></img>
-        </div>
-        <div>
-          <img
-            src={project.git.gitType === 1 ? gitlab : github}
-            alt=""
-            className={styles.gitImage}
-            onClick={linkGit}
-          />
-        </div>
-      </div>
-      {loadingModal && <LoadingModal />}
+      {isLoading ? (
+        <LoadingModal />
+      ) : (
+        <>
+          <div className={styles.content} onClick={() => handleSubmit()}>
+            <div key={project.projectName}>{project.projectName}</div>
+            <div key={project.projectDomain}>{project.projectDomain}</div>
+            <div className={styles.buildIcon}>
+              <img
+                src={build}
+                className={styles.build}
+                alt=""
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleProjectBuild(project.projectId);
+                }}
+              />
+            </div>
+            <div className={styles.runButton}>
+              <img
+                src={checkProceed.allRunning === "Run" ? restart : run}
+                alt=""
+                className={styles.run}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleProjectStart(project.projectId);
+                }}
+              />
+              <img
+                src={stop}
+                alt=""
+                className={styles.stop}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleProjectStop(project.projectId);
+                }}
+              ></img>
+            </div>
+            <div>
+              <img
+                src={project.git.gitType === 1 ? gitlab : github}
+                alt=""
+                className={styles.gitImage}
+                onClick={linkGit}
+              />
+            </div>
+          </div>
+          {loadingModal && <LoadingModal />}
+        </>
+      )}
     </>
   );
 }
