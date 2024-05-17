@@ -36,17 +36,17 @@ const useProjectStore = create(
               branch: "",
             },
             backendMap: {
-              1: {
-                serviceName: "",
-                language: "",
-                version: "",
-                framework: "",
-                path: "",
-                branch: "",
-                location: "",
-                externalPort: 0,
-                internalPort: 0
-              }
+              // 1: {
+              //   serviceName: "",
+              //   language: "",
+              //   version: "",
+              //   framework: "",
+              //   path: "",
+              //   branch: "",
+              //   location: "",
+              //   externalPort: 0,
+              //   internalPort: 0
+              // }
             },
             frontend: {
               serviceName: "",
@@ -61,15 +61,15 @@ const useProjectStore = create(
               usingNginx: false
             },
             databaseMap: {
-              1: {
-                databaseType: "",
-                databaseName: "",
-                schemaPath: "",
-                username: "",
-                password: "",
-                externalPort: 0,
-                internalPort: 0,
-              },
+              // 1: {
+              //   databaseType: "",
+              //   databaseName: "",
+              //   schemaPath: "",
+              //   username: "",
+              //   password: "",
+              //   externalPort: 0,
+              //   internalPort: 0,
+              // },
             },
           },
         });
