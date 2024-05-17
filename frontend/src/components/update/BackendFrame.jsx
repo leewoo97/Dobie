@@ -164,10 +164,11 @@ export default function BackendFrame() {
                 <DescBox desc={"프로젝트 루트 경로로부터 해당 프레임워크 폴더 경로를 작성하세요"} />
 
                 <InputBox keyName={"Nginx location"} valueName={"/api"} value={selectedBackend.location} onChange={changeLocationHandler} />
-                <DescBox desc={"Nginx location을 작성하세요"} />
+                <DescBox desc={"Nginx Config 파일에 들어가는 location을 작성하세요 \n\r Nginx location 경로로 요청이 들어오면 해당 프레임워크로 전달됩니다"} />
+                {/* <DescBox desc={"Nginx location 경로로 요청이 들어오면 해당 프레임워크로 전달됩니다"} /> */}
 
                 <InputBox keyName={"내부 포트 번호"} value={selectedBackend.internalPort} valueName={"8080"} onChange={changeInternalPortHandler} />
-                <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} />
+                <DescBox desc={"해당 프레임워크가 사용할 내부 포트 번호를 지정해주세요"} />
 
                 {/* <InputBox keyName={"외부 포트 번호"} valueName={"8080"} />
             <DescBox desc={"해당 프레임워크가 사용할 포트 번호를 지정해주세요"} /> */}

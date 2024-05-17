@@ -142,7 +142,7 @@ export default function DatabaseFrame() {
             <div className={Object.keys(tempProject.databaseMap).length === 0 ? styles.hide : ""}>
 
                 <InputSelectBox keyName={"데이터베이스"} list={databaseList} value={selectedDatabase.databaseType} onChange={changeDatabaseHandler} />
-                <DescBox desc={"Database 서비스의 프레임워크를 선택하세요"} />
+                <DescBox desc={"사용할 Database 서비스를 선택하세요"} />
 
                 <InputBox keyName={"Username"} value={selectedDatabase.username} valueName={"username"} onChange={changeUsernameHandler} />
                 <DescBox desc={"데이터베이스에 설정한 Username을 작성해주세요"} />
@@ -151,10 +151,10 @@ export default function DatabaseFrame() {
                 <DescBox desc={"데이터베이스에 설정한 Password를 작성해주세요"} />
 
                 <InputBox keyName={"init.sql 경로"} value={selectedDatabase.schemaPath} valueName={"/path/to/mysql/schema.sql"} onChange={changeSchemaPathHandler} />
-                <DescBox desc={"스키마 파일이 있다면 해당 파일 폴더 경로를 작성하세요"} />
+                <DescBox desc={"스키마 파일이 있다면 해당 파일 폴더 경로를 작성하세요 (선택)"} />
 
                 <InputBox keyName={"내부 포트 번호"} value={selectedDatabase.internalPort} valueName={"3306"} onChange={changeInternalPortHandler} />
-                <DescBox desc={"해당 프레임워크가 사용할 내부포트 번호를 지정해주세요"} />
+                <DescBox desc={"해당 프레임워크가 사용할 내부 포트 번호를 지정해주세요"} />
 
             </div>
         </div>

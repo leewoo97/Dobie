@@ -170,7 +170,7 @@ export default function DatabaseFrame() {
           value={selectedDatabase.databaseType}
           onChange={changeDatabaseHandler}
         />
-        <DescBox desc={"Database 서비스의 프레임워크를 선택하세요"} />
+        <DescBox desc={"사용할 Database 서비스를 선택하세요"} />
 
         <InputBox
           keyName={"Username"}
@@ -204,7 +204,7 @@ export default function DatabaseFrame() {
         />
         <DescBox
           desc={
-            "init.sql 등 초기데이터 스키마 파일이 있다면 해당 파일 폴더 경로와 파일명까지 작성하세요"
+            "init.sql 등 초기데이터 스키마 파일이 있다면 해당 파일 폴더 경로와 파일명까지 작성하세요 (선택)"
           }
         />
 
