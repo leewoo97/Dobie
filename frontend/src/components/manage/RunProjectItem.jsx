@@ -5,7 +5,12 @@ import FrameworkImg from "../common/FrameworkImg";
 import toast from "react-hot-toast";
 import LogMadal from "../modal/LogModal";
 
-import { getDockerFile, getLog, checkDbContainer, checkBackendContainer } from "../../api/Docker";
+import {
+  getDockerFile,
+  getLog,
+  checkDbContainer,
+  checkBackendContainer,
+} from "../../api/Docker";
 import { stopService } from "../../api/Project";
 import { startService } from "../../api/Project";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +19,7 @@ import useProjectStore from "../../stores/projectStore";
 import useModalStore from "../../stores/modalStore";
 import RunButton from "./RunButton";
 import StopButton from "./StopButton";
+import { useEffect, useState } from "react";
 
 export default function RunProjectItem({ container, type, setContent }) {
   const { selectedProject } = useProjectStore();
@@ -21,9 +27,26 @@ export default function RunProjectItem({ container, type, setContent }) {
   const { setLoadingModal } = useModalStore();
   const { setAction } = useModalStore();
   const { setFileType } = useModalStore();
-  const { setModalOpen, logModalOpen, setLogModalOpen, logContent, setLogContent } = useModalStore();
+  const {
+    setModalOpen,
+    logModalOpen,
+    setLogModalOpen,
+    logContent,
+    setLogContent,
+  } = useModalStore();
+  const [runStatus, setRunStatus] = useState(true);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (
+      checkProceed[container.serviceId || container.databaseId] === "Running :)"
+    ) {
+      setRunStatus(true);
+    } else {
+      setRunStatus(false);
+    }
+  }, []);
 
   //도커파일 조회
   const handleDockerFileModal = async (projectId, serviceId, type) => {
@@ -43,26 +66,32 @@ export default function RunProjectItem({ container, type, setContent }) {
     }
   };
 
-
   //개별 서비스 중지
   const handleStopService = async (containerName) => {
     // Db 개별 중지 전 확인
     if (type === "Database") {
       const response = await checkBackendContainer(selectedProject.projectId);
+
       if (!(response.data.data === "Pass")) {
-        toast.error(`백엔드 컨테이너가 실행중이어서 DB를 종료할 수 없습니다. `, {
-          position: "top-center",
-        });
+        toast.error(
+          `백엔드 컨테이너가 실행중이어서 DB를 종료할 수 없습니다. `,
+          {
+            position: "top-center",
+          }
+        );
         return;
       }
     }
 
     try {
-      if (checkProceed[containerName] === "Running :)") {
+      if (runStatus === true) {
         setAction("stop");
         setLoadingModal(true);
         await stopService(containerName).then(() => setLoadingModal(false));
-        window.location.replace("/manage");
+        setRunStatus(false);
+        toast.success(`성공적으로 정지했습니다.`, {
+          position: "top-center",
+        });
       } else {
         toast.error(`이미 중지된 컨테이너 입니다. `, {
           position: "top-center",
@@ -79,9 +108,12 @@ export default function RunProjectItem({ container, type, setContent }) {
     if (type === "Backend") {
       const response = await checkDbContainer(selectedProject.projectId);
       if (!(response.data.data === "Pass")) {
-        toast.error(`데이터베이스 컨테이너가 정지중이어서 백엔드를 실행할 수 없습니다. `, {
-          position: "top-center",
-        });
+        toast.error(
+          `데이터베이스 컨테이너가 정지중이어서 백엔드를 실행할 수 없습니다. `,
+          {
+            position: "top-center",
+          }
+        );
         return;
       }
     }
@@ -89,16 +121,11 @@ export default function RunProjectItem({ container, type, setContent }) {
     try {
       setAction("run");
       setLoadingModal(true);
-      const response = await startService(containerName).then(() =>
-        setLoadingModal(false)
-      );
-      window.location.replace("/manage");
-      if (response.data.status === "SUCCESS") {
-      } else {
-        toast.error(`개별 실행에 실패하였습니다. `, {
-          position: "top-center",
-        });
-      }
+      await startService(containerName).then(() => setLoadingModal(false));
+      setRunStatus(true);
+      toast.success(`성공적으로 실행했습니다.`, {
+        position: "top-center",
+      });
     } catch (error) {
       console.log("개별실행 실패: " + error);
     }
@@ -139,9 +166,7 @@ export default function RunProjectItem({ container, type, setContent }) {
             <RunButton
               type={type}
               container={container}
-              isRunning={
-                checkProceed[container.serviceId || container.databaseId]
-              }
+              isRunning={runStatus}
               handleStartService={handleStartService}
             />
 
@@ -206,22 +231,17 @@ export default function RunProjectItem({ container, type, setContent }) {
           </div>
           <div className={styles.line}></div>
           <div className={styles.boxBottom}>
-            <div
-              className={
-                checkProceed[container.serviceId || container.databaseId] ===
-                  "Running :)"
-                  ? styles.running
-                  : styles.stopped
-              }
-            >
-              {checkProceed[container.serviceId || container.databaseId]}
+            <div className={runStatus ? styles.running : styles.stopped}>
+              {runStatus ? "Running :)" : "Stopped :("}
             </div>
-            <div className={styles.log}
+            <div
+              className={styles.log}
               onClick={(event) => {
                 event.stopPropagation();
                 // handleLogModal(container.serviceId);
                 handleLogModal(container.serviceId || container.databaseId);
-              }}>
+              }}
+            >
               <img
                 src={log}
                 alt=""

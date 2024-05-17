@@ -8,7 +8,7 @@ export default function RunButton({
   isRunning,
   handleStartService,
 }) {
-  const icon = isRunning === "Running :)" ? restart : run;
+  const icon = isRunning === true ? restart : run;
   const serviceId =
     type === "Database" ? container.databaseId : container.serviceId;
   return (

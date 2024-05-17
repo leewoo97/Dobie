@@ -174,9 +174,7 @@ export default function RunPage() {
       setLoadingModal(true);
       await startProject(projectId).then(() => setLoadingModal(false));
       setCheckProceed({ allRunning: "Run" });
-      toast.success(`프로젝트가 정상적으로 실행되었습니다. `, {
-        position: "top-center",
-      });
+      window.location.replace("/manage");
     } catch (error) {
       setLoadingModal(false);
       toast.error(`프로젝트 등록 후 빌드가 진행되어야 합니다. `, {
