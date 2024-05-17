@@ -112,7 +112,7 @@ public class DockerfileServiceImpl implements DockerfileService {
     }
 
     @Override
-    public void createReactDockerfile(String projectName, String version, String path) {
+    public void createReactDockerfile(String projectName, String version, String path, boolean usingNginx) {
 
         StringBuilder sb = new StringBuilder();
         sb.append("FROM node:").append(version).append("-alpine as build-stage\n");
@@ -121,7 +121,14 @@ public class DockerfileServiceImpl implements DockerfileService {
         sb.append("RUN npm install\n");
         sb.append("COPY . .\n");
         sb.append("RUN npm run build\n");
-        sb.append("CMD [ \"npm\", \"start\" ]\n");
+        if(usingNginx) {
+            sb.append("FROM nginx:alpine\n");
+            sb.append("COPY --from=build-stage /app/build /usr/share/nginx/html\n");
+            sb.append("EXPOSE 80\n");
+            sb.append("CMD [\"nginx\", \"-g\", \"daemon off;\"]\n");
+        }else{
+            sb.append("CMD [ \"npm\", \"start\" ]\n");
+        }
         String dockerfile = sb.toString();
 
         // ec2 서버에서 깃클론하는 경로로 수정하기

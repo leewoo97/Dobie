@@ -189,7 +189,7 @@ public class ProjectServiceImpl implements ProjectService {
         // 프론트엔드
         FrontendGetResponseDto frontendInfo = projectGetResponseDto.getFrontend();
         if (frontendInfo.getFramework().equals("React")) {
-            dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath());
+            dockerfileService.createReactDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath(), projectGetResponseDto.getFrontend().isUsingNginx());
         } else if (frontendInfo.getFramework().equals("Vue")) {
             dockerfileService.createVueDockerfile(projectGetResponseDto.getProjectName(), frontendInfo.getVersion(), frontendInfo.getPath(), frontendInfo.getInternalPort());
         }

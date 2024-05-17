@@ -31,8 +31,9 @@ public class DockerfileController {
     @PostMapping("/react")
     public ResponseEntity<?> reactDockerfile(@RequestParam(name = "projectName") String projectName,
                                                @RequestParam(name = "version") String version,
-                                               @RequestParam(name = "path") String path){
-        dockerfileService.createReactDockerfile(projectName, version, path);
+                                               @RequestParam(name = "path") String path,
+                                               @RequestParam(name = "usingNginx") boolean usingNginx){
+        dockerfileService.createReactDockerfile(projectName, version, path , usingNginx);
         return new ResponseEntity<String>("성공", HttpStatus.OK);
     }
 //    @Operation(summary = "백엔드 도커파일 조회(exec로 조회)", description = "지정된 경로에서 백엔드 도커파일의 내용을 조회합니다.")
