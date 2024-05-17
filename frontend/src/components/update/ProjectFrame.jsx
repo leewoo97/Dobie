@@ -143,7 +143,7 @@ export default function ProjectFrame() {
             <ToggleBox keyName={"https"} valueName={"true / false"} value={tempProject.usingHttps} onChange={changeHttpsHandler} isToggle />
             <DescBox
                 desc={
-                    "Https 사용 여부를 선택하세요 ('true'이면 사용, false'이면 미사용)"
+                    "Https 적용 여부를 선택하세요"
                 }
             />
         </div>
