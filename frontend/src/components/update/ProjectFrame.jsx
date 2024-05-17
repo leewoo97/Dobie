@@ -3,6 +3,7 @@ import styles from "./ProjectFrame.module.css";
 import InputBox from "../common/InputBox";
 import DescBox from "../common/DescBox";
 import ToggleBox from "../common/ToggleBox";
+import RadioBox from "../common/RadioBox";
 import githubImage from "../../assets/github.png";
 import gitlabImage from "../../assets/gitlab.png";
 import useProjectStore from "../../stores/projectStore";
@@ -27,6 +28,17 @@ export default function ProjectFrame() {
         setTempProject(prev => ({
             ...prev,
             projectDomain: e.target.value
+        }));
+    };
+
+    const changeGitTypeHandler = (type) => {
+        setGittype(type);
+        setTempProject((prev) => ({
+            ...prev,
+            git: {
+                ...prev.git,
+                gitType: type,
+            },
         }));
     };
 
@@ -70,6 +82,14 @@ export default function ProjectFrame() {
             </div>
             <InputBox keyName={"Domain Name"} value={tempProject.projectDomain} onChange={changeDomainHandler} />
             <DescBox desc={"Domain Name을 수정하세요 "} />
+            <RadioBox
+                keyName={"Git Type"}
+                valueName={"github"}
+                onChange={changeGitTypeHandler}
+                value={tempProject.git.gitType}
+                isRadio
+            />
+            <DescBox desc={"Git 저장소의 타입을 선택하세요"} />
             <InputBox keyName={"Git Clone URL"} value={tempProject.git.gitUrl} onChange={changeUrlHandler} />
             <DescBox desc={"GitLab 또는 GitHub 의 프로젝트를 클론하기 위한 URL을 수정하세요 "} />
             <InputBox keyName={"Access Token"} value={tempProject.git.accessToken} onChange={changeTokenHandler} />
