@@ -17,6 +17,7 @@ RUN npm run-script build
 
 
 
+
 # step 2 실행 스테이지를 위한 과정
 FROM nginx:alpine
 
