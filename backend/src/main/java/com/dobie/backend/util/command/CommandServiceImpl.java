@@ -13,6 +13,8 @@ import org.apache.commons.exec.PumpStreamHandler;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 import static com.dobie.backend.exception.format.response.ErrorCode.SSL_CERTIFICATE_ISSUE_FAILED;
 
@@ -265,7 +267,7 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
-    public void deleteFile(String fileName, String path){
+    public void deleteFile(String fileName, String path) {
         sb = new StringBuilder();
         sb.append("rm -f ").append(path).append(fileName);
         CommandLine commandLine = CommandLine.parse(sb.toString());
@@ -273,7 +275,7 @@ public class CommandServiceImpl implements CommandService {
         try {
             executor.execute(commandLine);
             String result = outputStream.toString().trim();
-            System.out.println("delete "+fileName+" success : " + result);
+            System.out.println("delete " + fileName + " success : " + result);
         } catch (Exception e) {
             String result = outputStream.toString().trim();
             throw new DeleteFileFailedException(e.getMessage(), result);
@@ -315,45 +317,73 @@ public class CommandServiceImpl implements CommandService {
 
     @Override
     public void getSSLTest(String domain) throws IOException {
+        Timer t = new Timer();
         // 호스트의 파이프 경로
         String pipePath = "/getSSL_pipe";
-            // 호스트의 파이프에 쓰기 위한 BufferedWriter 생성
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pipePath)));
+        // 호스트의 파이프에 쓰기 위한 BufferedWriter 생성
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pipePath)));
 
-            // 전달할 명령어
-            String command = "sudo certbot certonly --standalone --email test@test.com --agree-tos --no-eff-email --keep-until-expiring -d "+domain;
+        // 전달할 명령어
+        String command = "sudo certbot certonly --standalone --email test@test.com --agree-tos --no-eff-email --keep-until-expiring -d " + domain;
 
-            // 명령어를 파이프에 씀
-            writer.write(command);
-            writer.newLine();
-            writer.flush(); // 버퍼 비우기
-            writer.close(); // 파일 닫기
+        // 명령어를 파이프에 씀
+        writer.write(command);
+        writer.newLine();
+        writer.flush(); // 버퍼 비우기
+        writer.close(); // 파일 닫기
 
-            System.out.println("명령어를 성공적으로 파이프에 전달했습니다.");
+        System.out.println("명령어를 성공적으로 파이프에 전달했습니다.");
 
         sb = new StringBuilder();
         sb.append("cat /logfile.log");
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
+            TimeUnit.SECONDS.sleep(10);
             executor.execute(commandLine);
             String result = outputStream.toString().trim();
             System.out.println("ssl issued log : " + result);
 
-            if(result.contains("no action taken")){
+            while (result.isEmpty()) {
+                TimeUnit.SECONDS.sleep(10);
+                executor.execute(commandLine);
+                result = outputStream.toString().trim();
+                System.out.println("ssl issued log : " + result);
+            }
+
+
+            if (result.contains("no action taken")) {
                 log.info("인증서가 아직 유효합니다.");
                 System.out.println("인증서가 아직 유효합니다.");
-            }else if(result.contains("Congratulations")) {
+                deleteSSLLog();
+            } else if (result.contains("Congratulations")) {
                 log.info("인증서가 성공적으로 발급되었습니다.");
                 System.out.println("인증서가 성공적으로 발급되었습니다.");
-            }else {
+                deleteSSLLog();
+            } else {
                 log.info("인증서 발급실패");
                 System.out.println("Error : 인증서 발급실패");
+                deleteSSLLog();
                 throw new SSLCertificateIssueFailedException();
             }
+
+        } catch (Exception e) {
+            throw new SSLCertificateIssueFailedException();
+        }
+    }
+
+    public void deleteSSLLog() {
+        sb = new StringBuilder();
+        sb.append("sudo sh -c 'cat /dev/null > logfile.log'");
+        CommandLine nCommandLine = CommandLine.parse(sb.toString());
+        executor.setStreamHandler(streamHandler);
+        try {
+            executor.execute(nCommandLine);
+            String output = outputStream.toString().trim();
+            System.out.println("delete log file success : " + output);
         } catch (Exception e) {
             String result = outputStream.toString().trim();
-            throw new DeleteFileFailedException(e.getMessage(), result);
+            throw new SSLLogDeleteFailedException(e.getMessage(), result);
         }
     }
 
