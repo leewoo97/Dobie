@@ -7,8 +7,8 @@ export async function login(user) {
   try {
     localStorage.clear();
 
-    const response = await axios.post(url + "/login", user);
     console.log(url + "/login");
+    const response = await axios.post(url + "/login", user);
     return response;
   } catch (error) {
     console.log("로그인실패: " + error);
