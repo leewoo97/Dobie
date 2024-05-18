@@ -19,8 +19,8 @@
 <img src="https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&lodockerr=white"> <img src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&lodockerr=white"> <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&lodockerr=white">
 
 ## 사용자 가이드
----
-1) Dobie를 설치, 실행하기 위해 다음 스크립트를 실행하세요
+
+1.  Dobie를 설치, 실행하기 위해 다음 스크립트를 실행하세요
 
 ```bash
 wget https://raw.githubusercontent.com/eunnseok/dobie-deploy/main/install-dobie.sh
@@ -28,15 +28,20 @@ chmod +x [install-dobie.sh](http://install-dobie.sh/)
 sh install-dobie
 ```
 
-2) Dobie가 사용할 3333포트를 열어주세요
+2.  Dobie가 사용할 **3333포트**를 열어주세요
+![1](./assets/1.png)
 
-3)
+3.  domainName:3333 으로 접속해 Dobie를 시작해주세요
+4.  Dobie에서 회원가입을 진행해주세요
+    
+    같은 프로젝트를 진행하는 팀원들과 한 계정을 공유해주세요
+![2](./assets/2.png)
 
 ## 사용 예제
----
+
 
 ## 기여하는 방법
---
+
 ### 브랜치 전략
 - Git-flow 전략을 기반으로 main, develop 브랜치와 feature 보조 브랜치를 운용했습니다.
 - main, develop, feature 브랜치로 나누어 개발을 하였습니다.
