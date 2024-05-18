@@ -106,14 +106,25 @@ export default function ProjectItem({ project }) {
     try {
       setAction("run");
       setLoadingModal(true);
-      await startProject(projectId).then(() => setLoadingModal(false));
-      setCheckProceed({ allRunning: "Run" });
-      toast.success(`프로젝트가 정상적으로 실행되었습니다. `, {
-        position: "top-center",
-      });
+      const response = await startProject(projectId);
+      setLoadingModal(false);
+
+      if (response.data.status === "SUCCESS") {
+        setLoadingModal(false);
+        setCheckProceed({ allRunning: "Run" });
+        toast.success(`프로젝트가 정상적으로 실행되었습니다. `, {
+          position: "top-center",
+        });
+      } else {
+        setLoadingModal(false);
+        toast.error(`${response.data.message}\n\r 빌드를 해 주세요`, {
+          position: "top-center",
+        });
+      }
     } catch (error) {
       setLoadingModal(false);
-      toast.error(`프로젝트 등록 후 빌드가 진행되어야 합니다. `, {
+      console.log(error);
+      toast.error(`프로젝트 실행 실패\n\r 빌드를 다시 실행해 주세요`, {
         position: "top-center",
       });
     }
@@ -126,7 +137,7 @@ export default function ProjectItem({ project }) {
   const redirectByDomain = (e, domain) => {
     e.stopPropagation();
     window.open(`http://${domain}`);
-  }
+  };
 
   return (
     <>
@@ -136,7 +147,14 @@ export default function ProjectItem({ project }) {
         <>
           <div className={styles.content} onClick={() => handleSubmit()}>
             <div key={project.projectName}>{project.projectName}</div>
-            <div key={project.projectDomain} onClick={(event) => redirectByDomain(event, project.projectDomain)}>{project.projectDomain}</div>
+            <div
+              key={project.projectDomain}
+              onClick={(event) =>
+                redirectByDomain(event, project.projectDomain)
+              }
+            >
+              {project.projectDomain}
+            </div>
             <div className={styles.buildIcon}>
               <img
                 src={build}
