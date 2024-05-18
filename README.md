@@ -23,11 +23,12 @@
 1.  Dobie를 설치, 실행하기 위해 다음 스크립트를 실행하세요
 
 ```bash
-<!--shell script 다운로드 --> 
+# shell script 다운로드
 wget https://raw.githubusercontent.com/eunnseok/dobie-deploy/main/install-dobie.sh
-// shell script 실행 권한 부여
+
+# shell script 실행 권한 부여
 chmod +x [install-dobie.sh](http://install-dobie.sh/) 
-// shell script 실행
+# shell script 실행
 sh install-dobie
 ```
 
