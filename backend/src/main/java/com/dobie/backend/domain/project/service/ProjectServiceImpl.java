@@ -18,8 +18,10 @@ import com.dobie.backend.exception.exception.file.SaveFileFailedException;
 import com.dobie.backend.exception.exception.git.GitInfoNotFoundException;
 import com.dobie.backend.util.command.CommandService;
 import com.dobie.backend.util.file.FileManager;
+
 import java.io.File;
 import java.io.InputStream;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.parameters.P;
@@ -29,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -114,7 +117,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void updateProject(ProjectRequestDto dto) {
-        if(dto.getProjectId() == null){
+        if (dto.getProjectId() == null) {
             dto.setProjectId(UUID.randomUUID().toString());
         }
         Project project = new Project(dto);
@@ -160,12 +163,12 @@ public class ProjectServiceImpl implements ProjectService {
         // git clone
         GitGetResponseDto gitInfo = projectGetResponseDto.getGit();
 
-        String path = "./"+projectGetResponseDto.getProjectName();
+        String path = "./" + projectGetResponseDto.getProjectName();
 
         // 이미 clone 되어있는지 check
         if (!commandService.checkIsCloned(path)) {
             commandService.gitClone(gitInfo.getGitUrl(), gitInfo.getAccessToken());
-        }else {
+        } else {
             commandService.gitPull(path);
         }
 
@@ -180,7 +183,7 @@ public class ProjectServiceImpl implements ProjectService {
                 dockerfileService.createMavenDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
             } else if (value.getFramework().equals("Fastapi")) {
                 dockerfileService.createFastApiDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath());
-            } else if (value.getFramework().equals("Django")){
+            } else if (value.getFramework().equals("Django")) {
                 dockerfileService.createDjangoDockerfile(projectGetResponseDto.getProjectName(), value.getVersion(), value.getPath(), value.getInternalPort());
             }
         });
@@ -200,7 +203,7 @@ public class ProjectServiceImpl implements ProjectService {
         //nginx proxy config 파일생성
         nginxConfigService.saveProxyNginxConfig(projectId, frontendInfo.isUsingNginx(), frontendInfo.getServiceId());
 
-        if(frontendInfo.isUsingNginx()){
+        if (frontendInfo.isUsingNginx()) {
             try {
                 //frontend nginx config 파일 저장
                 nginxConfigService.saveFrontNginxConfigFile(projectGetResponseDto.getFrontend().getPath(), projectGetResponseDto.getProjectName());
@@ -223,15 +226,19 @@ public class ProjectServiceImpl implements ProjectService {
     // 프로젝트 통째로 실행한다 했을때
     @Override
     public void runProject(String projectId) {
-        ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
-        String path = "./" + projectGetResponseDto.getProjectName();
-        commandService.dockerComposeUp(path);
+        String filePath = "/nginx/" + projectId + ".conf";
+        if (!new File(filePath).exists()) {
+            throw new NginxConfigNotFoundException();
+        } else {
+            ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
+            String path = "./" + projectGetResponseDto.getProjectName();
+            commandService.dockerComposeUp(path);
 
-        if (!verifyComposeUpSuccess(path)) {
-            throw new ProjectStartFailedException("Verify compose up failed.");
+            if (!verifyComposeUpSuccess(path)) {
+                throw new ProjectStartFailedException("Verify compose up failed.");
+            }
+            commandService.restartNginx();
         }
-        nginxConfigService.findNginxConfig(projectId);
-        commandService.restartNginx();
     }
 
     @Override
@@ -285,7 +292,7 @@ public class ProjectServiceImpl implements ProjectService {
         Map<String, SettingFile> fileMap = new HashMap<>();
 
         // 파일 저장
-        for(int i = 0;i<dto.getFileList().size();i++){
+        for (int i = 0; i < dto.getFileList().size(); i++) {
 
             String uuid = UUID.randomUUID().toString();
             fileMap.put(uuid, new SettingFile(uuid, dto.getFileList().get(i).getFilePath(), dto.getFileList().get(i).getFileName()));
@@ -306,7 +313,8 @@ public class ProjectServiceImpl implements ProjectService {
                     sb.append(line).append("\n");
                 }
 
-            } catch (IOException e) {}
+            } catch (IOException e) {
+            }
             String ignoreFile = sb.toString();
 
             // ec2 서버에서 깃클론하는 경로로 수정하기
@@ -325,7 +333,7 @@ public class ProjectServiceImpl implements ProjectService {
     public List<FileGetDto> getFile(String projectId) {
         Map<String, SettingFile> fileMap = getAllFiles(projectId);
         List<FileGetDto> result = new ArrayList<>();
-        fileMap.forEach((key, value) ->{
+        fileMap.forEach((key, value) -> {
             result.add(new FileGetDto((value)));
         });
         return result;
