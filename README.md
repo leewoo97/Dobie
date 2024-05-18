@@ -18,7 +18,7 @@
 - Infra 
 <img src="https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&lodockerr=white"> <img src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&lodockerr=white"> <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&lodockerr=white">
 
-## 설치 및 실행 가이드
+## 사용자 가이드
 ---
 1) Dobie를 설치, 실행하기 위해 다음 스크립트를 실행하세요
 
@@ -33,10 +33,6 @@ sh install-dobie
 3)
 
 ## 사용 예제
----
-
-
-## 라이선스
 ---
 
 ## 기여하는 방법
