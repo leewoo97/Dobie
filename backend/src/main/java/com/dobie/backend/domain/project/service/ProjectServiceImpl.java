@@ -209,13 +209,14 @@ public class ProjectServiceImpl implements ProjectService {
                 throw new SaveFileFailedException("front nginx config 파일 저장에 실패했습니다."); //예외처리
             }
         }
-
     }
 
     @Override
     public void stopProject(String projectId) {
         ProjectGetResponseDto projectGetResponseDto = getProject(projectId);
         String path = "./" + projectGetResponseDto.getProjectName();
+        // nginx config 파일 삭제
+        commandService.deleteNginxProxyConf(projectId);
         commandService.dockerComposeDown(path);
     }
 
@@ -229,6 +230,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (!verifyComposeUpSuccess(path)) {
             throw new ProjectStartFailedException("Verify compose up failed.");
         }
+        nginxConfigService.findNginxConfig(projectId);
         commandService.restartNginx();
     }
 
