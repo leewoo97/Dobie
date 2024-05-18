@@ -74,6 +74,7 @@ public enum ErrorCode {
     NGINX_RESTART_FAILED(HttpStatus.BAD_REQUEST, "nginx container를 재실행하는데 실패했습니다."),
     NGINX_CONF_DELETE_FAILED(HttpStatus.BAD_REQUEST, "nginx config 파일 삭제를 실패했습니다."),
     GET_SSL_FAILED(HttpStatus.BAD_REQUEST, "SSL 인증서 발급을 실패했습니다."),
+    NGINX_CONF_NOT_FOUND(HttpStatus.BAD_REQUEST, "nginx config 파일 찾기를 실패했습니다."),
     STOP_NGINX_FAILED(HttpStatus.BAD_REQUEST, "nginx container를 중지하는데 실패했습니다.")
     ;
     private final HttpStatus status;

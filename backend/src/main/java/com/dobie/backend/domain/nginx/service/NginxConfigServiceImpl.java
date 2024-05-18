@@ -5,6 +5,7 @@ import com.dobie.backend.domain.project.dto.NginxProxyDto;
 import com.dobie.backend.domain.project.entity.Project;
 import com.dobie.backend.domain.project.repository.ProjectRepository;
 import com.dobie.backend.exception.exception.build.GetSSLFailedException;
+import com.dobie.backend.exception.exception.build.NginxConfigNotFoundException;
 import com.dobie.backend.exception.exception.file.NginxFileNotFoundException;
 import com.dobie.backend.exception.exception.build.ProjectPathNotFoundException;
 
@@ -37,6 +38,15 @@ public class NginxConfigServiceImpl implements NginxConfigService {
     private final ProjectRepository projectRepository;
     private final CommandService commandService;
     FileManager fileManager = new FileManager();
+
+
+    @Override
+    public void findNginxConfig(String projectId){
+        String filePath = "/nginx/"+projectId+".conf";
+        if (!new File(filePath).exists()) {
+            throw new NginxConfigNotFoundException();
+        }
+    }
 
     //리버스프록시 nginx config 파일 생성 후 /nginx에 [projectName].conf 이름으로 저장
     @Override
