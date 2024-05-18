@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
-
-import static com.dobie.backend.exception.format.response.ErrorCode.SSL_CERTIFICATE_ISSUE_FAILED;
 
 @Service
 @Slf4j
@@ -369,16 +369,9 @@ public class CommandServiceImpl implements CommandService {
     }
 
     public void deleteSSLLog() {
-        sb = new StringBuilder();
-        sb.append("sh -c 'cat /dev/null > /logfile.log'");
-        CommandLine nCommandLine = CommandLine.parse(sb.toString());
-        executor.setStreamHandler(streamHandler);
-        System.out.println("파일 비우기2");
-        try {
-            executor.execute(nCommandLine);
-            System.out.println("파일 비우기3");
-            String output = outputStream.toString().trim();
-            System.out.println("delete log file success : " + output);
+        Path filepath = Paths.get("/logfile.log");
+        try (BufferedWriter writer = Files.newBufferedWriter(filepath, StandardOpenOption.TRUNCATE_EXISTING)) {
+            // 파일을 비우기 위해 아무것도 쓰지 않습니다.
         } catch (Exception e) {
             String result = outputStream.toString().trim();
             throw new SSLLogDeleteFailedException(e.getMessage(), result);
