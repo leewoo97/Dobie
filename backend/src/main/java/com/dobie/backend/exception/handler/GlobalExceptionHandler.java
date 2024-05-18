@@ -350,5 +350,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("NginxConfigNotFoundException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
+    @ExceptionHandler(SSLCertificateIssueFailedException.class)
+    protected ResponseEntity<?> handle(SSLCertificateIssueFailedException e) {
+        log.error("SSLCertificateIssueFailedException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
 
 }
