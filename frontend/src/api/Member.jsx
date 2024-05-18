@@ -29,6 +29,7 @@ export async function signup(user) {
 //회원가입 여부 확인
 export async function getUser() {
   try {
+    console.log(url);
     const response = await axios.get(url);
     return response;
   } catch (error) {
