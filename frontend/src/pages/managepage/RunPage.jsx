@@ -14,8 +14,14 @@ import setting from "../../assets/settingIcon.png";
 import upload from "../../assets/uploadIcon.png";
 import document from "../../assets/documentIcon.png";
 import restart from "../../assets/restart.png";
+import build from "../../assets/settings.png";
 
-import { deleteProject, startProject, stopProject } from "../../api/Project";
+import {
+  buildProject,
+  deleteProject,
+  startProject,
+  stopProject,
+} from "../../api/Project";
 import { getNginxConf } from "../../api/ngixn";
 import { getDockerCompose } from "../../api/Docker";
 import { checkProceeding } from "../../api/CheckProcess";
@@ -183,6 +189,21 @@ export default function RunPage() {
     }
   };
 
+  // 프로젝트 빌드
+  const handleProjectBuild = async (projectId) => {
+    try {
+      setAction("build");
+      setLoadingModal(true);
+      const response = await buildProject(projectId);
+      if (response.data.status === "SUCCESS") {
+        setLoadingModal(false);
+        toast.success("빌드파일이 성공적으로 생성되었습니다.");
+      }
+    } catch (error) {
+      console.log("에러발생", error);
+    }
+  };
+
   const handleUpdateProject = () => {
     setUpdatedProject({ ...selectedProject });
     navigate("/update/project");
@@ -261,6 +282,14 @@ export default function RunPage() {
                 <div className={styles.text}>프로젝트 전체 실행</div>
                 <div className={styles.runButton}>
                   <div>
+                    <img
+                      src={build}
+                      className={styles.runButtonIcon}
+                      alt=""
+                      onClick={() =>
+                        handleProjectBuild(selectedProject.projectId)
+                      }
+                    />
                     <img
                       src={checkProceed.allRunning === "Run" ? restart : run}
                       className={styles.runButtonIcon}
