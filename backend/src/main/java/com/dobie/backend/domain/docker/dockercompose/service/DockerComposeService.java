@@ -10,10 +10,15 @@ public interface DockerComposeService {
     String createSpringDockerComposeFile(String domain, String frameWork, String seq, String serviceId, String path,
                                          int externalPort, int internalPort,
                                          DatabaseGetResponseDto mysql, DatabaseGetResponseDto mongodb,
-                                         DatabaseGetResponseDto redis, int frontInternalPort);
+                                         DatabaseGetResponseDto redis, int frontInternalPort, boolean usingNginx);
+
+    String createDjangoComposeFile(String domain, String seq, String serviceId, String path,
+                                           int externalPort, int internalPort, DatabaseGetResponseDto mysql,
+                                           DatabaseGetResponseDto mongodb, DatabaseGetResponseDto redis,
+                                           int frontInternalPort, boolean usingNingx);
 
     String createFastApiComposeFile(String seq, String serviceId, String path,
-                                         int externalPort, int internalPort);
+                                         int externalPort, int internalPort, boolean usingNingx);
 
     String createReactDockerComposeFile(String domain, String frameWork, String serviceId, String path, boolean usingNginx, int externalPort, int internalPort);
 

@@ -58,20 +58,20 @@ public class DockerComposeServiceImpl implements DockerComposeService {
                                                                    backendDto.getExternalPort(),
                                                                    backendDto.getInternalPort(),
                                                                    mysql, mongodb, redis,
-                                                                   projectDto.getFrontend().getInternalPort()));
+                                                                   projectDto.getFrontend().getInternalPort(), projectDto.getFrontend().isUsingNginx()));
             } else if (backendDto.getFramework().equals("Django")) {
                 dockercompose.append(createDjangoComposeFile(projectDto.getProjectDomain(), backendSeq, backendDto.getServiceId(),
                                                              backendDto.getPath(), backendDto.getExternalPort(),
                                                              backendDto.getInternalPort(),
-                                                             mysql, mongodb, redis, projectDto.getFrontend().getInternalPort()));
+                                                             mysql, mongodb, redis, projectDto.getFrontend().getInternalPort(), projectDto.getFrontend().isUsingNginx()));
             } else if (backendDto.getFramework().equals("Fastapi")) {
                 //Framework가 SpringBoot(gradle)이면 gradle, SpringBoot(Maven)이면 Maven
                 dockercompose.append(createFastApiComposeFile(
                         backendSeq, backendDto.getServiceId(),
                         backendDto.getPath(),
                         backendDto.getExternalPort(),
-                        backendDto.getInternalPort()
-                        ));
+                        backendDto.getInternalPort(),
+                        projectDto.getFrontend().isUsingNginx()));
             }
             else {
                 throw new BackendFrameWorkNotFoundException();
@@ -137,7 +137,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     public String createSpringDockerComposeFile(String domain, String frameWork, String seq, String serviceId, String path,
                                                 int externalPort, int internalPort,
                                                 DatabaseGetResponseDto mysql, DatabaseGetResponseDto mongodb,
-                                                DatabaseGetResponseDto redis, int frontInternalPort) {
+                                                DatabaseGetResponseDto redis, int frontInternalPort, boolean usingNginx) {
         StringBuilder sb = new StringBuilder();
 
         //Framework가 SpringBoot(gradle)이면 gradle, SpringBoot(maven)이면 maven
@@ -192,7 +192,11 @@ public class DockerComposeServiceImpl implements DockerComposeService {
             }
         }
 
-        sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
+        if(usingNginx){
+            sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(80).append("\n");
+        }else {
+            sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
+        }
 
         // network
         sb.append("    networks:\n");
@@ -203,7 +207,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     }
 
     @Override
-    public String createFastApiComposeFile(String seq, String serviceId, String path, int externalPort, int internalPort) {
+    public String createFastApiComposeFile(String seq, String serviceId, String path, int externalPort, int internalPort, boolean usingNingx) {
         StringBuilder sb = new StringBuilder();
 
         //Framework는 Fastapi
@@ -229,10 +233,11 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         return sb.toString();
     }
 
-    private String createDjangoComposeFile(String domain, String seq, String serviceId, String path,
+    @Override
+    public String createDjangoComposeFile(String domain, String seq, String serviceId, String path,
                                            int externalPort, int internalPort, DatabaseGetResponseDto mysql,
                                            DatabaseGetResponseDto mongodb, DatabaseGetResponseDto redis,
-                                           int frontInternalPort) {
+                                           int frontInternalPort, boolean usingNingx) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("  django").append(seq).append(":\n");
