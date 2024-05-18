@@ -89,6 +89,8 @@ sh install-dobie
 ### Issue를 보고하는 방법
 Git Issue를 통해 자유롭게 문제를 제출하세요. GitHub bug 탬플릿을 준수하고 다음과 같은 내용을 포함하여 등록해주세요.
 
-1. Bug 요약
-2. Bug가 발생한 단계
-3. Bug가 발생한 Dobie의 구성 또는 서비스
+[Issue Lable](https://lab.ssafy.com/s10-final/S10P31B101/-/labels)을 참고하여 이슈를 제출해주세요
+
+1. Issue 요약
+2. Issue가 발생한 단계
+3. Issue가 발생한 Dobie의 구성 또는 서비스
