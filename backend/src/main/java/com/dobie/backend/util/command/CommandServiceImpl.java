@@ -339,7 +339,6 @@ public class CommandServiceImpl implements CommandService {
         CommandLine commandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         try {
-            TimeUnit.SECONDS.sleep(10);
             executor.execute(commandLine);
             String result = outputStream.toString().trim();
             System.out.println("ssl issued log : " + result);
