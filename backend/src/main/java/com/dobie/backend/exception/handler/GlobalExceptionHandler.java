@@ -355,5 +355,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("SSLCertificateIssueFailedException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
+    @ExceptionHandler(SSLLogDeleteFailedException.class)
+    protected ResponseEntity<?> handle(SSLLogDeleteFailedException e) {
+        log.error("SSLLogDeleteFailedException = {}", e.getErrorCode().getMessage());
+        log.error("Error Message = {}", e.getErrorMessage());
+        log.error("Error Detail = {}", e.getErrorDetail());
+        return response.error(e.getErrorCode());
+    }
 
 }
