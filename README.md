@@ -33,7 +33,7 @@ sh install-dobie
 
 3.  domainName:3333 으로 접속해 Dobie를 시작해주세요
 4.  Dobie에서 회원가입을 진행해주세요. 같은 프로젝트를 진행하는 팀원들과 한 계정을 공유해주세요.
-![image (7)](./assets/image (7).png)
+![image(7)](./assets/image(7).png)
 5.  로그인 후 가이드 페이지에 따라 Dobie 사용을 진행해주세요
 ![2](./assets/2.png)
 
