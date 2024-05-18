@@ -37,8 +37,6 @@ sh install-dobie
 5.  로그인 후 가이드 페이지에 따라 Dobie 사용을 진행해주세요
 ![2](./assets/2.png)
 
-## 사용 예제
-
 
 ## Git Convention
 
