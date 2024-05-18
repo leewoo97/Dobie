@@ -150,7 +150,9 @@ export default function RegistFrame() {
             폴더 경로는 프로젝트 루트 경로로 부터의 서비스 폴더 경로로 위와 같은
             상황에서는 <b>/frontend</b> 가 됩니다.
           </div>
-          <div className={styles.strengthLight}>4) 내부 포트 번호</div>
+          <div className={styles.strengthLight}>4) Nginx location</div>
+          <div>Backend의 baseURI를 입력해주세요</div>
+          <div className={styles.strengthLight}>5) 내부 포트 번호</div>
           <div>Frontend가 사용할 포트번호를 입력해주세요</div>
         </div>
         {/* DB */}
