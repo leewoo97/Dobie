@@ -343,8 +343,8 @@ public class CommandServiceImpl implements CommandService {
             String logResult = outputStream.toString().trim();
             System.out.println("ssl issued log : " + logResult);
 
-            while (logResult.isEmpty()) {
-                TimeUnit.SECONDS.sleep(10);
+            while (!logResult.contains("IMPORTANT NOTES") || !logResult.contains("no action taken")) {
+                TimeUnit.SECONDS.sleep(5);
                 executor.execute(commandLine);
                 logResult = outputStream.toString().trim();
                 System.out.println("ssl issued log : " + logResult);
@@ -354,22 +354,21 @@ public class CommandServiceImpl implements CommandService {
             if (logResult.contains("no action taken")) {
                 log.info("인증서가 아직 유효합니다.");
                 System.out.println("인증서가 아직 유효합니다.");
-                deleteSSLLog();
             } else if (logResult.contains("Congratulations")) {
                 log.info("인증서가 성공적으로 발급되었습니다.");
                 System.out.println("인증서가 성공적으로 발급되었습니다.");
-                deleteSSLLog();
             } else {
                 log.info("인증서 발급실패");
                 System.out.println("Error : 인증서 발급실패");
                 System.out.println("파일 비우기");
-                deleteSSLLog();
                 throw new SSLCertificateIssueFailedException();
             }
 
         } catch (Exception e) {
             throw new SSLCertificateIssueFailedException();
-        }
+        } finally {
+        deleteSSLLog();
+    }
     }
 
     public void deleteSSLLog() {
