@@ -78,6 +78,12 @@ export default function DatabaseFrame() {
         setTempProject({ ...tempProject });
     }
 
+    const changeDatabaseNameHandler = (e) => {
+        selectedDatabase.databaseName = e.target.value;
+        tempProject.databaseMap[selectedKey] = { ...selectedDatabase };
+        setTempProject({ ...tempProject });
+    }
+
     const changeUsernameHandler = (e) => {
         selectedDatabase.username = e.target.value;
         tempProject.databaseMap[selectedKey] = { ...selectedDatabase };
@@ -92,6 +98,12 @@ export default function DatabaseFrame() {
 
     const changeSchemaPathHandler = (e) => {
         selectedDatabase.schemaPath = e.target.value;
+        tempProject.databaseMap[selectedKey] = { ...selectedDatabase };
+        setTempProject({ ...tempProject });
+    }
+
+    const changeExternalPortHandler = (e) => {
+        selectedDatabase.externalPort = Number(e.target.value);
         tempProject.databaseMap[selectedKey] = { ...selectedDatabase };
         setTempProject({ ...tempProject });
     }
@@ -144,6 +156,9 @@ export default function DatabaseFrame() {
                 <InputSelectBox keyName={"데이터베이스"} list={databaseList} value={selectedDatabase.databaseType} onChange={changeDatabaseHandler} />
                 <DescBox desc={"사용할 Database 서비스를 선택하세요"} />
 
+                <InputBox keyName={"DatabaseName"} value={selectedDatabase.databaseName} valueName={"databaseName"} onChange={changeDatabaseNameHandler} />
+                <DescBox desc={"데이터베이스에 설정한 DatabaseName을 작성해주세요"} />
+
                 <InputBox keyName={"Username"} value={selectedDatabase.username} valueName={"username"} onChange={changeUsernameHandler} />
                 <DescBox desc={"데이터베이스에 설정한 Username을 작성해주세요"} />
 
@@ -152,6 +167,9 @@ export default function DatabaseFrame() {
 
                 <InputBox keyName={"init.sql 경로"} value={selectedDatabase.schemaPath} valueName={"/path/to/mysql/schema.sql"} onChange={changeSchemaPathHandler} />
                 <DescBox desc={"스키마 파일이 있다면 해당 파일 폴더 경로를 작성하세요 (선택)"} />
+
+                <InputBox keyName={"외부 포트 번호"} value={selectedDatabase.externalPort} valueName={"3306"} onChange={changeExternalPortHandler} />
+                <DescBox desc={"해당 프레임워크가 사용할 내부 포트 번호를 지정해주세요"} />
 
                 <InputBox keyName={"내부 포트 번호"} value={selectedDatabase.internalPort} valueName={"3306"} onChange={changeInternalPortHandler} />
                 <DescBox desc={"해당 프레임워크가 사용할 내부 포트 번호를 지정해주세요"} />
