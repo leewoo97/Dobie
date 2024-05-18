@@ -370,7 +370,7 @@ public class CommandServiceImpl implements CommandService {
 
     public void deleteSSLLog() {
         sb = new StringBuilder();
-        sb.append("sh -c 'cat /dev/null > logfile.log'");
+        sb.append("sh -c 'cat /dev/null > /logfile.log'");
         CommandLine nCommandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
         System.out.println("파일 비우기2");
