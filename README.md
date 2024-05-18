@@ -25,7 +25,6 @@
 ```bash
 # shell script 다운로드
 wget https://raw.githubusercontent.com/eunnseok/dobie-deploy/main/install-dobie.sh
-
 # shell script 실행 권한 부여
 chmod +x [install-dobie.sh](http://install-dobie.sh/) 
 # shell script 실행
