@@ -33,6 +33,7 @@ export default function RunProjectItem({ container, type, setContent }) {
     setLogModalOpen,
     logContent,
     setLogContent,
+    setLogServiceId,
   } = useModalStore();
   const [runStatus, setRunStatus] = useState(true);
 
@@ -136,6 +137,7 @@ export default function RunProjectItem({ container, type, setContent }) {
     try {
       const response = await getLog(serviceId);
       if (response.status === 200) {
+        setLogServiceId(serviceId);
         setLogContent(response.data);
         setLogModalOpen(true);
         console.log(serviceId);
@@ -165,107 +167,109 @@ export default function RunProjectItem({ container, type, setContent }) {
         type === "Frontend" &&
         !(container.framework === "React" || container.framework === "Vue")
       ) && (
-          <div className={styles.container}>
-            <div className={styles.containerButton}>
-              <div className={styles.runButton}>
-                <RunButton
-                  type={type}
-                  container={container}
-                  isRunning={runStatus}
-                  handleStartService={handleStartService}
-                />
+        <div className={styles.container}>
+          <div className={styles.containerButton}>
+            <div className={styles.runButton}>
+              <RunButton
+                type={type}
+                container={container}
+                isRunning={runStatus}
+                handleStartService={handleStartService}
+              />
 
-                <StopButton
-                  type={type}
-                  container={container}
-                  handleStopService={handleStopService}
-                />
-              </div>
-              {(type === "Backend" || type === "Frontend") && (
-                <div
-                  className={styles.fileButton}
-                  onClick={() =>
-                    handleDockerFileModal(
-                      selectedProject.projectId,
-                      container.serviceId,
-                      type
-                    )
-                  }
-                >
-                  Dockerfile 파일 조회
-                  <img
-                    src={document}
-                    alt=""
-                    decoding="async"
-                    className={styles.btnIcon}
-                  />
-                </div>
-              )}
+              <StopButton
+                type={type}
+                container={container}
+                handleStopService={handleStopService}
+              />
             </div>
-            <div className={styles.box} onClick={() => handleIntoContainer()}>
-              <div className={styles.boxTop}>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td key={type} className={styles.serviceName}>
-                        {type}
-                      </td>
-                      {type === "Backend" || type === "Frontend" ? (
-                        <td key={container.externalPort}>
-                          Nginx location {container.location}
-                        </td>
-                      ) : (
-                        <td key={container.externalPort}>
-                          외부포트 {container.externalPort}
-                        </td>
-                      )}
-                    </tr>
-                    <tr>
-                      {type === "Backend" || type === "Frontend" ? (
-                        <td key={container.framework}>{container.framework}</td>
-                      ) : (
-                        <td key={container.databaseType}>
-                          {container.databaseType}
-                        </td>
-                      )}
-
-                      <td key={container.internalPort}>
-                        내부포트 {container.internalPort}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <FrameworkImg
-                  framework={container.framework}
-                  databaseType={container.databaseType}
+            {(type === "Backend" || type === "Frontend") && (
+              <div
+                className={styles.fileButton}
+                onClick={() =>
+                  handleDockerFileModal(
+                    selectedProject.projectId,
+                    container.serviceId,
+                    type
+                  )
+                }
+              >
+                Dockerfile 파일 조회
+                <img
+                  src={document}
+                  alt=""
+                  decoding="async"
+                  className={styles.btnIcon}
                 />
               </div>
-              <div className={styles.line}></div>
-              <div className={styles.boxBottom}>
-                <div className={runStatus ? styles.running : styles.stopped}>
-                  {checkProceed[container.serviceId || container.databaseId]}
-                </div>
-                <div
-                  className={styles.log}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    // handleLogModal(container.serviceId);
-                    handleLogModal(container.serviceId || container.databaseId);
-                  }}
-                >
-                  <img
-                    src={log}
-                    alt=""
-                    decoding="async"
-                    className={styles.btnIcon}
-                  />
-                  로그 보기
-                </div>
+            )}
+          </div>
+          <div className={styles.box} onClick={() => handleIntoContainer()}>
+            <div className={styles.boxTop}>
+              <table>
+                <tbody>
+                  <tr>
+                    <td key={type} className={styles.serviceName}>
+                      {type}
+                    </td>
+                    {type === "Backend" || type === "Frontend" ? (
+                      <td key={container.externalPort}>
+                        Nginx location {container.location}
+                      </td>
+                    ) : (
+                      <td key={container.externalPort}>
+                        외부포트 {container.externalPort}
+                      </td>
+                    )}
+                  </tr>
+                  <tr>
+                    {type === "Backend" || type === "Frontend" ? (
+                      <td key={container.framework}>{container.framework}</td>
+                    ) : (
+                      <td key={container.databaseType}>
+                        {container.databaseType}
+                      </td>
+                    )}
+
+                    <td key={container.internalPort}>
+                      내부포트 {container.internalPort}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <FrameworkImg
+                framework={container.framework}
+                databaseType={container.databaseType}
+              />
+            </div>
+            <div className={styles.line}></div>
+            <div className={styles.boxBottom}>
+              <div className={runStatus ? styles.running : styles.stopped}>
+                {checkProceed[container.serviceId || container.databaseId]}
+              </div>
+              <div
+                className={styles.log}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  // handleLogModal(container.serviceId);
+                  handleLogModal(container.serviceId || container.databaseId);
+                }}
+              >
+                <img
+                  src={log}
+                  alt=""
+                  decoding="async"
+                  className={styles.btnIcon}
+                />
+                로그 보기
               </div>
             </div>
           </div>
-        )}
-      {logModalOpen && <LogMadal serviceId={container.serviceId || container.databaseId} />}
+        </div>
+      )}
+      {logModalOpen && (
+        <LogMadal serviceId={container.serviceId || container.databaseId} />
+      )}
     </>
   );
 }

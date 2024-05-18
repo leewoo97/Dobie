@@ -10,15 +10,16 @@ import { getLog } from "../../api/Docker";
 
 export default function LogMadal({ serviceId }) {
   const modalBackground = useRef();
-  const { setLogModalOpen, logContent, setLogContent } = useModalStore();
+  const { setLogModalOpen, logContent, setLogContent, logServiceId } =
+    useModalStore();
 
-  const handleLogModal = async (serviceId) => {
+  const handleLogModal = async () => {
     try {
-      const response = await getLog(serviceId);
+      const response = await getLog(logServiceId);
       if (response.status === 200) {
         setLogContent(response.data);
         console.log("로그재조회");
-        console.log(serviceId);
+        console.log(logServiceId);
         // console.log(response.data);
       } else {
         toast.error(`로그 조회 실패`, {
@@ -43,10 +44,7 @@ export default function LogMadal({ serviceId }) {
       >
         <div className={styles.modalContent}>
           <div className={styles.modalhead}>
-            <div
-              className={styles.closeImg}
-              onClick={() => handleLogModal(serviceId)}
-            >
+            <div className={styles.closeImg} onClick={() => handleLogModal()}>
               <img
                 src={reload}
                 alt=""

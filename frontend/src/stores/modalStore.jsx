@@ -34,6 +34,10 @@ const useModalStore = create(
       setLogContent: (logContent) => {
         set({ logContent: logContent });
       },
+      logServiceId: "",
+      setLogServiceId: (logServiceId) => {
+        set({ logServiceId: logServiceId });
+      },
     }),
     {
       name: "modal-storage", // 저장될 localStorage의 key 이름
