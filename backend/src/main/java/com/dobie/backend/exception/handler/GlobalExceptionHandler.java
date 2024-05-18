@@ -345,5 +345,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("Error Detail = {}", e.getErrorDetail());
         return response.error(e.getErrorCode());
     }
+    @ExceptionHandler(NginxConfigNotFoundException.class)
+    protected ResponseEntity<?> handle(NginxConfigNotFoundException e) {
+        log.error("NginxConfigNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
 
 }
