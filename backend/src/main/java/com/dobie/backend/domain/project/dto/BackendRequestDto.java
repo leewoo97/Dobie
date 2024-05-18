@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BackendRequestDto {
+    private String serviceId;
     private String serviceName;
 
     private String language;
@@ -17,6 +18,22 @@ public class BackendRequestDto {
     private String path;
     private String branch;
 
+    private String location;
+
     private int externalPort;
     private int internalPort;
+
+    @Override
+    public String toString() {
+        return "BackendRequestDto{" +
+                "serviceName='" + serviceName + '\'' +
+                ", language='" + language + '\'' +
+                ", version='" + version + '\'' +
+                ", framework='" + framework + '\'' +
+                ", path='" + path + '\'' +
+                ", branch='" + branch + '\'' +
+                ", externalPort=" + externalPort +
+                ", internalPort=" + internalPort +
+                '}';
+    }
 }

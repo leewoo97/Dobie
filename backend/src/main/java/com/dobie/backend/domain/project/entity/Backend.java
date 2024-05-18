@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Backend {
-    private int serviceId;
+    private String serviceId;
     private String serviceName;
 
     private String language;
@@ -19,10 +19,12 @@ public class Backend {
     private String path;
     private String branch;
 
+    private String location;
+
     private int externalPort;
     private int internalPort;
 
-    public Backend(int serviceId, BackendRequestDto dto){
+    public Backend(String serviceId, BackendRequestDto dto){
         this.serviceId = serviceId;
         this.serviceName = dto.getServiceName();
         this.language = dto.getLanguage();
@@ -30,6 +32,20 @@ public class Backend {
         this.framework = dto.getFramework();
         this.path = dto.getPath();
         this.branch = dto.getBranch();
+        this.location = dto.getLocation();
+        this.externalPort = dto.getExternalPort();
+        this.internalPort = dto.getInternalPort();
+    }
+
+    public Backend(BackendRequestDto dto){
+        this.serviceId = dto.getServiceId();
+        this.serviceName = dto.getServiceName();
+        this.language = dto.getLanguage();
+        this.version = dto.getVersion();
+        this.framework = dto.getFramework();
+        this.path = dto.getPath();
+        this.branch = dto.getBranch();
+        this.location = dto.getLocation();
         this.externalPort = dto.getExternalPort();
         this.internalPort = dto.getInternalPort();
     }

@@ -7,28 +7,65 @@ import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Project {
-    private int projectId;
+    private String projectId;
     private String projectName;
+
+    private String projectDomain;
+    private boolean usingHttps;
 
     private Git git;
     private Map<String, Backend> backendMap;
     private Frontend frontend;
-    private Database database;
+    private Map<String, Database> databaseMap;
 
-    public Project(int projectId, ProjectRequestDto dto){
+    private Map<String, SettingFile> fileMap;
+
+    public Project(String projectId, ProjectRequestDto dto){
         this.projectId = projectId;
         this.projectName = dto.getProjectName();
+
+        this.projectDomain = dto.getProjectDomain();
+        this.usingHttps = dto.isUsingHttps();
+
         this.git = new Git(dto.getGit());
         this.backendMap = new HashMap<>();
         dto.getBackendMap().forEach((key, value) -> {
-            this.backendMap.put(key, new Backend(Integer.parseInt(key), value));
+            String uuid = UUID.randomUUID().toString();
+            this.backendMap.put(uuid, new Backend(uuid, value));
+        });
+        this.frontend = new Frontend(UUID.randomUUID().toString(), dto.getFrontend());
+        this.databaseMap = new HashMap<>();
+        dto.getDatabaseMap().forEach((key,value) -> {
+            String uuid = UUID.randomUUID().toString();
+            this.databaseMap.put(uuid, new Database(uuid, value));
+        });
+    }
+
+    public Project(ProjectRequestDto dto){
+        this.projectId = dto.getProjectId();
+        this.projectName = dto.getProjectName();
+        this.projectDomain = dto.getProjectDomain();
+        this.usingHttps = dto.isUsingHttps();
+
+        this.git = new Git(dto.getGit());
+        this.backendMap = new HashMap<>();
+        dto.getBackendMap().forEach((key, value) -> {
+            this.backendMap.put(key, new Backend(value));
         });
         this.frontend = new Frontend(dto.getFrontend());
-        this.database = new Database(dto.getDatabase());
+        this.databaseMap = new HashMap<>();
+        dto.getDatabaseMap().forEach((key,value) -> {
+            this.databaseMap.put(key, new Database(value));
+        });
+    }
+
+    public void updateFileMap(Map<String, SettingFile> fileMap) {
+        this.fileMap = fileMap;
     }
 }

@@ -10,10 +10,14 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 public class ProjectRequestDto {
+    private String projectId;
     private String projectName;
+
+    private String projectDomain;
+    private boolean usingHttps;
 
     private GitRequestDto git;
     private Map<String, BackendRequestDto> backendMap;
     private FrontendRequestDto frontend;
-    private DatabaseRequestDto database;
+    private Map<String, DatabaseRequestDto> databaseMap;
 }

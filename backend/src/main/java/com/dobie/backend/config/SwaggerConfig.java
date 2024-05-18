@@ -24,11 +24,11 @@ public class SwaggerConfig {
                 .addServersItem(new Server().url("/"))
                 .addSecurityItem(new SecurityRequirement().addList("BearerAuth"))
                 .components(new Components()
-//                        .addSecuritySchemes("BearerAuth", new SecurityScheme()
-//                                .name("Authorization")
-//                                .type(SecurityScheme.Type.HTTP)
-//                                .scheme("Bearer")
-//                                .bearerFormat("JWT"))
+                        .addSecuritySchemes("BearerAuth", new SecurityScheme()
+                                .name("Authorization")
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("Bearer")
+                                .bearerFormat("JWT"))
                 );
     }
 
@@ -38,16 +38,48 @@ public class SwaggerConfig {
     public GroupedOpenApi all() {
         return GroupedOpenApi.builder()
                 .group("a. 전체")
-                .pathsToMatch("/api/v1/**")
+                .pathsToMatch("/api/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi user() {
+        return GroupedOpenApi.builder()
+                .group("b. 유저")
+                .pathsToMatch("/api/user/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi project() {
+        return GroupedOpenApi.builder()
+                .group("c. 프로젝트")
+                .pathsToMatch("/api/project/**")
                 .build();
     }
 
     @Bean
     public GroupedOpenApi dockerfile() {
         return GroupedOpenApi.builder()
-                             .group("b. 도커파일")
-                             .pathsToMatch("/dockerfile/**")
+                             .group("d. 도커파일")
+                             .pathsToMatch("/api/dockerfile/**")
                              .build();
+    }
+
+    @Bean
+    public GroupedOpenApi pathtest() {
+        return GroupedOpenApi.builder()
+                .group("e. 경로 확인")
+                .pathsToMatch("/api/pathtest/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi containercheck() {
+        return GroupedOpenApi.builder()
+                .group("f. 실행중인 컨테이너 확인")
+                .pathsToMatch("/api/containercheck/**")
+                .build();
     }
 
 }

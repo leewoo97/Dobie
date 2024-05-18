@@ -1,51 +1,36 @@
 package com.dobie.backend.domain.user.service;
 
+import com.dobie.backend.domain.user.dto.LoginResponseDto;
 import com.dobie.backend.domain.user.dto.UserDto;
 import com.dobie.backend.domain.user.entity.User;
 import com.dobie.backend.domain.user.repository.UserRepository;
+import com.dobie.backend.security.jwt.TokenManager;
+import com.dobie.backend.security.jwt.TokenService;
+import com.dobie.backend.security.jwt.dto.TokenInfo;
+import com.dobie.backend.security.jwt.repository.RefreshTokenRepository;
+import com.dobie.backend.util.CookieUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-@Log4j2
-public class UserService {
+import org.springframework.security.core.AuthenticationException;
 
-    private final ObjectMapper mapper;
 
-    private final UserRepository userRepository;
-    public String getPrettyJsonString(JsonNode node) {
+public interface UserService {
 
-        try {
-            // 이쁘게 print하기 위해 writerWithDefaultPrettyPrinter 추가
-            // 이쁜 print 가 필요없다면 mapper.writeValueAsString(node); 사용해도 됨
-            String prettyJson = mapper
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(node);
+    String getPrettyJsonString(JsonNode node);
 
-            log.info("pretty Print Result...\n{}",prettyJson);
+    UserDto getUserInfo();
 
-            return prettyJson;
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    void changeUserInfo(UserDto dto);
 
-    public UserDto getUserInfo() {
-        User user = userRepository.getUserInfo();
-        return UserDto.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .build();
-    }
+    LoginResponseDto login(UserDto dto, HttpServletResponse response);
 
-    public void changeUserInfo(UserDto dto) {
-        User user = new User(dto);
-        userRepository.updateUserInfo(user);
-    }
+    void removeOldRefreshToken(UserDto dto, User user);
 }

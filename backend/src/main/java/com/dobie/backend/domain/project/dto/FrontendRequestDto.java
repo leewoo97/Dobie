@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FrontendRequestDto {
-
+    private String serviceId;
     private String serviceName;
 
     private String language;
@@ -17,6 +17,8 @@ public class FrontendRequestDto {
 
     private String path;
     private String branch;
+
+    private String location;
 
     private int externalPort;
     private int internalPort;

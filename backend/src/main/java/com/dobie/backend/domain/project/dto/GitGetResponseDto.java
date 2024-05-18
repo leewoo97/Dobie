@@ -11,10 +11,12 @@ import lombok.*;
 public class GitGetResponseDto {
     private int gitType;
     private String gitUrl;
+    private String branch;
     private String accessToken;
     public GitGetResponseDto(Git git) {
         this.gitType = git.getGitType();
         this.gitUrl = git.getGitUrl();
+        this.branch = git.getBranch();
         this.accessToken = git.getAccessToken();
     }
 }

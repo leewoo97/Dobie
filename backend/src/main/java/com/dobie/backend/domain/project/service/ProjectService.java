@@ -1,77 +1,63 @@
 package com.dobie.backend.domain.project.service;
 
 import com.dobie.backend.domain.project.dto.*;
-import com.dobie.backend.domain.project.entity.Backend;
-import com.dobie.backend.domain.project.entity.Database;
-import com.dobie.backend.domain.project.entity.Frontend;
-import com.dobie.backend.domain.project.entity.Project;
-import com.dobie.backend.domain.project.repository.ProjectRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.dobie.backend.domain.project.dto.file.FileGetDto;
+import com.dobie.backend.domain.project.dto.file.FilePostDto;
+import com.dobie.backend.domain.project.dto.file.FilePutDto;
+import com.dobie.backend.domain.project.entity.SettingFile;
+import java.util.*;
+import org.springframework.web.multipart.MultipartFile;
 
-@Service
-@RequiredArgsConstructor
-@Log4j2
-public class ProjectService {
+public interface ProjectService {
 
-    private final ProjectRepository projectRepository;
 
-    private int cnt_create = 1;
+    String createProject(ProjectRequestDto dto);
 
-    public void createProject(ProjectRequestDto dto) {
-        Project project = new Project(cnt_create++, dto);
-        projectRepository.upsertProject(project);
-    }
+    Map<String, ProjectGetResponseDto> getAllProjects();
 
-    public List<ProjectGetResponseDto> getAllProjects() {
-        Map<Integer, Project> map = projectRepository.selectProjects();
-        List<ProjectGetResponseDto> list = new ArrayList<>();
-        map.forEach((key,value) ->{
-            list.add(new ProjectGetResponseDto(value));
-        });
-        return list;
-    }
+    ProjectGetResponseDto getProject(String projectId);
 
-    public ProjectGetResponseDto getProject(int projectId){
-        Project project = projectRepository.searchProject(projectId);
-        return new ProjectGetResponseDto(project);
-    }
+    List<BackendGetResponseDto> getAllBackends(String projectId);
 
-    public List<BackendGetResponseDto> getAllBackends(int projectId){
-        Map<String, Backend> backendMap = projectRepository.selectBackends(projectId);
-        List<BackendGetResponseDto> list = new ArrayList<>();
-        backendMap.forEach((key, value) ->{
-            list.add(new BackendGetResponseDto(value));
-        });
-        return list;
-    }
+    BackendGetResponseDto getBackend(String projectId, String serviceId);
 
-    public BackendGetResponseDto getBackend(int projectId, int serviceId){
-        Backend backend = projectRepository.searchBackend(projectId, serviceId);
-        return new BackendGetResponseDto(backend);
-    }
+    FrontendGetResponseDto getFrontend(String projectId);
 
-    public FrontendGetResponseDto getFrontend(int projectId){
-        Frontend frontend = projectRepository.searchFrontend(projectId);
-        return new FrontendGetResponseDto(frontend);
-    }
+    DatabaseGetResponseDto getDatabase(String projectId, String databaseId);
 
-    public DatabaseGetResponseDto getDatabase(int projectId){
-        Database database = projectRepository.searchDatabase(projectId);
-        return new DatabaseGetResponseDto(database);
-    }
+    Map<String, DatabaseGetResponseDto> getAllDatabases(String projectId);
 
-    public void updateProject(int projectId, ProjectRequestDto dto) {
-        Project project = new Project(projectId, dto);
-        projectRepository.upsertProject(project);
-    }
+    Map<String, SettingFile> getAllFiles(String projectId);
 
-    public void deleteProject(int projectId) {
-        projectRepository.deleteProject(projectId);
-    }
+    void updateProject(ProjectRequestDto dto);
+
+    void deleteProject(String projectId);
+
+    void buildTotalService(String projectId);
+
+    void runProject(String projectId);
+
+    void stopProject(String projectId);
+
+    void stopService(String containerName);
+
+    void startService(String containerName);
+
+    boolean verifyComposeUpSuccess(String path);
+
+    void rebuildAndStartProject(String projectId);
+
+    void addFile(FilePostDto dto, List<MultipartFile> files);
+
+    List<FileGetDto> getFile(String projectId);
+
+    void deleteFile(FilePutDto dto);
+
+
+//    void buildFrontService(String projectId, ProjectRequestDto dto)
+
+//    void buildBackService(String projectId, ProjectRequestDto dto)
+
 }
+
