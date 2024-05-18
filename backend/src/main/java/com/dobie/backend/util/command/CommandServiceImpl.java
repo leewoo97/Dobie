@@ -340,28 +340,29 @@ public class CommandServiceImpl implements CommandService {
         executor.setStreamHandler(streamHandler);
         try {
             executor.execute(commandLine);
-            String result = outputStream.toString().trim();
-            System.out.println("ssl issued log : " + result);
+            String logResult = outputStream.toString().trim();
+            System.out.println("ssl issued log : " + logResult);
 
-            while (result.isEmpty()) {
+            while (logResult.isEmpty()) {
                 TimeUnit.SECONDS.sleep(10);
                 executor.execute(commandLine);
-                result = outputStream.toString().trim();
-                System.out.println("ssl issued log : " + result);
+                logResult = outputStream.toString().trim();
+                System.out.println("ssl issued log : " + logResult);
             }
 
 
-            if (result.contains("no action taken")) {
+            if (logResult.contains("no action taken")) {
                 log.info("인증서가 아직 유효합니다.");
                 System.out.println("인증서가 아직 유효합니다.");
                 deleteSSLLog();
-            } else if (result.contains("Congratulations")) {
+            } else if (logResult.contains("Congratulations")) {
                 log.info("인증서가 성공적으로 발급되었습니다.");
                 System.out.println("인증서가 성공적으로 발급되었습니다.");
                 deleteSSLLog();
             } else {
                 log.info("인증서 발급실패");
                 System.out.println("Error : 인증서 발급실패");
+                System.out.println("파일 비우기");
                 deleteSSLLog();
                 throw new SSLCertificateIssueFailedException();
             }
@@ -376,8 +377,10 @@ public class CommandServiceImpl implements CommandService {
         sb.append("sudo sh -c 'cat /dev/null > logfile.log'");
         CommandLine nCommandLine = CommandLine.parse(sb.toString());
         executor.setStreamHandler(streamHandler);
+        System.out.println("파일 비우기2");
         try {
             executor.execute(nCommandLine);
+            System.out.println("파일 비우기3");
             String output = outputStream.toString().trim();
             System.out.println("delete log file success : " + output);
         } catch (Exception e) {
