@@ -13,6 +13,8 @@ import org.apache.commons.exec.PumpStreamHandler;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
@@ -334,19 +336,14 @@ public class CommandServiceImpl implements CommandService {
 
         System.out.println("명령어를 성공적으로 파이프에 전달했습니다.");
 
-        sb = new StringBuilder();
-        sb.append("cat /logfile.log");
-        CommandLine commandLine = CommandLine.parse(sb.toString());
-        executor.setStreamHandler(streamHandler);
+
         try {
-            executor.execute(commandLine);
-            String logResult = outputStream.toString().trim();
+            String logResult = Files.readString(Paths.get("/logfile.log"));
             System.out.println("ssl issued log : " + logResult);
 
-            while (!logResult.contains("IMPORTANT NOTES") || !logResult.contains("no action taken")) {
+            while (!logResult.contains("IMPORTANT NOTES") && !logResult.contains("no action taken")) {
                 TimeUnit.SECONDS.sleep(5);
-                executor.execute(commandLine);
-                logResult = outputStream.toString().trim();
+                logResult = Files.readString(Paths.get("/logfile.log"));
                 System.out.println("ssl issued log : " + logResult);
             }
 
