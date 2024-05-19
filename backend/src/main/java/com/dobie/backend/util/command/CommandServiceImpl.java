@@ -96,21 +96,6 @@ public class CommandServiceImpl implements CommandService {
             throw new GitPullFailedException(e.getMessage(), e);
         }
     }
-//    @Override
-//    public void gitPull(String path, String branchName) {
-//        sb = new StringBuilder();
-//        sb.append("git -C ").append(path).append(" pull origin ").append(branchName);
-//        CommandLine commandLine = CommandLine.parse(sb.toString());
-//        executor.setStreamHandler(streamHandler);
-//        try {
-//            executor.execute(commandLine);
-//            String result = outputStream.toString().trim();
-//            System.out.println("git pull success : " + result);
-//        } catch (Exception e) {
-//            throw new GitPullFailedException(e.getMessage());
-//        }
-//    }
-
 
     // 빌드
     @Override
@@ -310,28 +295,6 @@ public class CommandServiceImpl implements CommandService {
             throw new RuntimeException("Directory not found: " + directoryPath);
         }
     }
-
-//    @Override
-//    public void getSSL(String domain){
-//        sb = new StringBuilder();
-//        sb.append("echo \"sudo certbot certonly --standalone --email ys0403ab@naver.com --agree-tos --no-eff-email --keep-until-expiring -d ").append(domain).append("\" > /getSSL_pipe");
-//        CommandLine commandLine = CommandLine.parse(sb.toString());
-//        System.out.println("실험용");
-//        System.out.println(sb.toString());
-//        executor.setStreamHandler(streamHandler);
-//
-//        try {
-//            // 명령어 실행
-//            executor.execute(commandLine);
-//            String result = outputStream.toString().trim();
-//            log.info("ssl인증서 받기를 시도했습니다.");
-//            System.out.println("getSSL success: " + result);
-//        } catch (Exception e) {
-//            String result = outputStream.toString().trim();
-//            System.out.println("SSL 에러");
-//            throw new NginxConfDeleteFailedException(e.getMessage(), result);
-//        }
-//    }
 
     @Override
     public void getSSLTest(String domain) throws IOException {

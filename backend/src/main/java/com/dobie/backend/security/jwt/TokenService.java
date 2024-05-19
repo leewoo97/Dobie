@@ -32,10 +32,6 @@ public class TokenService {
         refreshTokenRepository.findByRefreshToken(refreshToken).ifPresent(refreshTokenRepository::delete);
     }
 
-//    public RefreshToken getByRefreshToken(String refreshToken) {
-//        return refreshTokenRepository.findByRefreshToken(refreshToken).orElseThrow(RefreshTokenNotFoundException::new);
-//    }
-
     //액세스 토큰 재발급
     public String reIssueAccessToken(String refreshToken) {
         String username = tokenManager.extractUsername(refreshToken);

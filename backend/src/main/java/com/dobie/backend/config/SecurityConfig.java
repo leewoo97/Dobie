@@ -24,8 +24,6 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final TokenExceptionFilter tokenExceptionFilter;
-//    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-//    private final TokenProvider tokenProvider;
 
     @Bean // PasswordEncoder는 BCryptPasswordEncoder를 사용
     public PasswordEncoder passwordEncoder() {
@@ -38,7 +36,6 @@ public class SecurityConfig {
         // token을 사용하는 방식이기 때문에 csrf를 disable함
         security
                 .csrf((auth) -> auth.disable())
-//                .formLogin((auth) -> auth.disable()) // from 로그인 방식 disable
                 .httpBasic((basic) -> basic.disable()); //http 기본 인증 비활성화(jwt 사용하니까 불필요)
 
         //경로별 인가 작업

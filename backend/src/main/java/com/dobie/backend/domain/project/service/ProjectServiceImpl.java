@@ -357,67 +357,6 @@ public class ProjectServiceImpl implements ProjectService {
         commandService.dockerStart(containerName);
     }
 
-//    // 프론트 개별 빌드
-//    void buildFrontService(String projectId, ProjectRequestDto dto) {
-//
-//        Project project = projectRepository.searchProject(projectId);
-//
-//        // git clone
-//        GitRequestDto gitInfo = dto.getGit();
-//        // git type 확인, gitLab인지 gitHub인지
-//        // 1이면 gitLab
-//        if (gitInfo.getGitType() == 1) {
-//            // gitLab clone
-//            commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
-//        } else {
-//            // gitHub Clone
-//            commandService.gitClone(gitInfo.getGitUrl());
-//        }
-//
-//        FrontendRequestDto frontendInfo = dto.getFrontend();
-//
-//        // checkout
-//        commandService.gitCheckout(frontendInfo.getPath(), frontendInfo.getBranch());
-//
-//        // dockerfile
-//        if (frontendInfo.getFramework() == "React") {
-//            dockerfileService.createReactDockerfile(frontendInfo.getServiceName(), frontendInfo.getVersion(), frontendInfo.getPath());
-//        }
-//
-//        // docker-compose
-//        ProjectGetResponseDto projectGetResponseDto = new ProjectGetResponseDto(project);
-//        dockerComposeService.createDockerComposeFile(projectGetResponseDto);
-//    }
-
-//    // 백엔드 개별 빌드
-//    void buildBackService(String projectId, ProjectRequestDto dto) {
-//
-//        Project project = projectRepository.searchProject(projectId);
-//
-//        GitRequestDto gitInfo = dto.getGit();
-//        if (gitInfo.getGitType() == 1) {
-//            commandService.gitCloneGitLab(gitInfo.getGitUrl(), gitInfo.getAccessToken());
-//        } else {
-//            commandService.gitClone(gitInfo.getGitUrl());
-//        }
-//
-//        Map<String, BackendRequestDto> backendInfo = dto.getBackendMap();
-//        backendInfo.forEach((key, value) -> {
-//
-//            // git checkout
-//            commandService.gitCheckout(value.getPath(), value.getBranch());
-//
-//            // dockerfile
-//            // home/projectName+path
-//            if (value.getFramework() == "Spring") {
-//                dockerfileService.createGradleDockerfile(project.getProjectName(), value.getVersion(), value.getPath());
-//            }
-//        });
-//
-//        // docker compose 파일 생성 -> 이거 좀 햇갈리는게 각각 실행시키고 백엔드 서비스가 여러개 있을때 docker-compose는 여러개인가 하나인가
-//        ProjectGetResponseDto projectGetResponseDto = new ProjectGetResponseDto(project);
-//        dockerComposeService.createDockerComposeFile(projectGetResponseDto);
-//    }
 
 }
 

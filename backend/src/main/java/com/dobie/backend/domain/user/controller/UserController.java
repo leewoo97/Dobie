@@ -37,12 +37,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserDto dto,HttpServletResponse httpServletResponse){
 
-//        boolean loginResult = userService.login(dto, httpServletResponse);
-//        if (loginResult) {
-//            return new ResponseEntity<LoginResponseDto>(dto, HttpStatus.OK);//로그인 성공
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패: 인증 정보 불일치");//아이디나 비밀번호 불일치로 로그인 실패
-//        }
         try {
             LoginResponseDto loginResponse = userService.login(dto, httpServletResponse);
             return ResponseEntity.ok().body(loginResponse); // 로그인 성공시, 로그인 관련 데이터와 함께 성공 응답 반환
