@@ -54,10 +54,5 @@ public interface ProjectService {
 
     void deleteFile(FilePutDto dto);
 
-
-//    void buildFrontService(String projectId, ProjectRequestDto dto)
-
-//    void buildBackService(String projectId, ProjectRequestDto dto)
-
 }
 

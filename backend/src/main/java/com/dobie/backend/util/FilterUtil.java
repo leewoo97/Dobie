@@ -15,12 +15,4 @@ import java.util.Map;
 public class FilterUtil {
 
     private Map<String, String> paths; // 필터링할 URL 패턴을 저장할 맵
-//    //getter
-//    public Map<String, String> getPaths() {
-//        return paths;
-//    }//
-//    //setter
-//    public void setPaths(Map<String, String> paths) {
-//        this.paths = paths;
-//    }
 }

@@ -237,7 +237,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     public String createDjangoComposeFile(String domain, String seq, String serviceId, String path,
                                            int externalPort, int internalPort, DatabaseGetResponseDto mysql,
                                            DatabaseGetResponseDto mongodb, DatabaseGetResponseDto redis,
-                                           int frontInternalPort, boolean usingNingx) {
+                                           int frontInternalPort, boolean usingNginx) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("  django").append(seq).append(":\n");
@@ -249,7 +249,12 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         sb.append("    volumes:\n");
         sb.append("      - /var/run/docker.sock:/var/run/docker.sock\n");
         sb.append("    environment:\n");
-        sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
+
+        if(usingNginx){
+            sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(80).append("\n");
+        }else {
+            sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
+        }
 
         // network
         sb.append("    networks:\n");
@@ -392,10 +397,6 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         // '/' 뒤의 부분을 추출합니다.
         String filename = schemaPath.substring(lastIndex);
 
-//         결과를 출력합니다.
-//        System.out.println("Directory: " + directory);
-//        System.out.println("Filename: " + filename);
-
         //경로와 DB초기화 파일이 실제로 존재하는지 조회
         checkDbInit(directory,filename);
         String[] returnArray = new String[2];
@@ -405,24 +406,20 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     }
 
     public void checkDbInit(String filepath, String dbInitFile) {
-//        System.out.println("백엔드 오류 잡기 위한 파일 패스 : " + filepath);
         File directory = new File(filepath); // 디렉토리 경로 지정
         File[] filesList = directory.listFiles(); // 디렉토리의 모든 파일 및 폴더 목록 얻기
         boolean correctPath = false;
         if (filesList != null) {
             for (File file : filesList) {
                 if (file.getName().equals(dbInitFile)) {
-//                    System.out.println("Name: " + file.getName()); // 파일 또는 디렉토리 이름 출력
                     correctPath = true;
                     break;
                 }
             }
             if (!correctPath) {
-//                System.out.println("파일 경로에 bulid.gradle이 존재하지않습니다.");
                 throw new DbInitNotFoundException();
             }
         } else {
-//            System.out.println("파일 경로 자체가 잘못되었음.");
             throw new DbInitPathNotExistException();
         }
     }

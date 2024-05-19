@@ -36,14 +36,6 @@ public class DockerfileController {
         dockerfileService.createReactDockerfile(projectName, version, path , usingNginx);
         return new ResponseEntity<String>("성공", HttpStatus.OK);
     }
-//    @Operation(summary = "백엔드 도커파일 조회(exec로 조회)", description = "지정된 경로에서 백엔드 도커파일의 내용을 조회합니다.")
-//    @GetMapping("/dockerfile-content")
-//    public ResponseEntity<?> readDockerfileContent(@RequestParam(name = "projectId") String projectId,
-//                                                   @RequestParam(name = "serviceId") String serviceId){
-//        //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
-//        String content = dockerfileService.readBackendDockerfileContent(projectId, serviceId);
-//        return new ResponseEntity<>(content,HttpStatus.OK);
-//    }
 
     @Operation(summary = "도커파일 위치 조회(project.json으로 경로파악해서 조회)", description = "프로젝트 아이디, 서비스아이디, 서비스 타입을 분석해서 도커파일의 경로를 알아냅니다.")
     @GetMapping("/dockerfile-path")

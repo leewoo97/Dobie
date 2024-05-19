@@ -15,7 +15,6 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class RefreshTokenRepository {
-//    private ObjectMapper objectMapper = new ObjectMapper();
     private final ObjectMapper objectMapper;
 
     private static final String BASE_PATH = new File("").getAbsolutePath();

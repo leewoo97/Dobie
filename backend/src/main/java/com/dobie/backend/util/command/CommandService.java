@@ -12,8 +12,6 @@ public interface CommandService {
 
     void gitPull(String path);
 
-//    void gitPull(String path, String branchName);
-
     void build(String path, String projectName);
 
     void run(String path, int port1, int port2);
@@ -31,7 +29,6 @@ public interface CommandService {
     void stopNginx();
 
     void deleteNginxProxyConf(String projectId);
-//    void getSSL(String domain);
 
     void deleteFile(String fileName, String path);
 

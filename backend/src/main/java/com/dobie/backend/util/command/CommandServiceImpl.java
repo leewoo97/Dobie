@@ -13,10 +13,12 @@ import org.apache.commons.exec.PumpStreamHandler;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
-
-import static com.dobie.backend.exception.format.response.ErrorCode.SSL_CERTIFICATE_ISSUE_FAILED;
 
 @Service
 @Slf4j
@@ -100,21 +102,6 @@ public class CommandServiceImpl implements CommandService {
             throw new GitPullFailedException(e.getMessage(), e);
         }
     }
-//    @Override
-//    public void gitPull(String path, String branchName) {
-//        sb = new StringBuilder();
-//        sb.append("git -C ").append(path).append(" pull origin ").append(branchName);
-//        CommandLine commandLine = CommandLine.parse(sb.toString());
-//        executor.setStreamHandler(streamHandler);
-//        try {
-//            executor.execute(commandLine);
-//            String result = outputStream.toString().trim();
-//            System.out.println("git pull success : " + result);
-//        } catch (Exception e) {
-//            throw new GitPullFailedException(e.getMessage());
-//        }
-//    }
-
 
     // 빌드
     @Override
@@ -334,19 +321,14 @@ public class CommandServiceImpl implements CommandService {
 
         System.out.println("명령어를 성공적으로 파이프에 전달했습니다.");
 
-        sb = new StringBuilder();
-        sb.append("cat /logfile.log");
-        CommandLine commandLine = CommandLine.parse(sb.toString());
-        executor.setStreamHandler(streamHandler);
+
         try {
-            executor.execute(commandLine);
-            String logResult = outputStream.toString().trim();
+            String logResult = Files.readString(Paths.get("/logfile.log"));
             System.out.println("ssl issued log : " + logResult);
 
-            while (!logResult.contains("IMPORTANT NOTES") || !logResult.contains("no action taken")) {
+            while (!logResult.contains("IMPORTANT NOTES") && !logResult.contains("no action taken")) {
                 TimeUnit.SECONDS.sleep(5);
-                executor.execute(commandLine);
-                logResult = outputStream.toString().trim();
+                logResult = Files.readString(Paths.get("/logfile.log"));
                 System.out.println("ssl issued log : " + logResult);
             }
 
@@ -372,16 +354,9 @@ public class CommandServiceImpl implements CommandService {
     }
 
     public void deleteSSLLog() {
-        sb = new StringBuilder();
-        sb.append("sudo sh -c 'cat /dev/null > logfile.log'");
-        CommandLine nCommandLine = CommandLine.parse(sb.toString());
-        executor.setStreamHandler(streamHandler);
-        System.out.println("파일 비우기2");
-        try {
-            executor.execute(nCommandLine);
-            System.out.println("파일 비우기3");
-            String output = outputStream.toString().trim();
-            System.out.println("delete log file success : " + output);
+        Path filepath = Paths.get("/logfile.log");
+        try (BufferedWriter writer = Files.newBufferedWriter(filepath, StandardOpenOption.TRUNCATE_EXISTING)) {
+            // 파일을 비우기 위해 아무것도 쓰지 않습니다.
         } catch (Exception e) {
             String result = outputStream.toString().trim();
             throw new SSLLogDeleteFailedException(e.getMessage(), result);

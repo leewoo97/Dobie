@@ -15,7 +15,7 @@ public interface DockerComposeService {
     String createDjangoComposeFile(String domain, String seq, String serviceId, String path,
                                            int externalPort, int internalPort, DatabaseGetResponseDto mysql,
                                            DatabaseGetResponseDto mongodb, DatabaseGetResponseDto redis,
-                                           int frontInternalPort, boolean usingNingx);
+                                           int frontInternalPort, boolean usingNginx);
 
     String createFastApiComposeFile(String seq, String serviceId, String path,
                                          int externalPort, int internalPort, boolean usingNingx);

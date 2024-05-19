@@ -53,10 +53,6 @@ public class DockerfileServiceImpl implements DockerfileService {
         sb.append("RUN cp $(ls -t build/libs/*.jar | head -n 1) app.jar\n");
         sb.append("ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n");
 
-//        sb.append("RUN --mount=type=cache,target=/root/.gradle ./gradlew clean build\n");
-//        sb.append("ARG JAR_FILE=build/libs/*.jar\n");
-//        sb.append("COPY ${JAR_FILE} app.jar\n");
-//        sb.append("ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n");
         String dockerfile = sb.toString();
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
@@ -226,7 +222,7 @@ public class DockerfileServiceImpl implements DockerfileService {
 
         // ec2 서버에서 깃클론하는 경로로 수정하기
         String filePath = "./" + projectName + path;
-        checkRequirementsTxt(filePath);
+
         try {
             fileManager.saveFile(filePath, "Dockerfile", dockerfile);
         } catch (SaveFileFailedException e) {
@@ -237,24 +233,20 @@ public class DockerfileServiceImpl implements DockerfileService {
 
     @Override
     public void checkBuildGradle(String filepath) {
-//        System.out.println("백엔드 오류 잡기 위한 파일 패스 : " + filepath);
         File directory = new File(filepath); // 디렉토리 경로 지정
         File[] filesList = directory.listFiles(); // 디렉토리의 모든 파일 및 폴더 목록 얻기
         boolean correctPath = false;
         if (filesList != null) {
             for (File file : filesList) {
                 if (file.getName().equals("build.gradle")) {
-//                    System.out.println("Name: " + file.getName()); // 파일 또는 디렉토리 이름 출력
                     correctPath = true;
                     break;
                 }
             }
             if (!correctPath) {
-//                System.out.println("파일 경로에 bulid.gradle이 존재하지않습니다.");
                 throw new BuildGradleNotFoundException();
             }
         } else {
-//            System.out.println("파일 경로 자체가 잘못되었음.");
             throw new BackendFilePathNotExistException();
         }
     }
@@ -267,17 +259,14 @@ public class DockerfileServiceImpl implements DockerfileService {
         if (filesList != null) {
             for (File file : filesList) {
                 if (file.getName().equals("pom.xml")) {
-//                    System.out.println("Name: " + file.getName()); // 파일 또는 디렉토리 이름 출력
                     correctPath = true;
                     break;
                 }
             }
             if (!correctPath) {
-//                System.out.println("파일 경로에 pom.xml이 존재하지않습니다.");
                 throw new PomXmlNotFoundException();
             }
         } else {
-//            System.out.println("파일 경로 자체가 잘못되었음.");
             throw new BackendFilePathNotExistException();
         }
     }
@@ -290,17 +279,14 @@ public class DockerfileServiceImpl implements DockerfileService {
         if (filesList != null) {
             for (File file : filesList) {
                 if (file.getName().equals("package.json")) {
-//                    System.out.println("Name: " + file.getName()); // 파일 또는 디렉토리 이름 출력
                     correctPath = true;
                     break;
                 }
             }
             if (!correctPath) {
-//                System.out.println("파일 경로에 package.json이 존재하지않습니다.");
                 throw new PackageJsonNotFoundException();
             }
         } else {
-//            System.out.println("파일 경로 자체가 잘못되었음.");
             throw new FrontendFilePathNotExistException();
         }
     }
@@ -313,17 +299,14 @@ public class DockerfileServiceImpl implements DockerfileService {
         if (filesList != null) {
             for (File file : filesList) {
                 if (file.getName().equals("requirements.txt")) {
-//                    System.out.println("Name: " + file.getName()); // 파일 또는 디렉토리 이름 출력
                     correctPath = true;
                     break;
                 }
             }
             if (!correctPath) {
-//                System.out.println("파일 경로에 requirements.txt가 존재하지않습니다.");
                 throw new RequirementsTxtNotFoundException();
             }
         } else {
-//            System.out.println("파일 경로 자체가 잘못되었음.");
             throw new FastApiFilePathNotExistException();
         }
     }
@@ -334,10 +317,6 @@ public class DockerfileServiceImpl implements DockerfileService {
             ArrayList<String> analyzeList = AnalyzeProjectContainer(projectId);
             String dockerOutput = readProceedingDockerContainer();
             HashMap<String,String> containers = parseDockerPsOutput(dockerOutput);
-//            System.out.println("실행중인 컨테이너 목록 : " + containers);
-//            for (String key : containers.keySet()) {
-//                System.out.println("Key: " + key + ", Value: " + containers.get(key));
-//            }
             HashMap<String,String> analyzeContainer = new HashMap<>();
             boolean allRunning = false;
             for(int i=0; i<analyzeList.size(); i++){
@@ -357,7 +336,6 @@ public class DockerfileServiceImpl implements DockerfileService {
             }else{
                 analyzeContainer.put("allRunning","Stop");
             }
-//            System.out.println("결과값 : "+ analyzeContainer);
             return analyzeContainer;
 
         } catch (Exception e) {
@@ -408,7 +386,6 @@ public class DockerfileServiceImpl implements DockerfileService {
                 errorContainer.delete(errorContainer.length()-3,errorContainer.length());
                 errorContainer.append(" 컨테이너가 종료되어있어 실행할 수 없습니다.");
             }
-//            System.out.println("결과값 : "+ analyzeContainer);
             if(errorContainer.toString().equals("")){
                 return "Pass";
             }else{
@@ -462,7 +439,6 @@ public class DockerfileServiceImpl implements DockerfileService {
                 errorContainer.delete(errorContainer.length()-3,errorContainer.length());
                 errorContainer.append(" 컨테이너가 실행되고있어 종료할 수 없습니다.");
             }
-//            System.out.println("결과값 : "+ analyzeContainer);
             if(errorContainer.toString().equals("")){
                 return "Pass";
             }else{
@@ -482,41 +458,27 @@ public class DockerfileServiceImpl implements DockerfileService {
             try {
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
-//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
             Map<String, Object> projectJsonMap = ReadJsonFromDocker();
-//        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
             String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap, projectId, "projectName");
-//        System.out.println("프로젝트 이름 나오겠지? " + projectName);
             String path = (String) readJsonService.JsonGetFour(projectJsonMap, projectId, "backendMap", serviceId, "path");
-//        System.out.println("백엔드 경로 나오겠지? " + path);
             String filepath = "/" + projectName + path;
-//            System.out.println("파일 경로 : " + filepath);
-//            return new String(Files.readAllBytes(Paths.get(filePath)));
                 return filepath;
             }catch (Exception e) {
                 System.out.println("백엔드 도커 파일 경로 생성 오류: " + e.getMessage());
                 throw new makeDockerfilePathContentException();
-//            return "File not found or error reading file: " + e.getMessage();
             }
         }else if(type.equals("Frontend")){
             try {
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
-//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
             Map<String, Object> projectJsonMap = ReadJsonFromDocker();
-//        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
             String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap, projectId, "projectName");
-//        System.out.println("프로젝트 이름 나오겠지? " + projectName);
             String path = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend","path");
-//        System.out.println("백엔드 경로 나오겠지? " + path);
             String filepath = "/" + projectName + path;
-//            System.out.println("파일 경로 : " + filepath);
-//            return new String(Files.readAllBytes(Paths.get(filePath)));
                 return filepath;
             }catch (Exception e) {
                 System.out.println("프론트엔드 도커 파일 경로 생성 오류: " + e.getMessage());
                 throw new makeDockerfilePathContentException();
-//            return "File not found or error reading file: " + e.getMessage();
             }
         }else{
             throw new TypeErrorException();
@@ -528,20 +490,14 @@ public class DockerfileServiceImpl implements DockerfileService {
         try {
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
-//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
             Map<String, Object> projectJsonMap = ReadJsonFromDocker();
-//        System.out.println("맵으로 표현한 projectJsonMap => " + projectJsonMap);
             String projectName = (String) readJsonService.JsonGetTwo(projectJsonMap, projectId, "projectName");
-//        System.out.println("프로젝트 이름 나오겠지? " + projectName);
             String filepath = "/" + projectName;
-//            System.out.println("파일 경로 : " + filepath);
-//            return new String(Files.readAllBytes(Paths.get(filePath)));
             return filepath;
         }catch (Exception e) {
             System.out.println("도커 컴포즈 파일 경로 생성 오류 : " + e.getMessage());
             e.printStackTrace();
             throw new makeDockerComposefilePathContentException();
-//            return "File not found or error reading file: " + e.getMessage();
         }
     }
 
@@ -551,7 +507,6 @@ public class DockerfileServiceImpl implements DockerfileService {
         CommandLine commandLine = new CommandLine("docker");
         commandLine.addArgument("exec");
         commandLine.addArgument("dobie-be"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
-//        commandLine.addArgument("2109de6647fa"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
         commandLine.addArgument("cat");
         commandLine.addArgument(filepath+"/Dockerfile"); //이렇게하면 아마 될걸..? 컨테이너에 ko2sist도비 말고 다른 컨테이너도 빌드해야 테스트 가능 ㅠ
 
@@ -563,7 +518,6 @@ public class DockerfileServiceImpl implements DockerfileService {
         try {
             executor.execute(commandLine);
             String fileContent = outputStream.toString();
-//            System.out.println("File content: \n" + fileContent);
             return fileContent;
         } catch (Exception e) {
             System.err.println("도커 파일 내용 조회 오류 : " + e.getMessage());
@@ -577,7 +531,6 @@ public class DockerfileServiceImpl implements DockerfileService {
         CommandLine commandLine = new CommandLine("docker");
         commandLine.addArgument("exec");
         commandLine.addArgument("dobie-be"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
-//        commandLine.addArgument("2109de6647fa"); //dobie-be 컨테이너에 접속하는건 고정(만약 나중에 명칭 바뀌면 바꿔줘야함)
         commandLine.addArgument("cat");
         commandLine.addArgument(filepath+"/docker-compose.yml"); //이렇게하면 아마 될걸..? 컨테이너에 ko2sist도비 말고 다른 컨테이너도 빌드해야 테스트 가능 ㅠ
 
@@ -589,7 +542,6 @@ public class DockerfileServiceImpl implements DockerfileService {
         try {
             executor.execute(commandLine);
             String fileContent = outputStream.toString();
-//            System.out.println("File content: \n" + fileContent);
             return fileContent;
         } catch (Exception e) {
             System.err.println("도커 컴포즈 파일 내용 조회 오류 : " + e.getMessage());
@@ -612,7 +564,6 @@ public class DockerfileServiceImpl implements DockerfileService {
         try {
             executor.execute(commandLine);
             String logContent = processBackspaces(removeAnsiEscapeCodes(outputStream.toString()));
-//            System.out.println("File content: \n" + fileContent);
             return logContent;
         } catch (Exception e) {
             System.err.println("컨테이너 로그 조회 오류 : " + e.getMessage());
@@ -627,16 +578,13 @@ public class DockerfileServiceImpl implements DockerfileService {
         CommandLine commandLine = new CommandLine("docker");
         commandLine.addArgument("ps");
         commandLine.addArgument("-a"); // "-a" 옵션 추가
-//        System.out.println("어디서 잘못되는거지 : " + analyzeList);
         DefaultExecutor executor = new DefaultExecutor();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
         executor.setStreamHandler(streamHandler);
 
-//        System.out.println("프로젝트 내부 서비스 아이디 목록 : " + analyzeList);
         executor.execute(commandLine);
         String dockerOutput = outputStream.toString();
-//        System.out.println("docker ps -a결과: \n" + dockerOutput);
         return dockerOutput;
     }
 
@@ -658,7 +606,6 @@ public class DockerfileServiceImpl implements DockerfileService {
                     String innerPort = splitPorts(ports, "inner");
                     String outerPort = splitPorts(ports, "outer");
                     String names = parts[6];
-//                String frameWork = splitName(names);
                     containers.put(names, currentStatus);
                 } else {
                     String containerId = parts[0];
@@ -668,7 +615,6 @@ public class DockerfileServiceImpl implements DockerfileService {
                     String status = parts[4];
                     String currentStatus = checkStatus(status);
                     String names = parts[5];
-//                String frameWork = splitName(names);
                     containers.put(names, currentStatus);
                 }
 
@@ -699,7 +645,6 @@ public class DockerfileServiceImpl implements DockerfileService {
                     String innerPort = splitPorts(ports, "inner");
                     String outerPort = splitPorts(ports, "outer");
                     String names = parts[6];
-//                String frameWork = splitName(names);
                     containers.put(names, currentStatus);
                 } else {
                     String containerId = parts[0];
@@ -709,7 +654,6 @@ public class DockerfileServiceImpl implements DockerfileService {
                     String status = parts[4];
                     String currentStatus = checkStatus(status);
                     String names = parts[5];
-//                String frameWork = splitName(names);
                     containers.put(names, currentStatus);
                 }
 
@@ -723,10 +667,6 @@ public class DockerfileServiceImpl implements DockerfileService {
     }
 
 
-    //    public String splitName(String names){
-//        String[] temp = name.split("-");
-//        return temp[temp.length-2];
-//    }
     public String checkStatus(String status){//실행중인 컨테이너 상태 반환
         if(status.contains("Up")){
             return "Running :)";
@@ -790,14 +730,10 @@ public class DockerfileServiceImpl implements DockerfileService {
             ReadJsonFromDocker();
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
-//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
             Map<String, Object> projectJsonMap = ReadJsonFromDocker();
             Map<String, Object> backendMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "backendMap");
-//            System.out.println("backendMap : " + backendMap);
             String frontendId = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend", "serviceId");
-//            System.out.println("frontendId : " + frontendId);
             Map<String, Object> databaseMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "databaseMap");
-//            System.out.println("databaseMap : " + databaseMap);
             if(backendMap!=null) {
                 result.addAll(backendMap.keySet());
             }
@@ -807,10 +743,8 @@ public class DockerfileServiceImpl implements DockerfileService {
             if(databaseMap!=null) {
                 result.addAll(databaseMap.keySet());
             }
-//            System.out.println("result는 어떻게 나올까? " + result);
             return result;
         }catch (Exception e){
-//            System.err.println("프로젝트 내부 백,프론트,데이터베이스 Id조회 도중 발생한 오류 : " + e.getMessage());
             e.printStackTrace();
             throw new AnalyzeProjectContainerErrorException();
         }
@@ -818,21 +752,15 @@ public class DockerfileServiceImpl implements DockerfileService {
 
     HashMap<String,String> AnalyzeProjectContainerFramework(String projectId){//프로젝트가 가지고있는 백,프론트엔드,데이터베이스의 아이디를 가져옴
         try {
-//            ReadJsonFromDocker();
             //project.json을 불러오는 메소드 -> readJsonService.JsonToMap()
             //data/projectJson을 map으로 변환해서 불러왔음
-//            Map<String, Object> projectJsonMap = readJsonService.JsonToMap();
             Map<String, Object> projectJsonMap = ReadJsonFromDocker();
             Map<String, Object> backendMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "backendMap");
-//            System.out.println("backendMap : " + backendMap);
             String frontendId = (String) readJsonService.JsonGetThree(projectJsonMap, projectId, "frontend", "serviceId");
-//            System.out.println("frontendId : " + frontendId);
             Map<String, Object> databaseMap = (Map<String, Object>) readJsonService.JsonGetTwo(projectJsonMap, projectId, "databaseMap");
-//            System.out.println("databaseMap : " + databaseMap);
             HashMap<String,String> result = new HashMap<>();
             if(backendMap!=null) {
                 for (String key : backendMap.keySet()) {
-//                    System.out.println("Key: " + key + ", Value: " + backendMap.get(key));
                     String framework = (String) readJsonService.JsonGetFour(projectJsonMap, projectId, "backendMap", key, "framework");
                     System.out.println("백엔드 컨테이너 명 : " + key + " 프레임워크 명 : " + framework);
                     result.put(key, framework);
@@ -850,11 +778,9 @@ public class DockerfileServiceImpl implements DockerfileService {
                     result.put(key, framework);
                 }
             }
-////            System.out.println("result는 어떻게 나올까? " + result);
 
             return result;
         }catch (Exception e){
-//            System.err.println("프로젝트 내부 백,프론트,데이터베이스 Id조회 도중 발생한 오류 : " + e.getMessage());
             e.printStackTrace();
             throw new AnalyzeProjectContainerErrorException();
         }
@@ -864,11 +790,8 @@ public class DockerfileServiceImpl implements DockerfileService {
     Map<String, Object> ReadJsonFromDocker(){
         try {
             String jsonContent = getJsonContentFromDocker("dobie-be", "/data/project.json");
-//            System.out.println("JSON Content: " + jsonContent);
-
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> jsonMap = mapper.readValue(jsonContent, Map.class);
-//            System.out.println("Map Content: " + jsonMap);
             return jsonMap;
         } catch (Exception e) {
             e.printStackTrace();
