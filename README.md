@@ -46,6 +46,7 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 - Infra 
 <img src="https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&lodockerr=white"> <img src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&lodockerr=white"> <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&lodockerr=white">
 
+
 ## 사용자 가이드
 
 1.  Dobie를 설치, 실행하기 위해 다음 스크립트를 실행하세요
@@ -107,7 +108,7 @@ sh install-dobie
 | REFINE | 코드의 가독성과 성능을 높이기 위한 세밀한 개선에 중점. 큰 구조적 변화 없이 전반적인 코드 품질과 유지 보수성 개선 |
 - 커밋 유형 이후 본문은 한글로 작성하여 내용이 잘 전달될 수 있도록 할 것
 
-## Contrubutor 사용 가이드
+## Contributor 사용 가이드
 
 - Dobie를 사용하며 버그를 발견하거나 프로젝트에 기여하고자 하는 분들은 가이드를 참고해주세요
 
