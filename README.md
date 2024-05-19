@@ -113,8 +113,8 @@ sh install-dobie
 - Dobie를 사용하며 버그를 발견하거나 프로젝트에 기여하고자 하는 분들은 가이드를 참고해주세요
 
 ### 기여하기 전
-- Dobie에 관한 모든 작업은 GitHub를 통해 전달됩니다.
-- Dobie는 버그를 GitHub Issue를 통해 관리하고 있습니다. 새로운 버그를 등록하기 전에 이미 논의되고 있는 버그인지 먼저 확인해주세요.
+- Dobie에 관한 모든 작업은 Git을 통해 전달됩니다.
+- Dobie는 버그를 Git Issue를 통해 관리하고 있습니다. 새로운 버그를 등록하기 전에 이미 논의되고 있는 버그인지 먼저 확인해주세요.
 
 ### Issue를 보고하는 방법
 Git Issue를 통해 자유롭게 문제를 제출하세요. 아래 issue_templates 을 준수하고 다음과 같은 내용을 포함하여 등록해주세요.
@@ -135,7 +135,7 @@ Java와 JavaScript는 구글 Style Guide를 준수합니다.
 ### Data Style Guide
 Dobie는 사용자가 사용하지 않는 database 컨테이너를 띄우지 않기위해 JSON 형식을 사용하고 있습니다.
 
-## issue_templates
+## Issue Templates
 
 ### Feature Request
 
@@ -149,7 +149,7 @@ Dobie는 사용자가 사용하지 않는 database 컨테이너를 띄우지 않
   - 마감 기한을 설정해주세요
 
 
-## merge_request_templates
+## Merge Request Templates
 
 ### 어떤 이유로 MR를 하셨나요?
 - [ ] feature 병합(feature issue #를 남겨주세요)
@@ -166,3 +166,6 @@ Dobie는 사용자가 사용하지 않는 database 컨테이너를 띄우지 않
 
 ### relavant issue number
 - 관련된 이슈 넘버가 있으면 이곳에 기입해주세요
+
+## Version: 1.0.0
+
