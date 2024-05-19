@@ -36,7 +36,8 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 - Dobie는 AWS EC2 인스턴스 ubuntu 서버에 설치 가능합니다.
 - Dobie는 다양한 개발 언어 및 프레임워크를 지원하고 있으며 더욱 다양한 지원을 추가해 나갈 예정입니다.
 
-📚 **Skills**
+
+### 📚 Skills
 
 - Backend 
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
