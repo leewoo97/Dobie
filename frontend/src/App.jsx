@@ -1,18 +1,33 @@
-import './App.css';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Test from './pages/Test';
+import "./App.css";
+import { Outlet } from "react-router-dom";
+import axios from "axios";
+import { Toaster } from "react-hot-toast";
 
-function App() {
+axios.defaults.withCredentials = true;
+
+axios.interceptors.request.use(
+  async (config) => {
+    let accessToken = localStorage.getItem("accessToken");
+
+    if (!accessToken) {
+      console.log("accessToken이 없습니다.");
+      return config;
+    }
+
+    config.headers["Authorization"] = `Bearer ${accessToken}`;
+    return config;
+  },
+  (error) => {
+    localStorage.clear();
+    window.location.href = "/login";
+  }
+);
+
+export default function App() {
   return (
-    <div className="App">
-      <h1>Initializing</h1>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/test" element={<Test />}></Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <>
+      <Outlet />
+      <Toaster position="top-center" />
+    </>
   );
 }
-
-export default App;
