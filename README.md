@@ -44,7 +44,7 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 - Frontend 
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white"> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"> <img src="https://img.shields.io/badge/MUI-007FFF?style=for-the-badge&logo=MUI&logoColor=white">
 - Infra 
-<img src="https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&lodockerr=white"> <img src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&lodockerr=white"> <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&lodockerr=white">
+<img src="https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white"> <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
 
 
 ## 사용자 가이드
@@ -167,5 +167,7 @@ Dobie는 사용자가 사용하지 않는 database 컨테이너를 띄우지 않
 ### relavant issue number
 - 관련된 이슈 넘버가 있으면 이곳에 기입해주세요
 
-## Version: 1.0.0
+## License
+이 프로젝트는 MIT 라이선스 하에 라이선스가 부여됩니다. 자세한 내용은 [LICENSE](LICENSE)파일을 참조하십시오.
 
+## Version: 1.0.0
