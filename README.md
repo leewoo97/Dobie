@@ -3,12 +3,31 @@
 # Dobie 
 > 초보자를 위한 인프라 서비스 플랫폼
 
+Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간을 학습에 할애해야 한다는 문제를 인식했습니다. 이를 해결하기 위해, 처음 배포 환경을 구축하고 배포하는 시간을 획기적으로 줄여주고, 누구나 쉽게 사용할 수 있도록 설계했습니다. Dobie로 간편하고 신속한 배포 환경을 경험해보세요.
+
+## Dobie 소개
+
 - Dobie는 초보자도 쉽게 사용할 수 있는 인프라 서비스 플랫폼입니다.
 
 - 사용자는 간단한 정보만을 입력하고 자신의 프로젝트를 배포하는 경험을 할 수 있습니다.
 
 - Dobie는 Docker, Docker Compose를 활용하여 사용자의 프로젝트를 컨테이너로 관리합니다.
 
+### 다양한 지원 환경
+- **Backend**
+    Spring Boot(maven), Spring Boot(gradle), Django, FastAPI
+- **Frontend**
+    React, Vue
+- **Database**
+    MySQL, MongoDB, Redis
+
+### Https
+
+- 
+
+### 확장 가능한 오픈소스
+
+- 
 📚 **Skills**
 
 - Backend 
