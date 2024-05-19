@@ -166,3 +166,7 @@ Dobie는 사용자가 사용하지 않는 database 컨테이너를 띄우지 않
 
 ### relavant issue number
 - 관련된 이슈 넘버가 있으면 이곳에 기입해주세요
+
+## License
+이 프로젝트는 MIT 라이선스 하에 라이선스가 부여됩니다. 자세한 내용은 [LICENSE](LICENSE)파일을 참조하십시오.
+
