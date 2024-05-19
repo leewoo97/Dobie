@@ -117,7 +117,7 @@ sh install-dobie
 - Dobie는 버그를 GitHub Issue를 통해 관리하고 있습니다. 새로운 버그를 등록하기 전에 이미 논의되고 있는 버그인지 먼저 확인해주세요.
 
 ### Issue를 보고하는 방법
-Git Issue를 통해 자유롭게 문제를 제출하세요. GitHub bug 탬플릿을 준수하고 다음과 같은 내용을 포함하여 등록해주세요.
+Git Issue를 통해 자유롭게 문제를 제출하세요. 아래 issue_templates 을 준수하고 다음과 같은 내용을 포함하여 등록해주세요.
 
 [Issue Lable](https://lab.ssafy.com/s10-final/S10P31B101/-/labels)을 참고하여 이슈를 제출해주세요
 
@@ -134,3 +134,35 @@ Java와 JavaScript는 구글 Style Guide를 준수합니다.
 
 ### Data Style Guide
 Dobie는 사용자가 사용하지 않는 database 컨테이너를 띄우지 않기위해 JSON 형식을 사용하고 있습니다.
+
+### issue_templates
+
+## Feature Request
+
+- Part
+  - [ ] FE
+  - [ ] BE
+  - [ ] Data Base
+- 기능 상세 설명
+  - 기능에서 어떤 부분이 구현되어야 하는 지 설명해주세요
+- Deadline
+  - 마감 기한을 설정해주세요
+
+
+### merge_request_templates
+
+## 어떤 이유로 MR를 하셨나요?
+- [ ] feature 병합(feature issue #를 남겨주세요)
+- [ ] 버그 수정(아래에 issue #를 남겨주세요)
+- [ ] 코드 개선
+- [ ] 기타(아래에 자세한 내용 기입해주세요)
+
+## 스크린샷 및 세부 내용 - 왜 해당 MR이 필요한지 자세하게 설명해주세요
+- 세부사항을 항목으로 설명해주세요
+
+## MR하기 전에 확인해주세요
+- [ ] local code lint 검사를 진행하셨나요?
+- [ ] loca ci test를 진행하셨나요 ?
+
+## relavant issue number
+- 관련된 이슈 넘버가 있으면 이곳에 기입해주세요
