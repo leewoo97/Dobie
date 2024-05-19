@@ -15,10 +15,13 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 
 ### 다양한 지원 환경
 - **Backend**
+
     Spring Boot(maven), Spring Boot(gradle), Django, FastAPI
 - **Frontend**
+
     React, Vue
 - **Database**
+
     MySQL, MongoDB, Redis
 
 ### Https
@@ -29,7 +32,10 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 
 ### 확장 가능한 오픈소스
 
-- 
+- Dobie는 오픈소스 프로젝트로, 외부 개발자들과 소통하여 더 나은 프로젝트로 성장해 나가길 희망합니다.
+- Dobie는 AWS EC2 인스턴스 ubuntu 서버에 설치 가능합니다.
+- Dobie는 다양한 개발 언어 및 프레임워크를 지원하고 있으며 더욱 다양한 지원을 추가해 나갈 예정입니다.
+
 📚 **Skills**
 
 - Backend 
