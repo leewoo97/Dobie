@@ -237,7 +237,7 @@ public class DockerComposeServiceImpl implements DockerComposeService {
     public String createDjangoComposeFile(String domain, String seq, String serviceId, String path,
                                            int externalPort, int internalPort, DatabaseGetResponseDto mysql,
                                            DatabaseGetResponseDto mongodb, DatabaseGetResponseDto redis,
-                                           int frontInternalPort, boolean usingNingx) {
+                                           int frontInternalPort, boolean usingNginx) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("  django").append(seq).append(":\n");
@@ -249,7 +249,12 @@ public class DockerComposeServiceImpl implements DockerComposeService {
         sb.append("    volumes:\n");
         sb.append("      - /var/run/docker.sock:/var/run/docker.sock\n");
         sb.append("    environment:\n");
-        sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
+
+        if(usingNginx){
+            sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(80).append("\n");
+        }else {
+            sb.append("      CORS_ALLOWED_ORIGIN: http://").append(domain).append(":").append(frontInternalPort).append("\n");
+        }
 
         // network
         sb.append("    networks:\n");
