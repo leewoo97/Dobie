@@ -86,7 +86,7 @@ sh install-dobie
 - 기능 브랜치 (`feature/`): 각 기능 단위로 독립적인 개발 환경을 위하여 사용하는 브랜치 입니다. 예를 들어, `feature/fe/login`, `feature/be/login`와 같이 명명할 수 있습니다. 개발이 완료되면 `dev-fe` 또는 `dev-be`에 병합합니다.
 - 기능 키워드 작성은 'camel case'로 작성합니다.
 
-### **커밋 메시지**
+### **Commit Message**
 
 - 커밋 유형은 영어 대문자로 작성하기
 
@@ -108,7 +108,7 @@ sh install-dobie
 | REFINE | 코드의 가독성과 성능을 높이기 위한 세밀한 개선에 중점. 큰 구조적 변화 없이 전반적인 코드 품질과 유지 보수성 개선 |
 - 커밋 유형 이후 본문은 한글로 작성하여 내용이 잘 전달될 수 있도록 할 것
 
-## Contributor 사용 가이드
+## Contributor Guide
 
 - Dobie를 사용하며 버그를 발견하거나 프로젝트에 기여하고자 하는 분들은 가이드를 참고해주세요
 
@@ -124,3 +124,13 @@ Git Issue를 통해 자유롭게 문제를 제출하세요. GitHub bug 탬플릿
 1. Issue 요약
 2. Issue가 발생한 단계
 3. Issue가 발생한 Dobie의 구성 또는 서비스
+
+## Code Style Guide
+> 개발자간의 일관된 코드 작성 방식을 통해 가독성을 높이고, 원활한 소통을 위한 가이드 입니다.
+### Code convention
+Java와 JavaScript는 구글 Style Guide를 준수합니다.
+- [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
+- [Google JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html)
+
+### Data Style Guide
+Dobie는 사용자가 사용하지 않는 database 컨테이너를 띄우지 않기위해 JSON 형식을 사용하고 있습니다.
