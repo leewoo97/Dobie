@@ -1,7 +1,7 @@
 ![dobie-banner](./assets/dobie-banner.PNG)
 
 # Dobie 
-This document is also available in other languages: [README.md](README.md)
+해당 문서는 영어 버전으로도 제공됩니다.: [README.md](README.md)
 > 초보자를 위한 인프라 서비스 플랫폼
 
 Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간을 학습에 할애해야 한다는 문제를 인식했습니다. 이를 해결하기 위해, 처음 배포 환경을 구축하고 배포하는 시간을 획기적으로 줄여주고, 누구나 쉽게 사용할 수 있도록 설계했습니다. Dobie로 간편하고 신속한 배포 환경을 경험해보세요.
