@@ -71,9 +71,9 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 - 토글 버튼 하나로 쉽게 SSL인증서를 발급 받고 https를 사용할 수 있습니다.
 - 데이터베이스를 사용하지 않고 json 파일에 필요한 데이터를 저장하여 불필요한 서버 리소스를 절약하였습니다.
 - 다양한 프레임워크를 지원합니다
- 
-    | Backend | <img src="https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white"><img src="https://img.shields.io/badge/fastapi-009688?style=for-the-badge&logo=fastapi&logoColor=white"><img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">(maven / gradle) |
+    | 분류 | 프레임워크 |
     | --- | --- |
+    | Backend | <img src="https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white"><img src="https://img.shields.io/badge/fastapi-009688?style=for-the-badge&logo=fastapi&logoColor=white"><img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">(maven / gradle) |
     | Frontend | <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white"><img src="https://img.shields.io/badge/vuedotjs-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white"> |
     | Database | <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"><img src="https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=white"><img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"> |
 
