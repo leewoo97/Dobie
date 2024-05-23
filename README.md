@@ -1,12 +1,7 @@
-# README.md
-
----
-
-![단락 텍스트.png](README%20md%20e79e283e946148e9b036ee7fa886d541/%25EB%258B%25A8%25EB%259D%25BD_%25ED%2585%258D%25EC%258A%25A4%25ED%258A%25B8.png)
+![banner.png](./assets/banner/png)
 
 # Dobie
 
----
 
 ### 🏆삼성 청년 SW아카데미(SSAFY) 10th 자율 프로젝트 우수상(2위)🏆
 
@@ -43,7 +38,6 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 
 📚 **사용 기술 스택**
 
-```markdown
 - Frontend 
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
@@ -63,7 +57,6 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white">
 - 디자인
 <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
-```
 
 ## **🚩** 프로젝트 차별성
 
