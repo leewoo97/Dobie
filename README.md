@@ -1,4 +1,4 @@
-![banner.png](./assets/banner/png)
+![banner.png](./assets/banner.png)
 
 # Dobie
 
@@ -766,14 +766,14 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 - 저장된 회원 데이터는 json파일  형식으로 저장됩니다.
 - Spring Security + JWT 방식으로 구현되었습니다.
 
-![Untitled](README%20md%20e79e283e946148e9b036ee7fa886d541/Untitled.gif)
+![회원가입로그인.gif](./assets/회원가입로그인.gif)
 
 ### 메인페이지
 
 - 등록된 모든 프로젝트의 프로젝트 명, 도메인 주소, git Link 정보를 확인할 수 있습니다.
 - 프로젝트 별 실행 상태를 확인하고 빌드, 전체 실행, 전체 중지 기능을 실행할 수 있습니다.
 
-![Untitled](README%20md%20e79e283e946148e9b036ee7fa886d541/Untitled%201.gif)
+![메인.gif](./assets/메인.gif)
 
 ### 프로젝트 등록 페이지
 
@@ -789,20 +789,20 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
     | DB | 데이터베이스, Username, Password, 데이터베이스 명, 초기 데이터 파일 경로,
     외부 포트 번호, 내부 포트 번호 |
 
-![Untitled](README%20md%20e79e283e946148e9b036ee7fa886d541/Untitled%202.gif)
+![프로젝트등록.gif](./assets/프로젝트등록.gif)
 
 ### 가이드 페이지
 
 - 도비를 쉽게 사용할 수 있도록 각 기능에 대한 가이드를 제시해 줍니다.
 
-![Untitled](README%20md%20e79e283e946148e9b036ee7fa886d541/Untitled%203.gif)
+![가이드페이지.gif](./assets/가이드페이지.gif)
 
 ### 프로젝트 수정 페이지
 
 - 기존에 있던 프로젝트를 수정할 수 있습니다.
 - 수정 후 빌드 버튼 클릭 시 빌드 파일들이 갱신 됩니다.
 
-![Untitled](README%20md%20e79e283e946148e9b036ee7fa886d541/Untitled%204.gif)
+![프로젝트수정.gif](./assets/프로젝트수정.gif)
 
 ### 프로젝트 상세조회 페이지
 
@@ -815,27 +815,27 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 - 프로젝트의 docker-compose, docker, nginx config 파일을 확인할 수 있습니다.
 - 프로젝트를 삭제할 수 있습니다.
 
-![Untitled](README%20md%20e79e283e946148e9b036ee7fa886d541/Untitled%205.gif)
+![프로젝트상세조회1.gif](./assets/프로젝트상세조회1.gif)
 
 **Project, Backend, Frontend, DB**
 
 - 프로젝트 등록 시 작성했던 프로젝트 관련 정보들을 확인할 수 있습니다.
 
-![Untitled](README%20md%20e79e283e946148e9b036ee7fa886d541/Untitled%206.gif)
+![프로젝트상세조회2.gif](./assets/프로젝트상세조회2.gif)
 
 ### WebHook설정 페이지
 
 - 자동배포를 위해 WebHook을 설정할 수 있습니다.
 - WebHook 설정을 위한 자세한 설명이 제시되어 있습니다.
 
-![Untitled](README%20md%20e79e283e946148e9b036ee7fa886d541/Untitled%207.gif)
+![웹훅설정.gif](./assets/웹훅설정.gif)
 
 ### 환경변수 관리 페이지
 
 - .env, .yml 등 .gitignore에 포함되어 git에 등록되지 않는 환경파일들을 저장 및 삭제할 수 있습니다.
 - 서버에 직접 파일을 옮기는 작업 대신 파일 첨부 기능으로 쉽게 환경변수 파일을 저장할 수 있습니다.
 
-![Untitled](README%20md%20e79e283e946148e9b036ee7fa886d541/Untitled%208.gif)
+![환경변수.gif](./assets/환경변수.gif)
 
 ## **🚩** 프로젝트 설치 및 기여 방법
 
