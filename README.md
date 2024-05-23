@@ -861,14 +861,14 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 
 | 고은석 | 박혜선 | 심규리 |
 | --- | --- | --- |
-| ![eun](./assets/eun.jpg) | ![seon](./assets/seon.png) | ![ri](./assets/ri.jpg) |
+| <img src="./assets/eun.jpg" width="1300"/> | <img src="./assets/seon.PNG" width="1300"/> | <img src="./assets/ri.jpg" width="1300"/> |
 | BE :  JSON file I/O, 설치 shell script
 FE : 프로젝트 생성 페이지
 Infra: microk8s + Jenkins를 통한 배포용 이미지 생성 | BE : 도커 컴포즈 파일 생성, 환경변수 파일 업로드/삭제 API
 FE : 프로젝트 디자인 및 css, 환경 변수 파일 페이지 | BE : Spring Security와 jwt 인증, 인가 구현, 로그인 API
 FE : 프로젝트 수정 페이지, API 연결 |
 | 오건영 | 유호정 | 이우진 |
-| ![kun](./assets/kun.jpg) | ![ho](./assets/ho.PNG) | ![woo](./assets/woo.png) |
+| <img src="./assets/kun.jpg" width="1300"/> | <img src="./assets/ho.PNG" width="1300"/> | <img src="./assets/woo.PNG" width="1300"/> |
 | BE : 리눅스 명령어 실행 API, Webhooks 활용 자동배포
 FE : 가이드페이지 | BE:  Nginx Reverse Proxy 설정,
 Nginx Frontend 웹 서버 설정, 
