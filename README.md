@@ -10,27 +10,27 @@
 
 ## 목차
 
-[기획 배경](#**🚩-**기획-배경)
+[기획 배경](#🚩-기획-배경)
 
-[프로젝트 소개](#**🚩-**프로젝트-소개)
+[프로젝트 소개](#🚩-프로젝트-소개)
 
-[프로젝트 차별성](#**🚩-**프로젝트-차별성)
+[프로젝트 차별성](#🚩-프로젝트-차별성)
 
-[Shell Script](# 🚩-Shell-Script)
+[Shell Script](#🚩-Shell-Script)
 
-[디렉터리 구조](#**🚩-**디렉터리-구조)
+[디렉터리 구조](#🚩-디렉터리-구조)
 
-[주요 구현 기능](#🚩- 주요-구현-기능)
+[주요 구현 기능](#🚩-주요-구현-기능)
 
-[프로젝트 설치 및 기여 방법](#**🚩-**프로젝트-설치-및-기여-방법)
+[프로젝트 설치 및 기여 방법](#🚩-프로젝트-설치-및-기여-방법)
 
 [팀원 소개](#🚩-팀원-소개)
 
-## **🚩** 기획 배경
+## 🚩 기획 배경
 
 Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간을 학습에 할애해야 한다는 문제를 인식했습니다. 이를 해결하기 위해, 처음 배포 환경을 구축하고 배포하는 시간을 획기적으로 줄여주고, 누구나 쉽게 사용할 수 있도록 설계했습니다. Dobie로 간편하고 신속한 배포 환경을 경험해보세요.
 
-## **🚩** 프로젝트 소개
+## 🚩 프로젝트 소개
 
 - Dobie는 초보자도 쉽게 사용할 수 있는 인프라 서비스 플랫폼입니다.
 - 사용자는 간단한 정보만을 입력하고 자신의 프로젝트를 배포하는 경험을 할 수 있습니다.
@@ -63,7 +63,7 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
 
 
-## **🚩** 프로젝트 차별성
+## 🚩 프로젝트 차별성
 
 - docker, docker-compose, nginx 등을 CLI환경이 아닌 GUI환경을 사용하여 배포 과정이 쉽고 간편합니다.
 - 사용자가 docker와 docker-compose 등을 직접 설치하는 과정 없이 Dobie의 Shell Script 다운 명령어와, 실행 명령어를 통해 Dobie 사용 환경을 구축할 수 있습니다.
@@ -78,7 +78,7 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
     | Frontend | <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white"><img src="https://img.shields.io/badge/vuedotjs-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white"> |
     | Database | <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"><img src="https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=white"><img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"> |
 
-## **🚩 Shell Script**
+## 🚩 Shell Script
 
 <details>
 <summary>Shell Script</summary>
@@ -305,7 +305,7 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 </details>    
 
 
-## **🚩** 디렉터리 구조
+## 🚩 디렉터리 구조
 
 <details>
 <summary>Frontend</summary>
@@ -774,7 +774,7 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 </details>
 
 
-## **🚩** 주요 구현 기능
+## 🚩 주요 구현 기능
 
 ### 회원가입, 로그인 페이지
 
@@ -853,11 +853,11 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 
 ![Untitled](README%20md%20e79e283e946148e9b036ee7fa886d541/Untitled%208.gif)
 
-## **🚩** 프로젝트 설치 및 기여 방법
+## 🚩 프로젝트 설치 및 기여 방법
 
 [Contribute.md](Contribute.md)
 
-## **🚩** 팀원 소개
+## 🚩 팀원 소개
 
 | 고은석 | 박혜선 | 심규리 |
 | --- | --- | --- |
