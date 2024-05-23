@@ -75,8 +75,10 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 
 ## **🚩 Shell Script**
 
-- Shell Script
-    
+<details>
+<summary>Shell Script</summary>
+<div>
+
     ```bash
     #!/bin/bash
     
@@ -294,13 +296,15 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
         sudo sh -c 'while true; do output=$(eval "$(cat /var/dobie/ssl)"); echo "$output" | sudo tee /logfile.log >/dev/null; done' &
     fi
     ```
-    
+</div>
+</details>    
+
 
 ## **🚩** 디렉터리 구조
 
-- Frontend
-    
-    ```
+<details>
+<summary>Frontend</summary>
+<div>    
     
     📦src
      ┣ 📂api
@@ -560,11 +564,16 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
      ┣ 📜index.js
      ┣ 📜Main.jsx
      ┗ 📜setupTests.jsx
-    ```
     
-- Backend
+
+</div>
+</details>
+
+<details>
+<summary>Backend</summary>
+<div>  
+
     
-    ```
     📦src
      ┣ 📂main
      ┃ ┣ 📂java
@@ -755,8 +764,10 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
      ┃ ┃ ┃ ┗ 📂dobie
      ┃ ┃ ┃ ┃ ┗ 📂backend
      ┃ ┃ ┃ ┃ ┃ ┗ 📜BackendApplicationTests.java
-    ```
     
+</div>
+</details>
+
 
 ## **🚩** 주요 구현 기능
 
