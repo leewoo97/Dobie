@@ -16,7 +16,7 @@
 
 [프로젝트 차별성](#-프로젝트-차별성)
 
-[Shell Script](#-Shell-Script)
+[Shell Script](#-shell-script)
 
 [디렉터리 구조](#-디렉터리-구조)
 
