@@ -1,4 +1,4 @@
-![banner.png](./assets/banner/png)
+![banner.png](./assets/banner.png)
 
 # Dobie
 
