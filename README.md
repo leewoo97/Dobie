@@ -864,6 +864,5 @@ fi
 | <img src="./assets/eun.jpg" width="200"/> | <img src="./assets/seon.png" width="200"/> | <img src="./assets/ri.jpg" width="200"/> |
 | BE :  JSON file I/O, <br>설치 shell script<br>FE : 프로젝트 생성 페이지<br>Infra: microk8s + Jenkins를 <br>통한 배포용 이미지 생성 | BE : 도커 컴포즈 파일 생성, <br>환경변수 파일 업로드/삭제 API<br>FE : 프로젝트 디자인 및 css, <br>환경 변수 파일 페이지 | BE : Spring Security와 jwt 인증, <br>인가 구현, 로그인 API<br>FE : 프로젝트 수정 페이지, API 연결 |
 | 오건영 | 유호정 | 이우진 |
-| --- | --- | --- |
 | <img src="./assets/kun.jpg" width="200"/> | <img src="./assets/ho.PNG" width="200"/> | <img src="./assets/woo.png" width="200"/> |
 | BE : 리눅스 명령어 실행 API,<br>Webhooks 활용 자동배포<br>FE : 가이드페이지 | BE:  Nginx Reverse Proxy 설정, <br>Nginx Frontend 웹 서버 설정, <br>SSL인증서 발급 API<br>FE : 프로젝트 실행상태 조회, <br>프로젝트 상세조회 | BE : 도커파일 생성, <br>컨테이너 상태 및 로그 조회 API, <br>도커파일, 도커컴포즈 파일 조회 API<br>FE : 컨테이너 로그 조회, <br>프로젝트 목록 페이지 css |
