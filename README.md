@@ -855,7 +855,7 @@ Dobie는 배포를 처음 경험해보는 초보 개발자들이 많은 시간�
 
 ## 🚩 프로젝트 설치 및 기여 방법
 
-[Contribute.md](Contribute.md)
+[Contribute.md](CONTRIBUTE.md)
 
 ## 🚩 팀원 소개
 
