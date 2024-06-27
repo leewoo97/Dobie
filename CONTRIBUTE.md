@@ -1,7 +1,7 @@
 ![dobie-banner](./assets/dobie-banner.PNG)
 
 # Dobie
-This document is also available in other languages: [README.md_kr](README_kr.md)
+This document is also available in korean languages: [CONTRIBUTE_KR.md](CONTRIBUTE_KR.md)
 > Infrastructure Service Platform for Beginners
 
 Dobie recognizes the problem that beginner developers need to spend a lot of time learning to deploy for the first time. To solve this, Dobie is designed to significantly reduce the time it takes to set up and deploy an initial environment, making it easy for anyone to use. Experience a simple and quick deployment environment with Dobie.
